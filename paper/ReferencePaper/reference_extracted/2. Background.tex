@@ -1,0 +1,347 @@
+\section{Background}~\label{Background}
+
+%motivation에 대한 내용은 intro로 보내고 여기는 threat -> detection mechainsm 정리 하자 (원래 처럼) attack -> I/O behaviour change는 intro에 table
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=8.5cm]{Figures/2. Background_HPCarch.pdf}
+    \vspace{-0.6cm}
+    \caption{HPC architecture}
+    \label{Back_hpc_architecture}
+    \vspace{-.6cm}
+\end{figure}
+
+
+% backgroud
+
+\subsection{HPC Architecture}
+
+Figure~\ref{Back_hpc_architecture} shows the overall architecture of HPC system.
+As HPC systems are design to solve large-problems in a short period time, HPC systems have thousands of compute nodes connect via high-speed interconnect such as Infiniband~\cite{pfister2001introduction} and Slingshot~\cite{de2020depth}.
+Each compute node is a complete server with CPU, Memory and Storage but each HPC system have different level of abstraction and operablilty to the user. 
+Some systems run full-scale operating system~\cite{park2023myksc} while others run lightweight version of the operationing system for performance and security~\cite{wallace2007compute,kaplan2019cray, wisniewski2014mos}
+
+% Darshan, 
+
+% DXT (Darshan eXtended Tracing)
+% Darshan : tool used for analyzing I/O behavior in High-Performance Computing (HPC) applications (open-source solution)
+%  aims to help users understand and optimize I/O behavior
+%  fundamentally a profiling tool
+%   low-overhead profiling
+%    aggregated summaries of I/O behavior
+%     (summarizes I/O behavior into compact statistics such as operation counts, bytes moved, and grouped timing information by default)
+%    design prioritizes minimal overhead and scalability
+%     Usability
+%     provide high-level overview, making it well-suited for general-purpose I/O analysis
+% Supports interfaces such as POSIX, MPI-IO, HDF5, NetCDF, and PNetCDF
+
+% Darshan uses LD_PRELOAD to intercept I/O function call
+% s own runtime wrappers or employs compile-time instrumentation for static binaries
+% DXT (Darshan eXtended Tracing): DXT is an optional module of Darshan
+% used for finer-grained analysis by capturing detailed read/write traces for POSIX and MPI-IO operations
+%  Detailed timing is recorded mainly for MPI-IO and POSIX read/write operations, while other interfaces are only profiled in summary form
+
+\subsection{I/O Tracing in HPC}
+
+
+I/O tracing in HPC environments prioritizes minimal performance interference, leading to the widespread adoption of user-level profiling tools over heavy system-wide monitors.~\cite{han2024prov} Darshan serves as the de facto standard for I/O characterization in this domain, designed to capture application behavior by intercepting I/O calls at the library level (e.g., MPI-IO, HDF5, POSIX) rather than utilizing heavy kernel instrumentation. While the standard Darshan module aggregates statistics to reduce log size, its Darshan eXtended Tracing (DXT)~\cite{xu2017dxt} module provides the granular visibility required for security analysis by recording a complete trace of every I/O operation, including timestamps, file offsets, and request sizes. This detailed telemetry enables the reconstruction of precise intra-file access patterns without the overhead associated with system call interception.
+
+In contrast, general-purpose security monitors (e.g., Auditd, CamFlow~\cite{pasquier2017practical}, Falco) provide deep system visibility but face fundamental challenges in HPC. Intercepting system calls at the kernel boundary introduces prohibitive overheads and log loss under high-throughput workloads~\cite{her2025indepth}, while OS-bypass mechanisms (e.g., RDMA) create significant blind spots. Although recent HPC provenance frameworks~\cite{dai2017lightweight, han2022prov, han2024provio} have addressed these issues by shifting toward user-level instrumentation, they primarily focus on capturing high-level data lineage rather than the fine-grained spatial-temporal access patterns (e.g., offsets, strides) essential for detecting subtle I/O anomalies, thereby reinforcing the necessity of utilizing specialized profiling tools like Darshan and DXT.
+
+
+\subsection{Security vulnerabilities in HPC}
+The complexity and scale of HPC infrastructures also introduce substantial security vulnerabilities. Due to their interconnected and shared-resource nature, HPC systems are particularly susceptible to unauthorized access, breaches of confidentiality, and operational disruptions. These risks necessitate detailed threat assessments and comprehensive security strategies to safeguard HPC operations effectively~\cite{koleinihigh}.
+
+\noindent\textbf{Hardware-based Attacks in HPC:} 
+Hardware-level vulnerabilities pose significant threats to HPC environments due to the widespread use of performance-oriented processors and GPUs. 
+Speculative execution attacks, such as Spectre, exploit processor mechanisms intended for computational efficiency, enabling attackers to bypass isolation measures and access confidential information across processes~\cite{he2021new}.
+Additionally, Graphics Processing Units (GPUs), essential for accelerating HPC computations, have been shown to unintentionally leak sensitive data during routine operations, further compromising data confidentiality and system security~\cite{di2013cuda}.
+Finally, Side-channel attacks are a growing concern in multi-tenant HPC environments where different users share compute nodes or memory channels. These attacks exploit shared hardware resources like caches, memory buses, or performance counters to infer sensitive information from co-located processes. In HPC contexts, where high utilization is common, such co-residency scenarios are frequent and thus increase the feasibility of attacks~\cite{peisert2017security}. Recent studies show that even GPU-based computation can leak data through memory access patterns, creating new channels for information exfiltration~\cite{guo2024high}.
+
+
+
+
+\noindent\textbf{Exploitation of Parallel Runtime Systems and Job Schedulers} \\
+Parallel runtimes such as MPI and job schedulers like SLURM or PBS are core components of HPC operations. However, their complexity and central role in resource orchestration make them attractive targets for attackers. 
+For instance, poorly validated job scripts can be abused to inject payloads or manipulate environment variables to gain unintended access~\cite{elia2024systematic}.
+In addition, the attack can manipulate the systems log generated from the malicious activity to avoid attack detection.
+HPC systems face broader vulnerabilities stemming from their software and infrastructure components. Comprehensive risk assessment methodologies are required to identify and manage these threats effectively~\cite{leal2023assessing}. Moreover, proactive strategies involving specialized security testbeds enable researchers and system administrators to simulate potential attacks, thereby strengthening defensive measures and minimizing security risks~\cite{cao2024security}.
+
+
+
+
+
+
+\noindent\textbf{Data Breach} \
+HPC facilities are engineered for extreme data movement, utilizing high-speed interconnects and Data Transfer Nodes (DTNs) optimized for performance, not inspection. This architecture, while beneficial for scientific throughput, allows attackers to quickly exfiltrate data once access is obtained. Traditional security mechanisms like firewalls or deep packet inspection are often disabled or relaxed to maintain I/O performance~\cite{peisert2017security}. As a result, once attackers infiltrate a system, they can transfer large volumes of sensitive data with minimal detection. 
+For example, ES-net~\cite{koning2018coreflow}.
+In addition, as the application that utilizes network connection becomes diverse, it is becomming increasingly difficult to detect and defend~\cite{cao2024jupyter, giannakou2024understanding}
+
+
+
+
+
+% \subsubsection{Defense Mechanisms}
+
+% Ensuring the security of High-Performance Computing (HPC) systems requires a multi-layered defense strategy that combines protection and detection mechanisms. Protection mechanisms aim to reduce the attack surface and control access to system resources, while detection mechanisms focus on identifying abnormal activities through continuous monitoring.
+
+% 4.1 Protection
+% 4.1.1 Reducing Attack Surface
+% Science DMZ : isolates data-intensive science flows from the general-purpose enterprise network, improving performance while limiting exposure to unnecessary services.
+% ~\cite{dart2013science,crichigno2018comprehensive}
+
+% lightweight kernel : designed to reduce the trusted computing base (TCB), thus lowering the probability of kernel-level exploitation
+% ~\cite{kuvaiskii2024gramine}, ~\cite{lange2021low}
+
+% (TEEs) : hardware-level isolation to protect sensitive computations even when the operating system is compromised.
+% Intel SGX~\cite{costan2016intel}, AMD SEV~\cite{sev2020strengthening}, ARM TrustZone~\cite{pinto2019demystifying}, and NVIDIA Confidential Computing~\cite{dhanuskodi2023creating}
+
+
+% 4.1.2 Access Control
+% Access Control Lists (ACLs): used for packet-level filtering and traffic management In HPC service networks
+% ~\cite{lee2021traffic}
+
+% At the system level 
+%  traditional security models such as Discretionary Access Control (DAC)~\cite{sandhu1998discretionary} and Mandatory Access Control (MAC)~\cite{osborn1997mandatory} define user privileges and object ownership policies.
+
+%  Two-Factor~\cite{aloul2009two} and Multi-Factor Authentication (MFA)~\cite{alsaleem2021multi} schemes strengthen the login process against credential theft, which remains one of the most common attack vectors in shared HPC environments.
+
+% 4.2 Detection (Monitoring)
+
+% Detection mechanisms complement protection by continuously monitoring the network and execution environment to identify anomalies indicative of compromise or misuse.
+
+% 4.2.1 Packet Monitoring
+
+% Payload-based systems
+% Bro (now Zeek)~\cite{paxson1999bro}
+% flow-based approaches
+% FlowRadar~\cite{li2016flowradar} and sFlow~\cite{grooms2019sflow}
+
+% Recent works have explored machine-learning-based intrusion detection on benchmark datasets like NSL-KDD~\cite{aljammal2024anomaly}, demonstrating that supervised learning models can improve generalization to unseen network behaviors.
+
+% 4.2.2 Execution Monitoring
+
+% Specification-based monitoring frameworks 
+% DPEM~\cite{ko1997execution}, Varan~\cite{hosek2015varan} can detect deviations from expected control flow or execution logic.
+
+% In modern systems, deep learning methods such as DeepLog~\cite{du2017deeplog} leverage system logs to detect temporal anomalies in runtime events.
+
+% MPI communication patterns
+% ~\cite{whalen2013multiclass,chunduri2018characterization}
+
+% CPU and resource utilization
+% ~\cite{gomes2020cryptojacking,zhu2019cpu}
+
+% power-based side-channel analysis
+% ~\cite{copos2020catch}
+
+% I/O behavior
+% ~\cite{mehnaz2017ghostbuster}
+
+
+
+%%%%%%%%%%%%%%basic version%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Defense Mechanisms in HPC}
+
+% Ensuring the security of High-Performance Computing (HPC) systems requires a multi-layered defense strategy that integrates both protection and detection mechanisms. Due to the large-scale, distributed, and performance-sensitive nature of HPC environments, conventional enterprise security models are often insufficient. HPC systems must simultaneously achieve minimal performance interference, fine-grained isolation, and real-time anomaly awareness. Therefore, security strategies in HPC environments are designed not only to prevent attacks through architectural hardening but also to rapidly detect and respond to abnormal behaviors.
+
+% \textbf{Protection mechanisms} in HPC focus on reducing the attack surface and enforcing strict access control to mitigate vulnerabilities before they can be exploited. The Science DMZ architecture~\cite{dart2013science,crichigno2018comprehensive} exemplifies this approach by isolating data-intensive science flows from the enterprise network, thus enhancing throughput while minimizing exposure to unnecessary network services. Similarly, lightweight kernels (LWKs)~\cite{kuvaiskii2024gramine,lange2021low} reduce the trusted computing base (TCB) to lower the probability of kernel-level exploits, as seen in systems like Gramine-TDX and Kitten. Hardware-assisted Trusted Execution Environments (TEEs) further strengthen this boundary by providing hardware-level isolation even in the presence of a compromised OS. Technologies such as Intel SGX~\cite{costan2016intel}, AMD SEV~\cite{sev2020strengthening}, ARM TrustZone~\cite{pinto2019demystifying}, and NVIDIA Confidential Computing~\cite{dhanuskodi2023creating} each offer distinct hardware mechanisms to guarantee the confidentiality and integrity of computation.
+
+% Access control mechanisms ensure that only authorized users and services can interact with system resources. Access Control Lists (ACLs)~\cite{lee2021traffic} perform packet-level filtering directly at the router’s forwarding plane, preventing performance bottlenecks in high-speed networks. At the system level, Discretionary Access Control (DAC)~\cite{sandhu1998discretionary} and Mandatory Access Control (MAC)~\cite{osborn1997mandatory} models define ownership and clearance-based privilege hierarchies to prevent unauthorized access. To further protect against credential theft—a prevalent issue in shared HPC infrastructures—Two-Factor~\cite{aloul2009two} and Multi-Factor Authentication (MFA)~\cite{alsaleem2021multi} are adopted to enhance login integrity using multiple verification factors.
+
+% \textbf{Detection mechanisms} complement protection by providing continuous monitoring of both the network and runtime environments to identify anomalies indicative of compromise or misuse. At the network level, packet monitoring systems analyze traffic patterns and payloads to detect intrusions in real time. Tools like Bro (now Zeek)~\cite{paxson1999bro} provide scalable, policy-driven detection by transforming raw packet data into higher-level event streams, while flow-based methods such as FlowRadar~\cite{li2016flowradar} and sFlow~\cite{grooms2019sflow} enable lightweight, aggregated flow monitoring suitable for large HPC networks. Recently, machine learning-based intrusion detection has gained traction, showing promising generalization performance on benchmark datasets like NSL-KDD~\cite{koranga2025comparative}, where supervised models learn discriminative features of anomalous network behaviors.
+
+% Beyond network observation, execution-level monitoring provides deeper insights into the internal behavior of HPC applications. Specification-based frameworks such as DPEM~\cite{ko1997execution} and Varan~\cite{hosek2015varan} detect control-flow deviations and logic inconsistencies during program execution. Deep learning methods like DeepLog~\cite{du2017deeplog} further extend detection granularity by modeling system logs as temporal sequences, enabling the discovery of subtle anomalies in runtime event patterns. Additional detection strategies include the analysis of MPI communication patterns~\cite{whalen2013multiclass,chunduri2018characterization, laguna2019large} to identify unauthorized or unusual distributed behaviors, and monitoring of CPU and resource utilization~\cite{gomes2020cryptojacking,zhu2019cpu} to detect threats such as cryptojacking or denial-of-service. Moreover, power-based side-channel analysis~\cite{copos2020catch} leverages power consumption patterns as a non-intrusive signal for identifying active workloads and detecting tampering. Finally, I/O-level approaches such as Ghostbuster~\cite{mehnaz2017ghostbuster} use fine-grained file access profiling to uncover anomalous or insider-driven data access behaviors.
+
+% However, despite the wide coverage of these approaches, existing execution-level monitoring frameworks still lack mechanisms to distinguish anomalies that mimic normal I/O activities. To address this gap, our work focuses on fine-grained I/O behavior analysis at both inter-file and intra-file levels. Since low-level I/O operations are inherently difficult to conceal or spoof, monitoring these microscopic patterns enables the detection of subtle deviations that may appear legitimate at a macroscopic, inter-file perspective but diverge significantly within the intra-file access context.
+
+
+%%%%%%%%%%shorten version%%%%%%%%%%%%%%%%
+
+
+\subsection{Defense Mechanisms in HPC}
+Ensuring the security of HPC systems requires a multi-layered defense strategy that integrates both protection and detection mechanisms. Due to the large-scale, distributed, and performance-sensitive nature of HPC environments, conventional enterprise security models are often insufficient. HPC systems must simultaneously achieve minimal performance interference, fine-grained isolation, and real-time anomaly awareness. Therefore, security strategies are designed not only to prevent attacks through architectural hardening but also to rapidly detect and respond to abnormal behaviors.
+
+\textbf{Protection mechanisms} focus on reducing the attack surface and enforcing strict access control. The Science DMZ architecture~\cite{dart2013science,crichigno2018comprehensive} delineates exposed and non-exposed network zones, while lightweight kernels (LWKs)\cite{kuvaiskii2024gramine,lange2021low} reduce the trusted computing base to lower kernel-level exploits. Hardware-assisted Trusted Execution Environments (TEEs) like Intel SGX\cite{costan2016intel}, AMD SEV~\cite{sev2020strengthening}, ARM TrustZone~\cite{pinto2019demystifying}, and NVIDIA Confidential Computing~\cite{dhanuskodi2023creating} guarantee computation integrity. Complementing these are access control mechanisms such as Access Control Lists (ACLs)\cite{lee2021traffic} for packet-level filtering and system-level Access Control (DAC/MAC)\cite{sandhu1998discretionary,osborn1997mandatory} models. Furthermore, Two-Furthermore, two-factor~\cite{aloul2009two} and multi-factor authentication (MFA)~\cite{alsaleem2021multi} are adopted to harden the authentication process.
+
+\textbf{Detection mechanisms} complement protection by continuously monitoring network and runtime environments. At the network level, tools like Bro (Zeek)\cite{paxson1999bro} transform packets into event streams, flow-based methods like FlowRadar\cite{li2016flowradar} and sFlow~\cite{grooms2019sflow} provide scalable monitoring, and machine learning models~\cite{koranga2025comparative} learn features of anomalous behaviors. Beyond network observation, execution-level frameworks such as DPEM~\cite{ko1997execution} and Varan~\cite{hosek2015varan} detect control-flow deviations, while DeepLog~\cite{du2017deeplog} models system logs to find anomalies. Other strategies include analyzing MPI communication patterns~\cite{whalen2013multiclass,chunduri2018characterization, laguna2019large}, monitoring CPU utilization~\cite{gomes2020cryptojacking,zhu2019cpu}, utilizing power-based side-channel analysis~\cite{copos2020catch}, and applying I/O-level profiling via Ghostbuster~\cite{mehnaz2017ghostbuster} to uncover misuse.
+
+However, existing execution-level monitoring frameworks still lack mechanisms to distinguish stealthy attacks that mimic benign I/O activities. To address this gap, our work focuses on fine-grained I/O behavior analysis at both inter-file and intra-file levels. Since low-level I/O operations are inherently difficult to conceal, monitoring these microscopic patterns enables the detection of subtle deviations that appear legitimate at a macroscopic perspective but diverge within the intra-file access context.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \subsection{One-Class Anomaly Detection}
+
+% One-class anomaly detection is a widely used approach for identifying abnormal behaviors in datasets where only normal samples are available for training. Unlike supervised classification methods that rely on both normal and anomalous examples, one-class models are trained exclusively on normal data to learn its underlying distribution or structural characteristics. During inference, samples that deviate significantly from the learned normal patterns are regarded as anomalies.
+
+% In this study, several representative one-class anomaly detection models are evaluated, including K-Means++, Local Outlier Factor (LoF), and Autoencoder. K-Means++ partitions the data into clusters based on similarity, and points that lie far from any cluster centroid are considered anomalous. LoF, on the other hand, detects anomalies by comparing the local density of each sample to that of its neighbors, identifying instances that reside in low-density regions. The Autoencoder is a neural-network-based approach that reconstructs input data after encoding it into a lower-dimensional latent space; samples with large reconstruction errors are recognized as anomalies. 
+
+% To quantitatively evaluate the detection performance, two key metrics are used: Recall and False Positive Rate (FPR). Recall measures the proportion of actual anomalies that are correctly detected, reflecting the model's sensitivity to anomalous behavior. FPR, in contrast, indicates the proportion of normal samples that are incorrectly classified as anomalies, representing the rate of false alarms. An ideal anomaly detector achieves high recall with a low FPR, meaning that it detects nearly all anomalies while minimizing incorrect detections among normal data.
+
+%necessity of our work should be insisted briefly, it seemse like every thing is fine and no need to make other skeme. our method is a kind of execution-level monitoring tool and. especialiy monitor I/O behaviour in inter-file level and intra-file level both. low level i/o behaviour is difficult to hide so we use that. and expecialy we monitor ntra-file level too, because normal mimicing anomaly can be same in inter-file macroscopic perspective but, it could be different in intra file level. 
+
+
+% \subsubsection{Defense Mechanisms}
+
+% Because of the inherent vulnerabilities of HPC systems, many protection and attack detection mechanisms have been developed and deployed. 
+
+% \noindent\textbf{Protection Method}
+% Reducing attack surface
+% science DMZ(SDMZ)    
+
+% \noindent\textbf{Protection Method}
+% %login related. 
+% Advanced user authentication schemes can be deployed to mitigate login-related attacks. Techniques such as two-factor authentication~\cite{Two factor authentication using mobile phones} or multi-factor authentication~\cite{Multi-Factor Authentication to Systems Login} can be adopted. In addition, Some level of password complexity~\cite{Designing Password Policies for Strength and Usability} and regular password updates~\cite{The security of modern password expiration: an algorithmic framework and empirical analysis} can be required. In the Science DMZ architecture, 
+
+% %access control (file access pattern) ACL
+% ACL(Access Control List) 
+% ~\cite{Traffic and Overhead Analysis of Applied
+% Pre-filtering ACL Firewall on HPC Service Network}
+% Mandatory Access 
+% Control (MAC),  
+% Discretionary Access Control (DAC)
+
+% It is challenging to apply traditional network security mechanisms such as firewalls and Deep Packet Inspection (DPI) in HPC environments due to the demand for high-throughput data transfer~\cite{peisert2017security}. To address this issue, the Science DMZ framework~\cite{The Science DMZ: A Network Design Pattern for Data-Intensive Science} can be adopted to enhance network security while maintaining performance. In the Science DMZ architecture, a dedicated enclave is designed to enable frictionless communication for high-performance data movement, while only a single network ingress and egress point is tightly monitored and access-controlled.
+
+% @inproceedings{dart2013science,
+%   title={The science dmz: A network design pattern for data-intensive science},
+%   author={Dart, Eli and Rotman, Lauren and Tierney, Brian and Hester, Mary and Zurawski, Jason},
+%   booktitle={Proceedings of the International Conference on High Performance Computing, Networking, Storage and Analysis},
+%   pages={1--10},
+%   year={2013}
+% }
+
+% using container
+% % Deploying Scientific Al Networks at Petaflop Scale on Secure Large Scale HPC Production Systems with Containers
+
+% \noindent\textbf{Detection Method.}
+% %need to chck the contents is write
+% The Bro Intrusion Detection System (IDS), currently known as Zeek~\cite{Bro: A System for Detecting Network Intruders in Real-Time}, can be used to perform deep packet inspection and intrusion detection in HPC systems. Unlike a firewall, Zeek does not operate inline with the network traffic; instead, it inspects copies of packets. As a result, no additional transmission delay is introduced due to inspection, and potential congestion that might lead to packet loss or retransmission is avoided. %too concentrated on performace not security.
+
+% Signature-based intrusion detection systems have difficulty detecting previously unseen attack patterns. To address these limitations, machine learning–based intrusion detection systems have been proposed and demonstrated promising performance. 
+
+% %the most dominant work is "deeplog" and there is no intrusion detection scheme which use low level as best i know. if so, just summarize about deeplog and other ai based intrusion detection in HPC system here. and summarize low level log monitoring at the related work
+
+% there are plenty of anomaly detection methods
+% %ML + network
+
+% %ML + cputation resource usage
+
+% advanced user authentication scheme can be depolyed against login related attacks. 
+% two-factor authentication [Two factor authentication using mobile phones] or 
+% Multi-factor Authentication [Multi-Factor Authentication to Systems Login] can be adopted 
+% and some extent of complexity in password 
+% [Designing Password Policies for Strength and Usability] and some
+
+% Designing Password Policies for Strength and Usability
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \skim{Written by GPT, need to change. }
+% \noindent\textbf{Trusted Execution Environments (TEE): } Trusted Execution Environments (TEEs) provide hardware-enforced isolated execution contexts that protect code and data from unauthorized access, even from privileged software such as the operating system or hypervisor. In HPC, TEEs like Intel SGX have been proposed to isolate sensitive computations, such as encryption routines or authentication checks, without imposing significant overhead on the overall workflow. However, TEEs remain limited by their memory capacity, making them difficult to scale across large distributed jobs. Despite this, their integration into HPC workflows, particularly for protecting user-specific secrets or intermediate data products, is a promising research direction~\cite{peisert2017security}.
+
+% \noindent\textbf{Audit-Based Provenance and Traceability} \\
+% Audit logging plays a crucial role in post-incident analysis and forensic investigation. In HPC, provenance capture mechanisms—such as file access logs, system call traces, and scheduling records—enable operators to reconstruct execution workflows and detect policy violations. Peisert emphasizes the value of provenance data in understanding illicit HPC behavior and supports the idea that such logs can improve the integrity and reproducibility of scientific computing~\cite{peisert2017security}. With increasing support for audit frameworks like the Linux Audit system and workflow engines embedding lineage tracking, HPC environments are gaining visibility into system usage without introducing noticeable runtime overhead.
+
+% \noindent\textbf{System and Application Logging} \\
+% Effective logging mechanisms are critical for identifying anomalies and tracing malicious actions in HPC systems. Application-level tools such as Darshan provide insights into I/O behavior, while system-level tools like LMT offer visibility into storage server performance. These logging systems help detect deviations from expected access patterns or compute phases. Furthermore, integrating job scheduler logs (e.g., SLURM) allows correlation between user identity, allocated nodes, and application behavior, forming the foundation of multi-source security monitoring systems such as ScaleMon. Peisert and others have noted that a combination of lightweight logs and contextual analysis provides actionable intelligence with minimal performance tradeoffs~\cite{guo2024high}.
+
+% \noindent\textbf{Workflow-Level Anomaly Detection} \\
+% Scientific workflows in HPC exhibit regular patterns in data movement, computation phases, and resource utilization. Anomaly detection at the workflow level leverages this regularity to identify abnormal jobs that deviate from historical or expected profiles. Peisert demonstrated that classification models based on MPI communication patterns could accurately distinguish scientific applications~\cite{peisert2017security}. Extending this idea, recent work incorporates graph-based or image-based representations of workflows to apply ML-driven detection. These techniques are particularly effective in detecting misuse of resource allocations or unauthorized computations, such as cryptomining, while maintaining transparency for legitimate users.
+
+
+
+% motivation
+
+% \subsection{Security vulnerabilities in HPC}
+% HPC systems are attractive targets for attackers because they offer substantial rewards and are relatively easy to compromise.  
+
+% \changjong{KCJ: You describe “reward” seems different; I feel like what we previously discussed… It feels like the concept isn’t clearly defined.}
+
+% \noindent\textbf{The sweet reward of hacking:}  
+% HPC systems provide exceptional computational capabilities, and exploiting them can yield significant benefits. Some attacks hijack computing resources to run unauthorized jobs, such as cryptocurrency mining or large-scale brute-force computations\cite{}.  \changjong{KCJ: The relationship between “significant benefits” and “hijacking computing resources” is unclear. Benefits describe the reward or outcome, whereas hijacking refers to the method.... 
+% I think that It should be made explicit how attackers use this method to obtain that reward (e.g., cryptocurrency mining or large-scale brute-force computation)
+% }
+
+
+% Data stored in HPC clusters is also a valuable target. Research data can be costly and result from extensive experiments, and some datasets may contain confidential information, including personal or military data. Attackers may attempt to steal, modify, or destroy these data for malicious purposes.  \changjong{KCJ: “valuable target” is vague in its connection to the previous “sweet reward of hacking”. It is not clear whether this refers to a second type of reward for attackers or represents a separate motivation. should be clarified }
+
+% \noindent\textbf{Weaknesses in HPC security:}  
+% \changjong{KCJ: In this subsection, it’s not clear why these weaknesses lead to focusing on I/O log analysis.}
+% HPC systems prioritize performance over security, making it difficult to adopt standard security mechanisms without compromising efficiency\cite{}. Consequently, they are more exposed to potential intrusions compared to general-purpose systems. The integration of diverse hardware and software components in modern HPC clusters further broadens the attack surface and exacerbates the challenge.  
+
+% In most HPC systems, users are considered authorized and somewhat trusted. However, in reality, various factors may lead some users to perform malicious actions for personal or external reasons. In such cases, it becomes difficult to detect and block these activities. In fact, several insider attacks have been reported in real HPC environments\cite{}.  \changjong{KCJ: The reason why detection is difficult is not clearly explained.
+% }
+% \changjong{KCJ: The narrative shifts abruptly from a security focus to discussing large data volume, which feels inconsistent. We must focuse on the security.}
+% Additionally, the massive size of HPC data makes the situation even worse. Because storing massive data redundantly is costly, even critical data may sometimes lack sufficient copies. While some methods\cite{} attempt to protect data integrity by detect tampering, fully recovering severely damaged data remains challenging without backups.  \changjong{KCJ: It suddenly shifts from describing "vulnerabilities" to discussing "recovery challenges", which feels inconsistent with the section title “Weaknesses.”}
+
+% In HPC environments, many users share common software components that are preinstalled or built into the system. This creates a potential risk of supply chain attacks, where compromising a shared dependency can affect multiple users simultaneously\cite{}. For example, the HDF5 library, widely used in many HPC applications, can be a single point of failure. A compromise of this library may affect many users at once.
+
+% \changjong{KCJ: It would be better to conclude with a clear statement on why analyzing I/O logs is crucial for detection, because malicious activities inevitably leave traces in I/O.}
+
+% %10/24 여기 부터 써보자
+% \subsection{Defense Mechanisms}
+% intrusion detection, fire wall ....
+% but after intrusion detecion was little %motivation
+% blar blar
+% \changjong{KCJ: It keeps stating that there are no such studies here either, but did you specify Scope. Looks like more checks are needed.}
+% As mentioned in 2.3, insider attacks are among the most serious and common threats in HPC clusters. Due to the inherent security weaknesses of HPC systems, attackers may still succeed in intruding even when multiple defense mechanisms are in place. But most existing detection methods focus only on intrusion prevention or detection, and few studies address the identification of malicious behavior after a successful intrusion. There is therefore a storng need for research that monitors the behavior of each execution to detect malicious actions and mitigate them at an early stage. In this context, ScaleMon monitors low-level I/O behavior for each execution, which is difficult for attackers to conceal, and raises alerts when suspicious activity is observed.
+
+
+% %다시 써야함 (그냥 이런게 있으면 어떨까? 이정도)
+% %주제: Leveraging the Distinctiveness - security in high performance computing environment
+% of HPC as an Opportunity
+% \subsection{Data-driven Approach in HPC}
+% \changjong{\textbf{KCJ: I think better integrated 2.1(or another) and this section. Consider..}}
+% Unlike general-purpose systems, a small set of applications dominates the total execution time in HPC clusters. Typically, a few popular applications account for the vast majority of runtime. Figure X shows the runtime distribution of the top 10 applications in the Neuron system—an HPC cluster operated by the Korea Institute of Science and Technology Information (KISTI)—from October 2022 to February 2023. The top 10 applications together account for approximately 80 \% of the total runtime.
+
+% Because of the inherent characteristics of HPC systems, data-driven approaches can be particularly attractive. It is relatively easy to obtain abundant execution data for dominant applications due to their repetitive execution. Moreover, modeling only a few dominant applications can effectively cover a significant portion of the overall system, given their high runtime occupancy. Therefore, per-application modeling becomes a practical option, while universal models can also benefit from the limited diversity of executions in HPC environments.
+

@@ -1,0 +1,84 @@
+\section{Related Works}~\label{Related}
+
+We position \DeepVis within the broader landscape of anomaly detection research across both security and software engineering venues. Table~\ref{tab:se_comparison} provides a comprehensive comparison with state-of-the-art methods from top-tier conferences.
+
+\begin{table*}[t]
+\centering
+\caption{Comparison of Anomaly Detection Methods Across SE and Security Venues (2020--2025)}
+\label{tab:se_comparison}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Method} & \textbf{Venue} & \textbf{Data Type} & \textbf{Representation} & \textbf{Invariance} & \textbf{Complexity} & \textbf{Core Insight} \\
+\midrule
+DeepLog~\cite{du2017deeplog} & CCS'17 & Log Sequence & LSTM & Temporal & $O(N)$ & ``Logs are language'' \\
+LogRobust~\cite{logrobust} & FSE'19 & Log Semantics & Attention Bi-LSTM & Semantic & $O(N)$ & ``Logs have meaning'' \\
+LogBERT~\cite{logbert} & arXiv'21 & Log Sequence & Transformer & Contextual & $O(N^2)$ & ``Context is key'' \\
+Lograph~\cite{lograph} & ICKGS'24 & Log + Entities & Heterogeneous GNN & Topological & $O(N+E)$ & ``Entities are connected'' \\
+GLAD~\cite{glad} & IEEE Trans.'24 & Dynamic Log Graph & Position-Aware GAT & Temporal-Topo & $O(N+E)$ & ``Systems evolve'' \\
+CodeGrid~\cite{codegrid} & ISSTA'23 & Source Code & 2D CNN & Spatial (Layout) & $O(1)$ & ``Code is spatial'' \\
+Unicorn~\cite{unicorn} & NDSS'20 & Provenance Graph & Graph Sketching & Topological & $O(N+E)$ & ``Trace the cause'' \\
+Kairos~\cite{cheng2024kairos} & S\&P'24 & Provenance Graph & Temporal GNN & Temporal-Topo & $O(N+E)$ & ``Time matters'' \\
+\midrule
+\textbf{DeepVis (Ours)} & --- & \textbf{FS Snapshot} & \textbf{2D CNN (CAE)} & \textbf{Spatial (Hash)} & $\mathbf{O(1)}$ & \textbf{``Files are non-Euclidean''} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\subsection{Sequential Log Analysis}
+
+Early deep learning approaches treated logs as natural language. \textbf{DeepLog}~\cite{du2017deeplog} pioneered this direction by using LSTMs to predict the next log event; deviations indicate anomalies. However, this approach suffers from \textit{log instability}—new log templates from system updates cause false positives.
+
+\textbf{LogRobust}~\cite{logrobust} addressed this by using pre-trained word embeddings (FastText) to capture semantic similarity rather than syntactic identity. This mirrors DeepVis's use of entropy and size (semantic attributes) instead of file hashes (syntactic identity).
+
+\textbf{LogBERT}~\cite{logbert} introduced Transformer architectures for capturing long-range dependencies in log sequences. While powerful, its $O(N^2)$ attention complexity limits scalability.
+
+\paragraph{Limitation.} All sequential methods suffer from the \textit{interleaving problem}: in multi-threaded systems, logs from different execution flows are interleaved, confusing temporal models.
+
+\subsection{Graph-Based Analysis}
+
+To capture structural relationships, recent works model systems as graphs.
+
+\textbf{Lograph}~\cite{lograph} constructs heterogeneous graphs linking logs to system entities (processes, files) with typed edges (Read, Write, Spawn). Heterogeneous Graph Attention Networks learn which interaction types are most indicative of anomalies.
+
+\textbf{GLAD}~\cite{glad} extends this to \textit{dynamic graphs} that evolve over time, handling concept drift. Position-aware weighted attention captures both structural and temporal changes.
+
+\textbf{Provenance-Based IDS}: Unicorn~\cite{unicorn}, Kairos~\cite{cheng2024kairos}, and Flash~\cite{rehman2024flash} build provenance graphs from kernel audit logs (auditd), tracing causal relationships for APT detection.
+
+\paragraph{Limitation.} Graph methods suffer from \textit{dependency explosion}—the graph grows unboundedly, and GNN inference scales as $O(N+E)$. This is prohibitive for real-time monitoring.
+
+\subsection{Visual and Spatial Representation}
+
+A nascent research direction treats software artifacts as \textit{spatial} data.
+
+\textbf{CodeGrid}~\cite{codegrid} (ISSTA'23) demonstrated that preserving the \textit{visual layout} of source code (indentation, line breaks) as a 2D grid improves CNN-based defect prediction by up to 16\%. This validates the hypothesis that ``code is spatial''~\cite{codegrid}.
+
+\textbf{Malware Visualization}~\cite{nataraj2011malware, han2015malware} converts binary files to grayscale images, exploiting entropy textures for classification.
+
+\paragraph{DeepVis's Position.} DeepVis extends the spatial paradigm to file systems. Unlike source code (which has inherent layout), file systems are \textit{unordered sets}—non-Euclidean data. We address this via \textit{hash-based spatial mapping}, imposing an artificial but consistent coordinate system. This achieves:
+\begin{itemize}
+    \item \textbf{Permutation Invariance}: File processing order doesn't affect the image.
+    \item \textbf{$O(1)$ Inference}: Fixed image size decouples complexity from file count.
+    \item \textbf{Shift Invariance}: Adding/removing files doesn't shift existing pixels.
+\end{itemize}
+
+\subsection{The MSE Paradox in Literature}
+
+The seminal ICSE'22 benchmarking study ``How Far Are We?''~\cite{howfararewelog} revealed that global metrics (F1, MSE) are unreliable for log anomaly detection:
+\begin{itemize}
+    \item Performance varies wildly with data grouping (session vs. time-window).
+    \item Models overfit to preprocessing, not anomalies.
+    \item Early detection fails—models need full sequences.
+\end{itemize}
+
+This critique directly supports DeepVis's design: we reject Global MSE in favor of \textbf{Local Max Difference}, which isolates the single most anomalous pixel regardless of global noise. This aligns with the SE community's call for ``trace-level'' precision~\cite{howfararewelog}.
+
+\subsection{Summary: DeepVis's Unique Contribution}
+
+\begin{enumerate}
+    \item \textbf{From Sequence/Graph to Space}: We pioneer the spatial representation of file systems, inspired by CodeGrid's success with source code.
+    \item \textbf{Efficiency}: Unlike $O(N+E)$ graph methods, DeepVis achieves $O(1)$ inference via fixed-size images.
+    \item \textbf{Precision}: Local Difference Maps address the MSE Paradox identified in ICSE'22.
+    \item \textbf{Explainability}: Visual heatmaps provide interpretable evidence, unlike opaque LSTM/GNN scores.
+\end{enumerate}

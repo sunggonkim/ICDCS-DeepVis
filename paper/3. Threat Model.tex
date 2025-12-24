@@ -1,0 +1,92 @@
+\section{Threat Model}~\label{ThreatModel}
+
+We consider an attacker who has already achieved local privilege escalation (e.g., via a kernel exploit or compromised service) and seeks to establish \textit{persistent access} to the compromised host. Our goal is to detect the on-disk artifacts of this persistence.
+
+\subsection{Attacker Goal}
+
+The attacker's objective is \textbf{stealth persistence}. Specifically:
+
+\begin{itemize}
+    \item \textbf{Persistence:} The attacker installs binaries, libraries, or kernel modules that survive system reboots and allow re-entry (e.g., a hidden SSH backdoor, a malicious kernel module).
+    \item \textbf{Stealth:} The attacker minimizes forensic footprint by modifying as few files as possible and mimicking legitimate file attributes (size, permissions, timestamps).
+\end{itemize}
+
+\subsection{Attacker Capabilities}
+
+We assume a powerful attacker with the following capabilities:
+
+\begin{enumerate}
+    \item \textbf{Root Privilege:} The attacker has obtained root access and can read, write, or delete any file on the system.
+    
+    \item \textbf{File Modification:} The attacker can:
+    \begin{itemize}
+        \item Create new files (e.g., \texttt{/lib/modules/.../diamorphine.ko})
+        \item Replace existing binaries (e.g., trojaned \texttt{/bin/ls})
+        \item Inject shared libraries (e.g., \texttt{/lib/libbeurk.so} via \texttt{LD\_PRELOAD})
+    \end{itemize}
+    
+    \item \textbf{Timestamp Manipulation (Timestomping):} The attacker can use \texttt{touch} or direct \texttt{utimensat()} calls to forge file modification times, potentially evading simple time-based detection.
+    
+    \item \textbf{Anti-Forensics:} The attacker may attempt to clear logs or hide files from directory listings (via kernel module hooking). However, we assume the attacker \textit{cannot}:
+    \begin{itemize}
+        \item Efficiently compute MD5/SHA256 hash collisions while preserving binary functionality. Modern cryptographic primitives make this computationally prohibitive.
+        \item Modify files \textit{during} the scan window without detection (we assume atomic snapshot semantics).
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Targeted Attacks and Their Footprints}
+
+We focus on three well-documented Linux rootkits that represent different persistence mechanisms:
+
+\begin{table}[t]
+\centering
+\caption{Targeted Rootkits and Their Characteristics}
+\label{tab:rootkits}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llccc}
+\toprule
+\textbf{Rootkit} & \textbf{Type} & \textbf{Persistence Path} & \textbf{Entropy} & \textbf{SUID} \\
+\midrule
+Diamorphine & LKM & /lib/modules/.../diamorphine.ko & 7.82 & No \\
+Reptile & LKM+User & /lib/modules/.../reptile.ko & 7.65 & Yes \\
+Beurk & LD\_PRELOAD & /lib/libbeurk.so & 7.77 & No \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\noindent\textbf{Diamorphine~\cite{diamorphine}:} A Loadable Kernel Module (LKM) that provides process, file, and network hiding capabilities. Persists via a kernel module file with high entropy (packed).
+
+\noindent\textbf{Reptile~\cite{reptile}:} A stealthy LKM with userland components. Includes a backdoor listener and kernel-level hiding. Uses SUID binaries for privilege escalation.
+
+\noindent\textbf{Beurk~\cite{beurk}:} A userland rootkit leveraging \texttt{LD\_PRELOAD} to intercept libc functions. Persists via \texttt{/etc/ld.so.preload} and an injected shared library.
+
+\subsection{Scope and Limitations}
+
+\paragraph{In-Scope:} We focus on detecting \textit{persistent artifacts on disk}. This includes:
+\begin{itemize}
+    \item Loadable Kernel Modules (LKMs)
+    \item Trojaned binaries and shared libraries
+    \item Configuration tampering (e.g., \texttt{/etc/ld.so.preload})
+    \item Unauthorized SUID/SGID binaries
+\end{itemize}
+
+\paragraph{Out-of-Scope:} The following are explicitly out of scope:
+\begin{itemize}
+    \item \textbf{Memory-Only Attacks:} Rootkits that reside solely in RAM (e.g., volatile code injection via \texttt{ptrace}) leave no disk footprint.
+    \item \textbf{Firmware/Hardware Rootkits:} Attacks targeting UEFI, BMC, or other pre-OS components are below our observation layer.
+\end{itemize}
+
+\subsection{Trusted Computing Base (TCB)}
+
+A critical concern is: \textit{If the attacker has root, how can we trust the scanner?} A rootkit could hook system calls to hide its own files from the scanning process.
+
+We address this by assuming the scanner operates from a \textbf{trusted external vantage point}:
+
+\begin{enumerate}
+    \item \textbf{Hypervisor-Based Introspection:} The scanning agent runs in a privileged hypervisor (e.g., Xen, KVM) and accesses the guest file system via Virtual Machine Introspection (VMI). The guest OS kernel cannot intercept these reads.
+    
+    \item \textbf{Offline/Agentless Scanning:} A snapshot of the disk (e.g., LVM snapshot, AWS EBS snapshot) is mounted read-only on a separate, trusted instance. The scan executes on this isolated copy, immune to runtime hooking.
+\end{enumerate}
+
+This design ensures that \DeepVis observes the \textit{ground truth} disk state, not a filtered view presented by a compromised kernel. Similar assumptions are made by prior work on kernel integrity verification~\cite{petroni2006copilot, wang2008hypersafe}.

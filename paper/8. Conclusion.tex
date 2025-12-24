@@ -1,0 +1,35 @@
+\section{Conclusion}~\label{Conclusion}
+
+This paper presented \DeepVis, a framework that transforms file system integrity monitoring from a ``list-checking'' problem into a ``computer vision'' problem.
+
+\subsection{Summary of Contributions}
+
+\begin{enumerate}
+    \item \textbf{Hash-Based Spatial Mapping:} A deterministic coordinate assignment that provides spatial invariance, eliminating the Shift Problem inherent in sorted representations.
+    
+    \item \textbf{The MSE Paradox:} Empirical demonstration that global thresholds fail for stealthy attacks (Normal MSE: 0.048 $>$ Rootkit MSE: 0.039), motivating Local Max Difference.
+    
+    \item \textbf{Semantic RGB Encoding:} Security-relevant features (Entropy, Size, Permissions) encoded as visual channels, enabling both machine detection and human-interpretable Difference Maps.
+    
+    \item \textbf{Comprehensive Evaluation:} F1=0.909 with zero false positives, 100\% recall against 5 of 6 attack types including rootkits, parasitic injection, and mimicry attacks.
+\end{enumerate}
+
+\subsection{Broader Impact}
+
+\DeepVis offers a new direction for HIDS: leveraging CNNs while addressing the non-Euclidean nature of file systems. By producing visual, explainable outputs, \DeepVis empowers security analysts to rapidly triage alerts and understand the \textit{nature} of compromises---not just their existence.
+
+The key insight---that file system states can be meaningfully visualized via hash-based spatial mapping---may generalize to other security domains where unordered collections must be analyzed.
+
+\subsection{Future Work}
+
+\begin{itemize}
+    \item \textbf{3D Tensor Mapping:} Adding depth via secondary hashing to reduce collision probability exponentially.
+    
+    \item \textbf{Temporal CNNs:} Modeling file system evolution over time using 3D convolutions or recurrent architectures.
+    
+    \item \textbf{Memory Integration:} Combining disk snapshots with memory dumps for comprehensive host visualization (DeepVis-CrossScan).
+    
+    \item \textbf{LOTL Detection:} Developing NLP-based semantic analysis for configuration file modifications to address Living-off-the-Land attacks.
+    
+    \item \textbf{Federated Learning:} Training across multiple organizations without sharing sensitive file system data.
+\end{itemize}

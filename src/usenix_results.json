@@ -1,0 +1,18 @@
+{
+  "config": {
+    "NUM_TRAIN_SAMPLES": 200,
+    "NUM_TEST_NORMAL": 100,
+    "NUM_ATTACK_TRIALS": 30,
+    "BATCH_SIZE": 32,
+    "EPOCHS": 50,
+    "LEARNING_RATE": 0.001,
+    "IMAGE_SIZE": 128
+  },
+  "num_files_scanned": 7324,
+  "overall": {
+    "AUROC": 0.45499999999999996,
+    "Precision": 0.0,
+    "Recall": 0.0,
+    "FPR": 0.05,
+    "Threshold": 0.8692496329545975,
+    "TP": 

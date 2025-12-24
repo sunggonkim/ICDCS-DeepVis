@@ -1,0 +1,16 @@
+{
+  "files": 20000,
+  "tests": 400,
+  "precision": 1.0,
+  "recall": 0.8333333333333334,
+  "f1": 0.9090909090909091,
+  "fpr": 0.0,
+  "per_attack": {
+    "HIGH_ENTROPY": 1.0,
+    "LOW_ENTROPY_SCRIPT": 1.0,
+    "PARASITIC": 1.0,
+    "MIMICRY": 1.0,
+    "OBFUSCATED": 1.0,
+    "LOTL": 0.0
+  }
+}

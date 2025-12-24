@@ -1,0 +1,1771 @@
+{
+  "Jynx2": {
+    "name": "Jynx2",
+    "path": "/home/bigdatalab/skim/file system fingerprinting/datasets/rootkits/Jynx2",
+    "files": [
+      {
+        "filename": "jynx2.c",
+        "path": "jynx2.c",
+        "size": 24885,
+        "entropy": 5.2156,
+        "sha256": "42a60d5ffdec6c84",
+        "extension": ".c"
+      },
+      {
+        "filename": "packer.sh",
+        "path": "packer.sh",
+        "size": 743,
+        "entropy": 5.114,
+        "sha256": "ae7a2fe87f7aa7b8",
+        "extension": ".sh"
+      },
+      {
+        "filename": "reality.c",
+        "path": "reality.c",
+        "size": 6325,
+        "entropy": 5.239,
+        "sha256": "5c9664a5ad988c1c",
+        "extension": ".c"
+      },
+      {
+        "filename": "Makefile",
+        "path": "Makefile",
+        "size": 804,
+        "entropy": 5.4736,
+        "sha256": "b5be0b54225a1df5",
+        "extension": ""
+      },
+      {
+        "filename": "README",
+        "path": "README",
+        "size": 5712,
+        "entropy": 4.3124,
+        "sha256": "265b6a3b8c802632",
+        "extension": ""
+      },
+      {
+        "filename": "config.h",
+        "path": "config.h",
+        "size": 832,
+        "entropy": 5.3639,
+        "sha256": "272643441baa911c",
+        "extension": ".h"
+      }
+    ],
+    "source_files": [
+      {
+        "filename": "jynx2.c",
+        "path": "jynx2.c",
+        "size": 24885,
+        "entropy": 5.2156,
+        "sha256": "42a60d5ffdec6c84",
+        "extension": ".c"
+      },
+      {
+        "filename": "packer.sh",
+        "path": "packer.sh",
+        "size": 743,
+        "entropy": 5.114,
+        "sha256": "ae7a2fe87f7aa7b8",
+        "extension": ".sh"
+      },
+      {
+        "filename": "reality.c",
+        "path": "reality.c",
+        "size": 6325,
+        "entropy": 5.239,
+        "sha256": "5c9664a5ad988c1c",
+        "extension": ".c"
+      },
+      {
+        "filename": "config.h",
+        "path": "config.h",
+        "size": 832,
+        "entropy": 5.3639,
+        "sha256": "272643441baa911c",
+        "extension": ".h"
+      }
+    ],
+    "binary_files": [
+      {
+        "filename": "Makefile",
+        "path": "Makefile",
+        "size": 804,
+        "entropy": 5.4736,
+        "sha256": "b5be0b54225a1df5",
+        "extension": ""
+      },
+      {
+        "filename": "README",
+        "path": "README",
+        "size": 5712,
+        "entropy": 4.3124,
+        "sha256": "265b6a3b8c802632",
+        "extension": ""
+      }
+    ],
+    "avg_entropy": 5.1198,
+    "max_entropy": 5.4736,
+    "total_size": 39301,
+    "compiled_estimate": {
+      "source_entropy": 5.2331,
+      "compiled_entropy_estimate": 6.9253,
+      "source_size": 32785,
+      "compiled_size_estimate": 88612
+    }
+  },
+  "Diamorphine": {
+    "name": "Diamorphine",
+    "path": "/home/bigdatalab/skim/file system fingerprinting/datasets/rootkits/Diamorphine",
+    "files": [
+      {
+        "filename": "LICENSE.txt",
+        "path": "LICENSE.txt",
+        "size": 1456,
+        "entropy": 5.0867,
+        "sha256": "f8ae62a6b6f40916",
+        "extension": ".txt"
+      },
+      {
+        "filename": "diamorphine.c",
+        "path": "diamorphine.c",
+        "size": 10847,
+        "entropy": 5.4309,
+        "sha256": "aec68cfa75b58261",
+        "extension": ".c"
+      },
+      {
+        "filename": "diamorphine.h",
+        "path": "diamorphine.h",
+        "size": 1004,
+        "entropy": 5.2932,
+        "sha256": "afcfd78a6777905e",
+        "extension": ".h"
+      },
+      {
+        "filename": "Makefile",
+        "path": "Makefile",
+        "size": 190,
+        "entropy": 4.9555,
+        "sha256": "d15af7984ed9b330",
+        "extension": ""
+      },
+      {
+        "filename": "README.md",
+        "path": "README.md",
+        "size": 1667,
+        "entropy": 5.2364,
+        "sha256": "edd4db78fe96bad3",
+        "extension": ".md"
+      }
+    ],
+    "source_files": [
+      {
+        "filename": "diamorphine.c",
+        "path": "diamorphine.c",
+        "size": 10847,
+        "entropy": 5.4309,
+        "sha256": "aec68cfa75b58261",
+        "extension": ".c"
+      },
+      {
+        "filename": "diamorphine.h",
+        "path": "diamorphine.h",
+        "size": 1004,
+        "entropy": 5.2932,
+        "sha256": "afcfd78a6777905e",
+        "extension": ".h"
+      }
+    ],
+    "binary_files": [
+      {
+        "filename": "Makefile",
+        "path": "Makefile",
+        "size": 190,
+        "entropy": 4.9555,
+        "sha256": "d15af7984ed9b330",
+        "extension": ""
+      }
+    ],
+    "avg_entropy": 5.2005,
+    "max_entropy": 5.4309,
+    "total_size": 15164,
+    "compiled_estimate": {
+      "source_entropy": 5.362,
+      "compiled_entropy_estimate": 6.9609,
+      "source_size": 11851,
+      "compiled_size_estimate": 39740
+    }
+  },
+  "beurk": {
+    "name": "beurk",
+    "path": "/home/bigdatalab/skim/file system fingerprinting/datasets/rootkits/beurk",
+    "files": [
+      {
+        "filename": "reconfigure",
+        "path": "reconfigure",
+        "size": 11119,
+        "entropy": 5.0279,
+        "sha256": "35abb97e9e54055f",
+        "extension": ""
+      },
+      {
+        "filename": ".gitmodules",
+        "path": ".gitmodules",
+        "size": 93,
+        "entropy": 4.612,
+        "sha256": "0b0bf6e54ec573df",
+        "extension": ""
+      },
+      {
+        "filename": "CONTRIBUTING.md",
+        "path": "CONTRIBUTING.md",
+        "size": 1185,
+        "entropy": 4.8215,
+        "sha256": "273364967b3f8703",
+        "extension": ".md"
+      },
+      {
+        "filename": ".gitignore",
+        "path": ".gitignore",
+        "size": 104,
+        "entropy": 4.5191,
+        "sha256": "5598cc669ecce5c0",
+        "extension": ""
+      },
+      {
+        "filename": ".coveralls.yml",
+        "path": ".coveralls.yml",
+        "size": 46,
+        "entropy": 4.969,
+        "sha256": "3f2bd40cc918c25b",
+        "extension": ".yml"
+      },
+      {
+        "filename": "client.py",
+        "path": "client.py",
+        "size": 4407,
+        "entropy": 4.3698,
+        "sha256": "37b7dfc523a49176",
+        "extension": ".py"
+      },
+      {
+        "filename": "beurk.conf",
+        "path": "beurk.conf",
+        "size": 1790,
+        "entropy": 5.3247,
+        "sha256": "f8a84f14703c55d3",
+        "extension": ".conf"
+      },
+      {
+        "filename": ".travis.yml",
+        "path": ".travis.yml",
+        "size": 565,
+        "entropy": 4.5792,
+        "sha256": "e15c2c6dd5004745",
+        "extension": ".yml"
+      },
+      {
+        "filename": "LICENSE",
+        "path": "LICENSE",
+        "size": 35142,
+        "entropy": 4.5743,
+        "sha256": "d62f065830aa3739",
+        "extension": ""
+      },
+      {
+        "filename": "Makefile",
+        "path": "Makefile",
+        "size": 4083,
+        "entropy": 5.5516,
+        "sha256": "7de56db527c736c7",
+        "extension": ""
+      },
+      {
+        "filename": "Makefile.dep",
+        "path": "Makefile.dep",
+        "size": 2679,
+        "entropy": 4.4439,
+        "sha256": "a9396d5526070256",
+        "extension": ".dep"
+      },
+      {
+        "filename": "README.md",
+        "path": "README.md",
+        "size": 3275,
+        "entropy": 5.1677,
+        "sha256": "d074d7106ab57b9b",
+        "extension": ".md"
+      },
+      {
+        "filename": "TODO.md",
+        "path": "TODO.md",
+        "size": 900,
+        "entropy": 4.9599,
+        "sha256": "ce99dee6432470c7",
+        "extension": ".md"
+      },
+      {
+        "filename": "makefile.sh",
+        "path": "tests/quick/builder/makefile.sh",
+        "size": 1285,
+        "entropy": 5.1035,
+        "sha256": "6ee6ee6a8c607a7c",
+        "extension": ".sh"
+      },
+      {
+        "filename": "client.sh",
+        "path": "tests/quick/client/client.sh",
+        "size": 1162,
+        "entropy": 5.0691,
+        "sha256": "b74c1c825c7d7434",
+        "extension": ".sh"
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/quick/client/connectivity/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/quick/client/unittest/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": "internal_hooks_calls.py",
+        "path": "tests/quick/core/internal_hooks_calls.py",
+        "size": 1559,
+        "entropy": 4.9802,
+        "sha256": "4f72eb9142594eee",
+        "extension": ".py"
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/quick/core/binary-leaks/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": "lstat.c",
+        "path": "tests/quick/core/hooks/lstat.c",
+        "size": 131,
+        "entropy": 4.6076,
+        "sha256": "2683d305c3d166f0",
+        "extension": ".c"
+      },
+      {
+        "filename": "open.c",
+        "path": "tests/quick/core/hooks/open.c",
+        "size": 334,
+        "entropy": 4.5498,
+        "sha256": "b4e3ee844f2e253f",
+        "extension": ".c"
+      },
+      {
+        "filename": "link.c",
+        "path": "tests/quick/core/hooks/link.c",
+        "size": 64,
+        "entropy": 4.5588,
+        "sha256": "674f8843052d9b7d",
+        "extension": ".c"
+      },
+      {
+        "filename": "unlinkat.c",
+        "path": "tests/quick/core/hooks/unlinkat.c",
+        "size": 68,
+        "entropy": 4.5848,
+        "sha256": "6e73f9f8f2849248",
+        "extension": ".c"
+      },
+      {
+        "filename": "access.c",
+        "path": "tests/quick/core/hooks/access.c",
+        "size": 63,
+        "entropy": 4.4617,
+        "sha256": "a690b6deffa9d9a9",
+        "extension": ".c"
+      },
+      {
+        "filename": "stat.c",
+        "path": "tests/quick/core/hooks/stat.c",
+        "size": 130,
+        "entropy": 4.6028,
+        "sha256": "45f16eae433d02d1",
+        "extension": ".c"
+      },
+      {
+        "filename": "accept.c",
+        "path": "tests/quick/core/hooks/accept.c",
+        "size": 392,
+        "entropy": 4.4838,
+        "sha256": "71cf2d2e88afd037",
+        "extension": ".c"
+      },
+      {
+        "filename": "unlink.c",
+        "path": "tests/quick/core/hooks/unlink.c",
+        "size": 59,
+        "entropy": 4.4158,
+        "sha256": "35486073cc50120f",
+        "extension": ".c"
+      },
+      {
+        "filename": "run.py",
+        "path": "tests/quick/core/hooks/run.py",
+        "size": 5243,
+        "entropy": 4.1411,
+        "sha256": "16a658e315ac1ed1",
+        "extension": ".py"
+      },
+      {
+        "filename": "rmdir.c",
+        "path": "tests/quick/core/hooks/rmdir.c",
+        "size": 59,
+        "entropy": 4.3992,
+        "sha256": "c03cf092cbd0b7f6",
+        "extension": ".c"
+      },
+      {
+        "filename": "README.txt",
+        "path": "tests/quick/core/hooks/README.txt",
+        "size": 231,
+        "entropy": 4.3609,
+        "sha256": "ab0644ec0fa08882",
+        "extension": ".txt"
+      },
+      {
+        "filename": "fopen.c",
+        "path": "tests/quick/core/hooks/fopen.c",
+        "size": 67,
+        "entropy": 4.4168,
+        "sha256": "14c6fe0c9b986981",
+        "extension": ".c"
+      },
+      {
+        "filename": "readdir.c",
+        "path": "tests/quick/core/hooks/readdir.c",
+        "size": 126,
+        "entropy": 4.5854,
+        "sha256": "3ed24f31c7be140b",
+        "extension": ".c"
+      },
+      {
+        "filename": "is_attacker.c",
+        "path": "tests/quick/core/internal-api/is_attacker.c",
+        "size": 397,
+        "entropy": 4.7364,
+        "sha256": "3580efd7f9e32c04",
+        "extension": ".c"
+      },
+      {
+        "filename": "hooks.h",
+        "path": "tests/quick/core/internal-api/hooks.h",
+        "size": 2518,
+        "entropy": 4.8572,
+        "sha256": "388bc74544210db1",
+        "extension": ".h"
+      },
+      {
+        "filename": "is_procnet.c",
+        "path": "tests/quick/core/internal-api/is_procnet.c",
+        "size": 521,
+        "entropy": 4.7561,
+        "sha256": "c6e95fb94e0d5006",
+        "extension": ".c"
+      },
+      {
+        "filename": "run.sh",
+        "path": "tests/quick/core/internal-api/run.sh",
+        "size": 1406,
+        "entropy": 5.2095,
+        "sha256": "77a626e15399df90",
+        "extension": ".sh"
+      },
+      {
+        "filename": "beurk.h",
+        "path": "tests/quick/core/internal-api/beurk.h",
+        "size": 1434,
+        "entropy": 4.9422,
+        "sha256": "ce6775082792bdc4",
+        "extension": ".h"
+      },
+      {
+        "filename": "main.c",
+        "path": "tests/quick/core/internal-api/main.c",
+        "size": 882,
+        "entropy": 4.6422,
+        "sha256": "b3fd4438dcd5f341",
+        "extension": ".c"
+      },
+      {
+        "filename": "tests.h",
+        "path": "tests/quick/core/internal-api/tests.h",
+        "size": 699,
+        "entropy": 4.5044,
+        "sha256": "d442c6cf45226a47",
+        "extension": ".h"
+      },
+      {
+        "filename": "open.c",
+        "path": "tests/quick/core/internal-api/open.c",
+        "size": 1306,
+        "entropy": 5.0141,
+        "sha256": "acce2b6593ccbb29",
+        "extension": ".c"
+      },
+      {
+        "filename": "hide_tcp_ports.c",
+        "path": "tests/quick/core/internal-api/hide_tcp_ports.c",
+        "size": 1608,
+        "entropy": 5.0396,
+        "sha256": "7281001a84912993",
+        "extension": ".c"
+      },
+      {
+        "filename": "drop_shell_backdoor.c",
+        "path": "tests/quick/core/internal-api/drop_shell_backdoor.c",
+        "size": 975,
+        "entropy": 4.8461,
+        "sha256": "adbb120d0c42447d",
+        "extension": ".c"
+      },
+      {
+        "filename": "Makefile",
+        "path": "tests/quick/core/internal-api/Makefile",
+        "size": 739,
+        "entropy": 5.3904,
+        "sha256": "78d4a288f4952330",
+        "extension": ""
+      },
+      {
+        "filename": "is_hidden_file.c",
+        "path": "tests/quick/core/internal-api/is_hidden_file.c",
+        "size": 982,
+        "entropy": 4.9731,
+        "sha256": "345213ec2066889a",
+        "extension": ".c"
+      },
+      {
+        "filename": "config.h",
+        "path": "tests/quick/core/internal-api/config.h",
+        "size": 3902,
+        "entropy": 5.3385,
+        "sha256": "f932c4700f0e9bd0",
+        "extension": ".h"
+      },
+      {
+        "filename": "cleanup_login_records.c",
+        "path": "tests/quick/core/internal-api/cleanup_login_records.c",
+        "size": 193,
+        "entropy": 4.3697,
+        "sha256": "a1cdc81d660c4cfd",
+        "extension": ".c"
+      },
+      {
+        "filename": "proc-net-tcp-with-hidden_port.txt",
+        "path": "tests/quick/core/internal-api/hide_tcp_ports/proc-net-tcp-with-hidden_port.txt",
+        "size": 873,
+        "entropy": 3.1537,
+        "sha256": "746029f153052f0b",
+        "extension": ".txt"
+      },
+      {
+        "filename": "proc-net-tcp-without-hidden_port.txt",
+        "path": "tests/quick/core/internal-api/hide_tcp_ports/proc-net-tcp-without-hidden_port.txt",
+        "size": 742,
+        "entropy": 3.1175,
+        "sha256": "16eceecd80515507",
+        "extension": ".txt"
+      },
+      {
+        "filename": "run.sh",
+        "path": "tests/quick/core/dso_functions_visibility/run.sh",
+        "size": 1795,
+        "entropy": 5.359,
+        "sha256": "ff792e10d764334b",
+        "extension": ".sh"
+      },
+      {
+        "filename": "test.c",
+        "path": "tests/quick/core/dso_functions_visibility/test.c",
+        "size": 113,
+        "entropy": 4.3898,
+        "sha256": "e67ced77754951a6",
+        "extension": ".c"
+      },
+      {
+        "filename": "check_commits_history.sh",
+        "path": "tests/quick/ci/check_commits_history.sh",
+        "size": 376,
+        "entropy": 5.1117,
+        "sha256": "e5448543c720675d",
+        "extension": ".sh"
+      },
+      {
+        "filename": "check_gplv3_headers.py",
+        "path": "tests/quick/ci/check_gplv3_headers.py",
+        "size": 1362,
+        "entropy": 5.004,
+        "sha256": "19d178650d9f208c",
+        "extension": ".py"
+      },
+      {
+        "filename": "run.sh",
+        "path": "tests/functional/run.sh",
+        "size": 1328,
+        "entropy": 5.3224,
+        "sha256": "348902f00bae1c66",
+        "extension": ".sh"
+      },
+      {
+        "filename": "README.md",
+        "path": "tests/functional/README.md",
+        "size": 197,
+        "entropy": 4.302,
+        "sha256": "b6a7d6e81acd4d75",
+        "extension": ".md"
+      },
+      {
+        "filename": "ldd.sh",
+        "path": "tests/functional/is_hidden/ldd.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "files.test",
+        "path": "tests/functional/is_hidden/files.test",
+        "size": 153,
+        "entropy": 4.626,
+        "sha256": "155b5f77e54f5d96",
+        "extension": ".test"
+      },
+      {
+        "filename": "lsof.sh",
+        "path": "tests/functional/is_hidden/lsof.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "ps.sh",
+        "path": "tests/functional/is_hidden/ps.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "utmp.test",
+        "path": "tests/functional/is_hidden/utmp.test",
+        "size": 175,
+        "entropy": 4.5322,
+        "sha256": "f670fa39835b1fcb",
+        "extension": ".test"
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/functional/victim-side-stability/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": "chkrootkit.sh",
+        "path": "tests/functional/anti-anti-rootkit/chkrootkit.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "tiger.sh",
+        "path": "tests/functional/anti-anti-rootkit/tiger.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/functional/anti-anti-rootkit/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": "ossec.sh",
+        "path": "tests/functional/anti-anti-rootkit/ossec.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "lynis.sh",
+        "path": "tests/functional/anti-anti-rootkit/lynis.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "rkhunter.sh",
+        "path": "tests/functional/anti-anti-rootkit/rkhunter.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "hooks.h",
+        "path": "includes/hooks.h",
+        "size": 2309,
+        "entropy": 4.7373,
+        "sha256": "0ff8a4d74a4f4364",
+        "extension": ".h"
+      },
+      {
+        "filename": "beurk.h",
+        "path": "includes/beurk.h",
+        "size": 1655,
+        "entropy": 5.0612,
+        "sha256": "88f96f6150250036",
+        "extension": ".h"
+      },
+      {
+        "filename": "debug.h",
+        "path": "includes/debug.h",
+        "size": 1404,
+        "entropy": 5.0922,
+        "sha256": "525fdfdbd8085412",
+        "extension": ".h"
+      },
+      {
+        "filename": "jenkins-tests.sh",
+        "path": "utils/jenkins-tests.sh",
+        "size": 542,
+        "entropy": 5.1476,
+        "sha256": "13cc507e5adbbb5f",
+        "extension": ".sh"
+      },
+      {
+        "filename": "commit-msg.py",
+        "path": "utils/commit-msg.py",
+        "size": 3832,
+        "entropy": 4.4619,
+        "sha256": "1b69798dcd2cbb8b",
+        "extension": ".py"
+      },
+      {
+        "filename": "coverage.py",
+        "path": "utils/coverage.py",
+        "size": 1849,
+        "entropy": 4.736,
+        "sha256": "ea3c3b71b2f3112f",
+        "extension": ".py"
+      },
+      {
+        "filename": "commit-msg",
+        "path": "utils/commit-msg",
+        "size": 58,
+        "entropy": 4.5932,
+        "sha256": "c531ec1266d86e0b",
+        "extension": ""
+      },
+      {
+        "filename": "run-tests.sh",
+        "path": "utils/run-tests.sh",
+        "size": 1512,
+        "entropy": 4.789,
+        "sha256": "b98e1b2930b7377f",
+        "extension": ".sh"
+      },
+      {
+        "filename": "socat-client.sh",
+        "path": "utils/socat-client.sh",
+        "size": 162,
+        "entropy": 5.0254,
+        "sha256": "76845fca9b0b16c9",
+        "extension": ".sh"
+      },
+      {
+        "filename": "README.md",
+        "path": "utils/README.md",
+        "size": 1427,
+        "entropy": 4.6133,
+        "sha256": "86ad11430cd78105",
+        "extension": ".md"
+      },
+      {
+        "filename": "deploy_git_hooks.sh",
+        "path": "utils/deploy_git_hooks.sh",
+        "size": 176,
+        "entropy": 5.0182,
+        "sha256": "7997e42746585e4a",
+        "extension": ".sh"
+      },
+      {
+        "filename": "is_attacker.c",
+        "path": "src/is_attacker.c",
+        "size": 1426,
+        "entropy": 4.9978,
+        "sha256": "2ca61227e802d31b",
+        "extension": ".c"
+      },
+      {
+        "filename": "is_procnet.c",
+        "path": "src/is_procnet.c",
+        "size": 1339,
+        "entropy": 5.1416,
+        "sha256": "0b260a8ac8aab8bf",
+        "extension": ".c"
+      },
+      {
+        "filename": "hide_tcp_ports.c",
+        "path": "src/hide_tcp_ports.c",
+        "size": 1978,
+        "entropy": 4.9949,
+        "sha256": "a2aad05654d9589c",
+        "extension": ".c"
+      },
+      {
+        "filename": "init.c",
+        "path": "src/init.c",
+        "size": 2924,
+        "entropy": 4.9106,
+        "sha256": "2c5636a91c681547",
+        "extension": ".c"
+      },
+      {
+        "filename": "drop_shell_backdoor.c",
+        "path": "src/drop_shell_backdoor.c",
+        "size": 7496,
+        "entropy": 4.8692,
+        "sha256": "828d8bc0f4d570fd",
+        "extension": ".c"
+      },
+      {
+        "filename": "is_hidden_file.c",
+        "path": "src/is_hidden_file.c",
+        "size": 2509,
+        "entropy": 4.8602,
+        "sha256": "e3a1a84557fa62e5",
+        "extension": ".c"
+      },
+      {
+        "filename": "debug.c",
+        "path": "src/debug.c",
+        "size": 2830,
+        "entropy": 5.0766,
+        "sha256": "4a20bf97b59631d9",
+        "extension": ".c"
+      },
+      {
+        "filename": "cleanup_login_records.c",
+        "path": "src/cleanup_login_records.c",
+        "size": 2249,
+        "entropy": 5.0848,
+        "sha256": "645ce2caa56908e2",
+        "extension": ".c"
+      },
+      {
+        "filename": "readdir64.c",
+        "path": "src/hooks/readdir64.c",
+        "size": 1382,
+        "entropy": 5.0876,
+        "sha256": "662a106121fa258d",
+        "extension": ".c"
+      },
+      {
+        "filename": "lstat.c",
+        "path": "src/hooks/lstat.c",
+        "size": 1310,
+        "entropy": 5.0583,
+        "sha256": "f949f45cbc1c6583",
+        "extension": ".c"
+      },
+      {
+        "filename": "__xstat.c",
+        "path": "src/hooks/__xstat.c",
+        "size": 1366,
+        "entropy": 5.0801,
+        "sha256": "cb75de6a26f36a73",
+        "extension": ".c"
+      },
+      {
+        "filename": "open.c",
+        "path": "src/hooks/open.c",
+        "size": 1814,
+        "entropy": 4.9734,
+        "sha256": "d2e183c5eda05f02",
+        "extension": ".c"
+      },
+      {
+        "filename": "link.c",
+        "path": "src/hooks/link.c",
+        "size": 1315,
+        "entropy": 5.0668,
+        "sha256": "b0d9bd0b5f44f297",
+        "extension": ".c"
+      },
+      {
+        "filename": "unlinkat.c",
+        "path": "src/hooks/unlinkat.c",
+        "size": 1323,
+        "entropy": 5.0755,
+        "sha256": "dce7a93cbb5140c2",
+        "extension": ".c"
+      },
+      {
+        "filename": "access.c",
+        "path": "src/hooks/access.c",
+        "size": 1285,
+        "entropy": 5.0701,
+        "sha256": "c4cd39f015880105",
+        "extension": ".c"
+      },
+      {
+        "filename": "stat.c",
+        "path": "src/hooks/stat.c",
+        "size": 1321,
+        "entropy": 5.0576,
+        "sha256": "786ad61853b251e0",
+        "extension": ".c"
+      },
+      {
+        "filename": "__lxstat64.c",
+        "path": "src/hooks/__lxstat64.c",
+        "size": 1353,
+        "entropy": 5.1163,
+        "sha256": "247fc95bd5ff50f5",
+        "extension": ".c"
+      },
+      {
+        "filename": "__lxstat.c",
+        "path": "src/hooks/__lxstat.c",
+        "size": 1341,
+        "entropy": 5.0793,
+        "sha256": "362548aca33dd326",
+        "extension": ".c"
+      },
+      {
+        "filename": "accept.c",
+        "path": "src/hooks/accept.c",
+        "size": 1324,
+        "entropy": 5.0531,
+        "sha256": "d52857aad367a944",
+        "extension": ".c"
+      },
+      {
+        "filename": "stat64.c",
+        "path": "src/hooks/stat64.c",
+        "size": 1334,
+        "entropy": 5.087,
+        "sha256": "f8955d6469abee32",
+        "extension": ".c"
+      },
+      {
+        "filename": "unlink.c",
+        "path": "src/hooks/unlink.c",
+        "size": 1263,
+        "entropy": 5.0701,
+        "sha256": "f776122ac8473c29",
+        "extension": ".c"
+      },
+      {
+        "filename": "fopen64.c",
+        "path": "src/hooks/fopen64.c",
+        "size": 1381,
+        "entropy": 5.0781,
+        "sha256": "29d5efab81d83cb2",
+        "extension": ".c"
+      },
+      {
+        "filename": "rmdir.c",
+        "path": "src/hooks/rmdir.c",
+        "size": 1258,
+        "entropy": 5.0722,
+        "sha256": "0e0d8d9bad4ea5e5",
+        "extension": ".c"
+      },
+      {
+        "filename": "__xstat64.c",
+        "path": "src/hooks/__xstat64.c",
+        "size": 1367,
+        "entropy": 5.1068,
+        "sha256": "e54984ec1235a425",
+        "extension": ".c"
+      },
+      {
+        "filename": "fopen.c",
+        "path": "src/hooks/fopen.c",
+        "size": 1373,
+        "entropy": 5.0501,
+        "sha256": "e91e91ff3fceb8c5",
+        "extension": ".c"
+      },
+      {
+        "filename": "readdir.c",
+        "path": "src/hooks/readdir.c",
+        "size": 1360,
+        "entropy": 5.062,
+        "sha256": "88917f61b3ba9e09",
+        "extension": ".c"
+      },
+      {
+        "filename": "lstat64.c",
+        "path": "src/hooks/lstat64.c",
+        "size": 1322,
+        "entropy": 5.0961,
+        "sha256": "71942fd02aec6ab8",
+        "extension": ".c"
+      }
+    ],
+    "source_files": [
+      {
+        "filename": "client.py",
+        "path": "client.py",
+        "size": 4407,
+        "entropy": 4.3698,
+        "sha256": "37b7dfc523a49176",
+        "extension": ".py"
+      },
+      {
+        "filename": "makefile.sh",
+        "path": "tests/quick/builder/makefile.sh",
+        "size": 1285,
+        "entropy": 5.1035,
+        "sha256": "6ee6ee6a8c607a7c",
+        "extension": ".sh"
+      },
+      {
+        "filename": "client.sh",
+        "path": "tests/quick/client/client.sh",
+        "size": 1162,
+        "entropy": 5.0691,
+        "sha256": "b74c1c825c7d7434",
+        "extension": ".sh"
+      },
+      {
+        "filename": "internal_hooks_calls.py",
+        "path": "tests/quick/core/internal_hooks_calls.py",
+        "size": 1559,
+        "entropy": 4.9802,
+        "sha256": "4f72eb9142594eee",
+        "extension": ".py"
+      },
+      {
+        "filename": "lstat.c",
+        "path": "tests/quick/core/hooks/lstat.c",
+        "size": 131,
+        "entropy": 4.6076,
+        "sha256": "2683d305c3d166f0",
+        "extension": ".c"
+      },
+      {
+        "filename": "open.c",
+        "path": "tests/quick/core/hooks/open.c",
+        "size": 334,
+        "entropy": 4.5498,
+        "sha256": "b4e3ee844f2e253f",
+        "extension": ".c"
+      },
+      {
+        "filename": "link.c",
+        "path": "tests/quick/core/hooks/link.c",
+        "size": 64,
+        "entropy": 4.5588,
+        "sha256": "674f8843052d9b7d",
+        "extension": ".c"
+      },
+      {
+        "filename": "unlinkat.c",
+        "path": "tests/quick/core/hooks/unlinkat.c",
+        "size": 68,
+        "entropy": 4.5848,
+        "sha256": "6e73f9f8f2849248",
+        "extension": ".c"
+      },
+      {
+        "filename": "access.c",
+        "path": "tests/quick/core/hooks/access.c",
+        "size": 63,
+        "entropy": 4.4617,
+        "sha256": "a690b6deffa9d9a9",
+        "extension": ".c"
+      },
+      {
+        "filename": "stat.c",
+        "path": "tests/quick/core/hooks/stat.c",
+        "size": 130,
+        "entropy": 4.6028,
+        "sha256": "45f16eae433d02d1",
+        "extension": ".c"
+      },
+      {
+        "filename": "accept.c",
+        "path": "tests/quick/core/hooks/accept.c",
+        "size": 392,
+        "entropy": 4.4838,
+        "sha256": "71cf2d2e88afd037",
+        "extension": ".c"
+      },
+      {
+        "filename": "unlink.c",
+        "path": "tests/quick/core/hooks/unlink.c",
+        "size": 59,
+        "entropy": 4.4158,
+        "sha256": "35486073cc50120f",
+        "extension": ".c"
+      },
+      {
+        "filename": "run.py",
+        "path": "tests/quick/core/hooks/run.py",
+        "size": 5243,
+        "entropy": 4.1411,
+        "sha256": "16a658e315ac1ed1",
+        "extension": ".py"
+      },
+      {
+        "filename": "rmdir.c",
+        "path": "tests/quick/core/hooks/rmdir.c",
+        "size": 59,
+        "entropy": 4.3992,
+        "sha256": "c03cf092cbd0b7f6",
+        "extension": ".c"
+      },
+      {
+        "filename": "fopen.c",
+        "path": "tests/quick/core/hooks/fopen.c",
+        "size": 67,
+        "entropy": 4.4168,
+        "sha256": "14c6fe0c9b986981",
+        "extension": ".c"
+      },
+      {
+        "filename": "readdir.c",
+        "path": "tests/quick/core/hooks/readdir.c",
+        "size": 126,
+        "entropy": 4.5854,
+        "sha256": "3ed24f31c7be140b",
+        "extension": ".c"
+      },
+      {
+        "filename": "is_attacker.c",
+        "path": "tests/quick/core/internal-api/is_attacker.c",
+        "size": 397,
+        "entropy": 4.7364,
+        "sha256": "3580efd7f9e32c04",
+        "extension": ".c"
+      },
+      {
+        "filename": "hooks.h",
+        "path": "tests/quick/core/internal-api/hooks.h",
+        "size": 2518,
+        "entropy": 4.8572,
+        "sha256": "388bc74544210db1",
+        "extension": ".h"
+      },
+      {
+        "filename": "is_procnet.c",
+        "path": "tests/quick/core/internal-api/is_procnet.c",
+        "size": 521,
+        "entropy": 4.7561,
+        "sha256": "c6e95fb94e0d5006",
+        "extension": ".c"
+      },
+      {
+        "filename": "run.sh",
+        "path": "tests/quick/core/internal-api/run.sh",
+        "size": 1406,
+        "entropy": 5.2095,
+        "sha256": "77a626e15399df90",
+        "extension": ".sh"
+      },
+      {
+        "filename": "beurk.h",
+        "path": "tests/quick/core/internal-api/beurk.h",
+        "size": 1434,
+        "entropy": 4.9422,
+        "sha256": "ce6775082792bdc4",
+        "extension": ".h"
+      },
+      {
+        "filename": "main.c",
+        "path": "tests/quick/core/internal-api/main.c",
+        "size": 882,
+        "entropy": 4.6422,
+        "sha256": "b3fd4438dcd5f341",
+        "extension": ".c"
+      },
+      {
+        "filename": "tests.h",
+        "path": "tests/quick/core/internal-api/tests.h",
+        "size": 699,
+        "entropy": 4.5044,
+        "sha256": "d442c6cf45226a47",
+        "extension": ".h"
+      },
+      {
+        "filename": "open.c",
+        "path": "tests/quick/core/internal-api/open.c",
+        "size": 1306,
+        "entropy": 5.0141,
+        "sha256": "acce2b6593ccbb29",
+        "extension": ".c"
+      },
+      {
+        "filename": "hide_tcp_ports.c",
+        "path": "tests/quick/core/internal-api/hide_tcp_ports.c",
+        "size": 1608,
+        "entropy": 5.0396,
+        "sha256": "7281001a84912993",
+        "extension": ".c"
+      },
+      {
+        "filename": "drop_shell_backdoor.c",
+        "path": "tests/quick/core/internal-api/drop_shell_backdoor.c",
+        "size": 975,
+        "entropy": 4.8461,
+        "sha256": "adbb120d0c42447d",
+        "extension": ".c"
+      },
+      {
+        "filename": "is_hidden_file.c",
+        "path": "tests/quick/core/internal-api/is_hidden_file.c",
+        "size": 982,
+        "entropy": 4.9731,
+        "sha256": "345213ec2066889a",
+        "extension": ".c"
+      },
+      {
+        "filename": "config.h",
+        "path": "tests/quick/core/internal-api/config.h",
+        "size": 3902,
+        "entropy": 5.3385,
+        "sha256": "f932c4700f0e9bd0",
+        "extension": ".h"
+      },
+      {
+        "filename": "cleanup_login_records.c",
+        "path": "tests/quick/core/internal-api/cleanup_login_records.c",
+        "size": 193,
+        "entropy": 4.3697,
+        "sha256": "a1cdc81d660c4cfd",
+        "extension": ".c"
+      },
+      {
+        "filename": "run.sh",
+        "path": "tests/quick/core/dso_functions_visibility/run.sh",
+        "size": 1795,
+        "entropy": 5.359,
+        "sha256": "ff792e10d764334b",
+        "extension": ".sh"
+      },
+      {
+        "filename": "test.c",
+        "path": "tests/quick/core/dso_functions_visibility/test.c",
+        "size": 113,
+        "entropy": 4.3898,
+        "sha256": "e67ced77754951a6",
+        "extension": ".c"
+      },
+      {
+        "filename": "check_commits_history.sh",
+        "path": "tests/quick/ci/check_commits_history.sh",
+        "size": 376,
+        "entropy": 5.1117,
+        "sha256": "e5448543c720675d",
+        "extension": ".sh"
+      },
+      {
+        "filename": "check_gplv3_headers.py",
+        "path": "tests/quick/ci/check_gplv3_headers.py",
+        "size": 1362,
+        "entropy": 5.004,
+        "sha256": "19d178650d9f208c",
+        "extension": ".py"
+      },
+      {
+        "filename": "run.sh",
+        "path": "tests/functional/run.sh",
+        "size": 1328,
+        "entropy": 5.3224,
+        "sha256": "348902f00bae1c66",
+        "extension": ".sh"
+      },
+      {
+        "filename": "ldd.sh",
+        "path": "tests/functional/is_hidden/ldd.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "lsof.sh",
+        "path": "tests/functional/is_hidden/lsof.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "ps.sh",
+        "path": "tests/functional/is_hidden/ps.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "chkrootkit.sh",
+        "path": "tests/functional/anti-anti-rootkit/chkrootkit.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "tiger.sh",
+        "path": "tests/functional/anti-anti-rootkit/tiger.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "ossec.sh",
+        "path": "tests/functional/anti-anti-rootkit/ossec.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "lynis.sh",
+        "path": "tests/functional/anti-anti-rootkit/lynis.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "rkhunter.sh",
+        "path": "tests/functional/anti-anti-rootkit/rkhunter.sh",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ".sh"
+      },
+      {
+        "filename": "hooks.h",
+        "path": "includes/hooks.h",
+        "size": 2309,
+        "entropy": 4.7373,
+        "sha256": "0ff8a4d74a4f4364",
+        "extension": ".h"
+      },
+      {
+        "filename": "beurk.h",
+        "path": "includes/beurk.h",
+        "size": 1655,
+        "entropy": 5.0612,
+        "sha256": "88f96f6150250036",
+        "extension": ".h"
+      },
+      {
+        "filename": "debug.h",
+        "path": "includes/debug.h",
+        "size": 1404,
+        "entropy": 5.0922,
+        "sha256": "525fdfdbd8085412",
+        "extension": ".h"
+      },
+      {
+        "filename": "jenkins-tests.sh",
+        "path": "utils/jenkins-tests.sh",
+        "size": 542,
+        "entropy": 5.1476,
+        "sha256": "13cc507e5adbbb5f",
+        "extension": ".sh"
+      },
+      {
+        "filename": "commit-msg.py",
+        "path": "utils/commit-msg.py",
+        "size": 3832,
+        "entropy": 4.4619,
+        "sha256": "1b69798dcd2cbb8b",
+        "extension": ".py"
+      },
+      {
+        "filename": "coverage.py",
+        "path": "utils/coverage.py",
+        "size": 1849,
+        "entropy": 4.736,
+        "sha256": "ea3c3b71b2f3112f",
+        "extension": ".py"
+      },
+      {
+        "filename": "run-tests.sh",
+        "path": "utils/run-tests.sh",
+        "size": 1512,
+        "entropy": 4.789,
+        "sha256": "b98e1b2930b7377f",
+        "extension": ".sh"
+      },
+      {
+        "filename": "socat-client.sh",
+        "path": "utils/socat-client.sh",
+        "size": 162,
+        "entropy": 5.0254,
+        "sha256": "76845fca9b0b16c9",
+        "extension": ".sh"
+      },
+      {
+        "filename": "deploy_git_hooks.sh",
+        "path": "utils/deploy_git_hooks.sh",
+        "size": 176,
+        "entropy": 5.0182,
+        "sha256": "7997e42746585e4a",
+        "extension": ".sh"
+      },
+      {
+        "filename": "is_attacker.c",
+        "path": "src/is_attacker.c",
+        "size": 1426,
+        "entropy": 4.9978,
+        "sha256": "2ca61227e802d31b",
+        "extension": ".c"
+      },
+      {
+        "filename": "is_procnet.c",
+        "path": "src/is_procnet.c",
+        "size": 1339,
+        "entropy": 5.1416,
+        "sha256": "0b260a8ac8aab8bf",
+        "extension": ".c"
+      },
+      {
+        "filename": "hide_tcp_ports.c",
+        "path": "src/hide_tcp_ports.c",
+        "size": 1978,
+        "entropy": 4.9949,
+        "sha256": "a2aad05654d9589c",
+        "extension": ".c"
+      },
+      {
+        "filename": "init.c",
+        "path": "src/init.c",
+        "size": 2924,
+        "entropy": 4.9106,
+        "sha256": "2c5636a91c681547",
+        "extension": ".c"
+      },
+      {
+        "filename": "drop_shell_backdoor.c",
+        "path": "src/drop_shell_backdoor.c",
+        "size": 7496,
+        "entropy": 4.8692,
+        "sha256": "828d8bc0f4d570fd",
+        "extension": ".c"
+      },
+      {
+        "filename": "is_hidden_file.c",
+        "path": "src/is_hidden_file.c",
+        "size": 2509,
+        "entropy": 4.8602,
+        "sha256": "e3a1a84557fa62e5",
+        "extension": ".c"
+      },
+      {
+        "filename": "debug.c",
+        "path": "src/debug.c",
+        "size": 2830,
+        "entropy": 5.0766,
+        "sha256": "4a20bf97b59631d9",
+        "extension": ".c"
+      },
+      {
+        "filename": "cleanup_login_records.c",
+        "path": "src/cleanup_login_records.c",
+        "size": 2249,
+        "entropy": 5.0848,
+        "sha256": "645ce2caa56908e2",
+        "extension": ".c"
+      },
+      {
+        "filename": "readdir64.c",
+        "path": "src/hooks/readdir64.c",
+        "size": 1382,
+        "entropy": 5.0876,
+        "sha256": "662a106121fa258d",
+        "extension": ".c"
+      },
+      {
+        "filename": "lstat.c",
+        "path": "src/hooks/lstat.c",
+        "size": 1310,
+        "entropy": 5.0583,
+        "sha256": "f949f45cbc1c6583",
+        "extension": ".c"
+      },
+      {
+        "filename": "__xstat.c",
+        "path": "src/hooks/__xstat.c",
+        "size": 1366,
+        "entropy": 5.0801,
+        "sha256": "cb75de6a26f36a73",
+        "extension": ".c"
+      },
+      {
+        "filename": "open.c",
+        "path": "src/hooks/open.c",
+        "size": 1814,
+        "entropy": 4.9734,
+        "sha256": "d2e183c5eda05f02",
+        "extension": ".c"
+      },
+      {
+        "filename": "link.c",
+        "path": "src/hooks/link.c",
+        "size": 1315,
+        "entropy": 5.0668,
+        "sha256": "b0d9bd0b5f44f297",
+        "extension": ".c"
+      },
+      {
+        "filename": "unlinkat.c",
+        "path": "src/hooks/unlinkat.c",
+        "size": 1323,
+        "entropy": 5.0755,
+        "sha256": "dce7a93cbb5140c2",
+        "extension": ".c"
+      },
+      {
+        "filename": "access.c",
+        "path": "src/hooks/access.c",
+        "size": 1285,
+        "entropy": 5.0701,
+        "sha256": "c4cd39f015880105",
+        "extension": ".c"
+      },
+      {
+        "filename": "stat.c",
+        "path": "src/hooks/stat.c",
+        "size": 1321,
+        "entropy": 5.0576,
+        "sha256": "786ad61853b251e0",
+        "extension": ".c"
+      },
+      {
+        "filename": "__lxstat64.c",
+        "path": "src/hooks/__lxstat64.c",
+        "size": 1353,
+        "entropy": 5.1163,
+        "sha256": "247fc95bd5ff50f5",
+        "extension": ".c"
+      },
+      {
+        "filename": "__lxstat.c",
+        "path": "src/hooks/__lxstat.c",
+        "size": 1341,
+        "entropy": 5.0793,
+        "sha256": "362548aca33dd326",
+        "extension": ".c"
+      },
+      {
+        "filename": "accept.c",
+        "path": "src/hooks/accept.c",
+        "size": 1324,
+        "entropy": 5.0531,
+        "sha256": "d52857aad367a944",
+        "extension": ".c"
+      },
+      {
+        "filename": "stat64.c",
+        "path": "src/hooks/stat64.c",
+        "size": 1334,
+        "entropy": 5.087,
+        "sha256": "f8955d6469abee32",
+        "extension": ".c"
+      },
+      {
+        "filename": "unlink.c",
+        "path": "src/hooks/unlink.c",
+        "size": 1263,
+        "entropy": 5.0701,
+        "sha256": "f776122ac8473c29",
+        "extension": ".c"
+      },
+      {
+        "filename": "fopen64.c",
+        "path": "src/hooks/fopen64.c",
+        "size": 1381,
+        "entropy": 5.0781,
+        "sha256": "29d5efab81d83cb2",
+        "extension": ".c"
+      },
+      {
+        "filename": "rmdir.c",
+        "path": "src/hooks/rmdir.c",
+        "size": 1258,
+        "entropy": 5.0722,
+        "sha256": "0e0d8d9bad4ea5e5",
+        "extension": ".c"
+      },
+      {
+        "filename": "__xstat64.c",
+        "path": "src/hooks/__xstat64.c",
+        "size": 1367,
+        "entropy": 5.1068,
+        "sha256": "e54984ec1235a425",
+        "extension": ".c"
+      },
+      {
+        "filename": "fopen.c",
+        "path": "src/hooks/fopen.c",
+        "size": 1373,
+        "entropy": 5.0501,
+        "sha256": "e91e91ff3fceb8c5",
+        "extension": ".c"
+      },
+      {
+        "filename": "readdir.c",
+        "path": "src/hooks/readdir.c",
+        "size": 1360,
+        "entropy": 5.062,
+        "sha256": "88917f61b3ba9e09",
+        "extension": ".c"
+      },
+      {
+        "filename": "lstat64.c",
+        "path": "src/hooks/lstat64.c",
+        "size": 1322,
+        "entropy": 5.0961,
+        "sha256": "71942fd02aec6ab8",
+        "extension": ".c"
+      }
+    ],
+    "binary_files": [
+      {
+        "filename": "reconfigure",
+        "path": "reconfigure",
+        "size": 11119,
+        "entropy": 5.0279,
+        "sha256": "35abb97e9e54055f",
+        "extension": ""
+      },
+      {
+        "filename": ".gitmodules",
+        "path": ".gitmodules",
+        "size": 93,
+        "entropy": 4.612,
+        "sha256": "0b0bf6e54ec573df",
+        "extension": ""
+      },
+      {
+        "filename": ".gitignore",
+        "path": ".gitignore",
+        "size": 104,
+        "entropy": 4.5191,
+        "sha256": "5598cc669ecce5c0",
+        "extension": ""
+      },
+      {
+        "filename": "LICENSE",
+        "path": "LICENSE",
+        "size": 35142,
+        "entropy": 4.5743,
+        "sha256": "d62f065830aa3739",
+        "extension": ""
+      },
+      {
+        "filename": "Makefile",
+        "path": "Makefile",
+        "size": 4083,
+        "entropy": 5.5516,
+        "sha256": "7de56db527c736c7",
+        "extension": ""
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/quick/client/connectivity/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/quick/client/unittest/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/quick/core/binary-leaks/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": "Makefile",
+        "path": "tests/quick/core/internal-api/Makefile",
+        "size": 739,
+        "entropy": 5.3904,
+        "sha256": "78d4a288f4952330",
+        "extension": ""
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/functional/victim-side-stability/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": ".gitkeep",
+        "path": "tests/functional/anti-anti-rootkit/.gitkeep",
+        "size": 0,
+        "entropy": 0.0,
+        "sha256": "e3b0c44298fc1c14",
+        "extension": ""
+      },
+      {
+        "filename": "commit-msg",
+        "path": "utils/commit-msg",
+        "size": 58,
+        "entropy": 4.5932,
+        "sha256": "c531ec1266d86e0b",
+        "extension": ""
+      }
+    ],
+    "avg_entropy": 4.2243,
+    "max_entropy": 5.5516,
+    "total_size": 164506,
+    "compiled_estimate": {
+      "source_entropy": 4.3858,
+      "compiled_entropy_estimate": 6.7742,
+      "source_size": 98930,
+      "compiled_size_estimate": 358998
+    }
+  }
+}

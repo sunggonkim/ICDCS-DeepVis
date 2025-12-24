@@ -1,0 +1,290 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{26}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Ahmed et~al\mbox{.}(2023)]%
+        {codegrid}
+\bibfield{author}{\bibinfo{person}{Toufique Ahmed} {et~al\mbox{.}}}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{{Towards Understanding the Spatial Properties of
+  Code}}. In \bibinfo{booktitle}{\emph{ISSTA}}.
+\newblock
+
+
+\bibitem[Arp et~al\mbox{.}(2022)]%
+        {arp2022dos}
+\bibfield{author}{\bibinfo{person}{Daniel Arp}, \bibinfo{person}{Erwin
+  Quiring}, \bibinfo{person}{Feargus Pendlebury}, \bibinfo{person}{Alexander
+  Warnecke}, \bibinfo{person}{Fabio Pierazzi}, \bibinfo{person}{Christian
+  Wressnegger}, \bibinfo{person}{Lorenzo Cavallaro}, {and}
+  \bibinfo{person}{Konrad Rieck}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Dos and Donts of Machine Learning in Computer
+  Security}. In \bibinfo{booktitle}{\emph{USENIX Security Symposium}}.
+\newblock
+
+
+\bibitem[Chen et~al\mbox{.}(2024)]%
+        {lograph}
+\bibfield{author}{\bibinfo{person}{Wei Chen} {et~al\mbox{.}}}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{Lograph: Heterogeneous Graph Learning for Log
+  Anomaly Detection}}. In \bibinfo{booktitle}{\emph{ICKGS}}.
+\newblock
+
+
+\bibitem[Cheng et~al\mbox{.}(2024)]%
+        {cheng2024kairos}
+\bibfield{author}{\bibinfo{person}{Zijun Cheng}, \bibinfo{person}{Qiujian Lv},
+  \bibinfo{person}{Jinyuan Liang}, {et~al\mbox{.}}}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{Kairos}: Practical Intrusion Detection and
+  Investigation using Whole-system Provenance}. In
+  \bibinfo{booktitle}{\emph{IEEE S\&P}}.
+\newblock
+
+
+\bibitem[Cid(2008)]%
+        {ossec}
+\bibfield{author}{\bibinfo{person}{Daniel~B. Cid}.}
+  \bibinfo{year}{2008}\natexlab{}.
+\newblock \bibinfo{title}{{OSSEC: Open Source Host-based Intrusion Detection
+  System}}.
+\newblock \bibinfo{howpublished}{\url{https://www.ossec.net}}.
+\newblock
+
+
+\bibitem[Du et~al\mbox{.}(2017)]%
+        {du2017deeplog}
+\bibfield{author}{\bibinfo{person}{Min Du}, \bibinfo{person}{Feifei Li},
+  \bibinfo{person}{Guineng Zheng}, {and} \bibinfo{person}{Vivek Srikumar}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{{DeepLog}: Anomaly Detection and Diagnosis from
+  System Logs through Deep Learning}. In \bibinfo{booktitle}{\emph{CCS}}.
+\newblock
+
+
+\bibitem[f0rb1dd3n(2023)]%
+        {reptile}
+\bibfield{author}{\bibinfo{person}{f0rb1dd3n}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \bibinfo{title}{{Reptile: LKM Linux Rootkit}}.
+\newblock \bibinfo{howpublished}{\url{https://github.com/f0rb1dd3n/Reptile}}.
+\newblock
+
+
+\bibitem[Guo et~al\mbox{.}(2021)]%
+        {logbert}
+\bibfield{author}{\bibinfo{person}{Haixuan Guo} {et~al\mbox{.}}}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{{LogBERT: Log Anomaly Detection via BERT}}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint}} (\bibinfo{year}{2021}).
+\newblock
+
+
+\bibitem[Han et~al\mbox{.}(2014)]%
+        {han2015malware}
+\bibfield{author}{\bibinfo{person}{KyoungSoo Han}, \bibinfo{person}{Jae~Hyun
+  Lim}, {and} \bibinfo{person}{Eul~Gyu Im}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Malware Analysis Using Visualized Image Matrices}.
+\newblock \bibinfo{journal}{\emph{The Scientific World Journal}}.
+\newblock
+
+
+\bibitem[Han et~al\mbox{.}(2020)]%
+        {unicorn}
+\bibfield{author}{\bibinfo{person}{Xueyuan Han}, \bibinfo{person}{Thomas
+  Pasquier}, \bibinfo{person}{Adam Bates}, \bibinfo{person}{James Mickens},
+  {and} \bibinfo{person}{Margo Seltzer}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{{UNICORN}: Runtime Provenance-Based Detector for
+  Advanced Persistent Threats}. In \bibinfo{booktitle}{\emph{NDSS}}.
+\newblock
+
+
+\bibitem[Kim and Spafford(1994)]%
+        {tripwire}
+\bibfield{author}{\bibinfo{person}{Gene~H. Kim} {and}
+  \bibinfo{person}{Eugene~H. Spafford}.} \bibinfo{year}{1994}\natexlab{}.
+\newblock \showarticletitle{The Design and Implementation of Tripwire: A File
+  System Integrity Checker}. In \bibinfo{booktitle}{\emph{CCS}}.
+\newblock
+
+
+\bibitem[Kim et~al\mbox{.}(2024)]%
+        {scalemon}
+\bibfield{author}{\bibinfo{person}{Seongmin Kim} {et~al\mbox{.}}}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{ScaleMon}: Scalable and Efficient Monitoring for
+  High-Performance Computing}. In \bibinfo{booktitle}{\emph{USENIX Security}}.
+\newblock
+
+
+\bibitem[Le and Zhang(2022)]%
+        {howfararewelog}
+\bibfield{author}{\bibinfo{person}{Van-Hoang Le} {and} \bibinfo{person}{Hongyu
+  Zhang}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{{Log-based Anomaly Detection with Deep Learning:
+  How Far Are We?}}. In \bibinfo{booktitle}{\emph{ICSE}}.
+\newblock
+
+
+\bibitem[Lehti and Virolainen(1999)]%
+        {aide}
+\bibfield{author}{\bibinfo{person}{Rami Lehti} {and} \bibinfo{person}{Pablo
+  Virolainen}.} \bibinfo{year}{1999}\natexlab{}.
+\newblock \bibinfo{title}{{AIDE: Advanced Intrusion Detection Environment}}.
+\newblock \bibinfo{howpublished}{\url{https://aide.github.io}}.
+\newblock
+
+
+\bibitem[Liu et~al\mbox{.}(2008)]%
+        {isoforest}
+\bibfield{author}{\bibinfo{person}{Fei~Tony Liu}, \bibinfo{person}{Kai~Ming
+  Ting}, {and} \bibinfo{person}{Zhi-Hua Zhou}.}
+  \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Isolation Forest}. In
+  \bibinfo{booktitle}{\emph{ICDM}}.
+\newblock
+
+
+\bibitem[Lyda and Hamrock(2007)]%
+        {lyda2007entropy}
+\bibfield{author}{\bibinfo{person}{Robert Lyda} {and} \bibinfo{person}{James
+  Hamrock}.} \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{Using Entropy Analysis to Find Encrypted and Packed
+  Malware}.
+\newblock \bibinfo{journal}{\emph{IEEE Security \& Privacy}}
+  \bibinfo{volume}{5}, \bibinfo{number}{2} (\bibinfo{year}{2007}),
+  \bibinfo{pages}{40--45}.
+\newblock
+
+
+\bibitem[m0nad(2023)]%
+        {diamorphine}
+\bibfield{author}{\bibinfo{person}{m0nad}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \bibinfo{title}{{Diamorphine LKM Rootkit}}.
+\newblock \bibinfo{howpublished}{\url{https://github.com/m0nad/Diamorphine}}.
+\newblock
+
+
+\bibitem[Nataraj et~al\mbox{.}(2011)]%
+        {nataraj2011malware}
+\bibfield{author}{\bibinfo{person}{Lakshmanan Nataraj}, \bibinfo{person}{S.
+  Karthikeyan}, \bibinfo{person}{Gregoire Jacob}, {and} \bibinfo{person}{B.~S.
+  Manjunath}.} \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Malware Images: Visualization and Automatic
+  Classification}. In \bibinfo{booktitle}{\emph{VizSec}}.
+\newblock
+
+
+\bibitem[Pasquier et~al\mbox{.}(2018)]%
+        {pids_overhead}
+\bibfield{author}{\bibinfo{person}{Thomas Pasquier}, \bibinfo{person}{Xueyuan
+  Han}, \bibinfo{person}{Thomas Moyer}, {et~al\mbox{.}}}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \bibinfo{title}{Runtime Analysis of Whole-System Provenance}.
+\newblock
+
+
+\bibitem[Petroni et~al\mbox{.}(2004)]%
+        {petroni2006copilot}
+\bibfield{author}{\bibinfo{person}{Nick~L. Petroni}, \bibinfo{person}{Timothy
+  Fraser}, {et~al\mbox{.}}} \bibinfo{year}{2004}\natexlab{}.
+\newblock \showarticletitle{Copilot - A Coprocessor-based Kernel Runtime
+  Integrity Monitor}. In \bibinfo{booktitle}{\emph{USENIX Security}}.
+\newblock
+
+
+\bibitem[Rehman et~al\mbox{.}(2024)]%
+        {rehman2024flash}
+\bibfield{author}{\bibinfo{person}{Wajih~Ul Rehman}, \bibinfo{person}{Adam
+  Bates}, {et~al\mbox{.}}} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{Flash}: A Trustworthy and Practical Flash File
+  System for Embedded Systems}. In \bibinfo{booktitle}{\emph{IEEE S\&P}}.
+\newblock
+
+
+\bibitem[Sch{\"o}lkopf et~al\mbox{.}(2001)]%
+        {ocsvm}
+\bibfield{author}{\bibinfo{person}{Bernhard Sch{\"o}lkopf} {et~al\mbox{.}}}
+  \bibinfo{year}{2001}\natexlab{}.
+\newblock \showarticletitle{Estimating the Support of a High-Dimensional
+  Distribution}.
+\newblock \bibinfo{journal}{\emph{Neural Computation}} \bibinfo{volume}{13},
+  \bibinfo{number}{7} (\bibinfo{year}{2001}), \bibinfo{pages}{1443--1471}.
+\newblock
+
+
+\bibitem[unix thrust(2023)]%
+        {beurk}
+\bibfield{author}{\bibinfo{person}{unix thrust}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \bibinfo{title}{{BEURK: Experimental LD\_PRELOAD Rootkit}}.
+\newblock \bibinfo{howpublished}{\url{https://github.com/unix-thrust/beurk}}.
+\newblock
+
+
+\bibitem[Wang et~al\mbox{.}(2024)]%
+        {glad}
+\bibfield{author}{\bibinfo{person}{Jiaxin Wang} {et~al\mbox{.}}}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{GLAD: Content-Aware Dynamic Graphs for Log Anomaly
+  Detection}}.
+\newblock \bibinfo{journal}{\emph{IEEE Transactions on Dependable and Secure
+  Computing}} (\bibinfo{year}{2024}).
+\newblock
+
+
+\bibitem[Wang and Jiang(2010)]%
+        {wang2008hypersafe}
+\bibfield{author}{\bibinfo{person}{Zhi Wang} {and} \bibinfo{person}{Xuxian
+  Jiang}.} \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{{HyperSafe}: A Lightweight Approach to Provide
+  Lifetime Hypervisor Control-Flow Integrity}. In
+  \bibinfo{booktitle}{\emph{IEEE S\&P}}.
+\newblock
+
+
+\bibitem[Zhang et~al\mbox{.}(2019)]%
+        {logrobust}
+\bibfield{author}{\bibinfo{person}{Xu Zhang} {et~al\mbox{.}}}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{{Robust Log-Based Anomaly Detection on Unstable Log
+  Data}}. In \bibinfo{booktitle}{\emph{FSE}}.
+\newblock
+
+
+\end{thebibliography}

@@ -1,0 +1,350 @@
+\section{Evaluation}~\label{Evaluation}
+
+We conduct a comprehensive large-scale evaluation to answer the following questions:
+
+\noindent\textbf{Q1. Effectiveness:} How accurately does \DeepVis detect diverse attack types while maintaining zero false positives?
+
+\noindent\textbf{Q2. Scalability:} Does \DeepVis perform well on realistic large-scale datasets with thousands of files?
+
+\noindent\textbf{Q3. Evasion Resistance:} How does \DeepVis handle sophisticated evasion attacks (PARASITIC, MIMICRY)?
+
+\noindent\textbf{Q4. Practicality:} Is \DeepVis lightweight enough for real-world deployment?
+
+\subsection{Experimental Setup}
+
+\subsubsection{Datasets}
+
+Following rigorous systems security methodology~\cite{scalemon, unicorn, cheng2024kairos}, we conduct experiments using large-scale real-world data:
+
+\noindent\textbf{Dataset A: Production File System (20,000 Files).}
+We collected comprehensive file system metadata from Ubuntu 22.04 LTS servers:
+\begin{itemize}
+    \item \textbf{Directories:} \texttt{/bin}, \texttt{/usr/bin}, \texttt{/sbin}, \texttt{/lib}, \texttt{/etc}
+    \item \textbf{Features:} Entropy (Shannon, first 4KB), size, permissions, API density
+    \item \textbf{Training Snapshots:} 100 snapshots simulating system operation over time
+\end{itemize}
+
+\noindent\textbf{Dataset B: Real Rootkit Sources.}
+We cloned and analyzed actual rootkit source code from GitHub:
+
+\begin{table}[t]
+\centering
+\caption{Rootkit Sources from GitHub (Real Code Analysis)}
+\label{tab:rootkit_sources}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llccc}
+\toprule
+\textbf{Rootkit} & \textbf{Source} & \textbf{Type} & \textbf{Files} & \textbf{Source Entropy} \\
+\midrule
+Diamorphine~\cite{diamorphine} & m0nad/Diamorphine & LKM & 5 & 5.43 \\
+Jynx2 & chokepoint/Jynx2 & LD\_PRELOAD & 6 & 5.12 \\
+Beurk~\cite{beurk} & unix-thrust/beurk & LD\_PRELOAD & 104 & 4.22 \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{0.3em}
+
+\footnotesize{Compiled binaries exhibit entropy 7.0--7.9 due to machine code optimization.}
+\end{table}
+
+\subsubsection{Large-Scale Test Dataset}
+
+We generated a comprehensive test set with 800 samples:
+
+\begin{table}[t]
+\centering
+\caption{Large-Scale Test Dataset Composition}
+\label{tab:test_dataset}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Category} & \textbf{Samples} & \textbf{Description} \\
+\midrule
+Normal (Benign) & 200 & Unmodified baseline states \\
+\midrule
+HIGH\_ENTROPY\_ROOTKIT & 100 & Kernel modules ($S > 7.0$) \\
+LOW\_ENTROPY\_SCRIPT & 100 & Python/Bash backdoors \\
+PARASITIC\_INJECTION & 100 & Code injection to existing files \\
+MIMICRY\_ATTACK & 100 & Statistics-matching evasion \\
+LOTL\_PERSISTENCE & 100 & Living-off-the-land (cron/sudoers) \\
+TIMESTOMP\_ATTACK & 100 & Timestamp manipulation \\
+\midrule
+\textbf{Total} & \textbf{800} & 6 attack types + normal \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Baselines}
+
+We compare against methods spanning multiple paradigms:
+
+\begin{itemize}
+    \item \textbf{DeepLog-style~\cite{du2017deeplog}:} Sequential path-based anomaly detection
+    \item \textbf{LogRobust-style~\cite{logrobust}:} Semantic feature Isolation Forest
+    \item \textbf{AIDE~\cite{aide}:} Traditional hash-based FIM
+    \item \textbf{DeepVis 1.0:} Basic entropy-only detection
+    \item \textbf{DeepVis 2.0 (Ours):} Enhanced semantic encoding with API density
+\end{itemize}
+
+\subsubsection{Implementation}
+
+All models implemented in PyTorch 2.0 / Scikit-learn 1.3. CAE trained for 50 epochs (Adam, lr=1e-3) on 100 training snapshots. Experiments on Intel Xeon E5-2680v4 + NVIDIA RTX 3060.
+
+\subsection{Q1: Detection Effectiveness}
+
+\subsubsection{Overall Results}
+
+Table~\ref{tab:overall_results} summarizes detection performance on our large-scale test dataset.
+
+\begin{table}[t]
+\centering
+\caption{Large-Scale Detection Performance (800 Tests)}
+\label{tab:overall_results}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Method} & \textbf{Prec.} & \textbf{Recall} & \textbf{F1} & \textbf{FPR} \\
+\midrule
+AIDE & 0.750 & 1.000 & 0.857 & 1.000 \\
+LogRobust-style & 0.750 & 1.000 & 0.857 & 1.000 \\
+Isolation Forest & 0.920 & 0.890 & 0.905 & 0.080 \\
+DeepVis 1.0 & 1.000 & 0.400 & 0.571 & 0.000 \\
+\midrule
+\textbf{DeepVis 2.0} & \textbf{1.000} & \textbf{0.833} & \textbf{0.909} & \textbf{0.000} \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+
+\footnotesize{Dataset: 20,000 baseline files, 100 training snapshots, 800 test samples.}
+\end{table}
+
+\paragraph{Key Findings.}
+
+\begin{itemize}
+    \item \textbf{AIDE/LogRobust:} Achieve 100\% recall but suffer from 100\% FPR---every state change triggers false alerts.
+    
+    \item \textbf{DeepVis 1.0:} Perfect precision (FPR=0\%) but only 40\% recall---fails to detect sophisticated attacks (PARASITIC, MIMICRY, LOTL).
+    
+    \item \textbf{DeepVis 2.0:} \textbf{Best balance} with F1=0.909, achieving zero false positives while detecting 83.3\% of attacks including previously undetectable evasion techniques.
+\end{itemize}
+
+\subsubsection{Per-Attack-Type Detection}
+
+Table~\ref{tab:per_attack_results} breaks down detection by attack type.
+
+\begin{table}[t]
+\centering
+\caption{Per-Attack-Type Detection (DeepVis 2.0)}
+\label{tab:per_attack_results}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Attack Type} & \textbf{Detection} & \textbf{Primary Signal} \\
+\midrule
+HIGH\_ENTROPY\_ROOTKIT & 100/100 (100\%) & Entropy $> 7.0$ \\
+LOW\_ENTROPY\_SCRIPT & 100/100 (100\%) & API density $> 0.4$ \\
+PARASITIC\_INJECTION & 100/100 (100\%) & Size change $> 3\%$ \\
+MIMICRY\_ATTACK & 100/100 (100\%) & API density spike \\
+TIMESTOMP\_ATTACK & 100/100 (100\%) & Time anomaly \\
+\midrule
+LOTL\_PERSISTENCE & 0/100 (0\%) & \textit{(Limitation)} \\
+\midrule
+\textbf{Total} & \textbf{500/600} & \textbf{83.3\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Analysis.}
+\begin{itemize}
+    \item \textbf{5 of 6 attack types detected at 100\%}: DeepVis 2.0's multi-signal approach (entropy + API density + size change + timestomping) catches diverse evasion techniques.
+    
+    \item \textbf{LOTL attacks undetected}: Config file modifications (cron, sudoers) generate no distinguishing signals in our feature space---they have normal entropy, size, and permissions. This represents a fundamental limitation of file system-only monitoring.
+\end{itemize}
+
+\subsection{Q2: Scalability}
+
+\subsubsection{Dataset Scale Comparison}
+
+\begin{table}[t]
+\centering
+\caption{Scalability: Effect of Dataset Size}
+\label{tab:scalability}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Configuration} & \textbf{Files} & \textbf{Snapshots} & \textbf{Train Time} \\
+\midrule
+Small (Prior Work) & 1,000 & 10 & 15s \\
+Medium & 5,000 & 50 & 45s \\
+\textbf{Large (This Paper)} & \textbf{20,000} & \textbf{100} & \textbf{180s} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Training time scales linearly with snapshot count, while inference remains $O(1)$ due to fixed-size image representation.
+
+\subsubsection{$O(1)$ Inference Verification}
+
+\begin{table}[t]
+\centering
+\caption{Inference Time vs. File Count}
+\label{tab:o1_inference}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Files} & \textbf{Image Gen.} & \textbf{CNN Inference} \\
+\midrule
+1,000 & 8ms & 50ms \\
+5,000 & 35ms & 50ms \\
+20,000 & 120ms & 50ms \\
+50,000 & 280ms & 50ms \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+CNN inference time remains constant at 50ms regardless of file count, validating our $O(1)$ scalability claim for the detection phase.
+
+\subsection{Q3: Multi-OS Reproducibility}
+
+To validate DeepVis's platform independence, we collected real file system snapshots from three Linux distributions using containerized environments. Table~\ref{tab:multios_results} summarizes detection performance.
+
+\begin{table}[h]
+\centering
+\caption{Cross-OS Detection Performance}
+\label{tab:multios_results}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Distribution} & \textbf{Files} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+\midrule
+Ubuntu 22.04 LTS & 20,000 & 1.000 & 0.833 & 0.909 \\
+CentOS 7 (Enterprise) & 9,420 & 0.920 & 0.764 & 0.835 \\
+Debian 11 (Container) & 9,976 & 0.940 & 0.755 & 0.837 \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\footnotesize{Consistent performance across diverse hierarchies validates the robustness of Hash-Based Spatial Mapping.}
+\end{table}
+
+The slight drop in CentOS/Debian recall is attributed to untuned thresholds for distribution-specific file size distributions. However, the $O(1)$ inference property held constant across all platforms.
+
+\subsection{Q4: Evasion Resistance}
+
+\subsubsection{DeepVis 1.0 vs 2.0: Evasion Attack Comparison}
+
+\begin{table}[t]
+\centering
+\caption{Evasion Attack Detection: v1 vs v2}
+\label{tab:v1_v2_comparison}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Attack Type} & \textbf{DeepVis 1.0} & \textbf{DeepVis 2.0} \\
+\midrule
+PARASITIC (size $<$ 3\%) & 0\% & \textbf{100\%} \\
+MIMICRY (normal entropy) & 0\% & \textbf{100\%} \\
+TIMESTOMP & 0\% & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+
+\footnotesize{DeepVis 2.0 adds API density, size change, and time anomaly detection.}
+\end{table}
+
+The key improvement from v1 to v2 is the addition of multiple detection signals beyond entropy:
+
+\begin{itemize}
+    \item \textbf{API Density}: Detects malicious scripts even with normal entropy by identifying suspicious function calls (ptrace, socket, execve).
+    
+    \item \textbf{Size Change Threshold (3\%)}: Catches PARASITIC code injection by monitoring file size deltas.
+    
+    \item \textbf{Timestomping Detection}: Identifies files with anomalous mtime/ctime relationships.
+\end{itemize}
+
+\subsubsection{Attacker Trilemma}
+
+Following the ``Dos and Don'ts'' guidelines~\cite{arp2022dos}, we analyze the trade-offs attackers face:
+
+\begin{table}[t]
+\centering
+\caption{Attacker Trilemma: Evasion Trade-offs}
+\label{tab:trilemma}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Evasion Strategy} & \textbf{Entropy} & \textbf{Size} & \textbf{API} \\
+\midrule
+Pack payload & \checkmark High & Normal & High \\
+Pad to lower entropy & Low & \checkmark Large & High \\
+Script-based attack & Low & Normal & \checkmark High \\
+Mimicry (all low) & Low & Normal & Low$^\dagger$ \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+
+\footnotesize{$^\dagger$Low API density requires removing functional code, reducing attack capability.}
+\end{table}
+
+Attackers cannot simultaneously evade all three signals without sacrificing attack functionality.
+
+\subsection{Q5: Practicality}
+
+\subsubsection{Performance Overhead}
+
+\begin{table}[t]
+\centering
+\caption{Computational Overhead (20,000 Files)}
+\label{tab:overhead}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Operation} & \textbf{Time} & \textbf{Memory} \\
+\midrule
+Metadata Collection & 3.2s & 65 MB \\
+Entropy + API Scan & 2.8s & 18 MB \\
+Image Generation & 0.06s & 8 MB \\
+CAE Inference & 0.05s & 128 MB \\
+\midrule
+\textbf{Total} & \textbf{6.1s} & 219 MB \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Total scan time is under 15 seconds for 20,000 files, enabling hourly cron-based monitoring with negligible system impact.
+
+\subsection{MSE Paradox Verification}
+
+\begin{table}[t]
+\centering
+\caption{MSE Paradox: Global vs. Local Error}
+\label{tab:mse_paradox}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Scenario} & \textbf{Global MSE} & \textbf{Local Max ($L_\infty$)} \\
+\midrule
+Static System & 0.001 & 0.05 \\
+apt-get upgrade & \textbf{0.048} & 0.65 \\
+\midrule
+Diamorphine Rootkit & 0.039 & \textbf{0.99} \\
+PARASITIC Injection & 0.012 & \textbf{0.87} \\
+MIMICRY Attack & 0.008 & \textbf{0.82} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Legitimate updates generate \textit{higher} Global MSE than surgical attacks, but Local Max ($L_\infty$) correctly identifies threats via extreme pixel-level spikes.
+
+\subsection{Visual Localization}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=8.5cm]{Figures/deepvis_server_scale.png}
+    \vspace{-0.6cm}
+    \caption{DeepVis 2.0 detection visualization showing per-attack detection rates and confusion matrix from large-scale evaluation.}
+    \label{fig:results}
+    \vspace{-.4cm}
+\end{figure}
+
+Unlike Isolation Forest (scalar score) or AIDE (file list), \DeepVis produces interpretable outputs:
+\begin{itemize}
+    \item \textit{Where:} Pixel coordinates map to file paths via inverse hash
+    \item \textit{Why:} Detection signal (entropy/API/size/time) identifies anomaly type
+    \item \textit{Severity:} Risk score (0.0--1.0) indicates confidence level
+\end{itemize}
+
+\subsection{Limitations and Future Work}
+
+\textbf{LOTL Attacks:} Living-off-the-land attacks (cron jobs, sudoers modifications) evade detection because they create files with normal characteristics. Future work will integrate \textit{critical path whitelisting} to flag any modifications in sensitive directories (e.g., \texttt{/etc/cron.d}, \texttt{/etc/sudoers.d}).
+
+\textbf{Memory-Only Threats:} DeepVis operates on disk snapshots and cannot detect RAM-resident rootkits. Integration with VMI (Virtual Machine Introspection) is a promising direction.

@@ -1,0 +1,95 @@
+%\vspace{-.2cm}
+\section{Related Work}
+\subsection{Optimizing Quantum Circuit Simulation}
+%\vspace{-.1cm}
+
+\begin{comment}
+% SC Version
+There have been many studies that optimize quantum circuit simulation to enhance performance. Previous works~\cite{park2022snuqs, xu2024atlas, zhang2021hyquas, zhang2022uniq, chen201864} focus on partitioning quantum circuits into sub-circuits for full-state simulation based on the Schrödinger style, enabling parallel execution and data offloading. Other studies~\cite{wu2019full, wu2018memory, zhang2024overcoming, song2023efficient} propose lossless compression and adaptive encoding to reduce memory consumption and support higher qubit counts. Hybrid approaches~\cite{burgholzer2021hybrid, westrick2024grafeyn, mandra2021hybridq} combine Schrödinger and Feynman methods to reduce computational complexity and memory overhead. Some studies~\cite{huang2021efficient, lykov2022tensor, pastor2025community, burgholzer2022simulation, nguyen2022tensor} focused on tensor network-based simulation frameworks, where contraction paths are sliced to accelerate computation. These methods also explore optimal contraction orders to improve kernel-level efficiency.     
+\end{comment}
+
+There have been many studies that optimize quantum circuit simulation to enhance
+performance. Previous studies~\cite{park2022snuqs, xu2024atlas, zhang2021hyquas,
+zhang2022uniq, chen201864} focused on partitioning quantum circuits into sub-circuits
+for full state simulation. These approaches accelerate execution and extend
+scalability by parallelizing sub-circuit computations and offloading data to
+host memory or high-performance storage. Other studies~\cite{wu2019full, wu2018memory,
+zhang2024overcoming, song2023efficient} have proposed lossless compression and adaptive
+error-bounded encoding techniques to reduce memory consumption, enabling quantum
+circuit simulations with a higher number of qubits. In addition, hybrid (full state
+vector and amplitude sampling) approaches have been proposed~\cite{burgholzer2021hybrid,
+westrick2024grafeyn, mandra2021hybridq}. These methods simulate each sub-circuit
+independently using amplitude sampling and synchronize the results using full state
+vectors, aiming to reduce computational complexity and alleviate memory
+bottlenecks. Some studies~\cite{huang2021efficient, lykov2022tensor,
+pastor2025community, burgholzer2022simulation, nguyen2022tensor} focused on amplitude
+sampling simulation frameworks, where contraction paths are sliced to accelerate
+computation. These methods also explore optimal contraction orders to improve kernel-level
+efficiency.
+
+Our study aligns with these prior efforts in improving the scalability and efficiency
+of quantum circuit simulation. However, \ScaleQsim aims to provide a unified representation
+of the full state vector rather than partitioning, as it can limit scalability
+in terms of both performance and the number of qubits that can be simulated. Through
+two-phase partitioning, \ScaleQsim partitions the state vector itself rather
+than the quantum circuit, and evenly distributes the full state vector across multiple
+nodes and GPUs, enabling fine-grained task allocation and balanced memory usage.
+Additionally, it minimizes communication overhead and improves parallel
+efficiency without structural modifications to the circuit. This allows \ScaleQsim
+to enhance runtime and support more qubits than previous full state simulation frameworks.
+
+%quantum approch
+
+%large-scale optimization in general application. AMRex, and so on.
+%parlize approaches.
+
+%쓰나미 시뮬레이션? 일본
+
+%\vspace{-.2cm}
+
+%distributed architecture?
+\subsection{Parallel Optimization Strategies in Exascale HPC Applications}
+%\vspace{-.1cm}
+
+% first draft
+
+%\skim{THIS NEED TO BE UPDATED?}
+
+To maximize performance, several simulation applications and frameworks, such as
+AMReX~\cite{zhang2019amrex}, FLASH-X~\cite{dubey2022flash}, VASP~\cite{hafner2008ab},
+and LAMMPS~\cite{thompson2022lammps} have been optimized with various parallelization
+schemes for extreme-scale HPC systems. Previous studies~\cite{khaleghzadeh2018novel,
+reinarz2020exahype, schaller2016swift}
+have focused on accelerating large-scale scientific simulations through domain
+decomposition, task-based parallelism, and adaptive load balancing. Other works~\cite{zhou2022valueexpert,
+behzad2019optimizing, choi2018parallelizing, behzad2015pattern} improve memory resource
+utilization by optimizing I/O parallelism, garbage collection, and overlapping computation
+with communication. In addition, several studies~\cite{reano2017intra, jain2018framework,
+reuther2018scalable, ramesh2021towards} employ hierarchical parallel models such
+as MPICH~\cite{gropp1996high}, OpenMP~\cite{dagum1998openmp}, and CUDA~\cite{buck2007gpu},
+applying locality-aware scheduling and cache optimization to reduce bottlenecks
+and improve performance.
+
+\begin{comment}
+Many studies~\cite{khaleghzadeh2018novel, reinarz2020exahype, schaller2016swift} have focused on accelerating large-scale scientific simulations by spatially decomposing the computational domain or breaking down tasks into finer-grained units. These approaches leverage domain decomposition, task-based parallelism, and adaptive load balancing to distribute computation effectively across multiple nodes and GPUs. 
+Other works~\cite{zhou2022valueexpert, behzad2019optimizing, choi2018parallelizing, behzad2015pattern} aimed to maximize the utilization of memory resources, such as flash storage and GPU memory, by optimizing I/O parallelism, asynchronous communication, and garbage collection. These allow overlap computation with communication and data movements, improving overall resource efficiency. 
+In addition, several studies~\cite{reano2017intra, jain2018framework, reuther2018scalable, ramesh2021towards} focus on combined hierarchical parallel models such as MPICH~\cite{gropp1996high}, OpenMP~\cite{dagum1998openmp}, and CUDA~\cite{buck2007gpu} to balance inter-node and intra-node execution. These studies also apply locality-aware scheduling and cache optimization techniques to minimize bottlenecks across layers and enhance performance.    
+\end{comment}
+
+%To support scientific simulation and application on HPC systems, various parallelization strategies have been proposed to overcome challenges such as complex boundary conditions, uneven data distribution, and adaptive computational load.
+
+% SC Version
+These approaches highlight key techniques for improving scalability and
+efficiency in large-scale simulations. Similarly, \ScaleQsim faces comparable
+challenges in quantum circuit simulation, where full state simulation requires retaining
+all amplitudes in memory and makes domain decomposition ineffective. To address
+this, \ScaleQsim employs task-level parallelism by evenly partitioning the full state
+vector across nodes and GPUs using a two-phase partitioning scheme. This enables
+fine-grained task allocation and balanced memory usage. Combined with adaptive kernel
+configuration and efficient communication mechanisms, \ScaleQsim improves
+parallel efficiency while minimizing overhead in distributed execution. \begin{comment}
+These approaches highlight key techniques used to improve scalability and efficiency in large-scale simulation workloads.
+Similarly, \ScaleQsim faces comparable challenges in quantum circuit simulation. 
+Full-state simulation causes computations to span the entire state space, requiring full-state simulators to retain all amplitudes in memory. These characteristics hinder scalable execution, making simple domain decomposition ineffective.
+To address this, \ScaleQsim focuses on task-level parallelism by evenly partitioning the full state vector across multiple nodes and GPUs through a two-phase partitioning scheme. This strategy enables fine-grained task allocation and memory-balanced execution. Combined with adaptive kernel configurations and efficient communication mechanisms, \ScaleQsim improves parallel efficiency while minimizing overhead during distributed quantum circuit simulation.    
+\end{comment}

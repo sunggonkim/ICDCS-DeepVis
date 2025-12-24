@@ -1,0 +1,1172 @@
+\section{Evaluation}~\label{Evaluation}
+In this section, we conduct a comprehensive evaluation to answer the following key questions:
+
+\noindent\textbf{Q1. Effectiveness:} How effectively does \ScaleMon's multi-level approach detect a wide range of attacks?
+
+\noindent\textbf{Q2. Justification:} Are our core design choices superior to reasonable alternatives?  
+
+\noindent\textbf{Q3. Practicality:} Is \ScaleMon lightweight and scalable enough for real-world HPC deployment?  
+
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=8.5cm]{Figures/gromacs.png}
+%     \vspace{-0.6cm}
+%     \caption{\taebin{to show regularity? or multimodality? \newline design should be changed}}
+%     \label{mariadb}
+%     \vspace{-.6cm}
+% \end{figure}
+
+% \begin{table}[t]
+% \centering
+% \caption{Production Trace Dataset}
+% \label{tab:Production_Trace_Dataset}
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{@{}lllcccc@{}}
+% \toprule
+% \textbf{Granularity} & \textbf{Dataset} & \textbf{Attack Type} & \textbf{VASP} & \textbf{GROMACS} & \textbf{LAMMPS} \\ \midrule
+% \multirow{1}{*}{\begin{tabular}[c]{@{}l@{}}Accessed-File\end{tabular}} &
+% Train & Benign (-) & 96,596 & 9,400 & 43,806 \\ \midrule
+% \multirow{3}{*}{\begin{tabular}[c]{@{}l@{}}Accessed-File\end{tabular}} &
+% \multirow{3}{*}{Test} & Benign (-) & 24,149 & 2,350 & 10,952 \\ 
+%  & & Anomalous File Paths (Confidentiality) & 15,341 & 1,708 & 7,234 \\ 
+%  & & Illegitimate Operations (Integrity) & 6,206 & 1,113 & 1,944 \\ \midrule \midrule
+% \multirow{1}{*}{\begin{tabular}[c]{@{}l@{}}Execution\end{tabular}} &
+% Train & Benign (-) & 6,156 & 1,060 & 3,608 \\ \midrule
+% \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Execution\end{tabular}} &
+% \multirow{2}{*}{Test} & Benign (-) & 1,539 & 265 & 902 \\ 
+%  & & Anomalous File Counts (Availability) & 1,539 & 265 & 902 \\ \bottomrule
+% \end{tabular}%
+% }
+% \end{table}
+
+
+\subsection{Experimental Setup}
+% 1 paragraph
+
+\subsubsection{Datasets}
+
+To evaluate \ScaleMon, we utilized two complementary datasets collected from the large-scale production HPC systems detailed in Table~\ref{tab:system_spec}: a \textbf{Production Trace Dataset} and a \textbf{Fine-Grained I/O Dataset}. 
+The Production Trace Dataset, containing standard Darshan logs, was used to specifically evaluate the inter-file level detection capabilities of \InterMon. 
+The Fine-Grained I/O Dataset, containing detailed DXT traces, was used to evaluate the entire \ScaleMon pipeline, including the image-based \IdentityVerifier and \IntraMon.
+
+\noindent\textbf{Production Trace Dataset.}
+The Production Trace Dataset consists of real-world Darshan logs collected from System A over one week in October 2023. This dataset captures benign I/O behavior from three widely used scientific simulation applications: VASP, GROMACS, and LAMMPS. To create anomalous samples for evaluation, we programmatically manipulated these benign logs to inject three types of inter-file level footprints, each corresponding to a different security goal:
+
+\begin{itemize}
+    \item \textbf{Anomalous File Paths (Confidentiality):} We simulated a potential data breach by adding access to a file located at a high LCA distance (6--10) from other files in the execution.
+    \item \textbf{Illegitimate Write Operations (Integrity):} We simulated data tampering by adding a write operation to a file that is normally read-only.
+    \item \textbf{Anomalous File Counts (Availability):} We simulated a precursor to a Denial-of-Service attack by injecting a large number of spurious file accesses into a benign trace.
+\end{itemize}
+Table~\ref{tab:Production_Trace_Dataset} provides a breakdown of the benign and anomalous samples in this dataset.
+
+\noindent\textbf{Fine-Grained I/O Dataset.}
+The Fine-Grained I/O Dataset was generated on \textbf{System B} with DXT logging enabled. It comprises traces from \texttt{h5bench\_read} and \texttt{h5bench\_write}, VPIC-derived I/O benchmarks that mimic the application's real I/O interface, as well as from the LAMMPS ReaxFF simulation.
+Benign data were collected by running these applications under various configurations (1–8 nodes and 16–512 processes, using both independent and collective I/O) to capture diverse normal behaviors. 
+We then synthesized attack samples by injecting three types of intra-file anomalous behavior through two distinct attack vectors (defined in Section~\ref{Targeted Attacks and their I/O Footprints}). The specific anomalies are:
+
+\begin{itemize}
+    \item \textbf{Full Sequential Scan (Confidentiality):} Simulating data exfiltration by performing a full sequential read of a file after normal I/O operations.
+    \item \textbf{Full Sequential Overwrite (Integrity):} Simulating data tampering or destruction by performing a full sequential write over an entire file.
+    \item \textbf{I/O Delay (Availability):} Simulating resource exploitation (e.g., cryptojacking) by introducing a significant pause in I/O activity while a hidden malicious process runs.
+\end{itemize}
+A summary of this dataset is presented in Table~\ref{tab:Fine_Grained_IO_Dataset}.
+
+
+\begin{table}[t]
+\centering
+\caption{Production Trace Dataset}
+\label{tab:Production_Trace_Dataset}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lllcccc@{}}
+\toprule
+\textbf{Granularity} & \textbf{Dataset} & \textbf{Attack Type} & \textbf{VASP} & \textbf{GROMACS} & \textbf{LAMMPS} \\ \midrule
+\multirow{1}{*}{Accessed-File} &
+Train & Benign (-) & 96,596 & 9,400 & 43,806 \\ \midrule
+\multirow{3}{*}{Accessed-File} &
+\multirow{3}{*}{Test} & Benign (-) & 24,149 & 2,350 & 8,823 \\ 
+ & & Anomalous File Paths (Confidentiality) & 15,309 & 1,746 & 5,511 \\ 
+ & & Illegitimate Operations (Integrity) & 6,206 & 1,113 & 1,574 \\ \midrule \midrule
+\multirow{1}{*}{Execution} &
+Train & Benign (-) & 6,156 & 1,060 & 3,608 \\ \midrule
+\multirow{2}{*}{Execution} &
+\multirow{2}{*}{Test} & Benign (-) & 1,539 & 265 & 902 \\ 
+ & & Anomalous File Counts (Availability) & 1,539 & 265 & 902 \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+
+
+\begin{table}[t]
+\centering
+\caption{Fine-Grained I/O Dataset}
+\label{tab:Fine_Grained_IO_Dataset}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l l c c c@{}}
+\toprule
+\textbf{Dataset} & \textbf{Attack Type} & \textbf{h5bench\_read} & \textbf{h5bench\_write} & \textbf{LAMMPS\_ReaxFF} \\ \midrule
+Train & Benign (-) &
+  345 &
+  389 &
+  186 \\ \midrule
+\multirow{4}{*}{Test} & Benign (-) &
+  87 &
+  97 &
+  46 \\ 
+ & Full Sequential Scan (Confidentiality) &
+  87 &
+  97 &
+  46 \\ 
+ & Full Sequential Overwrite (Integrity) &
+  87 &
+  97 &
+  46 \\ 
+ & I/O Delay (Availability))&
+  87 &
+  97 &
+  46 \\  \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsubsection{Implementation Details}
+
+All models were implemented using PyTorch and Scikit-learn, and were trained and evaluated on System B. Performance overheads were measured on a single GPU node using one NVIDIA A100 GPU (80GB). For classical one-class models, we used standard implementations with their default parameters. k in k-NN/LOF was heuristically set to the square root of the training set size, and the number of components for GMM was tested in a range from 1 to 8 with a diagonal covariance to prevent overfitting. Our deep learning models, including Autoencoders and Deep SVDD, were intentionally designed to be lightweight, consisting of only 4 to 6 fully connected layers with ReLU activations that compress the input to a latent space one-fourth of its original dimension. All deep learning models were trained for 50 epochs using the Adam optimizer.
+
+\subsubsection{Metrics}
+Our primary metric for detection performance is the \textbf{Area Under the ROC Curve (AUROC)}, a threshold-independent measure of a model's ability to distinguish between benign and anomalous samples. 
+To provide insight into practical performance, we also report \textbf{Recall} (True Positive Rate) and \textbf{False Positive Rate (FPR)}. 
+These threshold-dependent metrics are calculated using a fixed threshold for each model. 
+Specifically, the threshold was set at the 99th percentile of the anomaly scores observed on the benign training set, corresponding to a theoretical 1\% FPR on that data. 
+We acknowledge that this standardized threshold may not be optimal for all scenarios and can be further tuned during operation. 
+The broader implications and challenges of threshold selection are discussed in Section~\ref{discussion_and_limitations}.
+
+% \subsubsection{Datasets}
+
+% To evaluate \ScaleMon, we utilized two complementary datasets collected from the large-scale production HPC systems detailed in Table~\ref{tab:system_spec}: a \textbf{Production Trace Dataset} and a \textbf{Fine-Grained I/O Dataset}. 
+% The Production Trace Dataset, containing standard\taebin{?} Darshan logs, was used to specifically evaluate the inter-file level detection capabilities of \InterMon. 
+% The Fine-Grained I/O Dataset, containing detailed DXT traces, was used to evaluate the entire \ScaleMon pipeline, including the image-based \IdentityVerifier and \IntraMon.
+
+% \noindent\textbf{Production Trace Dataset.}
+% The Production Trace Dataset consists of real-world Darshan logs collected from System A over one week in October 2023. This dataset captures benign I/O behavior from three widely used scientific simulation applications: VASP, GROMACS, and LAMMPS. To create anomalous samples for evaluation, we programmatically manipulated these benign logs to inject three types of inter-file level footprints that embodied in Section~\ref{Targeted Attacks and their I/O Footprints}, each corresponding to a different security goal:
+
+
+% \begin{itemize}
+%     \item \textbf{Anomalous File Paths (Confidentiality):} We simulated a potential data breach by adding access to a file located at a high LCA distance (6--10) from the other files in the execution.
+%     \item \textbf{Illegitimate Write Operations (Integrity):} We simulated data tampering by adding a write operation to a file that is normally read-only.
+%     \item \textbf{Anomalous File Counts (Availability):} We simulated a potential sign to a Denial-of-Service attack by injecting a large number of spurious file accesses into a benign trace.
+% \end{itemize}
+
+% Table~\ref{tab:Production_Trace_Dataset} summarized count of the benign and anomalous samples in this dataset.
+
+% \noindent\textbf{Fine-Grained I/O Dataset.}
+% The Fine-Grained I/O Dataset was generated on \textbf{System B} with DXT logging enabled. 
+% It comprises traces from benchmarks (\texttt{h5bench\_read/write}) that mimicing real application VPIC's I/O and the LAMMPS\_ReaxFF scientific application. 
+% Benign data were collected by running these applications across a range of configurations. 1-8Nods, 16-512 processes
+% We then synthesized attack samples by injecting intra-file level amomalous behavior via two attack vector described in section ~\ref{Targeted Attacks and their I/O Footprints}.  three types of intra-file level anomalies into the benign traces:
+
+% \begin{itemize}
+%     \item \textbf{Full Sequential Scan (Confidentiality):} Simulating Scaning for data exfiltration by performing a full sequential read of a file after normal I/O operations.
+%     \item \textbf{Full Sequential Overwrite (Integrity):} Simulating a data tampering or even destroying attack by performing a full sequential write over an entire file.
+%     \item \textbf{I/O Delay (Availability):} Simulating resource exploitation (e.g., cryptojacking) by introducing a significant pause in I/O activity while a hidden malicious process runs.
+% \end{itemize}
+
+% A summary of this dataset is presented in Table~\ref{tab:Fine_Grained_IO_Dataset}.
+
+% \subsubsection{Datasets}
+% To evaluate \ScaleMon, we utilized two complementary datasets: a Production Trace Dataset and a Fine-Grained I/O Dataset. Both datasets were collected from a large-scale production HPC cluster.The Production Trace Dataset was used to evaluate the \InterMon and Fine-Grained I/O Dataset was used to evaluate the entire \ScaleMon.
+
+% \noindent\textbf{Production Trace Dataset} 
+% The Production Trace Dataset dataset consists of Darshan logs from three widely used scientific simulation applications: VASP, GROMACS, and LAMMPS. this dataset real bengn I/O log on system A in Table~\ref{system_spec} for one weak in october 2023. and three different typ of inter file level anomalous foot print  which are introduced in Section~\ref{Targeted Attacks and their I/O Footprints} \is injected by manipulating those benign logs making anomaly data to detect.
+
+% \noindent\textbf{(1) Anomalous File Paths (Confidentiality)}, adding access to a file located at a high LCA distance (6–10) from other accessed files in the execution. giving a sign of Data Breach
+
+% \noindent\textbf{(2) Illegitimate Write Operations (Integrity)}, adding write operation to a normally read-only file giving a sign of Data Tampering
+
+% \noindent\textbf{(3) Anomalous File Counts (Availability)}, injecting a large number of spurious accessed files into a benign trace. giviing a sign of Denial of Service attack 
+
+% \subsubsection{Implementation Details and Metrics}
+% \subsection{Implementation Details}
+% models, implement specifics, trin sepcifics?.., ...,trained and tested on system B environment..
+
+% \subsection{Metrics}
+% Main AuROC 
+% recall fpr in which threshod?
+% threshold choosing is discussed in ?
+
+
+
+% \subsection{Experimental Setup}
+
+% \subsubsection{Datasets}
+% To evaluate \ScaleMon, we utilized two complementary datasets: a Production Trace Dataset and a Fine-Grained I/O Dataset. Both datasets were collected from a large-scale production HPC cluster.The Production Trace Dataset was used to evaluate the EPA module of \ScaleMon and Fine-Grained I/O Dataset was used to evaluate the IBV and MII modules of \ScaleMon.
+
+% \noindent\textbf{Production Trace Dataset} The Production Trace Dataset dataset consists of Darshan logs from three widely used scientific applications: VASP, GROMACS, and LAMMPS. VASP is an ab initio quantum-mechanical molecular dynamics package based on pseudopotentials and a plane-wave basis set. GROMACS is a versatile molecular dynamics simulator optimized for large-scale biochemical systems. LAMMPS is a massively parallel classical molecular dynamics code designed to simulate materials ranging from atomic-scale to mesoscopic systems. All experiments were executed on a large-scale production HPC system equipeded with 8,437 compute nodes, including 8,305 nodes with Intel Xeon Phi 7250 (68 cores) and 132 nodes with Intel Xeon 6148 (20 cores), providing hundreds of thousands of CPU cores, over 800 TB of system memory, and a parallel file system with up to 0.3 TB/s aggregate bandwidth.
+
+% Attack data were generated by manipulating benign traces to reproduce the anomalous patterns in macroscopic I/O footprints, which are introduced in Section~\ref{Targeted Attacks and their I/O Footprints}. We implemented anomalies corresponding to the three attack categories by introducing: \textbf{(1) Anomalous File Paths (Confidentiality)}, adding access to a file located at a high LCA distance (6–10) from other accessed files in the execution; \textbf{(2) Illegitimate Operations (Integrity)}, adding write operation to a normally read-only file; and \textbf{(3) Anomalous File Counts (Availability)}, injecting a large number of spurious accessed files into a benign trace. These footprints can be symptoms of attacks targeting Confidentiality, Integrity, and Availability, respectively. The resulting dataset was analyzed at two granularities: the individual accessed-file level and the holistic execution level. The number of benign and anomalous samples for each is summarized in Table~1.
+
+% \noindent\textbf{Fine-Grained I/O Dataset} The Fine-Grained I/O Dataset consists of fine-grained DXT log data from benchmarks and real scientific applications, including LAMMPS\_ReaxFF and h5bench\_read/write, mimicking the I/O behavior of VPIC, a general-purpose particle-in-cell simulation using HDF5 files. All experiments were executed on CPU nodes of a large-scale production HPC system, which comprises 3,072 CPU nodes and 1,792 GPU nodes, each CPU node featuring 2 AMD EPYC 7763 processors with 512 GB memory, providing hundreds of thousands of CPU cores and a parallel file system with NVMe SSD-based object storage capable of high aggregate I/O throughput.
+
+% Benign data were collected by running the applications on varying configurations of compute resources, ranging from 1 to 8 nodes and 16 to 512 processes, thereby generating a broad spectrum of normal execution logs. To generate attack data, we injected the anomalous I/O behaviors corresponding to the categories introduced in Section~\ref{Targeted Attacks and their I/O Footprints}, while keeping the execution settings identical to the benign runs. Specifically, we introduced: \textbf{(1) Full Sequential Scan (Confidentiality)}, performing a full sequential read from offset 0 to the end of the file with a 512–4096 byte buffer after the main I/O operations; \textbf{(2) Full Sequential Overwrite (Integrity)}, performing a full sequential write over the entire file using a 512–4096 byte buffer after the main I/O operations; and \textbf{(3) I/O Delay (Availability)}, pausing the execution of the I/O-intensive application while malicious code ran for a duration of half to 2.5 times the normal execution time. These behaviors were injected either by directly modifying the application code or by linking a maliciously tampered HDF5 library. The number of benign and anomalous samples for each case is summarized in Table~2.
+
+%\taebin{need to change}
+%\subsubsection{Implementation Details and Metrics}
+% All models were implemented using PyTorch and Scikit-learn. To provide a comprehensive analysis, all experiments were conducted in two hardware configurations: a GPU-accelerated setup using a single NVIDIA A100 GPU, and a CPU-only setup using a multi-core AMD EPYC 7763 processor exclusively. This dual evaluation demonstrates \ScaleMon's high performance on accelerated hardware as well as its deployment flexibility in environments without dedicated GPUs. Our primary metric for evaluating detection performance is the Area Under the ROC Curve (AUROC), a threshold-independent measure that summarizes a model's overall ability to distinguish between benign and anomalous samples. To provide a more concrete insight into practical performance, we also report Recall (True Positive Rate) and False Positive Rate (FPR) at a specific operating point. Unless otherwise stated, these values are reported at the threshold that yields a 1\% FPR on the test set. A broader discussion on the challenges and strategies for threshold selection in production environments is presented in Section~\ref{}.
+
+% \noindent\textbf{Implementation Details}\taebin{hyperparmeter .. implementation detail} All models were implemented using PyTorch and Scikit-learn. To provide a comprehensive performance analysis, we conducted experiments on two distinct hardware configurations. The GPU-accelerated experiments were performed on a compute node using a single NVIDIA A100 GPU (40GB VRAM), supported by a multi-core AMD EPYC 7763 host CPU. In parallel, the CPU-only experiments were conducted on the same node type, but using the AMD EPYC CPU exclusively. This dual evaluation demonstrates \ScaleMon's high performance on accelerated hardware as well as its deployment flexibility in environments without dedicated GPUs. Key hyperparameters, such as the I/O image size and embedding dimensions, were optimized via grid search on a validation set; detailed sensitivity analysis is presented in Section~\ref{sec:sensitivity}. Unless otherwise noted, all reported results are from the GPU-accelerated configuration.
+
+% \noindent\textbf{Evaluation Metrics} 
+% \taebin{one-class anomaly detection? unsupervised learning? semi-supervised learning?}
+% - representative one-calss anomaly detection model was tested Isolation Forest, One-Class SVM, Autoencoder, DeepSVDD tested. 
+% - hyperparameter choosing and choosed paramter described in appendix x
+% - All models were implemented using PyTorch and Scikit-learn. and all model is runned at a single cpu-NOde or GPU-NOde at system B on tableX
+% - Our primary metric for detection performance is the Area Under the ROC Curve (AUROC), a threshold-independent measure of a model's ability to distinguish between benign and anomalous samples. To provide a more concrete insight into practical performance, we also report Recall and False Positive Rate (FPR). These threshold-dependent metrics are measured at the operating point that Youden’s J statistic
+
+
+\begin{table}[!t]
+\centering
+\scriptsize % 좁은 폭에 내용을 다 넣기 위해 글자 크기 조정
+\setlength{\tabcolsep}{2pt} % 컬럼 간 여백을 줄여 텍스트 공간 확보
+\renewcommand{\arraystretch}{1.3} % 줄바꿈이 많으므로 행 간격을 넓혀 가독성 확보
+\caption{System Specifications.}
+
+\begin{tabularx}{\columnwidth}{ 
+    >{\bfseries\raggedright\arraybackslash}p{0.16\columnwidth}  % Specification 이름
+    >{\centering\arraybackslash}X                              % Sys A - KNL
+    >{\centering\arraybackslash}X                              % Sys A - CPU
+    >{\centering\arraybackslash}X                              % Sys B - GPU
+    >{\centering\arraybackslash}X }                            % Sys B - CPU
+\toprule
+
+% [헤더 1] 시스템 구분
+\multirow{2}{*}{\textbf{Specification}} & \multicolumn{2}{c}{\textbf{System A}} & \multicolumn{2}{c}{\textbf{System B}} \\ 
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+
+% [헤더 2] 노드 타입 구분
+ & \textbf{KNL Node} & \textbf{CPU Node} & \textbf{GPU Node} & \textbf{CPU Node} \\ 
+\midrule
+
+% [데이터]
+\textbf{Node Count} & 8,305 & 132 & 1,792 & 3,072 \\ 
+
+\textbf{CPU} & Intel Xeon Phi 7250 (68 cores) & 2$\times$ Intel Xeon 6148 (20 cores) & 1$\times$ AMD EPYC 7763 (64 cores) & 2$\times$ AMD EPYC 7763 (64 cores) \\ 
+
+\textbf{Accelerator} & - & - & 4$\times$ NVIDIA A100 (40GB/80GB) & - \\ 
+
+\textbf{Memory} & 96GB DDR4 & 192GB DDR4 & 256GB DDR4 & 512GB DDR4 \\ 
+
+\textbf{Interconnect} & \multicolumn{2}{c}{Intel OPA (100Gbps)} & 4$\times$ HPE Slingshot 11 & 1$\times$ HPE Slingshot 11 \\ 
+
+\textbf{Storage (FS)} & \multicolumn{2}{c}{Lustre} & \multicolumn{2}{c}{Lustre} \\ 
+
+\bottomrule
+\end{tabularx}
+\vspace{-0.2cm}
+\label{tab:system_spec}
+\end{table}
+
+\subsection{Effectivenes}
+
+\subsubsection{Overall Detection Funnel}
+
+We evaluated \ScaleMon's end-to-end detection capability on a test set consisting of 46 benign executions and 276 synthesized attacks derived from the LAMMPS\_ReaxFF application, spanning six attack types across inter-file and intra-file anomaly levels. As shown in Table~\ref{tab:overall_performance}, the detection funnel illustrates the hierarchical filtering process: the \IdentityVerifier first analyzed all attacks and immediately flagged 49 as anomalous due to mismatches between their claimed identity (bin file name in the Darshan log) and observed I/O behavior (I/O image). The remaining 227 attacks were then analyzed in parallel by application-specific \InterMon and \IntraMon modules, which detected all remaining threats through inter-file and intra-file deviation analysis. Overall, \ScaleMon successfully detected all 276 attacks with an FPR of 0.109, demonstrating the effectiveness of the proposed multi-stage design in providing comprehensive coverage across diverse attack types.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.25}
+\caption{Overall detection performance of \ScaleMon.}
+\label{tab:overall_performance}
+
+\begin{tabularx}{\columnwidth}{@{} >{\bfseries\raggedright\arraybackslash}X 
+                                    >{\centering\arraybackslash}p{0.18\columnwidth}
+                                    >{\centering\arraybackslash}p{0.18\columnwidth}
+                                    >{\centering\arraybackslash}p{0.18\columnwidth} @{}}
+\toprule
+Detection Stage & \# Detected & \# Remaining & \# False Positives \\ 
+\midrule
+\textit{Initial State (Attacks)} & -- & 276 & -- \\ 
+\midrule
+Identity Verifier & 49 & 227 & 0 \\
+Inter-Mon & 138 & 89 & 0 \\
+Intra-Mon & 89 & 138 & 5 \\
+Inter-Mon or Intra-Mon (Union) & 227 & 0 & 5 \\
+\midrule
+\textbf{ScaleMon (Total)} & \textbf{276 (1.00)} & \textbf{0} & \textbf{5 (0.109)} \\ 
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Component-wise Detection Performance}~\label{component_wise_detection_performance}
+
+\noindent\textbf{\IdentityVerifier} We first evaluate the classification performance of the \IdentityVerifier on the Fine-Grained I/O Dataset. Figure~\ref{fig:component_cm} presents the confusion matrices for both benign and anomalous executions. As shown in Figure~\ref{fig:normal_cm}, the verifier achieves perfect accuracy on benign data, correctly classifying every execution to its true application class. This result confirms that each application possesses a unique and stable I/O fingerprint that our model can effectively learn. In stark contrast, Figure~\ref{fig:anomaly_cm} shows a significant number of misclassifications for the anomalous data. This is an expected and desirable outcome: the injected malicious patterns disrupt or dilute the application's intrinsic I/O fingerprint, causing the classifier to become uncertain or even assign the execution to the wrong class. The \IdentityVerifier leverages this misclassification as a powerful signal to detect masquerading or compromised executions at an early stage.
+
+To provide a geometric intuition behind these classification results, Figure~\ref{fig:scatter} visualizes the latent space embeddings from the final layer of our ResNet-18 classifier, reduced to two dimensions using PCA. The scatter plot of benign data (Figure~\ref{fig:normal_scatter}) clearly shows that embeddings from each application form tight, well-separated clusters. This visual evidence corroborates our core assumption that I/O images serve as highly discriminative fingerprints. Conversely, the embeddings from anomalous executions (Figure~\ref{fig:anomaly_scatter}) exhibit a collapsed cluster structure. Many of these points fall into ambiguous regions between the normal clusters, which corresponds to the misclassifications and low-confidence predictions observed in the confusion matrix. 
+The red-bordered points in the figure, representing misclassified or low-confidence samples, are precisely those that the \IdentityVerifier flags as anomalous. This visualization confirms that our verifier effectively identifies attacks by recognizing when their behavioral fingerprints deviate from the clearly defined boundaries of normal behavior.
+
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/Normal_CM.jpg}
+        \caption{Normal Confusion Matrix}
+        \label{fig:normal_cm}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/Anomaly_CM.jpg}
+        \caption{Anomaly Confusion Matrix}
+        \label{fig:anomaly_cm}
+    \end{subfigure}
+    \caption{Classification Results of \IdentityVerifier}
+    \label{fig:component_cm}
+\end{figure}
+
+
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/normal_pca.jpg}
+        \caption{Normal scatter plot}
+        \label{fig:normal_scatter}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/anomaly_pca.jpg}
+        \caption{Anomaly scatter plot}
+        \label{fig:anomaly_scatter}
+    \end{subfigure}
+    \caption{Detection Performance of \IdentityVerifier}
+    \label{fig:scatter}
+\end{figure}
+
+\noindent\textbf{\InterMon}
+Table~\ref{tab:InterMon_across_models} presents the AUROC scores for each model across all applications and inter-file attack types. The overall detection performance is exceptionally high, with most models achieving near-perfect AUROC scores (approaching 1.000) in the majority of scenarios. This consistently strong performance across diverse model architectures demonstrates the superior quality of our Execution Profile representation, which provides a rich, discriminative, and largely model-agnostic foundation for inter-file anomaly detection. This offers system administrators the flexibility to choose a model that best suits their operational needs. The main exception is Isolation Forest, which underperforms on Integrity (I) attacks. This is a known limitation of the algorithm; its axis-parallel partitioning struggles to detect anomalies defined by complex relationships between features ~\cite{xu2023deep}. Since the Integrity attack in our dataset is characterized by a subtle interplay between the operation type and file type features, Isolation Forest fails to effectively isolate it.
+
+Table~\ref{tab:InterMon_deep_svdd} details the practical performance of Deep SVDD, one of our top-performing models, using a fixed threshold set at the 99th percentile of the benign training data scores. The results are compelling. Except for the GROMACS Confidentiality scenario, the model achieves perfect recall (zero false negatives) for all other attack types while maintaining a low FPR of under 1.1\%.
+For the GROMACS confidentiality threat, several anomalies are missed when using the 99th-percentile threshold. This behavior can be attributed to the inherent characteristics of GROMACS’s benign I/O patterns, which occasionally exhibit larger LCA distances than those observed in other applications. As a result, the boundary between normal and anomalous behavior becomes less distinct. Nevertheless, by lowering the detection threshold to the 95th percentile, perfect recall can also be achieved for this case, albeit at the cost of an increased false positive rate, which rises from 1.1\% to 6.1\%.
+
+\begin{table}[t]
+\footnotesize
+\centering
+\caption{\InterMon AUROC across models}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l | c c c | c c c | c c c}
+\toprule
+Model &
+\multicolumn{3}{c|}{VASP} &
+\multicolumn{3}{c|}{GROMACS} &
+\multicolumn{3}{c}{LAMMPS} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ & C & I & A & C & I & A & C & I & A \\
+\midrule
+k-NN  & 1.000  & 0.998  & 1.000  & 0.994  & 0.981  & 1.000  & 1.000  & 1.000  & 1.000 \\
+\midrule
+LOF  & 0.995  & 1.000  & 0.971  & 0.969  & 0.999  & 0.965  & 0.987  & 0.991  & 0.999 \\
+\midrule
+GMM  & 1.000  & 0.813  & 1.000  & 1.000  & 0.999  & 1.000  & 1.000  & 1.000  & 1.000 \\
+\midrule
+Isolation Forest  & 0.991  & 0.791  & 0.969  & 0.956  & 0.479  & 0.826  & 0.986  & 0.761  & 0.973 \\
+\midrule
+One-Class SVM  & 1.000  & 0.996  & 1.000  & 0.939  & 0.666  & 1.000  & 1.000  & 0.644  & 1.000 \\
+\midrule
+Autoencoder  & 1.000  & 1.000  & 1.000  & 0.972  & 0.996  & 1.000  & 1.000  & 1.000  & 1.000 \\
+\midrule
+Deep SVDD  & 1.000  & 1.000  & 1.000  & 1.000  & 1.000  & 1.000  & 1.000  & 1.000  & 1.000 \\
+\bottomrule
+\end{tabular}%
+}
+
+\label{tab:InterMon_across_models}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{\InterMon detailed detection results.}
+\label{tab:InterMon_deep_svdd}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l l cccc cc}
+\toprule
+\textbf{Application} & \textbf{Threat} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Recall} & \textbf{FPR} \\
+\midrule
+\multirow{3}{*}{\textbf{VASP}} & C & 15309 & 23907 & 242 & 0 & 1.000 & 0.010 \\
+ & I & 6206 & 23907 & 242 & 0 & 1.000 & 0.010 \\
+ & A & 1539 & 1530 & 9 & 0 & 1.000 & 0.006 \\
+\midrule
+\multirow{3}{*}{\textbf{GROMACS}} & C & 1741 & 2323 & 27 & 5 & 0.997 & 0.011 \\
+ & I & 1113 & 2323 & 27 & 0 & 1.000 & 0.011 \\
+ & A & 265 & 264 & 1 & 0 & 1.000 & 0.004 \\
+\midrule
+\multirow{3}{*}{\textbf{LAMMPS}} & C & 5511 & 8788 & 35 & 0 & 1.000 & 0.004 \\
+ & I & 1574 & 8788 & 35 & 0 & 1.000 & 0.004 \\
+ & A & 902 & 893 & 9 & 0 & 1.000 & 0.010 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\noindent\textbf{\IntraMon}
+Table~\ref{tab:IntraMon_across_models} presents the AUROC performance of various one-class models for \IntraMon, which leverages our I/O image representation. 
+The results are outstanding, with most models achieving near-perfect AUROC scores on the \texttt{h5bench\_read} workload and demonstrating strong performance across all other applications. 
+While deep learning models like Autoencoder and DeepSVDD show excellent and robust performance (consistently above 0.97 AUROC), even classical methods such as k-NN and LOF perform remarkably well. 
+This again confirms that our I/O image is a superior, highly discriminative representation that provides a largely model-agnostic foundation for intra-file anomaly detection. 
+The performance of One-Class SVM and Isolation Forest degrades on more complex workloads, suggesting that their hyperplane or axis-parallel-based approaches are less suited for capturing the intricate, non-linear patterns present in our I/O image embeddings~\cite{xu2023deep,erfani2016high}.
+
+Table~\ref{tab:IntraMon_deep_svdd} details the practical performance of Deep SVDD, selected for its robust performance, using a fixed threshold set at the 99th percentile of the benign training data scores. 
+For the \texttt{h5bench} workloads, all attacks were successfully detected with a low FPR of 3.4\%. 
+Similarly, for \texttt{LAMMPS\_ReaxFF}, all Confidentiality and Availability attacks were identified with only a single false alarm.
+A small number of false negatives were observed for \texttt{h5bench\_write} across all attack types, and for the Integrity attack in \texttt{LAMMPS\_ReaxFF}.
+However, we confirmed that these missed attacks could also be captured by lowering the detection threshold to the 95th percentile, which came at the cost of an increased FPR (from 10.3\% to 19.6\% for \texttt{h5bench\_write} and from 2.2\% to 10.9\% for \texttt{LAMMPS\_ReaxFF}). 
+While these FPRs may seem rather high, they reflect the inherent trade-off in detecting extremely subtle anomalies, a challenge we discuss further in Section~\ref{discussion_and_limitations}.
+
+
+\begin{table}[t]
+\footnotesize
+\centering
+\caption{\IntraMon AUROC across models}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l | c c c | c c c | c c c}
+\toprule
+Model & \multicolumn{3}{c|}{h5bench read} & \multicolumn{3}{c|}{h5bench write} & \multicolumn{3}{c}{LAMMPS ReaxFF} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ & C & I & A & C & I & A & C & I & A \\
+\midrule
+KNN & 1.000 & 1.000 & 1.000 & 0.942 & 0.954 & 0.906 & 0.883 & 0.955 & 0.981 \\
+\midrule
+LOF & 0.981 & 0.990 & 0.996 & 0.980 & 0.979 & 0.965 & 0.964 & 0.947 & 0.991 \\
+\midrule
+GMM & 0.999 & 1.000 & 1.000 & 0.938 & 0.949 & 0.858 & 0.950 & 0.969 & 0.979 \\
+\midrule
+IsolationForest & 0.999 & 1.000 & 1.000 & 0.880 & 0.888 & 0.767 & 0.958 & 0.965 & 0.982 \\
+\midrule
+OneClassSVM & 0.909 & 0.962 & 0.967 & 0.853 & 0.900 & 0.522 & 0.657 & 0.893 & 0.966 \\
+\midrule
+Autoencoder & 1.000 & 1.000 & 1.000 & 0.997 & 0.996 & 0.988 & 0.970 & 0.974 & 0.978 \\
+\midrule
+DeepSVDD & 1.000 & 1.000 & 1.000 & 0.991 & 0.990 & 0.989 & 0.978 & 0.975 & 0.979 \\
+\bottomrule
+\end{tabular}%
+}
+\label{tab:IntraMon_across_models}
+\end{table}
+
+
+\begin{table}[t]
+\centering
+\caption{\IntraMon detailed detection results.}
+\label{tab:IntraMon_deep_svdd}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l l cccc cc}
+\toprule
+\textbf{Application} & \textbf{Threat} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Recall} & \textbf{FPR} \\
+\midrule
+\multirow{3}{*}{\textbf{h5bench read}} & C & 87 & 84 & 3 & 0 & 1.000 & 0.034 \\
+ & I & 87 & 84 & 3 & 0 & 1.000 & 0.034 \\
+ & A & 87 & 84 & 3 & 0 & 1.000 & 0.034 \\
+\midrule
+\multirow{3}{*}{\textbf{h5bench write}} & C & 96 & 87 & 10 & 1 & 0.990 & 0.103 \\
+ & I & 96 & 87 & 10 & 1 & 0.990 & 0.103 \\
+ & A & 96 & 87 & 10 & 1 & 0.990 & 0.103 \\
+\midrule
+\multirow{3}{*}{\textbf{LAMMPS ReaxFF}} & C & 46 & 45 & 1 & 0 & 1.000 & 0.022 \\
+ & I & 42 & 45 & 1 & 4 & 0.913 & 0.022 \\
+ & A & 46 & 45 & 1 & 0 & 1.000 & 0.022 \\
+\midrule
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+% but these false positive rate is quite big and when there are multiple file to be analyzed in \intraMon in a execution the fpr will be much bigger (because of the connection with OR) abuout this in section ~\ref{discussion_and_limitations} 
+
+
+
+% \begin{table}[H]
+% \footnotesize
+% \centering
+% \caption{\InterMon models}
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{l | c | c c c | c c c | c c c}
+% \toprule
+% \multirow{2}{*}{Model} & 
+% \multirow{2}{*}{Metric} &
+% \multicolumn{3}{c|}{h5bench\_read} & 
+% \multicolumn{3}{c|}{h5bench\_write} & 
+% \multicolumn{3}{c}{LAMMPS\_ReaxFF} \\
+% \cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11}
+%  & & C & I & A
+%  & C & I & A 
+%  & C & I & A \\
+% \midrule
+
+% \multirow{3}{*}{k-NN} 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% \multirow{3}{*}{LOF} 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% \multirow{3}{*}{One-Class SVM} 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% \multirow{3}{*}{Isolation Forest} 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% \multirow{3}{*}{Autoencoder} 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+%  \multirow{3}{*}{Deep SVDD} 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \end{table}
+
+
+\subsection{Justification}
+In this section, we provide a detailed justification for our core design choices, focusing on the Intra-Mon module which embodies our most novel contributions. We aim to empirically validate our I/O image representation and the specific model architecture chosen to analyze it.
+
+\subsubsection{The Superiority of the I/O Image Representation}\label{Superiority_of_I_O_Image}
+To empirically validate our core design choice of using an I/O image representation, we compare it against strong baselines that directly process the raw, lengthy time-series data. For the baselines, we adopted a standard methodology for handling long sequences~\cite{simillar_approaches}: the I/O trace is segmented into fixed-size windows (e.g., 512 or 1024 tokens), and the maximum anomaly score from a sequence model (e.g., LSTM/Transformer Autoencoder) across all windows is taken as the final score. While these time-series baselines can achieve respectable performance in some scenarios (e.g., an AUROC of 0.984 for Integrity attacks in \texttt{h5bench read}), their effectiveness is inconsistent. Their performance often drops to near random chance (around 0.5 AUROC) when detecting attacks that require a global context, a direct consequence of their window-based, local-only view.
+
+Figure~\ref{representation_comparison} starkly illustrates the outcome, plotting the mean AUROC against mean inference time, averaged over all applications and attack types in our test set, for each approach. Models utilizing our I/O image representation exhibit both significantly higher mean accuracy and substantially lower inference times than the time-series baselines. This vast improvement stems from a fundamental advantage: by transforming the extremely long sequence into a single, fixed-size image, our approach holistically captures both local and global spatio-temporal patterns while drastically reducing the input data size. 
+% However, we acknowledge a potential limitation of this compressing nature: attacks manifesting as extremely short-lived temporal signals might be obscured. In such specific cases, analyzing the non-compressed raw data could be superior, and we leave the exploration of a hybrid approach to future work.
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=8.5cm]{Figures/representation_comparison.jpg}
+    \vspace{-0.6cm}
+    \caption{I/O Image vs Time series}
+    \label{representation_comparison}
+    \vspace{-.6cm}
+\end{figure}
+
+\subsubsection{Ablation Study of Model Components}\label{ablation_study}
+
+The choice of embedder in \IntraMon is critical, as it is responsible for capturing the semantic graphical patterns from I/O images, directly impacting both performance and overhead. Figure~\ref{embedder_comparison} compares the performance-overhead trade-off of several embedders. Both the custom-trained CNN Autoencoder and the pre-trained ResNet-18 demonstrate superior detection performance. While the CNN AE exhibits a slightly lower inference time, ResNet-18 offers a far more critical advantage: it is training-free. This eliminates the need for a separate, often lengthy, training phase for each application, making the entire framework more scalable and easier to deploy. Given that the inference overhead of ResNet-18 is still negligibly low (2.25 ms per image), its training-free nature makes it the clear choice. We further observed that increasing the backbone depth to ResNet-50 yielded no performance gains, suggesting that the essential patterns are sufficiently captured by the smaller ResNet-18 once projected into the target embedding dimension.
+
+
+Next, we conducted a grid search to identify the optimal image size and embedding dimension.
+Figure~\ref{hyperparameter_heatmap} presents a heatmap of Recall $-$ FPR (Youden’s J statistic~\cite{youden1950index}), evaluated at the 99th-percentile threshold determined from the training data, for each image size–embedding dimension pair. 
+The lower-right region of the heatmap shows lower scores in general, indicating that an embedding dimension that is too small relative to the I/O image size degrades detection performance by introducing a representational bottleneck and discarding critical graphical information. Conversely, the upper region does not consistently yield higher scores, suggesting that simply increasing the embedding dimension does not necessarily improve detection performance. In practice, overly large embedding dimensions can lead to overfitting, increasing the distribution gap between training and test benign samples and thus raising the FPR. In our experiments, an image size of 64 with an embedding dimension of 128 provided a good balance. However, detecting highly subtle attack signatures may require larger images and higher embedding dimensions.
+
+\begin{figure}[t]
+    \centering
+
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/embedder_comparison.jpg}
+        \caption{Embedder comparison}
+        \label{embedder_comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/image_size_embed_dim.jpg}
+        \caption{Hyperparameter heatmap}
+        \label{hyperparameter_heatmap}
+    \end{subfigure}
+
+    % \vspace{-0.6cm}
+    \caption{Embedder and Hyperparameter Comparison}
+    \label{fig:embedder_hyperparam_combined}
+    \vspace{-0.6cm}
+\end{figure}
+
+
+\subsection{Practicality}
+
+A critical requirement for any security monitoring framework in HPC is minimal performance impact. In this section, we evaluate the practicality of \ScaleMon by quantifying its computational overhead and analyzing its scalability with increasing data volume
+
+\subsubsection{Performance Overhead}
+We evaluated the performance overhead of \ScaleMon on a System B GPU node, using a single NVIDIA A100 (40GB) GPU for all measurements. Table~\ref{tab:overhead} summarizes the one-time training costs and the average per-execution detection overhead of each component. The total offline training time for all learning-based modules on the LAMMPS dataset is approximately 81 seconds, representing a modest one-time cost.
+During online detection, the end-to-end latency is dominated by the initial data processing stages. Specifically, the \LogParser incurs an average latency of 3.6 seconds per execution, primarily due to the overhead of invoking external Darshan parsing utilities, followed by 0.6 seconds for the \FingerprintGenerator. In stark contrast, the core detection modules are highly efficient. The \IdentityVerifier, \InterMon, and \IntraMon each require only 11--14 ms for inference, enabling low-latency monitoring. Furthermore, the peak GPU memory footprint during detection remains below 107 MB, demonstrating that \ScaleMon imposes minimal pressure on critical accelerator resources.
+
+\subsubsection{Scalability with Data Volume}
+
+AIreviwer: The “O(1)” inference claim is with respect to trace length, but runtime and memory still scale with the number of files traced (one image per file). Workloads with many files (e.g., ML training with many small files) could stress this design; scalability under large file counts is not evaluated.
+
+scalemon detection module vs lstm
+scalemon 
+scalabiltiy with number of file
+
+just model vs model comparison?
+ScleMon's detecion modules and time serieses detection moduel , all prepreocessing part 
+
+To assess \ScaleMon's detection module(\IdentiyVerirfier, \InterMOn, \IntraMon) performance on large-scale jobs, we analyze how its processing time scales with the size of the input I/O log. Figure~\ref{ScaleMon_Scalability} plots the processing time of \ScaleMon's components and a time-series baseline against the log data volume. The result highlights a fundamental advantage of our design. While the overhead of the Time-Series Baseline grows linearly with data size, the ScaleMon (Total) overhead is identical with data size because it represent the log in fixed size image
+
+Crucially, our core detection modules, \IdentiyVerirfier, \InterMOn, \IntraMon, exhibit constant-time performance (O(1)), as their analysis is based on fixed-size profile vectors and I/O images. This decoupling of analysis complexity from data volume is the key to \ScaleMon's exascale readiness. Unlike traditional methods that must process every data point in a sequence, our fingerprint-based approach ensures predictable and scalable performance, making it a viable long-term solution for monitoring even the most I/O-intensive applications.
+
++ \ScaleMon all detection module process fingerprints in batch parallely, it shows identical with number of file ? just showing 10\% increas in intramon and identiyverifer and 10\% increas in intermon while increasing number of file from one to 256 
+
+
+\subsubsection{Scalability with Data Volume}
+We evaluated the scalability of \ScaleMon's detection modules (\textit{Identity Verifier}, \textit{Inter-Mon}, and \textit{Intra-Mon}) by analyzing their inference latency across varying input log sizes. Figure~\ref{ScaleMon_Scalability} compares the processing time of \ScaleMon against a Transformer-based time-series baseline. The results highlight a fundamental architectural advantage: while the baseline's overhead grows linearly (or super-linearly) with data volume due to the increasing number of sliding windows required for sequence analysis, \ScaleMon exhibits a completely flat, constant-time performance curve ($O(1)$). This is because our modules consume fixed-size profile vectors and I/O images that encapsulate the entire execution behavior, effectively decoupling the computational complexity of anomaly detection from the raw volume of the I/O log.
+
+Furthermore, \ScaleMon ensures scalability regarding the number of files accessed within an application. Since the \textit{Identity Verifier} and \textit{Intra-Mon} process individual file fingerprints (I/O Images), we leverage batch processing to handle multiple files in parallel. Our experiments showed that even when increasing the number of concurrent files from 1 to 256, the total inference time for these modules increased by only approximately 10\%. This demonstrates that \ScaleMon's parallelized design maintains predictable low latency, making it a viable solution for monitoring even the most I/O-intensive, massive-scale applications without becoming a performance bottleneck.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.25}
+\caption{Performance overhead of \ScaleMon components.}
+\label{tab:overhead}
+
+\begin{tabularx}{\columnwidth}{
+    @{} >{\bfseries\raggedright\arraybackslash}X
+    >{\centering\arraybackslash}p{0.22\columnwidth}
+    >{\centering\arraybackslash}p{0.22\columnwidth}
+    >{\centering\arraybackslash}p{0.22\columnwidth} @{} }
+\toprule
+
+\multirow{2}{*}{Component} 
+    & \textbf{Training Phase} 
+    & \multicolumn{2}{c}{\textbf{Detection Phase (per Execution)}} \\
+\cmidrule(l){3-4}
+ & Total Time (s) & Avg. Time (ms) & Peak VRAM (MB) \\
+\midrule
+
+\LogParser & N/A & 3608.4 & -- \\
+\FingerprintGenerator & N/A & 624.2 & -- \\
+
+\IdentityVerifier & 15.6 & 13.2 & 106.2 \\
+\InterMon & 49.5 & 11.5 & 95.4 \\
+\IntraMon & 16.3 & 11.3 & 104.7 \\
+\midrule
+
+\textbf{\ScaleMon} & \textbf{81.4} & \textbf{4268.7} & \textbf{106.2} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=8.5cm]{Figures/scalability_fake.png}
+    \vspace{-0.6cm}
+    \caption{Scalability with Data Volume}
+    \label{ScaleMon_Scalability}
+    \vspace{-.6cm}
+\end{figure}
+
+
+
+% yields a 1\% FPR on the test set, allowing for a fair comparison of models under a consistent constraint. The challenges of threshold selection in production environments are further discussed in Section~\ref{}.
+
+
+% 3,072 CPU nodes 
+% 1,792 GPU nodes, 
+% with each CPU node featuring 2 AMD
+% EPYC 7763 (Milan) CPUs and 512 GB of main memory.
+
+% As for the file system, Perlmutter operates with a Lustre file
+% system, consisting of 16 metadata service nodes (MDSes) and
+% 274 object storage servers (OSSes). Each OSS is equipped
+% with 12 NVMe SSDs as object storage targets (OSTs). The
+% Lustre file system of Perlmutter sets the default striping
+% configuration to a stripe count of 1 and a stripe size of 1MB
+% for all users.
+
+
+% These applications is ran on production HPC cluster equiped with 
+% Our analysis uses historical job submission log datasets from KISTI
+% NURION, South Korea’s fifth-generation supercomputer, launched
+% in 2018. NURION is a high performance computing system with a
+% maximum capability of 25.7 petaflops, ranking as the 11th fastest
+% computer globally at its launch[17] NURION can simultaneously
+% utilize hundreds of thousands of cores, comprising 8,305 Intel Xeon
+% Phi 7250 (68 cores per CPU) models and 132 Intel Xeon 6148 (20
+% cores per CPU) models. NURION is equipped with 803.4TB of total
+% memory, high-performance interconnects with 100 Gbps bandwidth
+% per port, a high-performance Burst Buffer file system providing
+% 20 GB/s bandwidth per server (48 servers total) and a parallel file
+% system with 0.3 TB/s bandwidth. This large-scale computing capabilities enable NURION to support a range of HPC applications,
+% including climate prediction, new material development, drug discovery, and aviation experimentation.
+
+
+% For the evaluation, we employ Perlmutter supercomputer at
+% NERSC [39]. The system comprises 
+% 3,072 CPU nodes 
+% 1,792 GPU nodes, 
+% with each CPU node featuring 2 AMD
+% EPYC 7763 (Milan) CPUs and 512 GB of main memory.
+
+% As for the file system, Perlmutter operates with a Lustre file
+% system, consisting of 16 metadata service nodes (MDSes) and
+% 274 object storage servers (OSSes). Each OSS is equipped
+% with 12 NVMe SSDs as object storage targets (OSTs). The
+% Lustre file system of Perlmutter sets the default striping
+% configuration to a stripe count of 1 and a stripe size of 1MB
+% for all users.
+
+
+
+% \begin{table}[!t]
+%   %\captionsetup{font=small, textfont=sc, labelsep=period, justification=centering}
+%   \caption{Production Trace Dataset}\label{workload_table}
+%   \centering
+%   \footnotesize
+%   \begin{tabular}{|>{\centering\arraybackslash}p{0.23\columnwidth}|
+%                   >{\centering\arraybackslash}p{0.23\columnwidth}|
+%                   >{\centering\arraybackslash}p{0.15\columnwidth}|
+%                   >{\centering\arraybackslash}p{0.23\columnwidth}|}
+%     \hline
+%     \textbf{Workload} & \textbf{R/W Ratio(\%)} & \textbf{Complexity} & \textbf{Skewness} \\ \hline \hline
+%     TPC-C & 92/8 & High & Realistic \\ \hline
+%     YCSB-Workload A  & 50/50, 20/80, 80/20 & Low & Realistic, Extreme \\ \hline
+%     YCSB-Workload B  & 95/5 & Low & Realistic, Extreme \\ \hline
+%     YCSB-Workload F  & 50/50 (RMW) & High & Realistic, Extreme \\ \hline
+%   \end{tabular}
+% \end{table}
+
+% \begin{table}[!t]
+%   %\captionsetup{font=small, textfont=sc, labelsep=period, justification=centering}
+%   \caption{Fine-Grained I/O Dataset}\label{workload_table}
+%   \centering
+%   \footnotesize
+%   \begin{tabular}{|>{\centering\arraybackslash}p{0.23\columnwidth}|
+%                   >{\centering\arraybackslash}p{0.23\columnwidth}|
+%                   >{\centering\arraybackslash}p{0.15\columnwidth}|
+%                   >{\centering\arraybackslash}p{0.23\columnwidth}|}
+%     \hline
+%     \textbf{Workload} & \textbf{R/W Ratio(\%)} & \textbf{Complexity} & \textbf{Skewness} \\ \hline \hline
+%     TPC-C & 92/8 & High & Realistic \\ \hline
+%     YCSB-Workload A  & 50/50, 20/80, 80/20 & Low & Realistic, Extreme \\ \hline
+%     YCSB-Workload B  & 95/5 & Low & Realistic, Extreme \\ \hline
+%     YCSB-Workload F  & 50/50 (RMW) & High & Realistic, Extreme \\ \hline
+%   \end{tabular}
+% \end{table}
+
+
+
+
+% % we first describe our experimental settings (\ref{Experimental Settings}), then evaluate effectiveness of each ML modules used in \scalemon. in Microscopic Anomaly Detector, abaltion study done to and searched proper embedding model and embed dimmension, image size. and then universal modeling and detection performance in unseen application is evaluated for Macroscopic Anomaly Detector and Microscopic anomaly Detector. and overhead of overall procedure of 
+
+% % question
+% % need for model per app
+
+% % \scalemon and scalability of our methods is evaluated
+
+% % \subsection{Experimental Settings}~\label{Experimental Settings}
+% % Dataset, spec
+% % we use two type of data set, macroscopic data from user's darashan log from production HPC environment, microscopic data runed by us  ...
+
+% % data count table
+
+% % ~data used for train and evaluating ... , 
+
+% % \subsection{Behavioral Application Classifier}
+% % The Authenticator
+% % Figure: Confusion Matrix (on normal, anomaly)
+
+% % misclassified(coherence with binname)-> already suspicious //stage1
+% % correctly classified -> //stage2
+
+% % 60\% of threat data is filtered out already in this phase 
+
+% % \subsection{Macroscopic Anomaly Detector}
+% % Table: data count
+% % Figure: regularity in macroscopic i/o behavior (multi modal structure) parallel coordinate plot
+% % Table: detection performance (auroc, recall, fpr) //best case's recall, FPR
+
+% % \subection{Microscopic Anomaly Detector}
+% % remain ... of threat is all filtered out in this phase
+
+% % Table: data count
+% % Table: detection peformance (auto encoder(cnn, lstm), embedding->one-class methods(input data time series vs image)) theme: reconstruction error based vs embdding->one-class /Time Series Format vs Image Format (difference between these two will prominent in overhead but i don't know where to position it.)
+% % figure: ROC curve (log?)
+% % figure: cluster visualization (theme:superiority of our method )
+% % Table: detection performance best case detailed performance (theme: comparing one-class models)\
+
+% % \subsubsection{ablation study}
+% % figure: embed_dim, image_size, embedder (pca, auto encoder, vit,resnet) //above result was best case
+
+% % \subection{universal modeling} //title should be changed
+% % minor data should be tested on ...
+
+% % Table: Macroscopic Anomaly Detector trained by hpc_read, hpc_write, train on lammps reaxff
+
+% % Table: Microscopic Anomaly Detector
+
+% % \subsection{performance overhead}
+% % table: performance overhead of our all procedure
+% % figure: scalability per data size(log size) vs other methods | memory, time 
+
+
+% % *point*
+% % goal | design
+% % 1) capture i/o behaviour in micro, macro both | MAD, mAD
+% % 2) low overhead, scalbility | Image format, embedder that don't need to train
+% % 3) train only with benign -> not rely on knowledge about attack pattern, strong to zero day attack(related work)  | unsupervised learning 
+
+
+% % more interesting point, attack point (to appendix)
+
+% % ---------------------
+% % limitation
+
+
+% % Thresholding
+% % we assum that we make optimal thresholding but in real it shoule be selected by train data
+% % (need evaluation? but performance is very bad )
+
+% % unseen application (minor application)
+% % (code writes by user)
+% % can have more dyanamics .. 
+
+% % +??
+
+
+% \begin{table}[!t]
+% \footnotesize
+% \centering
+% \caption{Comparison of the detection performance of different models for each application and attack type.}
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{l l | c | c c c | c c c | c c c}
+% \toprule
+% \multirow{2}{*}{Embedder} &
+% \multirow{2}{*}{Detector} &
+% \multirow{2}{*}{Metric} &
+% \multicolumn{3}{c|}{h5bench\_read} &
+% \multicolumn{3}{c|}{h5bench\_write} &
+% \multicolumn{3}{c}{LAMMPS\_ReaxFF} \\
+% \cmidrule(lr){4-6} \cmidrule(lr){7-9} \cmidrule(lr){10-12}
+%  & & & C & I & A & C & I & A & C & I & A \\
+% \midrule
+
+% % ------ None Embedder ------
+% \multirow{3}{*}{None} 
+%  & Centroid 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% \multirow{3}{*}{None} 
+%  & Isolation Forest 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% \multirow{3}{*}{None} 
+%  & K-Means 
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% % ------ Autoencoder-based ------
+% \multirow{3}{*}{Autoencoder}  
+%  & Autoencoder
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% % ------ ScaleMon ------
+% \multirow{3}{*}{ScaleMon} 
+%  & ScaleMon
+%  & AUROC  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & Recall & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+%  & 
+%  & FPR    & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \end{table}
+
+% \begin{table}[!t]
+% \centering
+% \scriptsize % Slightly reduced font size
+% \setlength{\tabcolsep}{3pt} % Reduce space between columns
+% \renewcommand{\arraystretch}{1.2} % Increase row spacing for readability
+% \caption{System specifications.}
+
+% \begin{tabularx}{\columnwidth} { 
+%    >{\raggedright\arraybackslash}p{0.28\columnwidth}
+%    >{\raggedright\arraybackslash}p{0.36\columnwidth}
+%    >{\raggedright\arraybackslash}p{0.36\columnwidth} }
+% \toprule
+% \textbf{Specification} & \textbf{System A} & \textbf{System B} \\
+% \midrule
+% Node Count        & 8,437 & 4,864 \\
+% CPU               & Xeon Phi 7250 (68 cores), \newline Intel Xeon 6148 (20 cores) & AMD EPYC 7763, \newline Intel Xeon 6148 \\
+% ...
+% \bottomrule
+% \end{tabularx}
+% \vspace{-0.2cm}
+% \label{system_compare}
+% \end{table}
+
+
+
+% \begin{table}[H]
+% \footnotesize
+% \centering
+% \caption{\InterMon AUROC across models}
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{l | c c c | c c c | c c c}
+% \toprule
+% Model &
+% \multicolumn{3}{c|}{VASP} &
+% \multicolumn{3}{c|}{GROMACS} &
+% \multicolumn{3}{c}{LAMMPS} \\
+% \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+%  & C & I & A & C & I & A & C & I & A \\
+% \midrule
+% k-NN  & 1.000  & 0.998  & 1.000  & 0.994  & 0.981  & 1.000  & 1.000  & 1.000  & 1.000 \\
+% \midrule
+% LOF  & 0.995  & 1.000  & 0.971  & 0.969  & 0.999  & 0.965  & 0.987  & 0.991  & 0.999 \\
+% \midrule
+% GMM  & 1.000  & 0.813  & 1.000  & 0.999  & 0.999  & 1.000  & 1.000  & 1.000  & 1.000 \\
+% \midrule
+% Isolation Forest  & 0.991  & 0.791  & 0.969  & 0.954  & 0.479  & 0.826  & 0.986  & 0.761  & 0.973 \\
+% \midrule
+% One-Class SVM  & 1.000  & 0.996  & 1.000  & 0.928  & 0.666  & 1.000  & 1.000  & 0.644  & 1.000 \\
+% \midrule
+% Autoencoder  & 1.000  & 1.000  & 1.000  & 0.989  & 0.996  & 1.000  & 1.000  & 1.000  & 1.000 \\
+% \midrule
+% Deep SVDD  & 1.000  & 1.000  & 1.000  & 0.997  & 1.000  & 1.000  & 1.000  & 1.000  & 1.000 \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \label{tab:InterMon_across_models}
+% \end{table}
+
+% \begin{table}[t]
+% \centering
+% \caption{\InterMon detection results using Deep SVDD}
+% \label{tab:InterMon_deep_svdd}
+% \resizebox{\columnwidth}{!}{
+% \begin{tabular}{l l cccc cc}
+% \toprule
+% \textbf{Application} & \textbf{Threat} 
+% & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} 
+% & \textbf{Recall} & \textbf{FPR} \\
+% \midrule
+
+% \multirow{3}{*}{\textbf{VASP}}
+% & C & 15341 & 23896 & 253 & 0 & 1.000 & 0.0105 \\
+% & I & 6206  & 23891 & 258 & 0 & 1.000 & 0.0107 \\
+% & A & 1539  & 1530  & 9   & 0 & 1.000 & 0.0058 \\
+% \midrule
+
+% \multirow{3}{*}{\textbf{GROMACS}}
+% & C & 1649 & 2300 & 50 & 59 & 0.965 & 0.0213 \\
+% & I & 1113 & 2329 & 21 & 0  & 1.000 & 0.0089 \\
+% & A & 265  & 264  & 1  & 0  & 1.000 & 0.0038 \\
+% \midrule
+
+% \multirow{3}{*}{\textbf{LAMMPS}}
+% & C & 7234 & 10831 & 121 & 0 & 1.000 & 0.0110 \\
+% & I & 1944 & 10830 & 122 & 0 & 1.000 & 0.0111 \\
+% & A & 902  & 893   & 9   & 0 & 1.000 & 0.0100 \\
+
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table}
+
+
+% \begin{table}[t]
+% \centering
+% \caption{\InterMon detection results using Deep SVDD}
+% \label{tab:InterMon_deep_svdd}
+% \resizebox{\columnwidth}{!}{
+% \begin{tabular}{l cccc cccc cccc}
+% \toprule
+% \multirow{2}{*}{\textbf{Application}} 
+% & \multicolumn{4}{c}{\textbf{Confidentiality (C)}} 
+% & \multicolumn{4}{c}{\textbf{Integrity (I)}} 
+% & \multicolumn{4}{c}{\textbf{Availability (A)}} \\
+% \cmidrule(lr){2-5} \cmidrule(lr){6-9} \cmidrule(lr){10-13}
+% & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN}
+% & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN}
+% & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} \\
+% \midrule
+
+% \textbf{VASP} 
+% & 15341 & 23896 & 253 & 0
+% & 6206  & 23891 & 258 & 0
+% & 1539  & 1530  & 9   & 0 \\
+
+% \textbf{GROMACS} 
+% & 1649 & 2300 & 50 & 59
+% & 1113 & 2329 & 21 & 0
+% & 265  & 264  & 1  & 0 \\
+
+% \textbf{LAMMPS} 
+% & 7234 & 10831 & 121 & 0
+% & 1944 & 10830 & 122 & 0
+% & 902  & 893   & 9   & 0 \\
+
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table}
+
+% We evaluate the performance of \InterMon  which uses execution profile vector as input on 
+
+
+% A threat detected by scrutinizing job level vector 
+
+% \taebin{C, I detected by scrutinizing job level vector A threat detected by scrutinizing job level vector ... recall fpr of deepsvd model should be showed to show practical view}
+
+% We evaluate the performance of \InterMon using the execution-level statistical profile, which provides a holistic "bird's-eye view" of each execution. Table~\ref{tab:InterMon_models_job} summarizes the AUROC scores for various one-class models on this task. The results are highly encouraging, with most models achieving excellent performance across all applications and attack types, often exceeding 0.95 AUROC. This demonstrates that our execution-level representation effectively captures the macroscopic fingerprints of normal behavior, making them clearly distinguishable from anomalous profiles. Notably, tree-based models like Isolation Forest and deep learning approaches such as Autoencoder and Deep SVDD consistently rank among the top performers, showcasing the robustness of our feature engineering. The strong performance across a diverse set of models confirms that our approach is largely model-agnostic, offering the flexibility to choose a model that best fits the specific resource constraints and performance requirements of a deployment environment.
+
+
+% \begin{table}[t]
+% \centering
+% \caption{Deep SVDD results}
+% \label{tab:deepsvdd_recall_fpr}
+% \resizebox{\columnwidth}{!}{
+% \begin{tabular}{l cccccc}
+% \toprule
+% \textbf{Application} 
+% & \multicolumn{2}{c}{\textbf{Confidentiality (C)}} 
+% & \multicolumn{2}{c}{\textbf{Integrity (I)}} 
+% & \multicolumn{2}{c}{\textbf{Availability (A)}} \\
+% \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+% & \textbf{Recall} & \textbf{FPR}
+% & \textbf{Recall} & \textbf{FPR}
+% & \textbf{Recall} & \textbf{FPR} \\
+% \midrule
+% VASP    & 1.000 & 0.010 & 1.000 & 0.011 & 1.000 & 0.006 \\
+% GROMACS & 0.965 & 0.021 & 1.000 & 0.009 & 1.000 & 0.004 \\
+% LAMMPS  & 1.000 & 0.011 & 1.000 & 0.011 & 1.000 & 0.010 \\
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table}
+
+
+% \begin{table}[t]
+% \centering
+% \caption{Deep SVDD results}
+% \label{tab:deepsydd_recall_fpr}
+% \begin{tabular}{@{}l ccc@{}}
+% \toprule
+% \textbf{Application} & \textbf{Confidentiality (C)} & \textbf{Integrity (I)} & \textbf{Availability (A)} \\
+% \midrule
+% VASP    & 99.2 (1.1) & 99.5 (1.1) & 99.4 (1.1) \\
+% GROMACS & 97.1 (1.3) & 98.8 (1.3) & 99.0 (1.3) \\
+% LAMMPS  & 99.5 (0.9) & 99.6 (0.9) & 99.5 (0.9) \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+
+% \begin{table}[H]
+% \footnotesize
+% \centering
+% \caption{\InterMon models job}
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{l | c c c | c c c | c c c}
+% \toprule
+% Model &
+% \multicolumn{3}{c|}{VASP} & 
+% \multicolumn{3}{c|}{GROMACS} & 
+% \multicolumn{3}{c}{LAMMPS} \\
+% \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+%  & C & I & A
+%  & C & I & A 
+%  & C & I & A \\
+% \midrule
+
+% k-NN  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% LOF  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% One-Class SVM  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% Isolation Forest  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% Autoencoder  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% Deep SVDD  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \label{tab:InterMon_models_job}
+% \end{table}
+
+% Next, we assess \InterMon's capability at the file-access granularity using the file-level contextual profile. As shown in Table~\ref{tab:InterMon_models_file}, the detection performance at this level is also remarkably high. This result validates that our contextual features—such as the LCA distance and file type—successfully encode the legitimacy of individual file accesses within the broader execution context. Once again, the overall strong performance across different model architectures underscores the power of our representation. While most models perform well, LOF and Deep SVDD show a slight edge, likely due to their ability to model complex, multi-modal distributions of normal file access patterns. This demonstrates that even at a finer granularity, our lightweight feature vectors provide sufficient information for accurate, model-agnostic anomaly detection.
+
+% \begin{table}[H]
+% \footnotesize
+% \centering
+% \caption{\InterMon models file}
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{l | c c c | c c c | c c c}
+% \toprule
+% Model &
+% \multicolumn{3}{c|}{VASP} & 
+% \multicolumn{3}{c|}{GROMACS} & 
+% \multicolumn{3}{c}{LAMMPS} \\
+% \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+%  & C & I & A
+%  & C & I & A 
+%  & C & I & A \\
+% \midrule
+
+% k-NN  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% LOF  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% One-Class SVM  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% Isolation Forest  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% Autoencoder  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \midrule
+
+% Deep SVDD  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \label{tab:InterMon_models_file}
+% \end{table}
+
+
+% Finally, we evaluate the performance of \IntraMon, which leverages our I/O image representation for the deepest level of inspection. The results, presented in Table ~\ref{tab:IntraMon_models}, are exceptional, with nearly all models achieving near-perfect AUROC scores across the board. This outstanding performance is a direct testament to the superiority of the I/O image as a behavioral fingerprint. The 2D representation effectively captures the intricate spatio-temporal dynamics of intra-file I/O, making even the slightest deviations readily apparent. Deep learning models, particularly the Autoencoder and Deep SVDD, excel in this task by learning the complex visual patterns of benign I/O. The consistently high scores confirm that our I/O image representation provides a rich, model-agnostic foundation for detecting even the most stealthy intra-file anomalies.

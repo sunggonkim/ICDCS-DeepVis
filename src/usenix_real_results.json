@@ -1,0 +1,71 @@
+{
+  "dataset": {
+    "files_scanned": 8000,
+    "normal_tests": 50,
+    "attack_tests": 50,
+    "rootkit_types": [
+      "diamorphine",
+      "reptile",
+      "beurk",
+      "jynx2",
+      "azazel"
+    ]
+  },
+  "metrics": {
+    "DeepLog-style": {
+      "AUROC": 0.5,
+      "Precision": 0,
+      "Recall": 0.0,
+      "F1": 0,
+      "FPR": 0.0,
+      "TP": 0,
+      "TN": 50,
+      "FP": 0,
+      "FN": 50
+    },
+    "LogRobust-style": {
+      "AUROC": 0.5,
+      "Precision": 0.5,
+      "Recall": 1.0,
+      "F1": 0.6666666666666666,
+      "FPR": 1.0,
+      "TP": 50,
+      "TN": 0,
+      "FP": 50,
+      "FN": 0
+    },
+    "DeepVis": {
+      "AUROC": 1.0,
+      "Precision": 1.0,
+      "Recall": 1.0,
+      "F1": 1.0,
+      "FPR": 0.0,
+      "TP": 50,
+      "TN": 50,
+      "FP": 0,
+      "FN": 0
+    }
+  },
+  "per_rootkit": {
+    "diamorphine": {
+      "detected": 10,
+      "total": 10
+    },
+    "reptile": {
+      "detected": 10,
+      "total": 10
+    },
+    "beurk": {
+      "detected": 10,
+      "total": 10
+    },
+    "jynx2": {
+      "detected": 10,
+      "total": 10
+    },
+    "azazel": {
+      "detected": 10,
+      "total": 10
+    }
+  }
+}

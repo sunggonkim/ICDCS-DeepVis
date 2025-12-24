@@ -1,0 +1,146 @@
+\section{Introduction} \label{intro}
+
+Relational databases are most widely utilized, serving as the core software components for applications requiring structured data management and transactional integrity. A key distinguishing feature of relational databases is the ability to enforce data integrity through schemas, support complex queries with SQL, and guarantee strict ACID transactions~\cite{mohamed2014relational, dohmen2024schemapile, qin2009keyword}. These capabilities distinguish them from alternative databases, including key-value stores~\cite{dong2021rocksdb, klophaus2010riak, Redis, sivasubramanian2012amazon}, document databases~\cite{MongoDB, anderson2010couchdb, ritter2021orientdb, cosmosDB, couchbase}, and wide-column stores~\cite{vora2011hadoop, lakshman2010cassandra, chang2008bigtable, scyllaDB}, which often sacrifice transactional guarantees, consistency, or query expressiveness for scalability or flexibility. These features make relational databases essential.
+
+Despite these advantages, traditional relational databases (e.g., MySQL~\cite{Mysql} and PostgreSQL~\cite{Postgre}) do not fully leverage the parallel execution capabilities of modern hardware resources (e.g., manycore processors)~\cite{ma2011scalable, zhang2020optimizing, yin2021parax, al2020parma, cheng2021tensor}. Manycore systems, equipped with tens or even hundreds of cores, provide substantial hardware parallelism. However, relational databases remain unable to utilize this parallelism effectively due to global contention in concurrency control, shared data structure access, and synchronization~\cite{chen2016task, xiao2017load, 246196, 210524, lee2023lru, an2022avoiding}. %Thus, relational databases do not utilize the computational ability of manycore systems efficiently, leading to bottlenecks and limited performance scalability
+
+\begin{comment}
+\textbf{READ COMMENTS FROM YONGSEOK AND IFX}
+Due to the limited performance and power efficiency of single-core CPUs, modern enterprise-grade CPUs for data centers, which execute applications on a massive scale, are equipped with manycore CPUs boasting a greater number of CPU cores~\cite{ma2011scalable, zhang2020optimizing, yin2021parax, al2020parma, cheng2021tensor}. 
+As manycore CPUs are designed with extreme parallelism in mind, software running on these CPUs needs to be designed with parallelism at its core to fully exploit hardware performance. 
+However, as multiple parallel threads perform tasks simultaneously, many optimizations need to be made to existing software, considering task ordering, load balancing, shared data access, and synchronization between threads~\cite{chen2016task, xiao2017load, 246196, 210524, lee2023lru, an2022avoiding}.
+
+
+Among software applications, a database is one of the critical software components that require extreme parallelism \cite{govindaraju2017big, bani2018implementation}. 
+For example, when multiple users access the database simultaneously, it should respond to requests in real-time. 
+To achieve this, the database should effectively utilize hardware resources for high parallel processing. 
+However, single-machine databases do not utilize the computational power of manycore systems efficiently, leading to bottlenecks and limited performance scalability \cite{ren2016design}.    
+\end{comment}
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=8.5cm]{figures/TPS_Small Server.png}
+    \caption{Throughput under TPC-C with MySQL, PostgreSQL, SOTA (\textit{WAR} and \textit{LRU-C}), and \DASCALE (Proposed).}
+    \label{Background_TPS}
+\end{figure}
+
+
+Figure~\ref{Background_TPS} presents throughput under TPC-C for MySQL~\cite{Mysql} with adjusted configuration (Section~\ref{motivation}), PostgreSQL~\cite{Postgre}, and two SOTA mechanisms, \textit{WAR}~\cite{an2022avoiding} and \textit{LRU-C}~\cite{lee2023lru}, as thread count increases. 
+MySQL throughput increases 4.89$\times$ from 1 to 8 threads but falls sharply by 3.32$\times$ at 32 threads, remaining low to 128. PostgreSQL throughput rises 1.79$\times$ to 32 threads but declines by 1.25$\times$ at 128. 
+Both \textit{WAR} and \textit{LRU-C} demonstrate gains of 3.93$\times$ and 7.16$\times$ up to 32 threads but plateau with additional threads. 
+These trends underscore contention and synchronization overhead growing faster than concurrency gains \cite{johnson2009improving, wang2021discriminative}, highlighting two key scalability challenges in current database designs.
+
+\noindent\textbf{Inefficient Utilization of Cores: }Efficiently utilizing multicores in relational databases presents significant challenges due to the inherent complexity of managing concurrency and resource allocation across multiple cores. 
+Prior research~\cite{bang2022full, sirin2021performance, shanbhag2020study} has identified that complex tasks, such as query analysis, execution, logging, and transaction handling, resist straightforward parallelization. Maintaining ACID guarantees further complicates the scheduling and ordering of concurrent threads. Recent studies~\cite{rui2020efficient, zhang2023scalable, fuchs2022sortledton} have advanced scalable methods for focused functions such as the join operation.
+These specialized solutions underscore the ongoing challenge of achieving general efficiency across diverse operations of relational databases in manycore systems.
+
+
+\noindent\textbf{Locking in Shared Data Structures:} Database systems allow concurrent thread access to shared data, protecting consistency via locks such as spinlocks or mutexes on tables, rows, indexes, and logs. 
+However, as demonstrated by prior studies~\cite{zhicorograph, chengmammoths, caibonsaikv, kim2019border}, locking introduces performance degradation. 
+Although fine-grained locking can enhance scalability, recent research tends to optimize individual structures (e.g., transactions, tables, logs), underscoring the difficulty of efficient locking in complex shared data frameworks.
+
+
+
+
+
+
+
+\begin{comment}
+    \noindent\textbf{Redundant data write: } \changjong{}
+~\cite{zhuangtesting, zhao75comparative, siddiquicache}
+
+\end{comment}
+
+
+%A single database can have more petabytes of data with millions of simultaneous users, requiring it to scale out with multiple distributed nodes and scale up by optimizing a single node. With many-core CPUs, it is crucial to redesign the database to reduce parallelization overhead, including shared data structures, synchronization, and locking.~\cite{loesing2015design}
+
+
+%For example, when multiple users access the database simultaneously, it should be able to respond to requests in real-time to ensure continuous service. To achieve this, the database server should effectively utilize hard\textit{WAR}e resources for high parallel processing. However, single-instance databases fail to utilize the computational power of many-core systems efficiently. Due to synchronization problems between processes, they experience bottlenecks during transaction processing, showing limitations in performance scalability.
+
+
+
+
+%Nevertheless, a single database can have more than petabytes of data with millions of users accessing the data simultaneously. 
+%This necessitates the database to concurrently scale out by employing multiple distributed server nodes and scale up by optimizing the database on a single node.
+%Especially with many-core CPUs, it is important to redesign the database to reduce parallelization overhead, such as the shared data structure, synchronization, and locking of critical sections.
+
+% New works
+
+
+%\skim{Need to add \textit{WAR} and LRU-C as the last list of related works.}
+
+
+
+
+
+
+%\begin{table}[t]
+%\footnotesize
+%\centering
+%\caption{Categories and comparison with previous studies (TD: Transaction Distribution, SS: Shared Data Structure, IU: Idle Core Utilization).}
+%\skim{ WE Need to incooperate H-store, VoltDB, and say they are targeted for distributed database, and can cause redundency when adopting them to single manycore. // Maybe add a new column called Scope? with single and distributed?  // ScyllaDB - NoSQL but also distributed partitioned ,, Cicada: Dependably Fast Multi-Core In-Memory Transaction}
+
+\begin{table}[!t]
+\footnotesize
+\caption{Categories and comparison with previous studies (Scope: Deployment Scope, TD: Transaction Distribution, SS: Shared Data Structure, IU: Idle Core Utilization).}
+\label{intro_table}
+\centering
+{\rmfamily
+\begin{tabularx}{\linewidth}{l|X|c|c|c|c}
+\toprule
+\textbf{Study} & \textbf{Target Database} & \textbf{Scope} & \textbf{TD} & \textbf{SS} & \textbf{IU} \\
+\midrule
+Shanbhag \textit{et al.}~\cite{shanbhag2020study} & Relational DB          & Single      & \checkmark &            & \checkmark \\
+Sirin \textit{et al.}~\cite{sirin2021performance} & HTAP DB                & Single      &            &            & \checkmark \\
+Fuchs \textit{et al.}~\cite{fuchs2022sortledton}  & GraphDB               & Single      &            & \checkmark & \checkmark \\
+Rui \textit{et al.}~\cite{rui2020efficient}       & Relational DB          & Single      & \checkmark &            & \checkmark \\
+Zhang \textit{et al.}~\cite{zhang2023scalable}    & OpenMLDB              & Single      &            &            & \checkmark \\
+Cai \textit{et al.}~\cite{caibonsaikv}            & Key-value DB          & Single      & \checkmark & \checkmark &            \\
+Cheng \textit{et al.}~\cite{chengmammoths}        & GraphDB               & Single      &            & \checkmark &            \\
+Kim \textit{et al.}~\cite{kim2019border}          & Key-value DB          & Single      &            & \checkmark & \checkmark \\
+Zhi \textit{et al.}~\cite{zhicorograph}           & GraphDB               & Single      &            & \checkmark &            \\
+Lee \textit{et al.}~\cite{lee2023lru}             & Storage engine in RDB & Single      &            & \checkmark & \checkmark \\
+An \textit{et al.}~\cite{an2022avoiding}          & Storage engine in RDB & Single      &            & \checkmark & \checkmark \\
+%Lim \textit{et al.}~\cite{lim2017cicada}                         & Engine for OLTP          & Single & \checkmark & \checkmark & \checkmark \\
+Kallman \textit{et al.}~\cite{kallman2008h}                             & Relational DB          & Distributed & \checkmark &            &            \\
+Michael \textit{et al.}~\cite{stonebraker2013voltdb}              & Relational DB          & Distributed & \checkmark &            &            \\
+\midrule
+\textbf{\DASCALE}                                & Relational DB          & Single      & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{tabularx}
+}
+\end{table}
+
+%\skim{\textbf{Rewritten to replace next 2 paragraph}
+Many prior works, detailed in Table~\ref{intro_table}, improve database performance on manycore systems by advancing transaction management, concurrency control in shared data, and core utilization. These primarily target specialized systems such as graph databases~\cite{fuchs2022sortledton, chengmammoths, zhicorograph}, key-value stores~\cite{caibonsaikv, kim2019border}, and applications in machine learning and IoT~\cite{zhang2023scalable, xiao2022time}. Our work targets relational monolithic databases on single manycore servers, where achieving robust end-to-end scalability remains a significant challenge. While distributed relational databases such as VoltDB~\cite{stonebraker2013voltdb} and H-Store~\cite{kallman2008h} scale efficiently across clusters and can be adapted to manycore systems to improve scalability, their network-centric designs and coordination protocols introduce overhead that limits performance within a single manycore node. Recent studies on monolithic relational databases~\cite{lee2023lru, an2022avoiding} focus on optimizing specific components, such as storage engine I/O by partitioning the LRU list and buffering dirty pages to reduce contention. However, these optimizations address isolated components and do not resolve key scalability bottlenecks beyond those specific layers, which are critical for achieving robust, end-to-end scalability.
+In contrast, our research addresses robust end-to-end scalability in manycore monolithic relational databases by enabling parallel, independent management across full system layers, overcoming low core utilization through multiple instance deployment within a single server.
+
+\begin{comment}
+Many previous studies, as shown in Table~\ref{intro_table}, have optimized databases for manycore systems by focusing on transaction control, shared data structures, and idle core utilization. However, these studies target specific databases and applications. For example, some studies address graph databases~\cite{fuchs2022sortledton, chengmammoths, zhicorograph}, key-value databases~\cite{caibonsaikv, kim2019border} or applications such as machine learning and IoT~\cite{zhang2023scalable, xiao2022time}. \changjong{In contrast, we focus on relational monolithic databases for manycore systems. While distributed databases such as VoltDB~\cite{stonebraker2013voltdb} and H-Store~\cite{kallman2008h} achieve scalability across multiple nodes within networks, their design is tailored for a scale-out environment, which causes significant network communication overhead. Moreover, when executed on a single manycore system, they retain partition coordination and commit protocols originally designed for distributed environments, introducing unnecessary overhead and limiting scalability.
+
+
+Thus, improving relational monolithic database scalability requires addressing beyond the underlying key-value stores and storage engines. While other works~\cite{lee2023lru, an2022avoiding} also target relational databases, they focus on the I/O operation in the storage engine by dividing the LRU list into clean and dirty pages, reducing thread contention, and using temporary memory buffers to pre-stage dirty pages lowers write contention.
+However, relational databases have bottlenecks beyond underlying key-value databases and storage engines. Optimizing only the lower layers, including key-value stores~\cite{caibonsaikv, kim2019border} and highly optimized in-memory OLTP transaction engines~\cite{lim2017cicada}, can improve throughput by reducing lock contention, optimizing concurrency control, and minimizing logging overhead at the engine level. However, these improvements remain confined to the execution layer and do not enhance the scalability of full-featured relational databases, as they fail to address higher-level functionalities, including query optimization, execution planning, and fault-tolerant recovery.
+
+}    
+\end{comment}
+
+
+
+%In contrast, we focus on relational databases.
+%While other works~\cite{lee2023lru, an2022avoiding} also target relational databases, they focus on the I/O operation in the storage engine by dividing the LRU list into clean and dirty pages reduces thread contention, and using temporary memory buffers to pre-stage dirty pages lowers write contention.
+%However, relational databases have bottlenecks beyond underlying key-value databases and storage engines.
+%Optimizing only the underlying storage layer, such as key-value databases and storage engines, does not enhance the scalability of full-featured relational databases, as such optimizations fail to address higher-level functionalities like query optimization and transaction support.
+
+
+
+
+
+In this paper, we propose \DASCALE, a novel database system for manycore systems. Our key idea is to leverage an independent yet cooperative design, realizing shared-nothing and high concurrency and parallelism. 
+To achieve this, \DASCALE introduces three lightweight mechanisms. First, its \textit{Tx coordinator} distributes transactions for parallel processing by multiple instances. The coordinator in the master uses a hash-based scheduler to assign each transaction to multiple slaves based on the data pages involved, enabling execution without cross-instance conflicts. Second, a two-level asynchronous checkpoint mechanism maintains consistency with minimal synchronization overhead. Each slave independently persistent state of a transaction via Local Checkpoints (LCPs), while the master asynchronously creates a Global Checkpoint (GCP) by aggregating these LCPs, separating global consistency from local transaction processing. Finally, a localized I/O approach with per-instance logging enables parallel disk access to minimize I/O stalls. Each slave writes to its own Write-Ahead Log (WAL) on shared storage, removing the I/O serialization bottleneck of monolithic systems that use a single log file.
+
+
+
+Our evaluation using TPC-C and YCSB benchmarks shows that \DASCALE significantly outperforms MySQL and PostgreSQL, improving transaction throughput by up to 28.02$\times$ and 1.88$\times$, and operation throughput by up to 64.97$\times$ and 1.90$\times$, respectively, while reducing the 99th-percentile latency by up to 99.68\% and 85.04\%. Furthermore, compared to state-of-the-art database optimizations, \textit{WAR}~\cite{an2022avoiding} and \textit{LRU-C}~\cite{lee2023lru}, \DASCALE improves operation throughput by up to 5.43$\times$ and 2.53$\times$, respectively.
+To the best of our knowledge, this is the first work that implements a shared-nothing on shared-memory distributed architecture in a single manycore system. It achieves end-to-end scalability by addressing the limitations of monolithic relational databases, eliminating global contention and I/O serialization while enabling parallel transaction processing through lightweight coordination and transaction distribution. \DASCALE is publicly available at \url{https://github.com/ScaleRDB/ScaleRDB}.

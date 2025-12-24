@@ -1,0 +1,183 @@
+\section{Background}
+\subsection{Quantum Circuit Simulation}
+%%\vspace{-.1cm}
+
+Several approaches have been designed to simulate quantum circuits on classical hardware,
+each offering different trade-offs between scalability, accuracy, and
+computational complexity~\cite{morita2024simulator, xu2024atlas, park2022snuqs, zhang2021hyquas,
+zhang2022uniq, wang2023enabling, ahmadzadeh2023fast}. These simulation approaches
+are generally categorized into two types: amplitude sampling and full state
+vector simulation.
+
+\noindent
+\textbf{Amplitude sampling simulation. }Amplitude sampling simulation represents
+entangled qubits as tensors and simulates their interactions using tensor
+contraction. This process contracts multiple input qubit states into a single output
+qubit amplitude. While the simulation performs well for circuits with low or
+structured entanglement, its performance decreases significantly for those with high
+or complex entanglement. A key limitation is that it only simulates the final
+output amplitude, causing most of the information between the input and output qubits
+to be lost~\cite{fu2024achieving, pan2022simulation, patra2024efficient}.
+
+\noindent
+\textbf{Full state vector simulation. }Full state vector simulation expresses the
+full state vector as a complex vector of size $2^{n}$, where $n$ is the number
+of qubits. It captures all possible superpositions and entanglements, providing
+high simulation accuracy without approximation~\cite{xu2024atlas, park2022snuqs,
+zhang2021hyquas}. As the most widely popular approach, our work focuses on full
+state vector simulation.
+
+Since full state vector simulation is the most accurate and general-purpose
+approach, it is crucial for validating quantum algorithms, verifying hardware
+behavior, and benchmarking performance. Preserving the complete quantum state
+ensures a reliable baseline for correctness and precision. However, it suffers
+from exponential increases in computational and memory requirements as the
+number of qubits increases. This is because each additional qubit doubles the state
+vector size. The memory complexity is $\mathcal{O}(2^{n})$, with each complex amplitude
+requiring 16 bytes (e.g., 8 bytes each for the real and imaginary parts). For
+example, a 40-qubit state requires approximately 17 TB of memory, while a 50-qubit
+state exceeds 16 PB, far beyond the capability of most classical systems.
+Additionally, gate operations become equally high computational cost, as they
+involve matrix-vector multiplications over the full state vector. To address this,
+memory pooling, distributed execution, and kernel-level optimization are
+essential. \ScaleQsim is designed to meet these challenges with a scalable and accurate
+full state vector simulation on leadership-scale HPC systems.
+
+\begin{comment}
+Thus, full-state vector simulation is considered the most accurate and general-purpose approach. It is crucial for validating quantum algorithms, verifying quantum hardware behavior, and benchmarking quantum system performance. By preserving the complete quantum state during simulation provides a reliable baseline for assessing correctness and numerical precision.
+However, full-state vector simulation suffers from exponential increases in both computational and memory requirements as the number of qubits increases. This is because each additional qubit doubles the state vector size. The memory complexity is $\mathcal{O}(2^n)$, with each complex amplitude requiring 16 bytes (e.g., 8 bytes each for the real and imaginary). For example, a 40-qubit state requires approximately 16TB of memory, while a 50-qubit state exceeds 18PB far beyond the capability of most classical systems. Additionally, gate operations become equally high computational cost, as they involve matrix-vector multiplications over the entire state vector.    
+\end{comment}
+
+%\changjong{Delete? unnecessary? below}
+\begin{comment}
+To address these limitations, advanced approaches such as memory pooling, distributed multi-node execution, and kernel-level optimization are required. \ScaleQsim is designed to meet these challenges by providing a full-state simulation framework that achieves both high accuracy and scalability on modern HPC systems.
+    
+\end{comment}
+
+\begin{comment}
+Full-state vector simulation is the most effective method for accurately tracking all possible quantum states. It is useful for verifying the accuracy of quantum algorithms, optimizing quantum circuits, and evaluating the performance of various quantum systems. This is because it captures the complete quantum state, including all superpositions and entanglements, without any loss of information during the computation.
+Spectically, full-state vector simulation represents the state of an n-qubit quantum system as a complex vector of size \(2^n\). Each element of this vector represents the amplitude corresponding to a specific basis state, which can be expressed as:
+\begin{equation}
+    \large|\psi\rangle = \sum_{i=0}^{2^n - 1} \alpha_i |i\rangle
+    \label{state_equ_1}
+\end{equation}
+The simulation process typically begins by initializing the system to a specific quantum state. Usually, all qubits are set to the \( |0\rangle^{\otimes n} \) state. Quantum gates are then applied as linear transformations represented by unitary matrices of size \( 2^n \times 2^n \). The state vector is updated by matrix-vector multiplication: \(|\psi'\rangle = U |\psi\rangle \). where \( U \) is the unitary matrix representing the applied gate or a sequence of gates. When a measurement is performed, the state vector collapses to a particular basis state, with the probability determined by the magnitude squared of the corresponding amplitude.
+
+This approach offers high accuracy, but as the number of qubits increases exponentially, the memory and computational requirements grow rapidly. 
+Specifically, the memory requirement for Full-state vector simulation scales exponentially with the number of qubits \( n \), following a complexity of \( O(2^n) \). Each complex data in the state vector consists of a real and an imaginary part, each requiring 8 bytes, resulting in a total of 16 bytes per complex data. For example, 40 and 50 qubits require 16TB and 18PB of memory, respectively. In addition, quantum gate operations involve matrix-vector multiplication on a state vector of size \( 2^n \), resulting in a time complexity of \( O(2^n) \). As the number of qubits increases, computation time increases exponentially, making it practically impossible to simulate large-scale systems exceeding 40–50 qubits using conventional classical systems.  
+
+\changjong{Need change: Thus, effective utilization of Full-State Vector Simulation requires techniques such as memory pooling, high-performance distributed computing, or novel optimization methods.
+}
+    
+\end{comment}
+
+\begin{comment}
+
+
+Computational complexity is also a critical issue. Maintaining the full state vector and applying gates typically involves a time complexity of \( O(2^n) \). This becomes particularly problematic when dealing with quantum circuits containing a large number of gates, making it practically impossible to accurately simulate systems exceeding 40 qubits with conventional hardware.
+    
+\end{comment}
+
+\begin{comment}
+Full-State Vector Simulation은 모든 가능한 양자 상태를 정확하게 추적할 수 있는 가장 효과적인 방법입니다. 이 방법은 양자 알고리즘의 정확성을 검증하고, 양자 회로를 최적화하며, 다양한 양자 시스템의 성능을 평가하는 데 유용하게 사용됩니다. 그러나, 이 접근 방식은 큐비트 수의 증가에 따라 계산 비용이 기하급수적으로 증가하는 문제가 있습니다.
+
+Full-State Vector Simulation은 n-큐비트 양자 시스템의 상태를 2n 크기의 복소수 백터로 표현됩니다. 이 백터의 각 요소는 특정 기저 상태에 대응하는 Amplitude를 나타내며 다음과 같은 수식으로 표현됩니다. 
+
+수식과 같이 여기서 는 기저 상태 에 대응하는 복소수 진폭으로, 정규화 조건 을 만족해야 합니다. 이 표현 방식은 모든 가능 상태를 포함하므로, 양자 컴퓨팅의 특징인 양자 중첩(Superposition)과 얽힘(Entanglement)을 완벽하게 표현할 수 있습니다.
+
+\end{comment}
+
+\subsection{Distributed Architecture in Quantum Circuit Simulation}
+%%\vspace{-.1cm}
+
+To effectively handle quantum simulations with a large number of qubits, it is
+essential to use a distributed architecture (scale-out)~\cite{larose2018distributed,
+beals2013efficient, davarzani2022hierarchical, ahmadzadeh2024performance,
+parekh2021quantum}. Early quantum simulations were limited by the hardware resources
+of a single server. However, as the number of qubits increases, the size of the
+state vector grows exponentially, leading to scalability issues with memory and computation
+resources. This makes it challenging to achieve the performance needed to
+process large numbers of qubits. In terms of computation devices, efforts have
+been made to simulate quantum circuits using CPUs (e.g., Intel quantum simulator~\cite{guerreschi2020intel}).
+However, GPUs offer significantly higher performance due to their superior
+parallelism. Additionally, multiple GPUs within a node can be directly connected
+using NVLink~\cite{nvlink}, reducing communication bottlenecks. In this paper, we
+focus on distributed quantum simulation using GPUs as accelerators, aiming to
+achieve both memory scalability and computational efficiency, similar to existing
+parallelization efforts~\cite{ahmadzadeh2024performance, parekh2021quantum,
+solca2015efficient}.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=13.8cm]{figures/background_test.pdf}
+  %%\vspace{-.3cm}
+
+  \caption{Distributed architecture in quantum circuit simulation.}
+  \label{dirstributed_quantum_overall}
+  %%\vspace{-.5cm}
+\end{figure}
+
+% SC Version
+Figure~\ref{dirstributed_quantum_overall} shows a distributed architecture for
+quantum simulation. As depicted, it consists of two components: the client and multiple
+simulation nodes. The central client first decomposes the entire quantum circuit
+into a discrete sequence of gate operations called tasks. Then, it partitions
+and distributes the tasks to multiple nodes. This process divides the circuit into
+manageable subsets for efficient processing. For example, tasks (e.g., T1-2,...T103-104...TN)
+are assigned to Node 0, while tasks (e.g., T78-80,...T250-251...) are assigned to
+Node N. Each node maintains a task queue and sequentially processes the received
+subsets. Since each node consists of multiple GPUs, the tasks are further
+distributed and processed across available GPUs. This architecture is commonly adopted
+by existing quantum simulators, including \textit{cusvaer}~\cite{bayraktar2023cuquantum},
+to scale across multiple GPUs and nodes. However, \textit{cusvaer} suffers from coordination
+overheads as simulation complexity increases. This is because each GPU's memory
+space is managed independently, and GPUs cannot interact directly with one another.
+Consequently, in \textit{cusvaer}, when communication between GPUs or nodes is required,
+such as at the end of a gate execution, a global synchronization of all GPUs is necessary.
+
+To address these problems, SOTA simulators such as \textit{HyQuas}~\cite{zhang2021hyquas}
+and \textit{Atlas}~\cite{xu2024atlas} use more strict yet efficient scheduling
+and partitioning. Both simulators implement a two-tier partitioning model that divides
+a large global quantum circuit into local sub-circuits to reduce cross-node communication.
+For example, \textit{HyQuas} prepares multiple precompiled kernels that are
+optimized for smaller circuits. It then divides a large circuit into multiple smaller
+sub-circuits and simulates them independently across multiple GPUs. However, because
+the precompiled kernels use fixed configurations, it can be difficult to adapt
+to different problem sizes and hardware, leading to performance variance based on
+the shape of each sub-circuit. In addition, this approach can suffer from workload
+skewness when the sub-circuits are imbalanced and may fail to simulate circuits that
+exceed the memory constraints of a single GPU. Similarly, \textit{Atlas}
+statically maps each gate from a large quantum circuit into a fixed local qubit
+and generates a predefined simulation plan at compile time. This approach not only
+requires a fully specified gate-to-qubit mapping in advance but also suffers from
+similar workload imbalance and memory constraints. Although partitioning and
+divide-and-conquer approaches can be suitable for small, restricted environments,
+extending the full state vector to leadership-scale HPC systems requires a clear
+scalability model.
+
+\begin{comment}
+separating global and local qubits to 
+However, their execution models differ. \textit{Atlas} statically maps each gate to a fixed local qubit and generates a predefined execution schedule at compile time, requiring a fully specified gate-to-qubit mapping in advance. 
+In contrast, \textit{HyQuas} precomputes fused gates within local partitions and executes precompiled kernels, where the CUDA kernel structure is statically defined based on the number of local qubits.    
+While these strategies aim to reduce communication and improve locality, they restrict execution flexibility due to fixed scheduling and memory layouts. In \textit{Atlas}, predefined schedules limit flexibility when circuit structures change or qubit mappings exceed local boundaries. \textit{HyQuas} suffers from configuration constraints due to hard-coded kernel parameters, making it difficult to adapt to different problem sizes. 
+Thus, as the number of qubits increases, both simulators face scalability issues when dealing with dynamically varying qubit layouts or deeper circuits that require cross-node interaction.
+
+
+Thus, as the number of qubits increases, both simulators face scalability issues when dealing with dynamically varying qubit layouts or deeper circuits that require cross-node interaction.
+
+To overcome this, 
+
+In contrast, \ScaleQsim adopts a dynamic and index-driven execution model to overcome these limitations. Instead of relying on fixed schedules and kernel parameters, \ScaleQsim identifies affected amplitudes of the state vector at runtime and applies a one-tier partitioning execution model based solely on global qubits. Our approach eliminates the need for local qubit layouts, allowing flexible task assignment across nodes and enabling scalable execution across various circuit types.
+
+\end{comment}
+
+%\noindent\textbf{\textit{Atlas:}} statically maps each gate to a fixed local qubit and generates a predefined execution schedule at compile time, requiring a fully specified gate-to-qubit mapping in advance.
+%\noindent\textbf{\textit{HyQuas:}} applies gate fusion within local partitions and executes precompiled CUDA kernels under fixed kernel shapes, depending on the number of local qubits and available resources.
+
+%\changjong{KCJ: After this paragraph, we cite both SOTA hyquas and atlas. why both approches occurs problems such as complexity of computation, memory, and increases overhead.}
+
+\begin{comment}
+
+양자 회로 시뮬레이션의 복잡성이 증가함에 따라, 
+
+\end{comment}

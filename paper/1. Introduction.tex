@@ -1,0 +1,70 @@
+\section{Introduction}~\label{Introduction}
+
+Host-based Intrusion Detection Systems (HIDS) serve as the last line of defense when network perimeters are breached. Among HIDS techniques, File Integrity Monitoring (FIM) is foundational: tools like Tripwire~\cite{tripwire} and AIDE~\cite{aide} compute cryptographic hashes of sensitive files and alert administrators when changes are detected. These systems have been deployed for decades in enterprise environments, providing a reliable method to detect unauthorized modifications.
+
+However, the practical utility of FIM has eroded significantly in modern DevOps environments. Consider a routine system update: \texttt{apt-get upgrade} on an Ubuntu server modifies several thousand files---libraries, configuration snippets, and binaries. Each modification triggers an alert. Security Operations Centers (SOCs) are thus faced with an impossible choice: investigate thousands of false positives daily, or effectively \textit{disable} FIM during maintenance windows. The former leads to Alert Fatigue, where genuine threats are overlooked; the latter creates blind spots exploited by advanced persistent threats (APTs).
+
+Statistical anomaly detection offers a tempting alternative. Techniques like Isolation Forest~\cite{isoforest} and One-Class SVM~\cite{ocsvm} learn ``normal'' distributions of system metrics and flag deviations. Yet, these approaches suffer from two fundamental limitations when applied to file systems:
+
+
+
+
+\begin{table}[!t]
+\caption{Comparison of Modern Intrusion Detection Approaches for File System Integrity.}
+\label{tab:ids_landscape}
+\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+\multirow{2}{*}{\textbf{Method}} &
+\multirow{2}{*}{\textbf{Data Source}} &
+\multirow{2}{*}{\textbf{Update-}\\\textbf{Tolerant}} &
+\multicolumn{2}{c}{\textbf{Detection}} \\
+\cmidrule(lr){4-5}
+& & & \textbf{Explainable} & \textbf{Spatial} \\
+\midrule
+\multicolumn{5}{l}{\textit{\textbf{Traditional FIM}}} \\
+Tripwire~\cite{tripwire}           & File Hashes & & & \\
+AIDE~\cite{aide}                   & File Hashes & & $\triangle$ & \\
+OSSEC~\cite{ossec}                 & File Hashes + Logs & $\triangle$ & $\triangle$ & \\
+\midrule
+\multicolumn{5}{l}{\textit{\textbf{ML-based Anomaly Detection}}} \\
+Isolation Forest~\cite{isoforest}  & Feature Vectors & \checkmark & & \\
+One-Class SVM~\cite{ocsvm}         & Feature Vectors & \checkmark & & \\
+DeepLog~\cite{du2017deeplog}       & System Logs & \checkmark & & \\
+\midrule
+\multicolumn{5}{l}{\textit{\textbf{Malware Visualization}}} \\
+Nataraj~\cite{nataraj2011malware}  & Binary Images & N/A & \checkmark & \checkmark \\
+\midrule
+\textbf{DeepVis (Ours)}            & \textbf{FS Images} & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+\noindent\textbf{Challenge 1: The Shift Problem.}
+File systems are \textit{non-Euclidean}. Unlike images or time series, files have no inherent spatial or temporal order. The common workaround---sorting files by path or size to create a feature vector---introduces a critical fragility. Inserting a \textit{single} file (e.g., \texttt{/bin/aaa\_malware}) shifts the position of \textit{every subsequent file} in the sorted list. For a Convolutional Neural Network (CNN), which relies on spatial locality, this is catastrophic: a benign file addition appears as a global transformation. This problem fundamentally limits the applicability of CNNs to file system analysis.
+
+\noindent\textbf{Challenge 2: The MSE Paradox.}
+Intuitively, one might expect anomalous states (e.g., rootkit infections) to exhibit higher reconstruction error in an autoencoder. Our empirical analysis reveals the opposite. A legitimate \texttt{apt-get upgrade} modifies thousands of files, producing high aggregate error. A stealthy rootkit, by contrast, modifies \textit{only a few carefully chosen binaries}, producing low aggregate error. We term this counter-intuitive phenomenon the \textbf{MSE Paradox}. It implies that global statistical thresholds are fundamentally unsuitable for detecting surgical attacks.
+
+Table~\ref{tab:ids_landscape} summarizes existing approaches. Traditional FIM tools (Tripwire, AIDE) achieve high recall but lack update tolerance. ML-based methods (Isolation Forest) can tolerate updates but lack explainability. Malware visualization techniques (Nataraj) are explainable but focus on individual binaries, not system-wide state. \DeepVis uniquely combines all desirable properties.
+
+In this paper, we propose \DeepVis, a visually-grounded framework that transforms file system integrity monitoring into a $O(1)$ complexity computer vision task. We make the following contributions:
+
+\begin{enumerate}
+    \item \textbf{Mathematical Formalization of FS Images:} We establish the theoretical foundation for mapping non-Euclidean hierarchical file systems to 2D tensor representations. We prove the Shift-Invariance Theorem and show that our Hash-Based Mapping preserves spatial consistency under dynamic updates.
+    
+    \item \textbf{Optimality Proof for Sparse Anomalies:} We define the ``MSE Paradox'' and provide a rigorous statistical proof (via Neyman-Pearson Lemma) that the $L_\infty$ norm (Local Max) is the optimal test statistic for detecting sparse rootkit injections in noisy high-churn environments, outperforming traditional $L_2$-based autoencoders.
+    
+    \item \textbf{Game-Theoretic Adversarial Modeling:} We model the evasion landscape as a constrained optimization problem. By enforcing a ``Trilemma Cost Function'' across Entropy, Size, and API channels, we demonstrate that attackers cannot simultaneously evade all signals without sacrificing malicious utility.
+    
+    \item \textbf{Zero-Overhead, Zero-FPR Scalability:} Extensive evaluation on a 20,000-file production dataset demonstrates that \DeepVis achieves an F1 score of 0.909 with a 0.0\% False Positive Rate and $O(1)$ inference latency, confirming its suitability for real-time large-scale deployment.
+\end{enumerate}
+
+To achieve these goals, \DeepVis (1) employs a \textit{Hash-Based Spatial Mapping} that deterministically anchors each file to a fixed $(x,y)$ coordinate, eliminating the Shift Problem; (2) utilizes \textit{Semantic RGB Encoding} where Red=Entropy, Green=Size, Blue=Permissions, providing security-meaningful visual cues; and (3) builds upon a Convolutional Autoencoder trained exclusively on benign system states.
+
+Our evaluation on real production server data demonstrates the effectiveness of this approach. \DeepVis successfully detects all three tested rootkits (\textit{Diamorphine}, \textit{Reptile}, \textit{Beurk}) while reducing false positives by 99.2\% compared to AIDE. We have open-sourced the code for \DeepVis at \url{https://github.com/DeepVis/DeepVis}.
+
+The remainder of this paper is organized as follows. Section~\ref{Background} provides background on FIM and the MSE Paradox. Section~\ref{ThreatModel} defines our threat model. Section~\ref{Design} details the \DeepVis architecture. Section~\ref{Evaluation} presents our comprehensive evaluation. Section~\ref{DiscussionAndLimitation} analyzes security properties and limitations. Section~\ref{RelatedWorks} surveys related work, and Section~\ref{Conclusion} concludes.
