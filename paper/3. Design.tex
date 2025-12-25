@@ -57,8 +57,8 @@ The snapshot engine is the performance-critical component of \DeepVis, responsib
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/entropy_explanation.pdf}
-    \caption{Byte value distributions for different file types. Text files concentrate in the ASCII range (a). ELF binaries show structure with null padding (b). Encrypted rootkits exhibit near-uniform distribution (c)---a detectable anomaly.}
+    \includegraphics[width=\columnwidth]{figures/entropy_byte_patterns.pdf}
+    \caption{Entropy-based analysis and byte patterns. (a) Text files use limited ASCII range with high redundancy. (b) ELF binaries show structured headers and code patterns. (c) Encrypted rootkits exhibit uniform byte distribution---the ``Attacker's Paradox'': hiding creates a detectable anomaly.}
     \label{fig:entropy_dist}
 \end{figure}
 

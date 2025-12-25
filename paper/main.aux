@@ -36,15 +36,12 @@
 \newlabel{fig:deepvis_overall}{{2}{4}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}High-Throughput Snapshot Engine}{4}{}\protected@file@percent }
 \newlabel{design_2}{{\mbox  {III-B}}{4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Byte value distributions for different file types. Text files concentrate in the ASCII range (a). ELF binaries show structure with null padding (b). Encrypted rootkits exhibit near-uniform distribution (c)---a detectable anomaly.\relax }}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Entropy-based analysis and byte patterns. (a) Text files use limited ASCII range with high redundancy. (b) ELF binaries show structured headers and code patterns. (c) Encrypted rootkits exhibit uniform byte distribution---the ``Attacker's Paradox'': hiding creates a detectable anomaly.\relax }}{5}{}\protected@file@percent }
 \newlabel{fig:entropy_dist}{{3}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Hash-Based Spatial Mapping}{5}{}\protected@file@percent }
 \newlabel{design_3}{{\mbox  {III-C}}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Convolutional Autoencoder for Anomaly Detection}{5}{}\protected@file@percent }
 \newlabel{design_4}{{\mbox  {III-D}}{5}}
-\citation{diamorphine}
-\citation{reptile}
-\citation{beurk}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Spatial Anomaly Isolation ($L_\infty $)}{6}{}\protected@file@percent }
 \newlabel{design_5}{{\mbox  {III-E}}{6}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}Implementation}{6}{}\protected@file@percent }
@@ -53,16 +50,17 @@
 \newlabel{Evaluation}{{IV}{6}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Evaluation Setup}{6}{}\protected@file@percent }
 \newlabel{eval_setup}{{\mbox  {IV-A}}{6}}
+\citation{diamorphine}
+\citation{reptile}
+\citation{beurk}
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Docker Images Used for Evaluation\relax }}{7}{}\protected@file@percent }
 \newlabel{tab:datasets}{{II}{7}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Rust Scanner Throughput on System-Critical Directories\relax }}{7}{}\protected@file@percent }
-\newlabel{tab:rust}{{III}{7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Scanning Performance (Q1)}{7}{}\protected@file@percent }
 \newlabel{eval_perf}{{\mbox  {IV-B}}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Rust Scanner Throughput on System-Critical Directories\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:rust}{{III}{7}}
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces End-to-End Latency Breakdown\relax }}{7}{}\protected@file@percent }
 \newlabel{tab:e2e}{{IV}{7}}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Benign Churn Tolerance (100 trials per churn level)\relax }}{7}{}\protected@file@percent }
-\newlabel{tab:churn}{{V}{7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Benign Churn Tolerance (Q2)}{7}{}\protected@file@percent }
 \newlabel{eval_churn}{{\mbox  {IV-C}}{7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}L$_2$ (MSE) vs L$_\infty $ Detection Comparison}{7}{}\protected@file@percent }
@@ -70,41 +68,41 @@
 \citation{diamorphine}
 \citation{reptile}
 \citation{beurk}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Benign Churn Tolerance (100 trials per churn level)\relax }}{8}{}\protected@file@percent }
+\newlabel{tab:churn}{{V}{8}}
 \@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces $L_2$ (MSE) vs $L_\infty $ Detection Comparison\relax }}{8}{}\protected@file@percent }
 \newlabel{tab:l2linf}{{VI}{8}}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Rootkit Detection Performance (100 iterations per rootkit, $\tau = 0.513$)\relax }}{8}{}\protected@file@percent }
-\newlabel{tab:rootkit}{{VII}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Detection Sensitivity (Q3)}{8}{}\protected@file@percent }
 \newlabel{eval_detect}{{\mbox  {IV-E}}{8}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Rootkit Detection Performance (100 iterations per rootkit, $\tau = 0.513$)\relax }}{8}{}\protected@file@percent }
+\newlabel{tab:rootkit}{{VII}{8}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Distribution of $L_\infty $ scores for benign variations (blue) vs. rootkit attacks (red). The threshold $\tau $ cleanly separates the two distributions, achieving perfect recall.\relax }}{8}{}\protected@file@percent }
 \newlabel{fig:linf_dist}{{4}{8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Per-rootkit $L_\infty $ scores. All 10 rootkits exceed the threshold $\tau $, confirming detection across diverse attack vectors (LKM, LD\_PRELOAD, hybrid).\relax }}{8}{}\protected@file@percent }
-\newlabel{fig:rootkit_linf}{{5}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Cross-Platform Generalization (Q4)}{8}{}\protected@file@percent }
 \newlabel{eval_crossos}{{\mbox  {IV-F}}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Per-rootkit $L_\infty $ scores. All 10 rootkits exceed the threshold $\tau $, confirming detection across diverse attack vectors (LKM, LD\_PRELOAD, hybrid).\relax }}{9}{}\protected@file@percent }
+\newlabel{fig:rootkit_linf}{{5}{9}}
 \@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Cross-OS Transferability (Ubuntu-trained, $\tau = 0.507$, 100 trials)\relax }}{9}{}\protected@file@percent }
 \newlabel{tab:crossos}{{VIII}{9}}
-\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces FPR Reduction with Per-OS Retraining (100 trials each)\relax }}{9}{}\protected@file@percent }
-\newlabel{tab:crossos_retrain}{{IX}{9}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Resolution Scaling Ablation (Q5)}{9}{}\protected@file@percent }
 \newlabel{eval_resolution}{{\mbox  {IV-G}}{9}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-H}}Adversarial Attack Robustness}{9}{}\protected@file@percent }
 \newlabel{eval_adversarial}{{\mbox  {IV-H}}{9}}
+\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces FPR Reduction with Per-OS Retraining (100 trials each)\relax }}{9}{}\protected@file@percent }
+\newlabel{tab:crossos_retrain}{{IX}{9}}
 \@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces Resolution Scaling: Trade-offs (measured on Ubuntu 913 files)\relax }}{9}{}\protected@file@percent }
 \newlabel{tab:resolution_ablation}{{X}{9}}
-\@writefile{lot}{\contentsline {table}{\numberline {XI}{\ignorespaces Collision Rate by OS at Different Resolutions\relax }}{9}{}\protected@file@percent }
-\newlabel{tab:resolution_peros}{{XI}{9}}
 \citation{unicorn}
+\@writefile{lot}{\contentsline {table}{\numberline {XI}{\ignorespaces Collision Rate by OS at Different Resolutions\relax }}{10}{}\protected@file@percent }
+\newlabel{tab:resolution_peros}{{XI}{10}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Resolution scaling impact: higher resolution reduces hash collisions, with diminishing returns after 256$\times $256. Large file systems (CentOS, Fedora) benefit most from resolution scaling.\relax }}{10}{}\protected@file@percent }
 \newlabel{fig:resolution}{{6}{10}}
-\@writefile{lot}{\contentsline {table}{\numberline {XII}{\ignorespaces Adversarial Attack Detection (100 iterations per attack type, $\tau = 0.513$)\relax }}{10}{}\protected@file@percent }
-\newlabel{tab:adversarial}{{XII}{10}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-I}}Comparison to Alternative Approaches (Q5)}{10}{}\protected@file@percent }
 \newlabel{eval_compare}{{\mbox  {IV-I}}{10}}
+\@writefile{lot}{\contentsline {table}{\numberline {XII}{\ignorespaces Adversarial Attack Detection (100 iterations per attack type, $\tau = 0.513$)\relax }}{10}{}\protected@file@percent }
+\newlabel{tab:adversarial}{{XII}{10}}
 \@writefile{lot}{\contentsline {table}{\numberline {XIII}{\ignorespaces DeepVis vs IMA/TPM Attestation\relax }}{10}{}\protected@file@percent }
 \newlabel{tab:ima}{{XIII}{10}}
-\@writefile{lot}{\contentsline {table}{\numberline {XIV}{\ignorespaces DeepVis vs Provenance-Based Detection\relax }}{10}{}\protected@file@percent }
-\newlabel{tab:prov}{{XIV}{10}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-J}}Ablation Studies}{10}{}\protected@file@percent }
 \newlabel{eval_ablation}{{\mbox  {IV-J}}{10}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-J}1}Tensor Resolution vs Collision Rate}{10}{}\protected@file@percent }
@@ -130,13 +128,15 @@
 \citation{unicorn}
 \citation{cheng2024kairos}
 \citation{rehman2024flash}
+\@writefile{lot}{\contentsline {table}{\numberline {XIV}{\ignorespaces DeepVis vs Provenance-Based Detection\relax }}{11}{}\protected@file@percent }
+\newlabel{tab:prov}{{XIV}{11}}
 \@writefile{lot}{\contentsline {table}{\numberline {XV}{\ignorespaces Resolution vs Collision Rate (913 files)\relax }}{11}{}\protected@file@percent }
 \newlabel{tab:resolution}{{XV}{11}}
-\@writefile{lot}{\contentsline {table}{\numberline {XVI}{\ignorespaces Resource Consumption\relax }}{11}{}\protected@file@percent }
-\newlabel{tab:resources}{{XVI}{11}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{11}{}\protected@file@percent }
 \newlabel{RelatedWork}{{V}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Distributed System Integrity Monitoring}{11}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {XVI}{\ignorespaces Resource Consumption\relax }}{11}{}\protected@file@percent }
+\newlabel{tab:resources}{{XVI}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Anomaly Detection in High-Dimensional Systems}{11}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion and Limitation}{11}{}\protected@file@percent }
 \newlabel{DiscussionAndLimitation}{{VI}{11}}
@@ -153,7 +153,6 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limitations}{12}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}1}Memory-Only Rootkits}{12}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}2}Low-Entropy Malware}{12}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}3}Collision Density at Hyperscale}{12}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
@@ -175,13 +174,7 @@
 \bibcite{mirsky2018kitsune}{17}
 \bibcite{zong2018deep}{18}
 \bibcite{su2019robust}{19}
-\bibcite{liu2008isolation}{20}
-\bibcite{breunig2000lof}{21}
-\bibcite{xu2018unsupervised}{22}
-\bibcite{zhou2019vae}{23}
-\bibcite{an2015variational}{24}
-\bibcite{pang2019deep}{25}
-\bibcite{ruff2018deep}{26}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}3}Collision Density at Hyperscale}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Deployment Considerations}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}1}Poisoned Baseline Defense}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}2}Agentless Architecture}{13}{}\protected@file@percent }
@@ -190,5 +183,12 @@
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{13}{}\protected@file@percent }
 \newlabel{Conclusion}{{VII}{13}}
 \@writefile{toc}{\contentsline {section}{References}{13}{}\protected@file@percent }
+\bibcite{liu2008isolation}{20}
+\bibcite{breunig2000lof}{21}
+\bibcite{xu2018unsupervised}{22}
+\bibcite{zhou2019vae}{23}
+\bibcite{an2015variational}{24}
+\bibcite{pang2019deep}{25}
+\bibcite{ruff2018deep}{26}
 \bibcite{akcay2018ganomaly}{27}
 \gdef \@abspage@last{14}
