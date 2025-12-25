@@ -1659,6 +1659,10 @@ def run_comprehensive_evaluation():
     print("╚" + "═" * 68 + "╝")
     print()
     
+    # SAFETY: Set resource limits to prevent system hang
+    setup_resource_limits()
+    signal.alarm(600)  # 10 minute timeout for entire evaluation
+    
     torch.manual_seed(42)
     np.random.seed(42)
     random.seed(42)
