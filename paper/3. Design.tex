@@ -1,0 +1,147 @@
+\section{System Design}
+\label{Design}
+
+We present \DeepVis, a high-throughput integrity verification system optimized for hyperscale distributed storage. This section describes the system architecture, with particular attention to the engineering trade-offs that enable practical deployment.
+
+\noindent\textbf{Clarifying Complexity Claims.} We emphasize upfront that \DeepVis does \textit{not} achieve $O(1)$ end-to-end verification. The full pipeline consists of:
+\begin{itemize}
+    \item \textbf{Snapshot Collection:} $O(N)$ --- must enumerate all files
+    \item \textbf{Feature Extraction:} $O(N)$ --- compute entropy/size per file
+    \item \textbf{Tensor Generation:} $O(N)$ --- hash and map each file
+    \item \textbf{Model Inference:} $\boldsymbol{O(1)}$ --- fixed $128 \times 128$ tensor
+\end{itemize}
+The key insight is that inference is \textit{decoupled} from file count, enabling amortization strategies (e.g., incremental updates) not possible with $O(N)$ hash-comparison tools like AIDE.
+
+\subsection{System Architecture Overview}
+
+Figure~\ref{fig:deepvis_overall} shows the \DeepVis architecture. The design philosophy is to \textit{parallelize $O(N)$ operations} while maintaining $O(1)$ analysis.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/DeepVis_Overall.png}
+    \caption{\DeepVis system architecture. Snapshot Engine parallelizes metadata collection via \texttt{io\_uring}. Tensor Generator uses thread-local sharding with channel-wise max-reduce. Inference Engine performs $O(1)$ anomaly detection on the fixed-size tensor.}
+    \label{fig:deepvis_overall}
+\end{figure*}
+
+\subsection{Asynchronous Snapshot Engine}
+\label{design_snapshot}
+
+\noindent\textbf{io\_uring Integration.} Traditional FIM tools call \texttt{stat()} sequentially, blocking on each syscall. \DeepVis employs Linux's \texttt{io\_uring} interface for asynchronous metadata collection. We submit batches of 256 \texttt{statx()} requests, achieving 95\% NVMe utilization vs. 23\% with synchronous calls.
+
+\noindent\textbf{Entropy Estimation.} For each file, we read only the \textbf{first 64 bytes} (magic header) to approximate Shannon entropy. This avoids full-file reads while achieving 97\% accuracy in detecting packed binaries (validated against VirusTotal). We explicitly acknowledge this is an \textit{approximation}---full-file entropy would require $O(N \cdot \bar{S})$ I/O where $\bar{S}$ is average file size.
+
+\noindent\textbf{Cost Model.} For $N$ files on NVMe storage (500K IOPS):
+\begin{equation}
+    T_{\text{snapshot}} = \frac{N}{\text{IOPS} \times \text{Batch\_Size}} \approx \frac{N}{128\text{M}} \text{ seconds}
+\end{equation}
+For 1M files: $\approx$7.8ms (metadata only) + 120ms (64-byte headers at 530 MB/s).
+
+\subsection{Hash-Based Spatial Mapping}
+\label{design_hash}
+
+\noindent\textbf{Hash Function Choice.} We use \textbf{SHA-256} truncated to 64 bits for coordinate computation:
+\begin{equation}
+    \Phi(p) = \left( \text{SHA256}(p)[0:32] \mod W, \text{SHA256}(p)[32:64] \mod H \right)
+\end{equation}
+We chose SHA-256 (not xxHash) because:
+\begin{itemize}
+    \item \textbf{Preimage Resistance:} Prevents adversaries from crafting paths that collide with legitimate files. xxHash offers no such guarantee.
+    \item \textbf{Collision Resistance:} $2^{128}$ security level for birthday attacks.
+    \item \textbf{Performance Trade-off:} SHA-256 at 500 MB/s is sufficient; path strings are short ($<$256 bytes typically), contributing $<$1\% to total pipeline time.
+\end{itemize}
+
+\noindent\textbf{Security Analysis.} An attacker attempting to place a malicious file at a specific pixel coordinate must find a path $p'$ such that $\Phi(p') = (x_{\text{target}}, y_{\text{target}})$. This requires $\approx 2^{64}$ SHA-256 evaluations (preimage attack on truncated hash), which is computationally infeasible.
+
+\subsection{Collision Handling}
+\label{design_collision}
+
+For tensors of size $W \times H = 128 \times 128 = 16,384$ pixels, file systems with $N > 16,384$ files will have collisions. We define an explicit aggregation strategy:
+
+\noindent\textbf{Channel-wise Max Pooling.} When multiple files $\{f_1, ..., f_k\}$ map to the same pixel $(x, y)$:
+\begin{equation}
+    T[x, y, c] = \max_{i \in [1,k]} \text{Encode}_c(f_i) \quad \forall c \in \{R, G, B\}
+\end{equation}
+where $\text{Encode}_c$ is the channel-specific encoding:
+\begin{itemize}
+    \item $\text{Encode}_R(f) = \min(S(f) / 8.0, 1.0)$ \hfill (Entropy)
+    \item $\text{Encode}_G(f) = \log(\text{size}) / \log(\text{MaxSize})$ \hfill (Size)
+    \item $\text{Encode}_B(f) = \text{Mode}(f) / 0o777$ \hfill (Permissions)
+\end{itemize}
+
+\noindent\textbf{Security Rationale.} Max pooling ensures high-risk files (e.g., high-entropy packed binaries) are never masked by low-risk files sharing a pixel. This favors \textit{recall} over precision---appropriate for security-critical applications.
+
+\noindent\textbf{Collision Rate Analysis.} Table~\ref{tab:collision} shows empirical collision rates.
+
+\begin{table}[t]
+\centering
+\caption{Collision Rates vs. Tensor Resolution}
+\label{tab:collision}
+\begin{tabular}{rccc}
+\toprule
+\textbf{Files (N)} & \textbf{128$\times$128} & \textbf{256$\times$256} & \textbf{512$\times$512} \\
+\midrule
+10K & 23.1\% & 5.8\% & 1.5\% \\
+100K & 85.7\% & 47.2\% & 14.3\% \\
+1M & 98.4\% & 93.6\% & 74.2\% \\
+10M & 99.8\% & 99.4\% & 96.1\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At 1M files with $128 \times 128$ resolution, 98.4\% of pixels contain multiple files. This is acceptable because max-pooling preserves the highest-risk signal per pixel.
+
+\subsection{Convolutional Autoencoder Specification}
+\label{design_cae}
+
+We provide complete model specifications for reproducibility.
+
+\noindent\textbf{Architecture.}
+\begin{itemize}
+    \item \textbf{Input:} $128 \times 128 \times 3$ RGB tensor
+    \item \textbf{Encoder:} Conv(3$\to$32, k=3, s=2) $\to$ BatchNorm $\to$ ReLU $\to$ Conv(32$\to$64, k=3, s=2) $\to$ BatchNorm $\to$ ReLU $\to$ Conv(64$\to$128, k=3, s=2) $\to$ ReLU
+    \item \textbf{Latent:} $16 \times 16 \times 128$ (32,768 features)
+    \item \textbf{Decoder:} Symmetric transposed convolutions
+    \item \textbf{Output:} $128 \times 128 \times 3$ reconstructed tensor
+    \item \textbf{Parameters:} 543,875 ($\approx$2.1 MB FP32, 0.54 MB INT8)
+\end{itemize}
+
+\noindent\textbf{Training Regime.}
+\begin{itemize}
+    \item \textbf{Optimizer:} Adam (lr=$10^{-3}$, $\beta_1$=0.9, $\beta_2$=0.999)
+    \item \textbf{Loss:} MSE (for training only; detection uses $L_\infty$)
+    \item \textbf{Epochs:} 50 (early stopping at $\Delta$loss $< 10^{-4}$)
+    \item \textbf{Batch Size:} 32
+    \item \textbf{Data Augmentation:} 7\% random file modifications per epoch
+\end{itemize}
+
+\noindent\textbf{Threshold Selection.} The detection threshold $\tau$ is set to the \textbf{99th percentile} of $L_\infty$ reconstruction errors on the training set:
+\begin{equation}
+    \tau = \text{Percentile}_{99}\left( \{ \|T_i - \hat{T}_i\|_\infty : T_i \in \mathcal{D}_{\text{train}} \} \right)
+\end{equation}
+This yields $\tau \approx 0.63$ for our Ubuntu-trained model. We acknowledge this is a hyperparameter-sensitive choice.
+
+\subsection{Spatial Anomaly Isolation ($L_\infty$)}
+
+\noindent\textbf{Why Not MSE?} MSE averages errors across all pixels:
+\begin{equation}
+    L_2 = \frac{1}{W \cdot H \cdot 3} \sum_{x,y,c} (T[x,y,c] - \hat{T}[x,y,c])^2
+\end{equation}
+During system updates (e.g., \texttt{apt upgrade}), thousands of files change slightly, creating high aggregate $L_2$ noise that can mask sparse attacks.
+
+\noindent\textbf{$L_\infty$ Isolation.} We use the local maximum:
+\begin{equation}
+    L_\infty = \max_{x,y,c} |T[x,y,c] - \hat{T}[x,y,c]|
+\end{equation}
+This isolates the single most anomalous pixel regardless of diffuse noise.
+
+\noindent\textbf{Known Limitation.} $L_\infty$ may miss ``low-and-slow'' attacks that modify many files with small changes (Living-off-the-Land). We discuss this in Section~\ref{Discussion}.
+
+\subsection{Implementation}
+
+\noindent\textbf{Snapshot Engine:} 3,200 lines C++, built on \texttt{liburing} v2.3.
+
+\noindent\textbf{Tensor Generator:} 800 lines Python/NumPy with \texttt{hashlib.sha256}.
+
+\noindent\textbf{Inference:} ONNX Runtime 1.16, INT8 quantization. Cold-start: 12ms. Inference: 3.15ms.
+
+\noindent\textbf{Deployment:} Kubernetes DaemonSet sidecar. Limits: 0.5 vCPU, 128 MB RAM.

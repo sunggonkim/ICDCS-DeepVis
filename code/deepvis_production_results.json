@@ -1,0 +1,35 @@
+{
+  "method": "CAE_L_inf",
+  "threshold": 0.633025987148285,
+  "metrics": {
+    "precision": 0.9574468085106383,
+    "recall": 1.0,
+    "f1": 0.9782608695652174,
+    "fpr": 0.04,
+    "tp": 90,
+    "tn": 96,
+    "fp": 4,
+    "fn": 0
+  },
+  "per_rootkit": {
+    "diamorphine": 1.0,
+    "reptile": 1.0,
+    "beurk": 1.0
+  },
+  "cross_os": {
+    "centos": {
+      "files_scanned": 3028,
+      "normal_fp": 0,
+      "attack_tp": 30
+    },
+    "debian": {
+      "files_scanned": 859,
+      "normal_fp": 0,
+      "attack_tp": 30
+    }
+  },
+  "performance": {
+    "fp32_ms": 3.1495534100031364,
+    "int8_ms": 2.9944278199945984
+  }
+}

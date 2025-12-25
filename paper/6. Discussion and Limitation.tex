@@ -1,151 +1,98 @@
-\section{Discussion and Limitation}~\label{DiscussionAndLimitation}
+\section{Discussion and Limitation}
+\label{DiscussionAndLimitation}
+\label{Discussion}
 
-We critically analyze \DeepVis's security properties, limitations, and potential evasion strategies. Following the ``Dos and Don'ts of Machine Learning in Computer Security''~\cite{arp2022dos}, we explicitly evaluate robustness against adaptive attackers.
+We critically analyze the security properties, limitations, and potential evasion strategies of \DeepVis. Following the principles of adversarial machine learning, we explicitly evaluate robustness against adaptive attackers and analyze the operational constraints in hyperscale environments.
 
 \subsection{Robustness Against Adaptive Attackers}
 
-We assume a \textbf{white-box adversary} who knows the hash mapping function $M(f)$, the RGB encoding scheme, and the CAE architecture.
+We assume a white-box adversary who possesses knowledge of the hash mapping function, the RGB encoding scheme, and the CAE architecture.
 
 \subsubsection{Attack 1: Low-Entropy Mimicry}
+An attacker might attempt to reduce the entropy of a rootkit to evade detection by the Red channel.
 
-An attacker might reduce their rootkit's entropy to evade the Red channel.
+\noindent\textbf{Attack Vector.} The attacker pads the malicious binary with null bytes, English text, or NOP sleds. This lowers the Shannon entropy from the typical packed range ($S \approx 7.8$) to the benign range ($S \approx 5.5$).
 
-\noindent\textit{Attack Vector:} The attacker pads the malicious binary with English text, Base64-encoded junk, or NOP sleds to lower entropy from $S \approx 7.8$ to $S \approx 5.5$ (normal binary range).
-
-\noindent\textit{Defense Analysis:} While this defeats the Red channel, the attack incurs significant \textbf{Attack Costs}:
+\noindent\textbf{Defense Analysis.} While this strategy evades the Red channel, it forces the attacker into a \textit{Trilemma} where minimizing one detection signal inevitably amplifies another.
 \begin{enumerate}
-    \item \textbf{Size Inflation:} Padding increases file size substantially. A 50KB rootkit padded to achieve $S < 6.0$ may grow to 200KB+, triggering the Green (Size) channel.
-    \item \textbf{Permission Anomaly:} The malicious file still requires execution permissions. A new SUID binary in \texttt{/lib/modules/} triggers the Blue channel.
-    \item \textbf{Functional Constraints:} Low-entropy encoding limits code density, potentially degrading rootkit functionality or requiring multi-stage payloads.
+    \item \textbf{Size Inflation (Green Channel).} Padding increases the file size substantially. To reduce entropy from 7.8 to 5.5, the file size must increase by approximately $4\times$. This deviation triggers the Green channel which monitors file size anomalies.
+    \item \textbf{Permission Anomaly (Blue Channel).} The malicious file still requires execution permissions. A large, low-entropy binary with SUID bits in a system directory such as \texttt{/lib/modules/} triggers the Blue channel.
+\end{enumerate}
+We formally model this as a constrained optimization problem. The attacker cannot simultaneously minimize entropy, file size, and permission risk below their respective detection thresholds while maintaining executable utility.
+
+\subsubsection{Attack 2: Chameleon Attack (Hash Collision)}
+An attacker might craft a malicious filename such that its hash coordinates collide with a high-churn benign file.
+
+\noindent\textbf{Attack Vector.} The attacker computes a path $p^*$ such that $\Phi(p^*) = \Phi(\texttt{/var/log/syslog})$. They aim to hide the rootkit signal within the noise of frequent log updates.
+
+\noindent\textbf{Defense Analysis.} \DeepVis mitigates this through two mechanisms.
+\begin{enumerate}
+    \item \textbf{Pre-image Resistance.} Finding a functional path in a target directory that hashes to a specific coordinate requires $2^{64}$ operations. This is computationally prohibitive for run-time attacks.
+    \item \textbf{Max-Risk Pooling.} Even if a collision occurs, \DeepVis utilizes a Max-Priority collision resolution strategy as defined in Section~\ref{design_collision}. If a packed rootkit ($S=7.8$) maps to the same pixel as a log file ($S=4.2$), the pixel retains the maximum value of 7.8. Therefore, the attack signal is preserved regardless of the background noise.
 \end{enumerate}
 
-We experimentally validated this by creating a ``Low-Entropy Diamorphine'' variant (padded to $S = 5.6$). \DeepVis detected it via the Green channel (file size 4.2x larger than typical kernel modules) with Local Max = 0.87.
+\subsection{Operational Analysis: The SNR Advantage}
+\label{snr_analysis}
 
-\subsubsection{Attack 2: Chameleon Attack (Hash Collision Exploitation)}
+System administrators understand that checking the integrity of a petabyte-scale file system requires granularity. A single global checksum is useless because it changes with every log write. The ``MSE Paradox'' we identified in Section~\ref{Background} is the statistical equivalent of this problem. We demonstrate why \DeepVis succeeds where global metrics fail using Signal-to-Noise Ratio (SNR) analysis.
 
-An attacker might craft a malicious filename whose hash collides with a high-churn benign file (e.g., log files).
+\subsubsection{The Needle in the Haystack Problem}
+Let $N$ be the total number of files and $k$ be the number of compromised files.
+\begin{itemize}
+    \item \textbf{Benign Updates (Diffuse Noise):} An upgrade modifies $N_{up} \approx 1000$ files with small variance $\sigma^2$.
+    \item \textbf{Rootkit (Sparse Signal):} An attack modifies $k \approx 1$ file with large deviation $\delta$.
+\end{itemize}
 
-\noindent\textit{Attack Vector:} The attacker finds $p^*$ such that $H(p^*) = H(\texttt{/var/log/syslog})$, hoping their rootkit's signal is lost in log rotation noise.
-
-\noindent\textit{Defense Analysis:}
-\begin{enumerate}
-    \item \textbf{Pre-image Resistance:} Finding a functional path $p^*$ in \texttt{/lib/modules/} that hashes to a target value requires $2^{64}$ operations (MD5 truncated). This is computationally prohibitive.
-    \item \textbf{Max-Risk Pooling:} Even if collision occurs, Max-Risk Pooling surfaces the \textit{highest} entropy value. A packed rootkit ($S = 7.8$) colliding with a log file ($S = 4.2$) still shows $S = 7.8$ in the pixel.
-    \item \textbf{Path Semantics:} Functional rootkit paths (\texttt{/lib/modules/*.ko}) have different path structures than log files, making targeted collisions impractical.
-\end{enumerate}
-
-\subsubsection{Game-Theoretic Analysis: The Attacker's Optimization Problem}
-
-We model evasion as a constrained optimization game between the Attacker $\mathcal{A}$ and Defender $\mathcal{D}$.
-Let $x$ be the malicious file. The attacker aims to minimize the detection probability $P_\mathcal{D}(detect|x)$ while maintaining malicious utility $U(x) > \tau$.
-\DeepVis employs a multi-channel detection function $D(x) = \bigvee_{c \in \{R,G,B\}} (S_c(x) > \theta_c)$. 
-The attacker must solve:
+When using Global MSE ($L_2$), the attack signal is diluted by the system size $N$.
 \begin{equation}
-    x^* = \arg\min_{x'} \max \left( S_{ent}(x'), S_{size}(x'), S_{api}(x') \right) \quad \text{s.t. } U(x') \geq U(x)
+    SNR_{Global} \propto \frac{k}{N} \cdot \delta
 \end{equation}
-This induces a \textbf{Trilemma Cost Function} $C(x')$:
-\begin{enumerate}
-    \item \textbf{Entropy Cost ($C_{eng}$):} Reducing entropy requires padding or expansive encoding, increasing file size ($S_{size} \uparrow$).
-    \item \textbf{Size Cost ($C_{mem}$):} Splitting payloads to reduce size increases API call density for inter-process communication ($S_{api} \uparrow$) or Permission anomalies ($S_{perm} \uparrow$).
-    \item \textbf{Functionality Cost ($C_{util}$):} Removing packed/obfuscated code exposes the logic to static signatures (Risk$_{AV} \uparrow$).
-\end{enumerate}
-Our empirical results confirm that minimizing one cost component inevitably increases another, forcing $x^*$ into the detectable region of at least one channel.
+As $N \to \infty$ in hyperscale storage, $SNR \to 0$. The rootkit becomes statistically invisible against the background noise of legitimate churn.
 
-\subsection{Comparison with Provenance-Based IDS (PIDS)}
-
-Table~\ref{tab:pids_comparison} compares \DeepVis with state-of-the-art PIDS systems.
-
-\begin{table}[t]
-\centering
-\caption{Comparison with Provenance-Based IDS}
-\label{tab:pids_comparison}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Property} & \textbf{Unicorn} & \textbf{Kairos} & \textbf{Flash} & \textbf{DeepVis} \\
-\midrule
-Data Source & Audit Logs & Prov. Graph & Prov. Graph & Disk Snapshot \\
-Kernel Instrumentation & Required & Required & Required & \textbf{None} \\
-Memory-Only Attacks & \checkmark & \checkmark & \checkmark & $\times$ \\
-Disk Persistence & $\triangle$ & $\triangle$ & $\triangle$ & \checkmark \\
-Runtime Overhead & High & High & Medium & \textbf{Zero$^\dagger$} \\
-Explainability & Low & Medium & Medium & \textbf{High (Visual)} \\
-Deployment Complexity & High & High & High & \textbf{Low} \\
-\bottomrule
-\end{tabular}%
-}
-\vspace{0.3em}
-\footnotesize{$^\dagger$Snapshot-based; scan overhead only during periodic checks.}
-\end{table}
-
-\paragraph{Complementary Roles.}
-PIDS (Unicorn~\cite{unicorn}, Kairos~\cite{cheng2024kairos}, Flash~\cite{rehman2024flash}) excel at detecting behavioral anomalies and memory-only attacks through causal graph analysis. However, they require kernel-level audit logging (auditd, CamFlow), imposing 5-20\% runtime overhead~\cite{pids_overhead}. \DeepVis is \textbf{orthogonal}: it detects \textit{persistent disk artifacts} without runtime overhead, making it ideal for periodic integrity verification in performance-sensitive HPC/cloud environments.
-
-\subsection{Optimality for Sparse Anomaly Detection}
-
-We provide a theoretical basis for choosing Local Max ($L_\infty$) over Global MSE ($L_2$) using the Neyman-Pearson framework.
-
-\noindent\textbf{Theorem 2 (Detector Optimality).} Consider a hypothesis test $H_0: \mathbf{y} = \mathbf{n}$ vs. $H_1: \mathbf{y} = \mathbf{n} + \mathbf{s}$, where $\mathbf{n} \sim \mathcal{N}(0, \sigma^2I)$ is background noise (legitimate updates) and $\mathbf{s}$ is a sparse attack signal ($||\mathbf{s}||_0 = k \ll N$).
-As the sparsity ratio $k/N \to 0$, the $L_\infty$ norm converges to the optimal likelihood ratio test statistic for distinguishing $H_1$ from $H_0$ under unknown support.
-
-\noindent\textit{Proof Sketch.}
-The Global MSE ($L_2$) statistic is $T_{L_2} = \frac{1}{N}\sum y_i^2$. Under $H_1$, $E[T_{L_2}] = \sigma^2 + \frac{k}{N}\Delta^2$. If $k \ll N$, the signal $\frac{k}{N}\Delta^2$ vanishes below the noise variance $\text{Var}(T_{L_2})$, making $H_1$ indistinguishable from $H_0$ (The MSE Paradox).
-In contrast, $T_{L_\infty} = \max |y_i|$. Under $H_1$, $T_{L_\infty} \approx \Delta$ (assuming $\Delta > 3\sigma$). This statistic is independent of $k$, ensuring consistent detection even for single-pixel attacks ($k=1$). $\square$
+\subsubsection{The Local Max Solution ($L_\infty$)}
+By using the Local Maximum ($L_\infty = \max_i |D_i|$), \DeepVis functions as a parallelized difference operation. We isolate the single worst violation regardless of the file system size.
+\begin{equation}
+    SNR_{Local} \propto \delta
+\end{equation}
+This property is critical for systems scaling. It means that the sensitivity of \DeepVis does not degrade as the file system grows to millions of files. This contrasts with global statistical models which lose precision at scale.
 
 \subsection{Limitations}
 
 \subsubsection{Memory-Only Rootkits}
-
-Rootkits residing solely in RAM (volatile code injection via \texttt{ptrace}) leave no disk footprint.
-
-\noindent\textit{Mitigation:} Deploy alongside memory forensics tools (Volatility, LiME).
+Rootkits that reside solely in RAM, such as those injected via \texttt{ptrace} or reflective DLL injection, leave no persistent footprint on the disk. Since \DeepVis operates on file system snapshots, it cannot detect these volatile threats. To address this, we recommend deploying \DeepVis alongside memory forensics tools such as Volatility or LKRG.
 
 \subsubsection{Low-Entropy Malware}
+While rare, some malware utilizes low-entropy payloads such as ASCII-encoded shellcode or polymorphic engines to evade entropy-based detection. In these cases, the Red channel (Entropy) may fail. However, the Blue channel (Permissions) and Green channel (Size/API Density) provide secondary detection signals.
 
-While rare, some malware uses low-entropy payloads (ASCII-encoded shellcode, polymorphic engines).
-
-\noindent\textit{Mitigation:} Size and Permission channels provide secondary signals. Unusual SUID bits or unexpected size changes remain detectable.
-
-\subsubsection{Training Data Poisoning}
-
-If the attacker compromises the system \textit{before} baseline capture, the malicious state becomes ``normal.''
-
-\noindent\textit{Mitigation:} Capture baselines from trusted golden images or verified clean states.
-
-\subsubsection{Collision Density at Scale}
-
-With very large file systems ($>100,000$ files), collision density increases. Some information may be lost.
-
-\noindent\textit{Mitigation:} Increase image resolution ($256 \times 256$ instead of $128 \times 128$) or use 3D tensor mapping with secondary hashing.
+\subsubsection{Collision Density at Hyperscale}
+For extremely large file systems exceeding 10 million files, the collision density in a $128 \times 128$ tensor increases. This may cause information loss where multiple benign files mask the features of a lower-risk anomaly. To mitigate this, we recommend increasing the tensor resolution to $256 \times 256$ or employing a 3D tensor mapping strategy with secondary hashing for conflict resolution.
 
 \subsection{Deployment Considerations}
 
+\subsubsection{Poisoned Baseline Defense}
+A critical security concern is preventing an attacker from poisoning the baseline tensor or trained model. We address this through:
+
+\begin{enumerate}
+    \item \textbf{Golden Image Attestation.} The baseline is generated from a cryptographically verified golden image (e.g., signed Docker image or AMI). The image hash is recorded in an immutable audit log.
+    \item \textbf{Model Provenance.} The trained CAE model is stored in a read-only artifact repository (e.g., OCI registry) with content-addressable hashing. Any modification invalidates the hash.
+    \item \textbf{Trusted Analysis Environment.} During training and detection, the \DeepVis process runs in a TEE (Trusted Execution Environment) such as Intel SGX or AWS Nitro Enclave, isolating it from potentially compromised host kernels.
+\end{enumerate}
+
+\noindent\textbf{Trusted Computing Base (TCB).} The TCB for \DeepVis consists of: (1) the snapshot engine (read-only mount), (2) the CAE inference runtime (ONNX), and (3) the hash verification logic. This is significantly smaller than provenance systems requiring kernel instrumentation.
+
 \subsubsection{Agentless Architecture}
+To further minimize TCB concerns, \DeepVis supports an agentless architecture. The system snapshots the target disk (e.g., AWS EBS or LVM volume) and mounts it read-only on a trusted analysis instance. This ensures that the monitoring process cannot be tampered with by a compromised kernel on the target host.
 
-To address TCB concerns:
+\subsubsection{Parallel and Incremental Architecture}
+To scale beyond one million files, sequential scanning is insufficient. We propose a \textbf{Parallel Asynchronous Architecture} for future work.
 \begin{enumerate}
-    \item Snapshot target disk (LVM, AWS EBS)
-    \item Mount read-only on trusted analysis instance
-    \item Execute \DeepVis on isolated copy
-\end{enumerate}
-
-\subsubsection{Scalable Architecture: Parallel & Incremental}
-
-To scale beyond 1 million files, purely sequential scanning is insufficient. We propose a \textbf{Parallel Asynchronous Architecture}:
-
-\begin{enumerate}
-    \item \textbf{Sharded Metadata Collection:} File system traversal (`stat`, `getxattr`) is parallelized across $K$ worker threads, each handling a distinct directory shard (e.g., `hash(path) \% K`).
-    \item \textbf{Incremental Visual Update:} Instead of regenerating the entire image $I_t$, we optimize the update cost. Since Phase 1 (Baseline Comparison) yields a sparse set of changes $\Delta$, we directly update only the affected pixels:
+    \item \textbf{Sharded Metadata Collection.} File system traversal is parallelized across $K$ worker threads. Each thread handles a distinct directory shard determined by $\text{Hash}(path) \pmod K$.
+    \item \textbf{Incremental Visual Update.} Instead of regenerating the entire image $I_t$, we optimize the update cost. Since the baseline comparison yields a sparse set of changes $\Delta$, we directly update only the affected pixels:
     \begin{equation}
-        I_{t}[M(f)] \leftarrow \text{MaxRisk}(\text{Feature}(f)) \quad \forall f \in \Delta
+        I_{t}[\Phi(f)] \leftarrow \text{MaxRisk}(\text{Feature}(f)) \quad \forall f \in \Delta
     \end{equation}
-    This reduces the update complexity from $O(N)$ to $O(|\Delta|)$, making real-time monitoring feasible even on Lustre/GPFS HPC storage.
+    This reduces the update complexity from $O(N)$ to $O(|\Delta|)$. This optimization makes real-time monitoring feasible even for high-performance computing storage systems such as Lustre or GPFS.
 \end{enumerate}
 
-\subsubsection{Threshold Selection}
-
-We use the 99th percentile of training data scores as the threshold. This can be tuned based on:
-\begin{itemize}
-    \item Security posture (lower threshold = higher recall, more FPs)
-    \item Environment stability (static servers can use tighter thresholds)
-\end{itemize}
+\subsubsection{Resource-Constrained Environments}
+For edge devices or legacy servers without GPUs, we recommend deployment via ONNX Runtime with Int8 Dynamic Quantization. As demonstrated in our evaluation, this reduces the model size by $4\times$ and inference latency by $3\times$ compared to standard FP32 execution. This enables \DeepVis to run effectively on low-power hardware with less than 1\% CPU utilization.

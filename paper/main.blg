@@ -1,108 +1,56 @@
 This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
-The style file: ACM-Reference-Format.bst
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
-Reallocated singl_function (elt_size=4) to 100 items from 50.
-Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
-Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
-Reallocated global_strs (elt_size=200001) to 20 items from 10.
-Reallocated glb_str_end (elt_size=4) to 20 items from 10.
-Reallocated singl_function (elt_size=4) to 100 items from 50.
-Warning--empty publisher in codegrid
-Warning--empty address in codegrid
-Warning--page numbers missing in both pages and numpages fields in codegrid
-Warning--empty publisher in arp2022dos
-Warning--empty address in arp2022dos
-Warning--page numbers missing in both pages and numpages fields in arp2022dos
-Warning--empty publisher in lograph
-Warning--empty address in lograph
-Warning--page numbers missing in both pages and numpages fields in lograph
-Warning--empty publisher in cheng2024kairos
-Warning--empty address in cheng2024kairos
-Warning--page numbers missing in both pages and numpages fields in cheng2024kairos
-Warning--empty publisher in du2017deeplog
-Warning--empty address in du2017deeplog
-Warning--page numbers missing in both pages and numpages fields in du2017deeplog
-Warning--no number and no volume in logbert
-Warning--page numbers missing in both pages and numpages fields in logbert
-Warning--empty booktitle in han2015malware
-Warning--no number and no volume in han2015malware
-Warning--page numbers missing in both pages and numpages fields in han2015malware
-Warning--empty publisher in unicorn
-Warning--empty address in unicorn
-Warning--page numbers missing in both pages and numpages fields in unicorn
-Warning--empty publisher in tripwire
-Warning--empty address in tripwire
-Warning--page numbers missing in both pages and numpages fields in tripwire
-Warning--empty publisher in scalemon
-Warning--empty address in scalemon
-Warning--page numbers missing in both pages and numpages fields in scalemon
-Warning--empty publisher in howfararewelog
-Warning--empty address in howfararewelog
-Warning--page numbers missing in both pages and numpages fields in howfararewelog
-Warning--empty publisher in isoforest
-Warning--empty address in isoforest
-Warning--page numbers missing in both pages and numpages fields in isoforest
-Warning--empty publisher in nataraj2011malware
-Warning--empty address in nataraj2011malware
-Warning--page numbers missing in both pages and numpages fields in nataraj2011malware
-Warning--empty publisher in petroni2006copilot
-Warning--empty address in petroni2006copilot
-Warning--page numbers missing in both pages and numpages fields in petroni2006copilot
-Warning--empty publisher in rehman2024flash
-Warning--empty address in rehman2024flash
-Warning--page numbers missing in both pages and numpages fields in rehman2024flash
-Warning--no number and no volume in glad
-Warning--page numbers missing in both pages and numpages fields in glad
-Warning--empty publisher in wang2008hypersafe
-Warning--empty address in wang2008hypersafe
-Warning--page numbers missing in both pages and numpages fields in wang2008hypersafe
-Warning--empty publisher in logrobust
-Warning--empty address in logrobust
-Warning--page numbers missing in both pages and numpages fields in logrobust
-You've used 26 entries,
-            6273 wiz_defined-function locations,
-            1635 strings with 21448 characters,
-and the built_in function-call counts, 25469 in all, are:
-= -- 2850
-> -- 838
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+You've used 27 entries,
+            4087 wiz_defined-function locations,
+            939 strings with 10549 characters,
+and the built_in function-call counts, 12472 in all, are:
+= -- 869
+> -- 283
 < -- 0
-+ -- 283
-- -- 319
-* -- 1633
-:= -- 2511
-add.period$ -- 114
-call.type$ -- 26
-change.case$ -- 162
-chr.to.int$ -- 26
-cite$ -- 78
-duplicate$ -- 2448
-empty$ -- 1734
-format.name$ -- 379
-if$ -- 6093
-int.to.chr$ -- 2
-int.to.str$ -- 1
-missing$ -- 96
-newline$ -- 231
-num.names$ -- 182
-pop$ -- 1165
++ -- 136
+- -- 68
+* -- 529
+:= -- 2029
+add.period$ -- 54
+call.type$ -- 27
+change.case$ -- 27
+chr.to.int$ -- 0
+cite$ -- 27
+duplicate$ -- 1078
+empty$ -- 1418
+format.name$ -- 91
+if$ -- 2901
+int.to.chr$ -- 0
+int.to.str$ -- 27
+missing$ -- 226
+newline$ -- 104
+num.names$ -- 27
+pop$ -- 635
 preamble$ -- 1
-purify$ -- 370
-quote$ -- 0
-skip$ -- 900
+purify$ -- 0
+quote$ -- 2
+skip$ -- 998
 stack$ -- 0
-substring$ -- 1476
-swap$ -- 135
+substring$ -- 27
+swap$ -- 562
 text.length$ -- 0
 text.prefix$ -- 0
-top$ -- 0
-type$ -- 725
-warning$ -- 52
-while$ -- 148
-width$ -- 0
-write$ -- 491
-(There were 52 warnings)
+top$ -- 5
+type$ -- 27
+warning$ -- 0
+while$ -- 27
+width$ -- 29
+write$ -- 238

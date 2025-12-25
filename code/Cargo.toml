@@ -1,0 +1,29 @@
+[package]
+name = "deepvis_scanner"
+version = "0.1.0"
+edition = "2021"
+authors = ["Anonymous (ICDCS Double-Blind)"]
+description = "High-performance io_uring-based file system scanner for DeepVis"
+
+[lib]
+name = "deepvis_scanner"
+path = "deepvis_scanner.rs"
+crate-type = ["cdylib"]
+
+[[bin]]
+name = "deepvis_bench"
+path = "deepvis_scanner.rs"
+
+[dependencies]
+io-uring = "0.7"
+pyo3 = { version = "0.23", features = ["extension-module"] }
+sha2 = "0.10"
+rayon = "1.10"
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

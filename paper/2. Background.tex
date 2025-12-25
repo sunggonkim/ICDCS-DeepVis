@@ -1,110 +1,55 @@
-\section{Background}~\label{Background}
+\section{Background}
+\label{Background}
 
-In this section, we provide essential background on File Integrity Monitoring and formalize the core challenges that motivate \DeepVis.
+In this section, we formalize the core challenges in distributed file system monitoring that motivate \DeepVis. These challenges---the \textit{Ordering Problem} and the \textit{Diffuse-vs-Sparse Anomaly Paradox}---are fundamental to any system monitoring unordered, high-churn data sources.
 
-\subsection{File Integrity Monitoring}
+\subsection{Distributed File System Monitoring}
 
-File Integrity Monitoring (FIM) is a security technique that monitors and validates system files to detect unauthorized changes. The fundamental principle is simple: compute a cryptographic hash of each monitored file, store it in a secure database, and periodically compare current hashes against the baseline.
+File system consistency verification is critical for distributed systems. From cloud storage services such as AWS EBS and Azure Files to container orchestration platforms such as Kubernetes and Docker to HPC clusters like Lustre and GPFS, operators must detect unauthorized modifications without impacting system performance. Approaches are generally categorized into two types: integrity scanning and provenance analysis.
 
-\subsubsection{Traditional Approaches}
+\noindent
+\textbf{Traditional Integrity Scanning (FIM). }
+Tools such as AIDE~\cite{aide} and Tripwire~\cite{tripwire} maintain a database of file attributes including hashes, permissions, and sizes. They operate by periodically scanning the file system and reporting deviations from a static baseline. Their design goal is exhaustive monitoring which involves detecting any change from the recorded state. While effective for static servers, this approach suffers from $O(N)$ complexity bottlenecks. As the file count grows, the scan duration increases linearly. Furthermore, in modern DevOps environments where continuous deployment is standard, a routine update modifies thousands of files. This generates a massive volume of alerts which leads to Alert Fatigue. Operators are often forced to disable monitoring during maintenance windows which creates blind spots.
 
-\noindent\textbf{AIDE (Advanced Intrusion Detection Environment)~\cite{aide}} is the de facto standard for Linux FIM. It maintains a database of file attributes (hash, permissions, size, timestamps) and reports any deviations. AIDE is highly configurable, allowing administrators to define custom rules for different directories.
+\noindent
+\textbf{Provenance-Based Analysis. }
+Provenance systems~\cite{unicorn, cheng2024kairos, flash2024} build causal graphs from system calls to detect behavioral anomalies. By tracking information flow between processes and files, they achieve high precision and can distinguish between benign and malicious activities based on context. However, these systems require heavy kernel instrumentation using frameworks such as \texttt{auditd} or CamFlow. This imposes a runtime overhead of 5--20\% which is prohibitive for latency-sensitive workloads. Additionally, the graph generation and storage costs grow with the system activity level rather than the file system size.
 
-\noindent\textbf{Tripwire~\cite{tripwire}} pioneered the FIM concept in 1992. It introduced the notion of a ``policy file'' that specifies which attributes to monitor for each file category.
+\DeepVis is designed to address the limitations of both paradigms. It eliminates the runtime overhead of provenance systems by operating on storage snapshots and resolves the scalability bottleneck of FIM by decoupling inference complexity from the file count.
 
-\noindent\textbf{OSSEC~\cite{ossec}} integrates FIM with log analysis and active response, providing a more comprehensive HIDS solution.
+\subsection{The Ordering Problem in Spatial Representation}
 
-\subsubsection{Limitations of Traditional FIM}
+To apply deep learning for anomaly detection, the file system state must be represented as a structured input tensor. However, file systems pose unique challenges compared to image or time-series data. Unlike images which have a fixed spatial grid or time series which have an inherent temporal sequence, file systems are unordered sets of variable-length paths.
 
-While effective for static servers, traditional FIM suffers from a fundamental limitation: \textbf{any change generates an alert}. In dynamic environments with frequent updates, this leads to:
+% TODO: Add shift problem illustration figure
+% \begin{figure}[!t]
+%   \centering
+%   \includegraphics[width=8.5cm]{figures/shift_problem.png}
+%   \caption{The Ordering Problem in Distributed File Systems.}
+%   \label{fig:shift_problem}
+% \end{figure}
 
-\begin{itemize}
-    \item \textbf{Alert Fatigue:} A kernel upgrade modifies thousands of files, generating thousands of alerts.
-    \item \textbf{Frequent Re-baselining:} Administrators must constantly update the baseline database, creating operational overhead.
-    \item \textbf{Maintenance Windows:} FIM is often disabled during updates, creating blind spots.
-\end{itemize}
+The fundamental \textit{Ordering Problem} occurs when vectorizing file systems. A naive approach is to sort files by path and map them to a linear vector or 2D grid. Consider a sorted list of files $[A, B, C]$. If a single new file $A.1$ is installed, the sorted list becomes $[A, A.1, B, C]$. Consequently, the data for files $B$ and $C$ shifts to new positions in the vector.
 
-\subsection{The Shift Problem}
+This phenomenon is the \textit{Shift Problem}. For a Convolutional Neural Network (CNN) trained on spatial locality, this shift is catastrophic. The network learns that a specific coordinate $(x, y)$ corresponds to the features of file $B$. When a new file is inserted, that coordinate now contains the features of $A.1$ or a neighbor. This destroys the learned spatial patterns and causes the model to flag the entire file system as anomalous. This fragility makes sorted representations unsuitable for dynamic environments where files are frequently added or removed.
 
-To apply machine learning to file system analysis, one must first represent the file system state as a feature vector or tensor. The naive approach is to sort files (by path or size) and concatenate their attributes.
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=8.5cm]{Figures/shift_problem.png}
-    \vspace{-0.6cm}
-    \caption{The Shift Problem. Adding a single file shifts all subsequent pixel positions, confusing the CNN.}
-    \label{fig:shift_problem}
-    \vspace{-.6cm}
-\end{figure}
-
-Figure~\ref{fig:shift_problem} illustrates the problem. Consider a sorted list of files: $[f_1, f_2, f_3, \dots, f_n]$. If a new file $f_{new}$ is inserted such that $f_{new} < f_2$ alphabetically, the resulting list becomes $[f_1, f_{new}, f_2, f_3, \dots, f_n]$. Every file after $f_1$ has shifted position.
-
-For a CNN trained on the original representation, this shift is catastrophic:
-\begin{itemize}
-    \item The pixel corresponding to $f_2$ now contains data from $f_{new}$.
-    \item Learned spatial patterns are destroyed.
-    \item A benign file addition appears as a global anomaly.
-\end{itemize}
-
-\noindent\textbf{Definition (Shift-Invariance):} A representation $R: \mathcal{F} \rightarrow \mathbb{R}^{H \times W}$ is \textit{shift-invariant} if for all $f_i \in \mathcal{F}$ and all $f_{new} \notin \mathcal{F}$:
+To solve this, \DeepVis introduces \textit{Hash-Based Spatial Mapping}. Instead of relying on sorting, we map each file to a fixed coordinate derived deterministically from its path hash. We formalize this mapping $\Phi$ as:
 \begin{equation}
-    R(\mathcal{F})_{x_i, y_i} = R(\mathcal{F} \cup \{f_{new}\})_{x_i, y_i}
+    \Phi(path) = (\text{Hash}(path) \pmod W, \lfloor \text{Hash}(path) / W \rfloor \pmod H)
 \end{equation}
-where $(x_i, y_i)$ is the coordinate assigned to $f_i$.
+This ensures Shift Invariance. The coordinate of a file depends only on its own path. Adding a new file populates a specific pixel but does not perturb the positions of existing files. This transforms the unordered set into a stable spatial tensor suitable for CNN inference.
 
-Traditional sorting-based representations violate this property. \DeepVis achieves shift-invariance through hash-based coordinate assignment.
+\subsection{The MSE Paradox: Diffuse vs. Sparse Signals}
 
-\subsection{The MSE Paradox}
+A fundamental asymmetry exists in distributed system updates compared to attacks. This asymmetry causes traditional reconstruction-based anomaly detection to fail. We term this the \textit{MSE Paradox}.
 
-The Mean Squared Error (MSE) is the standard loss function for autoencoders:
-\begin{equation}
-    \mathcal{L}_{MSE} = \frac{1}{N} \sum_{i=1}^{N} || X_i - \hat{X}_i ||^2
-\end{equation}
+Legitimate system updates, such as \texttt{apt-get upgrade}, affect a large number of files (diffuse noise). Thousands of binaries and libraries change simultaneously, but the entropy change per file is small. In contrast, stealthy rootkits typically modify a very small number of files (sparse signal) to maintain persistence, but the entropy change for those specific files is large due to packing or encryption.
 
-Intuitively, one expects anomalous inputs to produce higher reconstruction error. However, our experiments reveal a counter-intuitive phenomenon we term the \textbf{MSE Paradox}.
-
-\begin{table}[t]
-\centering
-\caption{The MSE Paradox: Global vs. Local Error}
-\label{tab:mse_paradox}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Scenario} & \textbf{Global MSE} & \textbf{Local Max} \\
-\midrule
-Static System & 0.001 & 0.05 \\
-apt-get upgrade & \textbf{0.048} & 0.65 \\
-Diamorphine Rootkit & 0.039 & \textbf{0.99} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Table~\ref{tab:mse_paradox} shows representative measurements:
+Standard autoencoders use Mean Squared Error (MSE) as a loss function which averages the error across all pixels.
 \begin{itemize}
-    \item \textbf{Legitimate Update:} Modifies thousands of files, producing high \textit{aggregate} MSE (0.048).
-    \item \textbf{Rootkit Injection:} Modifies a single kernel module, producing low aggregate MSE (0.039) but extreme \textit{local} deviation (0.99).
+    \item \textbf{Legitimate Update:} High aggregate error due to thousands of small changes.
+    \item \textbf{Stealthy Attack:} Low aggregate error due to a single localized change.
 \end{itemize}
+If a global threshold is set to detect the attack, it generates false positives for every update. If the threshold is raised to tolerate updates, the attack is missed.
 
-\noindent\textbf{Implication:} Global thresholds systematically fail. A detector using $MSE > 0.04$ as the threshold would:
-\begin{enumerate}
-    \item Flag every legitimate update as malicious (False Positive).
-    \item Potentially miss rootkits if their MSE falls below the threshold (False Negative).
-\end{enumerate}
-
-\DeepVis overcomes this paradox by using \textit{Local Max Difference} as the detection metric, which captures point anomalies regardless of global noise.
-
-\subsection{Shannon Entropy as a Malware Indicator}
-
-Shannon Entropy measures the randomness of a byte sequence:
-\begin{equation}
-    S(f) = -\sum_{b=0}^{255} p_b \log_2 p_b
-\end{equation}
-where $p_b$ is the probability of byte value $b$ in file $f$.
-
-Prior work~\cite{lyda2007entropy} has established that:
-\begin{itemize}
-    \item \textbf{Typical ELF binaries:} $S \approx 5.0$ -- $6.0$
-    \item \textbf{Text/Config files:} $S \approx 4.0$ -- $5.0$
-    \item \textbf{Packed/Encrypted malware:} $S > 7.0$
-\end{itemize}
-
-Rootkits are often packed (e.g., UPX) or encrypted to evade signature-based detection. This raises their entropy to near-maximum values (8.0 for pure random data). \DeepVis exploits this by encoding entropy in the Red channel, making high-entropy files visually prominent.
+To overcome this, \DeepVis employs \textit{Local Max Detection} ($L_\infty$). Instead of averaging errors, we monitor the maximum pixel-wise reconstruction error. A stealthy rootkit produces a sharp spike in the error map at its specific coordinate. By focusing on the local maximum, \DeepVis can identify sparse anomalies even in the presence of diffuse background noise from legitimate updates.

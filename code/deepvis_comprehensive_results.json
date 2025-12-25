@@ -1,0 +1,133 @@
+{
+  "timing": {
+    "snapshot_ms": 3844.189176001237,
+    "tensor_ms": 22.78568299880135,
+    "inference_mean_ms": 3.109567669889657,
+    "inference_std_ms": 0.18257270619762378,
+    "files": 913
+  },
+  "churn_tolerance": [
+    {
+      "churn_pct": 5,
+      "avg_linf": 0.6214756727218628,
+      "max_linf": 0.627414345741272,
+      "fpr": 0.0,
+      "threshold": 0.6320708501935005
+    },
+    {
+      "churn_pct": 10,
+      "avg_linf": 0.6213251968224843,
+      "max_linf": 0.6223134994506836,
+      "fpr": 0.0,
+      "threshold": 0.6320708501935005
+    },
+    {
+      "churn_pct": 20,
+      "avg_linf": 0.621950634320577,
+      "max_linf": 0.6265900731086731,
+      "fpr": 0.0,
+      "threshold": 0.6320708501935005
+    },
+    {
+      "churn_pct": 30,
+      "avg_linf": 0.6211907605330149,
+      "max_linf": 0.6276475191116333,
+      "fpr": 0.0,
+      "threshold": 0.6320708501935005
+    },
+    {
+      "churn_pct": 50,
+      "avg_linf": 0.6216325322786967,
+      "max_linf": 0.62828129529953,
+      "fpr": 0.0,
+      "threshold": 0.6320708501935005
+    }
+  ],
+  "l2_vs_linf": {
+    "attack_only": {
+      "l2": 0.059178560972213745,
+      "linf": 0.7354691624641418
+    },
+    "update_only": {
+      "l2": 0.05919334292411804,
+      "linf": 0.6215988397598267
+    },
+    "attack_plus_update": {
+      "l2": 0.05917208269238472,
+      "linf": 0.7356191873550415
+    },
+    "threshold": 0.6320708501935005
+  },
+  "rootkit_detection": {
+    "diamorphine": {
+      "detected": 30,
+      "total": 30,
+      "recall": 1.0,
+      "avg_linf": 0.7354691624641418
+    },
+    "reptile": {
+      "detected": 30,
+      "total": 30,
+      "recall": 1.0,
+      "avg_linf": 0.7671611309051514
+    },
+    "beurk": {
+      "detected": 30,
+      "total": 30,
+      "recall": 1.0,
+      "avg_linf": 0.7392580509185791
+    }
+  },
+  "cross_os": {
+    "centos": {
+      "fpr": 0.0,
+      "recall": 100.0,
+      "files": 3028
+    },
+    "debian": {
+      "fpr": 0.0,
+      "recall": 100.0,
+      "files": 859
+    }
+  },
+  "resolution_ablation": [
+    {
+      "resolution": "64x64",
+      "pixels": 4096,
+      "unique_coords": 828,
+      "collision_rate": 9.309967141292443
+    },
+    {
+      "resolution": "128x128",
+      "pixels": 16384,
+      "unique_coords": 887,
+      "collision_rate": 2.8477546549835706
+    },
+    {
+      "resolution": "256x256",
+      "pixels": 65536,
+      "unique_coords": 906,
+      "collision_rate": 0.7667031763417306
+    }
+  ],
+  "baseline_comparison": {
+    "simple_threshold": {
+      "fpr": 0.0,
+      "recall": 100.0
+    },
+    "deepvis": {
+      "fpr": 0.0,
+      "recall": 100.0
+    }
+  },
+  "resources": {
+    "model_params": 135331,
+    "model_size_mb": 0.5162467956542969,
+    "threshold": 0.6320708501935005,
+    "entropy_io": {
+      "bytes_per_file": 64,
+      "total_bytes": 58432,
+      "estimated_io_ms": 0.1114501953125
+    }
+  }
+}
