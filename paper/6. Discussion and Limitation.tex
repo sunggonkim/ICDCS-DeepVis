@@ -28,7 +28,7 @@ An attacker might craft a malicious filename such that its hash coordinates coll
 \noindent\textbf{Defense Analysis.} \DeepVis mitigates this through two mechanisms.
 \begin{enumerate}
     \item \textbf{Pre-image Resistance.} Finding a functional path in a target directory that hashes to a specific coordinate requires $2^{64}$ operations. This is computationally prohibitive for run-time attacks.
-    \item \textbf{Max-Risk Pooling.} Even if a collision occurs, \DeepVis utilizes a Max-Priority collision resolution strategy as defined in Section~\ref{design_collision}. If a packed rootkit ($S=7.8$) maps to the same pixel as a log file ($S=4.2$), the pixel retains the maximum value of 7.8. Therefore, the attack signal is preserved regardless of the background noise.
+    \item \textbf{Max-Risk Pooling.} Even if a collision occurs, \DeepVis utilizes a Max-Priority collision resolution strategy as defined in Section~\ref{design_3}. If a packed rootkit ($S=7.8$) maps to the same pixel as a log file ($S=4.2$), the pixel retains the maximum value of 7.8. Therefore, the attack signal is preserved regardless of the background noise.
 \end{enumerate}
 
 \subsection{Operational Analysis: The SNR Advantage}
