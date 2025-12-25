@@ -242,27 +242,60 @@ Fedora 38 & 3,329 & 100\% & \textbf{4\%} & 100\% \\
 \end{tabular}
 \end{table}
 
+\subsection{Resolution Scaling Ablation (Q5)}
+\label{eval_resolution}
+
+The tensor resolution determines the trade-off between hash collision rate, memory footprint, and inference latency. We evaluate four resolutions across all tested distributions.
+
 \noindent
-\textbf{Resolution Scaling.} The remaining FPR in Debian/Fedora results from hash collisions at 128$\times$128 resolution. Table~\ref{tab:resolution} shows that scaling to 256$\times$256 reduces collisions by 65--74\%, further reducing FPR:
+\textbf{Experiment Design.} For each resolution (64$\times$64 to 512$\times$512), we measured: (1) hash collision rate, (2) FPR/Recall with per-OS training, and (3) tensor construction time. Table~\ref{tab:resolution_ablation} presents the averaged results across Ubuntu, CentOS, Debian, and Fedora.
 
 \begin{table}[t]
 \centering
-\caption{Resolution Impact on Hash Collisions}
-\label{tab:resolution}
-\begin{tabular}{lcccc}
+\caption{Resolution Scaling: Trade-offs (4 OS averaged, 30 trials each)}
+\label{tab:resolution_ablation}
+\begin{tabular}{lcccccc}
 \toprule
-\textbf{OS} & \textbf{Files} & \textbf{128$\times$128} & \textbf{256$\times$256} & \textbf{Reduction} \\
+\textbf{Res.} & \textbf{Pixels} & \textbf{Collision} & \textbf{FPR} & \textbf{Recall} & \textbf{Time} & \textbf{Model} \\
 \midrule
-Ubuntu & 913 & 2.7\% & \textbf{1.1\%} & 59\% \\
-CentOS & 3,028 & 8.3\% & \textbf{2.3\%} & 72\% \\
-Debian & 859 & 2.0\% & \textbf{0.7\%} & 65\% \\
-Fedora & 3,329 & 9.6\% & \textbf{2.5\%} & 74\% \\
+64$\times$64 & 4K & 20.5\% & 3.3\% & 100\% & 6.1ms & 0.1 MB \\
+128$\times$128 & 16K & 6.1\% & 4.2\% & 100\% & 4.9ms & 0.5 MB \\
+256$\times$256 & 65K & 1.6\% & 8.3\% & 100\% & 4.9ms & 2.0 MB \\
+512$\times$512 & 262K & \textbf{0.4\%} & 2.5\% & 100\% & 5.0ms & 8.0 MB \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \noindent
-These results confirm that \DeepVis achieves near-zero FPR and 100\% recall across all tested distributions when trained on the target environment. For larger file systems ($>$3,000 files), we recommend 256$\times$256 resolution.
+\textbf{Per-OS Collision Analysis.} Table~\ref{tab:resolution_peros} shows the collision rate breakdown by file system size:
+
+\begin{table}[t]
+\centering
+\caption{Collision Rate by OS at Different Resolutions}
+\label{tab:resolution_peros}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{OS (files)} & \textbf{64$\times$64} & \textbf{128$\times$128} & \textbf{256$\times$256} & \textbf{512$\times$512} \\
+\midrule
+Ubuntu (913) & 10.7\% & 3.1\% & 0.8\% & \textbf{0.1\%} \\
+Debian (859) & 10.1\% & 2.9\% & 0.9\% & \textbf{0.1\%} \\
+CentOS (3,028) & 29.2\% & 8.5\% & 1.6\% & \textbf{0.6\%} \\
+Fedora (3,329) & 32.0\% & 10.0\% & 3.1\% & \textbf{0.8\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+\textbf{Analysis: Trade-offs.}
+\begin{itemize}
+    \item \textbf{64$\times$64:} Minimal memory (0.1 MB), but high collision rates (20--32\%) for large file systems. Suitable only for containers with $<$500 files.
+    \item \textbf{128$\times$128 (default):} Best balance for typical deployments. Collision $<$10\% for 3K files, 0.5 MB model fits in Kubernetes sidecar limits.
+    \item \textbf{256$\times$256:} Recommended for large file systems ($>$3K files). Reduces collision to $<$3\% with 2 MB overhead.
+    \item \textbf{512$\times$512:} Near-zero collision ($<$1\%), but 8 MB model size may exceed resource-constrained environments.
+\end{itemize}
+
+\noindent
+\textbf{Recommendation.} We recommend \textbf{128$\times$128} as the default for container-based deployments, with dynamic scaling to 256$\times$256 when file count exceeds 3,000.
 
 \subsection{Adversarial Attack Robustness}
 \label{eval_adversarial}

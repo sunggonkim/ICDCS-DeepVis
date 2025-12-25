@@ -1,0 +1,154 @@
+{
+  "64": {
+    "ubuntu": {
+      "files": 913,
+      "pixels": 4096,
+      "collision_rate": 10.73,
+      "fpr": 3.3,
+      "recall": 100.0,
+      "img_time_ms": 3.67,
+      "model_size_mb": 0.02
+    },
+    "centos": {
+      "files": 3028,
+      "pixels": 4096,
+      "collision_rate": 29.16,
+      "fpr": 0.0,
+      "recall": 100.0,
+      "img_time_ms": 10.77,
+      "model_size_mb": 0.02
+    },
+    "debian": {
+      "files": 859,
+      "pixels": 4096,
+      "collision_rate": 10.13,
+      "fpr": 0.0,
+      "recall": 100.0,
+      "img_time_ms": 2.1,
+      "model_size_mb": 0.02
+    },
+    "fedora": {
+      "files": 3329,
+      "pixels": 4096,
+      "collision_rate": 31.96,
+      "fpr": 10.0,
+      "recall": 100.0,
+      "img_time_ms": 8.05,
+      "model_size_mb": 0.02
+    }
+  },
+  "128": {
+    "ubuntu": {
+      "files": 913,
+      "pixels": 16384,
+      "collision_rate": 3.07,
+      "fpr": 3.3,
+      "recall": 100.0,
+      "img_time_ms": 2.24,
+      "model_size_mb": 0.09
+    },
+    "centos": {
+      "files": 3028,
+      "pixels": 16384,
+      "collision_rate": 8.52,
+      "fpr": 0.0,
+      "recall": 100.0,
+      "img_time_ms": 7.34,
+      "model_size_mb": 0.09
+    },
+    "debian": {
+      "files": 859,
+      "pixels": 16384,
+      "collision_rate": 2.91,
+      "fpr": 6.7,
+      "recall": 100.0,
+      "img_time_ms": 2.11,
+      "model_size_mb": 0.09
+    },
+    "fedora": {
+      "files": 3329,
+      "pixels": 16384,
+      "collision_rate": 9.97,
+      "fpr": 6.7,
+      "recall": 100.0,
+      "img_time_ms": 8.08,
+      "model_size_mb": 0.09
+    }
+  },
+  "256": {
+    "ubuntu": {
+      "files": 913,
+      "pixels": 65536,
+      "collision_rate": 0.77,
+      "fpr": 13.3,
+      "recall": 100.0,
+      "img_time_ms": 2.3,
+      "model_size_mb": 0.38
+    },
+    "centos": {
+      "files": 3028,
+      "pixels": 65536,
+      "collision_rate": 1.62,
+      "fpr": 10.0,
+      "recall": 100.0,
+      "img_time_ms": 7.33,
+      "model_size_mb": 0.38
+    },
+    "debian": {
+      "files": 859,
+      "pixels": 65536,
+      "collision_rate": 0.93,
+      "fpr": 6.7,
+      "recall": 100.0,
+      "img_time_ms": 2.12,
+      "model_size_mb": 0.38
+    },
+    "fedora": {
+      "files": 3329,
+      "pixels": 65536,
+      "collision_rate": 3.09,
+      "fpr": 3.3,
+      "recall": 100.0,
+      "img_time_ms": 7.83,
+      "model_size_mb": 0.38
+    }
+  },
+  "512": {
+    "ubuntu": {
+      "files": 913,
+      "pixels": 262144,
+      "collision_rate": 0.11,
+      "fpr": 0.0,
+      "recall": 100.0,
+      "img_time_ms": 2.51,
+      "model_size_mb": 1.5
+    },
+    "centos": {
+      "files": 3028,
+      "pixels": 262144,
+      "collision_rate": 0.59,
+      "fpr": 3.3,
+      "recall": 100.0,
+      "img_time_ms": 7.29,
+      "model_size_mb": 1.5
+    },
+    "debian": {
+      "files": 859,
+      "pixels": 262144,
+      "collision_rate": 0.12,
+      "fpr": 3.3,
+      "recall": 100.0,
+      "img_time_ms": 2.18,
+      "model_size_mb": 1.5
+    },
+    "fedora": {
+      "files": 3329,
+      "pixels": 262144,
+      "collision_rate": 0.84,
+      "fpr": 3.3,
+      "recall": 100.0,
+      "img_time_ms": 7.97,
+      "model_size_mb": 1.5
+    }
+  }
+}
