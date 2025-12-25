@@ -41,57 +41,66 @@
 \newlabel{design_5}{{\mbox  {III-E}}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}Implementation}{5}{}\protected@file@percent }
 \newlabel{design_impl}{{\mbox  {III-F}}{5}}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Rust Scanner Performance (System-Critical Directories)\relax }}{6}{}\protected@file@percent }
-\newlabel{tab:rust}{{II}{6}}
+\citation{diamorphine}
+\citation{reptile}
+\citation{beurk}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Docker Images Used for Evaluation\relax }}{6}{}\protected@file@percent }
+\newlabel{tab:datasets}{{II}{6}}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Evaluation}{6}{}\protected@file@percent }
 \newlabel{Evaluation}{{IV}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Setup}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}1}Testbed}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}2}Datasets}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}End-to-End Latency Breakdown (Q1)}{6}{}\protected@file@percent }
-\newlabel{eval_latency}{{\mbox  {IV-B}}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}1}Native Scanner Performance (Rust + io\_uring)}{6}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces End-to-End Latency (Docker-Based Extraction)\relax }}{6}{}\protected@file@percent }
-\newlabel{tab:e2e}{{III}{6}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Benign Churn Tolerance Test\relax }}{6}{}\protected@file@percent }
-\newlabel{tab:churn}{{IV}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}2}Docker Container Overhead}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Evaluation Setup}{6}{}\protected@file@percent }
+\newlabel{eval_setup}{{\mbox  {IV-A}}{6}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Rust Scanner Throughput on System-Critical Directories\relax }}{6}{}\protected@file@percent }
+\newlabel{tab:rust}{{III}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Scanning Performance (Q1)}{6}{}\protected@file@percent }
+\newlabel{eval_perf}{{\mbox  {IV-B}}{6}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Benign Churn Tolerance (Q2)}{6}{}\protected@file@percent }
 \newlabel{eval_churn}{{\mbox  {IV-C}}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}L2 (MSE) vs L$_\infty $ (Local Max) Comparison}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Detection Sensitivity (Q3)}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Cross-Platform Portability (Q4)}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Comparison to Alternatives (Q5)}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-G}1}vs IMA/TPM Attestation}{6}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces End-to-End Latency Breakdown\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:e2e}{{IV}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Benign Churn Tolerance (100 trials per churn level)\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:churn}{{V}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}L$_2$ (MSE) vs L$_\infty $ Detection Comparison}{7}{}\protected@file@percent }
+\newlabel{eval_mse}{{\mbox  {IV-D}}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces $L_2$ (MSE) vs $L_\infty $ Detection Comparison\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:l2linf}{{VI}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Rootkit Detection Performance\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:rootkit}{{VII}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Detection Sensitivity (Q3)}{7}{}\protected@file@percent }
+\newlabel{eval_detect}{{\mbox  {IV-E}}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Cross-Platform Generalization (Q4)}{7}{}\protected@file@percent }
+\newlabel{eval_crossos}{{\mbox  {IV-F}}{7}}
+\citation{unicorn}
 \citation{aide,tripwire,samhain}
 \citation{du2017deeplog,logrobust,logbert}
 \citation{unicorn,cheng2024kairos,rehman2024flash}
 \citation{nataraj2011malware,conti2008visual,codegrid}
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Cross-OS Transferability (Ubuntu-trained model, no fine-tuning)\relax }}{8}{}\protected@file@percent }
+\newlabel{tab:crossos}{{VIII}{8}}
+\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces DeepVis vs IMA/TPM Attestation\relax }}{8}{}\protected@file@percent }
+\newlabel{tab:ima}{{IX}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Comparison to Alternative Approaches (Q5)}{8}{}\protected@file@percent }
+\newlabel{eval_compare}{{\mbox  {IV-G}}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-H}}Ablation Studies}{8}{}\protected@file@percent }
+\newlabel{eval_ablation}{{\mbox  {IV-H}}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-H}1}Tensor Resolution vs Collision Rate}{8}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces DeepVis vs Provenance-Based Detection\relax }}{8}{}\protected@file@percent }
+\newlabel{tab:prov}{{X}{8}}
+\@writefile{lot}{\contentsline {table}{\numberline {XI}{\ignorespaces Resolution vs Collision Rate (913 files)\relax }}{8}{}\protected@file@percent }
+\newlabel{tab:resolution}{{XI}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-H}2}CAE vs Simple Baseline}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-I}}Resource Overhead}{8}{}\protected@file@percent }
+\newlabel{eval_resources}{{\mbox  {IV-I}}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-J}}Summary of Key Findings}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{8}{}\protected@file@percent }
+\newlabel{RelatedWork}{{V}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Distributed System Integrity Monitoring}{8}{}\protected@file@percent }
 \citation{mirsky2018kitsune}
 \citation{zong2018deep}
 \citation{su2019robust}
 \citation{liu2008isolation,breunig2000lof}
 \citation{xu2018unsupervised,zhou2019vae,an2015variational}
 \citation{pang2019deep,ruff2018deep,akcay2018ganomaly}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces $L_2$ (MSE) vs $L_\infty $ Detection Comparison\relax }}{7}{}\protected@file@percent }
-\newlabel{tab:l2linf}{{V}{7}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Rootkit Detection Performance\relax }}{7}{}\protected@file@percent }
-\newlabel{tab:rootkit}{{VI}{7}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-G}2}vs Provenance Systems}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-H}}Ablation Studies}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-H}1}Tensor Resolution vs Collision Rate}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-H}2}Non-CAE Baseline Comparison}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-I}}Entropy I/O Cost Analysis}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-J}}Resource Overhead}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-K}}Summary}{7}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Cross-OS Transferability (Ubuntu-trained model)\relax }}{7}{}\protected@file@percent }
-\newlabel{tab:crossos}{{VII}{7}}
-\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces DeepVis vs IMA/TPM Attestation\relax }}{7}{}\protected@file@percent }
-\newlabel{tab:ima}{{VIII}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{7}{}\protected@file@percent }
-\newlabel{RelatedWork}{{V}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Distributed System Integrity Monitoring}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Anomaly Detection in High-Dimensional Systems}{7}{}\protected@file@percent }
 \citation{aide,tripwire}
 \citation{samhain}
 \citation{du2017deeplog}
@@ -100,34 +109,27 @@
 \citation{unicorn}
 \citation{cheng2024kairos}
 \citation{rehman2024flash}
-\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces DeepVis vs Provenance (Kairos/Unicorn)\relax }}{8}{}\protected@file@percent }
-\newlabel{tab:prov}{{IX}{8}}
-\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces Resolution Ablation Study\relax }}{8}{}\protected@file@percent }
-\newlabel{tab:resolution}{{X}{8}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion and Limitation}{8}{}\protected@file@percent }
-\newlabel{DiscussionAndLimitation}{{VI}{8}}
-\newlabel{Discussion}{{VI}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Robustness Against Adaptive Attackers}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}1}Attack 1: Low-Entropy Mimicry}{8}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {XI}{\ignorespaces DeepVis vs Simple Threshold Baseline\relax }}{8}{}\protected@file@percent }
-\newlabel{tab:baseline}{{XI}{8}}
-\@writefile{lot}{\contentsline {table}{\numberline {XII}{\ignorespaces Resource Consumption\relax }}{8}{}\protected@file@percent }
-\newlabel{tab:resources}{{XII}{8}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}2}Attack 2: Chameleon Attack (Hash Collision)}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Operational Analysis: The SNR Advantage}{8}{}\protected@file@percent }
-\newlabel{snr_analysis}{{\mbox  {VI-B}}{8}}
-\@writefile{lot}{\contentsline {table}{\numberline {XIII}{\ignorespaces Distributed System Monitoring Paradigms: A Systems Comparison (2017--2025)\relax }}{9}{}\protected@file@percent }
-\newlabel{tab:se_comparison}{{XIII}{9}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-B}1}The Needle in the Haystack Problem}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-B}2}The Local Max Solution ($L_\infty $)}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limitations}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}1}Memory-Only Rootkits}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}2}Low-Entropy Malware}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}3}Collision Density at Hyperscale}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Deployment Considerations}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}1}Poisoned Baseline Defense}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}2}Agentless Architecture}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}3}Parallel and Incremental Architecture}{9}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {XII}{\ignorespaces Resource Consumption\relax }}{9}{}\protected@file@percent }
+\newlabel{tab:resources}{{XII}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Anomaly Detection in High-Dimensional Systems}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion and Limitation}{9}{}\protected@file@percent }
+\newlabel{DiscussionAndLimitation}{{VI}{9}}
+\newlabel{Discussion}{{VI}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Robustness Against Adaptive Attackers}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}1}Attack 1: Low-Entropy Mimicry}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}2}Attack 2: Chameleon Attack (Hash Collision)}{9}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {XIII}{\ignorespaces Distributed System Monitoring Paradigms: A Systems Comparison (2017--2025)\relax }}{10}{}\protected@file@percent }
+\newlabel{tab:se_comparison}{{XIII}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Operational Analysis: The SNR Advantage}{10}{}\protected@file@percent }
+\newlabel{snr_analysis}{{\mbox  {VI-B}}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-B}1}The Needle in the Haystack Problem}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-B}2}The Local Max Solution ($L_\infty $)}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limitations}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}1}Memory-Only Rootkits}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}2}Low-Entropy Malware}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}3}Collision Density at Hyperscale}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Deployment Considerations}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}1}Poisoned Baseline Defense}{10}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
@@ -157,8 +159,10 @@
 \bibcite{pang2019deep}{25}
 \bibcite{ruff2018deep}{26}
 \bibcite{akcay2018ganomaly}{27}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}4}Resource-Constrained Environments}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{10}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{10}}
-\@writefile{toc}{\contentsline {section}{References}{10}{}\protected@file@percent }
-\gdef \@abspage@last{10}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}2}Agentless Architecture}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}3}Parallel and Incremental Architecture}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}4}Resource-Constrained Environments}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{11}}
+\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
+\gdef \@abspage@last{11}
