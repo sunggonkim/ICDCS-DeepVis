@@ -56,14 +56,30 @@ To overcome this, \DeepVis employs \textit{Local Max Detection} ($L_\infty$). In
 
 \subsection{Entropy as an Attack Signature}
 
-A key observation motivating \DeepVis is that packed or encrypted malware exhibits statistically different entropy patterns compared to legitimate system files. Figure~\ref{fig:entropy_analysis} presents the entropy distribution measured from 913 real files extracted from an Ubuntu 22.04 Docker image.
+A key observation motivating \DeepVis is that packed or encrypted malware exhibits statistically different entropy patterns compared to legitimate system files. Figure~\ref{fig:entropy_combined} presents the entropy analysis: (a) the distribution measured from 913 real files extracted from an Ubuntu 22.04 Docker image, and (b-d) the byte-level patterns explaining why different file types exhibit different entropy values.
 
-\begin{figure}[t]
+\begin{figure*}[!htb]
     \centering
-    \includegraphics[width=\columnwidth]{figures/entropy_real_analysis.pdf}
-    \caption{Entropy distribution of real system files (Ubuntu 22.04, $n=913$) vs. simulated packed rootkits ($n=100$). Benign files cluster below 6.5 bits/byte, while rootkits exhibit 7.0+ bits/byte due to compression or encryption.}
-    \label{fig:entropy_analysis}
-\end{figure}
+    \subfloat[Entropy Distribution: Benign vs Rootkit]{
+        \includegraphics[width=0.48\textwidth]{figures/entropy_real_analysis.pdf}
+        \label{fig:entropy_hist}
+    }
+    \hfill
+    \subfloat[Normal Text File (H $\approx$ 4.2)]{
+        \includegraphics[width=0.16\textwidth]{figures/Background_entrophy/Background_Normal_text.pdf}
+        \label{fig:entropy_text}
+    }
+    \subfloat[System Binary / ELF (H $\approx$ 6.1)]{
+        \includegraphics[width=0.16\textwidth]{figures/Background_entrophy/Background_System_binaray.pdf}
+        \label{fig:entropy_elf}
+    }
+    \subfloat[Packed Rootkit (H $\approx$ 7.9)]{
+        \includegraphics[width=0.16\textwidth]{figures/Background_entrophy/Background_Rootkit.pdf}
+        \label{fig:entropy_rootkit}
+    }
+    \caption{Entropy as an attack signature. (a) Distribution of Shannon entropy from real Ubuntu files ($n=913$) vs. simulated rootkits ($n=100$): benign files cluster below 6.5 bits/byte, while packed/encrypted rootkits exceed 7.0. (b-d) Byte value distributions explaining entropy differences: text files use limited ASCII range, ELF binaries show structured patterns, and encrypted rootkits exhibit uniform distribution---the ``Attacker's Paradox.''}
+    \label{fig:entropy_combined}
+\end{figure*}
 
 \noindent
 \textbf{Key Observation.} Legitimate system files---including text configurations, libraries, and executables---rarely exceed 6.5 bits/byte entropy. In contrast, attackers commonly employ packing (e.g., UPX) or encryption (e.g., AES) to evade signature-based detection and hinder reverse engineering. These transformations produce near-uniform byte distributions with entropy approaching the theoretical maximum of 8 bits/byte. This creates a statistical anomaly that \DeepVis exploits: high-entropy files in system directories are inherently suspicious.

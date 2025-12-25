@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 17:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 17:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -385,109 +385,105 @@ cmr/m/n/10 ))
  []
 
 [2]
+
+LaTeX Warning: Reference `fig:entropy_combined' on page 3 undefined on input li
+ne 59.
+
 <figures/entropy_real_analysis.pdf, id=23, 710.90594pt x 420.31342pt>
 File: figures/entropy_real_analysis.pdf Graphic file (type pdf)
 <use figures/entropy_real_analysis.pdf>
 Package pdftex.def Info: figures/entropy_real_analysis.pdf  used on input line 
-63.
-(pdftex.def)             Requested size: 252.0pt x 148.99104pt.
-) (./3. Design.tex
-<figures/DeepVis_Overall.png, id=24, 1084.05pt x 361.35pt>
-File: figures/DeepVis_Overall.png Graphic file (type png)
-<use figures/DeepVis_Overall.png>
-Package pdftex.def Info: figures/DeepVis_Overall.png  used on input line 22.
-(pdftex.def)             Requested size: 516.0pt x 172.00694pt.
- [3 <./figures/entropy_real_analysis.pdf>]
-Underfull \hbox (badness 2680) in paragraph at lines 38--40
-\OT1/ptm/m/n/10 crate to man-age file sys-tem meta-data col-lec-tion asyn-
- []
-
-<figures/Background_entrophy/Background_Normal_text.pdf, id=120, 284.94691pt x 
-465.23059pt>
+66.
+(pdftex.def)             Requested size: 247.6778pt x 146.43848pt.
+<figures/Background_entrophy/Background_Normal_text.pdf, id=24, 284.94691pt x 4
+65.23059pt>
 File: figures/Background_entrophy/Background_Normal_text.pdf Graphic file (type
  pdf)
 <use figures/Background_entrophy/Background_Normal_text.pdf>
 Package pdftex.def Info: figures/Background_entrophy/Background_Normal_text.pdf
-  used on input line 63.
-(pdftex.def)             Requested size: 165.12378pt x 269.59966pt.
-<figures/Background_entrophy/Background_System_binaray.pdf, id=121, 289.55978pt
- x 464.29753pt>
+  used on input line 71.
+(pdftex.def)             Requested size: 82.56189pt x 134.79272pt.
+<figures/Background_entrophy/Background_System_binaray.pdf, id=25, 289.55978pt 
+x 464.29753pt>
 File: figures/Background_entrophy/Background_System_binaray.pdf Graphic file (t
 ype pdf)
 <use figures/Background_entrophy/Background_System_binaray.pdf>
 Package pdftex.def Info: figures/Background_entrophy/Background_System_binaray.
-pdf  used on input line 68.
-(pdftex.def)             Requested size: 165.12378pt x 264.77986pt.
-<figures/Background_entrophy/Background_Rootkit.pdf, id=122, 291.71313pt x 463.
-14372pt>
+pdf  used on input line 75.
+(pdftex.def)             Requested size: 82.56189pt x 132.38284pt.
+<figures/Background_entrophy/Background_Rootkit.pdf, id=26, 291.71313pt x 463.1
+4372pt>
 File: figures/Background_entrophy/Background_Rootkit.pdf Graphic file (type pdf
 )
 <use figures/Background_entrophy/Background_Rootkit.pdf>
 Package pdftex.def Info: figures/Background_entrophy/Background_Rootkit.pdf  us
-ed on input line 73.
-(pdftex.def)             Requested size: 165.12378pt x 262.1643pt.
-
-Underfull \hbox (badness 2452) in paragraph at lines 74--74
-[]\OT1/ptm/m/n/10 Fig. 3: |Entropy-based anal-y-sis and byte pat-terns of dif-f
-er-ent file types. We cal-cu-late Shan-non en-tropy $\OML/cmm/m/it/10 H \OT1/cm
-r/m/n/10 =
+ed on input line 79.
+(pdftex.def)             Requested size: 82.56189pt x 131.07861pt.
+) (./3. Design.tex
+<figures/DeepVis_Overall.png, id=27, 1084.05pt x 361.35pt>
+File: figures/DeepVis_Overall.png Graphic file (type png)
+<use figures/DeepVis_Overall.png>
+Package pdftex.def Info: figures/DeepVis_Overall.png  used on input line 22.
+(pdftex.def)             Requested size: 516.0pt x 172.00694pt.
+ [3]
+Underfull \hbox (badness 2680) in paragraph at lines 38--40
+\OT1/ptm/m/n/10 crate to man-age file sys-tem meta-data col-lec-tion asyn-
  []
 
-[4 <./figures/DeepVis_Overall.png>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[4 <./figures/entropy_real_analysis.pdf> <./figures/Background_entrophy/Backgro
+und_Normal_text.pdf> <./figures/Background_entrophy/Background_System_binaray.p
+df> <./figures/Background_entrophy/Background_Rootkit.pdf>]
+
+LaTeX Warning: Reference `fig:entropy_combined' on page 5 undefined on input li
+ne 58.
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [5 <./figures/Background_entrophy/Background_Normal_text.pdf> <./figures/Backg
-round_entrophy/Background_System_binaray.pdf> <./figures/Background_entrophy/Ba
-ckground_Rootkit.pdf>]
-Overfull \hbox (4.31581pt too wide) detected at line 95
+Overfull \hbox (4.31581pt too wide) detected at line 77
 []\OT1/cmr/m/n/10 ^^H(\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 ) = []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--103
+Underfull \hbox (badness 10000) in paragraph at lines 84--85
 []\OT1/ptm/b/n/10 Green (Size): $[][]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 f\OT1/cm
 r/m/n/10 ) =
  []
 
 
-Underfull \hbox (badness 2941) in paragraph at lines 102--103
+Underfull \hbox (badness 2941) in paragraph at lines 84--85
 []\OT1/cmr/m/n/10 ([](\OML/cmm/m/it/10 f\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 = []
 \OT1/cmr/m/n/10 ([])$ \OT1/ptm/m/n/10 --- Ab-nor-mally large or
  []
 
-
-Underfull \hbox (badness 1810) in paragraph at lines 124--125
+[5 <./figures/DeepVis_Overall.png>]
+Underfull \hbox (badness 1810) in paragraph at lines 106--107
 []\OT1/ptm/b/n/10 Decoder: \OT1/ptm/m/n/10 Sym-met-ric trans-posed con-vo-lu-ti
 ons re-con-
  []
 
-[6]
-Underfull \hbox (badness 2591) in paragraph at lines 174--176
+
+Underfull \hbox (badness 2591) in paragraph at lines 156--158
 \OT1/ptm/b/n/10 2) Python In-fer-ence En-gine (2,100 lines). \OT1/ptm/m/n/10 Th
 e ten-
  []
 
 
-Underfull \hbox (badness 5832) in paragraph at lines 174--176
+Underfull \hbox (badness 5832) in paragraph at lines 156--158
 \OT1/ptm/m/n/10 sor gen-er-a-tion, CAE train-ing, and anomaly de-tec-tion
  []
 
-) (./4. Evaluation.tex [7] [8]
-<figures/linf_distribution.pdf, id=229, 706.96997pt x 417.94646pt>
+) (./4. Evaluation.tex [6] [7]
+<figures/linf_distribution.pdf, id=224, 706.96997pt x 417.94646pt>
 File: figures/linf_distribution.pdf Graphic file (type pdf)
 <use figures/linf_distribution.pdf>
 Package pdftex.def Info: figures/linf_distribution.pdf  used on input line 198.
 
 (pdftex.def)             Requested size: 252.0pt x 148.97469pt.
-<figures/rootkit_linf.pdf, id=230, 851.41464pt x 417.59715pt>
+<figures/rootkit_linf.pdf, id=225, 851.41464pt x 417.59715pt>
 File: figures/rootkit_linf.pdf Graphic file (type pdf)
 <use figures/rootkit_linf.pdf>
 Package pdftex.def Info: figures/rootkit_linf.pdf  used on input line 205.
 (pdftex.def)             Requested size: 252.0pt x 123.5979pt.
-
+ [8]
 Underfull \hbox (badness 6842) in paragraph at lines 264--266
 \OT1/ptm/b/n/10 Experiment De-sign. \OT1/ptm/m/n/10 For each res-o-lu-tion (64$
 \OMS/cmsy/m/n/10 ^^B$\OT1/ptm/m/n/10 64 to
@@ -504,33 +500,31 @@ Overfull \hbox (14.03459pt too wide) in paragraph at lines 272--282
  [][] 
  []
 
-[9 <./figures/linf_distribution.pdf> <./figures/rootkit_linf.pdf>]
-<figures/resolution_collision.pdf, id=400, 699.92485pt x 417.6083pt>
+<figures/resolution_collision.pdf, id=232, 699.92485pt x 417.6083pt>
 File: figures/resolution_collision.pdf Graphic file (type pdf)
 <use figures/resolution_collision.pdf>
 Package pdftex.def Info: figures/resolution_collision.pdf  used on input line 3
 17.
 (pdftex.def)             Requested size: 252.0pt x 150.35161pt.
-
+[9 <./figures/linf_distribution.pdf> <./figures/rootkit_linf.pdf>]
 Underfull \hbox (badness 5431) in paragraph at lines 366--368
 \OT1/ptm/m/it/10 Permission Cam-ou-flage (100% de-tected): \OT1/ptm/m/n/10 The 
 at-tacker
  []
 
-[10]
+[10 <./figures/resolution_collision.pdf>]
 Underfull \hbox (badness 2547) in paragraph at lines 486--487
 []\OT1/ptm/b/n/10 Adversarial: \OT1/ptm/m/n/10 75% de-tec-tion rate (300/400); 
 \OT1/ptm/b/n/10 Low-
  []
 
-) (./5. Related Works.tex [11 <./figures/resolution_collision.pdf>])
-(./6. Discussion and Limitation.tex [12]
+) (./5. Related Works.tex [11]) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 5802) in paragraph at lines 31--32
 []\OT1/ptm/b/n/10 Max-Risk Pool-ing. \OT1/ptm/m/n/10 Even if a col-li-sion oc-c
 urs,
  []
 
-[13]) (./7. Conclusion.tex) (./main.bbl
+[12]) (./7. Conclusion.tex) [13] (./main.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 51--53
 []\OT1/ptm/m/n/8 m0nad, ``Di-amor-phine LKM Rootkit,'' $https : / / github . co
 m / m0nad /
@@ -560,41 +554,49 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[14] (./main.aux) ) 
+[14
+
+] (./main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 5012 strings out of 480247
- 89138 string characters out of 5896150
- 396270 words of memory out of 5000000
- 22851 multiletter control sequences out of 15000+600000
+ 5015 strings out of 480247
+ 89200 string characters out of 5896150
+ 392270 words of memory out of 5000000
+ 22854 multiletter control sequences out of 15000+600000
  516894 words of font info for 124 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 67i,12n,77p,1351b,491s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}<
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/symbols/msam7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/couri
-er/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-urw/times/utmri8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/u
-zdr.pfb>
-Output written on main.pdf (14 pages, 1710929 bytes).
+ 67i,12n,77p,1351b,479s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
+5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/
+msam7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
+w/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
+Output written on main.pdf (14 pages, 1710546 bytes).
 PDF statistics:
  610 PDF objects out of 1000 (max. 8388607)
  203 compressed objects within 3 object streams
