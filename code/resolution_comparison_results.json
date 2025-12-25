@@ -1,0 +1,8 @@
+{
+  "128": {
+    "ubuntu": {
+      "files": 913,
+      "unique_coords": 888,
+      "collision_rate": 2.7,
+      "threshold": 0.0375,
+      "attack_linf": 

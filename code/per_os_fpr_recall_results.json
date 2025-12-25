@@ -1,0 +1,26 @@
+{
+  "ubuntu": {
+    "files": 913,
+    "threshold": 0.0375,
+    "fpr": 0.0,
+    "recall": 100.0
+  },
+  "centos": {
+    "files": 3028,
+    "threshold": 0.0375,
+    "fpr": 0.0,
+    "recall": 100.0
+  },
+  "debian": {
+    "files": 859,
+    "threshold": 0.0375,
+    "fpr": 8.0,
+    "recall": 100.0
+  },
+  "fedora": {
+    "files": 3329,
+    "threshold": 0.0375,
+    "fpr": 4.0,
+    "recall": 100.0
+  }
+}
