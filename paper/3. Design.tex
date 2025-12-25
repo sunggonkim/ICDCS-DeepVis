@@ -55,12 +55,25 @@ The snapshot engine is the performance-critical component of \DeepVis, responsib
     \item \textbf{Encrypted/Packed Rootkits (Entropy $\approx$ 7.9):} Compression (UPX) or encryption (AES) transforms content into pseudo-random bytes. All 256 byte values appear with nearly equal probability---a uniform distribution approaching maximum entropy.
 \end{enumerate}
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/entropy_byte_patterns.pdf}
-    \caption{Entropy-based analysis and byte patterns. (a) Text files use limited ASCII range with high redundancy. (b) ELF binaries show structured headers and code patterns. (c) Encrypted rootkits exhibit uniform byte distribution---the ``Attacker's Paradox'': hiding creates a detectable anomaly.}
+    \subfloat[Normal Text File (H $\approx$ 4.2)]{
+        \includegraphics[width=0.32\textwidth]{figures/Background_entrophy/Background_Normal_text.pdf}
+        \label{fig:entropy_text}
+    }
+    \hfill
+    \subfloat[System Binary / ELF (H $\approx$ 6.1)]{
+        \includegraphics[width=0.32\textwidth]{figures/Background_entrophy/Background_System_binaray.pdf}
+        \label{fig:entropy_elf}
+    }
+    \hfill
+    \subfloat[Packed/Encrypted Rootkit (H $\approx$ 7.9)]{
+        \includegraphics[width=0.32\textwidth]{figures/Background_entrophy/Background_Rootkit.pdf}
+        \label{fig:entropy_rootkit}
+    }
+    \caption{Entropy-based analysis and byte patterns of different file types. We calculate Shannon entropy $H = -\sum_{i=0}^{255} p(x_i) \log_2 p(x_i)$ from the first 64 bytes of each file. (a) Text files concentrate in ASCII range (32--126) with high redundancy. (b) ELF binaries show structured headers with null padding and common opcodes. (c) Encrypted rootkits exhibit near-uniform byte distribution---the ``Attacker's Paradox'': hiding via encryption creates a statistically detectable anomaly.}
     \label{fig:entropy_dist}
-\end{figure}
+\end{figure*}
 
 \noindent
 \textbf{The Attacker's Paradox.} Attackers encrypt or pack malware to evade signature-based detection and hinder reverse engineering. Ironically, this transforms the payload into \textit{high-entropy content}---a statistical anomaly that \DeepVis exploits. Legitimate system files rarely exceed 6.5 bits/byte entropy; values above 7.5 strongly indicate packed or encrypted content.
