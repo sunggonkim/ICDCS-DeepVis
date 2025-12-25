@@ -199,31 +199,29 @@ KBeast & LKM & 100/100 & 100\% & 0.681 \\
 A practical deployment concern is whether a model trained on one Linux distribution generalizes to other distributions. We evaluate zero-shot transfer without any fine-tuning.
 
 \noindent
-\textbf{Experiment Design.} We trained \DeepVis exclusively on Ubuntu 22.04 and tested on 5 unseen distributions without any retraining or threshold adjustment. For each target OS, we measured: (1) false positive rate on clean systems (50 trials), and (2) recall on rootkit injections (50 trials).
+\textbf{Experiment Design.} We trained \DeepVis exclusively on Ubuntu 22.04 ($\tau = 0.507$) and tested on 4 unseen distributions without any retraining or threshold adjustment. For each target OS, we measured: (1) false positive rate on clean systems (100 trials), and (2) recall on rootkit injections (100 trials).
 
 \noindent
-\textbf{Results.} Table~\ref{tab:crossos} demonstrates strong cross-platform generalization. We achieve 0\% FPR and 100\% recall across all tested distributions, including Alpine (musl-based), Fedora (RPM-based), and Arch Linux (rolling release).
+\textbf{Results.} Table~\ref{tab:crossos} reveals a significant limitation: \textbf{zero-shot transfer fails without threshold adjustment}. The Ubuntu-trained model achieves 0\% FPR on Ubuntu but 100\% FPR on all other distributions.
 
 \begin{table}[t]
 \centering
-\caption{Cross-OS Transferability (Ubuntu-trained, no fine-tuning, 50 trials)}
+\caption{Cross-OS Transferability (Ubuntu-trained, $\tau = 0.507$, 100 trials)}
 \label{tab:crossos}
-\begin{tabular}{lccc}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Target OS} & \textbf{Files} & \textbf{FPR} & \textbf{Recall} \\
+\textbf{Target OS} & \textbf{Files} & \textbf{Benign $L_\infty$} & \textbf{FPR} & \textbf{Recall} \\
 \midrule
-Ubuntu 22.04 (Source) & 913 & 0\% & 100\% \\
-CentOS 7 & 3,028 & \textbf{0\%} & \textbf{100\%} \\
-Debian 11 & 859 & \textbf{0\%} & \textbf{100\%} \\
-Alpine 3.18 & $\sim$800 & \textbf{0\%} & \textbf{100\%} \\
-Fedora 38 & $\sim$2,500 & \textbf{0\%} & \textbf{100\%} \\
-Arch Linux & $\sim$1,200 & \textbf{0\%} & \textbf{100\%} \\
+Ubuntu 22.04 (Source) & 913 & 0.505 & \textbf{0\%} & 100\% \\
+CentOS 7 & 3,028 & 0.530 & 100\% & 100\% \\
+Debian 11 & 859 & 0.518 & 100\% & 100\% \\
+Fedora 38 & 3,329 & 0.540 & 100\% & 100\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \noindent
-\textbf{Analysis.} The \textit{Shift Invariance} property of hash-based coordinate assignment enables this generalization. Despite significant differences---Alpine uses musl libc instead of glibc, Fedora uses DNF/RPM packaging, and Arch has a rolling release model---the CAE learns to recognize patterns of legitimate file characteristics rather than memorizing specific path layouts.
+\textbf{Analysis.} The 100\% FPR on unseen distributions is caused by \textit{distribution shift}: each OS has slightly different file system layouts, package managers, and binary characteristics. The benign $L_\infty$ scores for CentOS (0.530), Debian (0.518), and Fedora (0.540) all exceed the Ubuntu-derived threshold ($\tau = 0.507$), triggering false positives. However, the separation between benign and attack $L_\infty$ is preserved (attack scores are 0.69--0.71), suggesting that \textbf{threshold re-calibration on the target OS} (without full retraining) would restore 0\% FPR while maintaining 100\% recall. This calibration requires collecting a small benign sample from the target environment---a practical requirement we discuss in Section~\ref{Discussion}.
 
 \subsection{Adversarial Attack Robustness}
 \label{eval_adversarial}
@@ -387,9 +385,9 @@ CPU (sidecar limit) & 0.5 vCPU \\
 \begin{enumerate}
     \item \textbf{Scanning Performance:} 132K files/sec on system-critical directories; full scan in $<$1 second.
     \item \textbf{Churn Tolerance:} 0\% FPR up to 50\% file churn due to $L_\infty$ isolation.
-    \item \textbf{Detection:} 100\% recall on 10 rootkit families (1,000 samples) with $L_\infty \approx 0.65$ vs. $\tau = 0.513$.
-    \item \textbf{Cross-OS:} Zero-shot transfer to CentOS/Debian with 0\% FPR, 100\% recall.
-    \item \textbf{Adversarial:} 75\% detection rate (300/400); \textbf{Low-Entropy Mimicry achieves complete evasion}---a critical limitation.
+    \item \textbf{Detection:} 100\% recall on 10 rootkit families (1,000 samples) with $L_\infty \approx 0.65$ vs. $\tau = 0.507$.
+    \item \textbf{Cross-OS:} \textbf{Requires threshold re-calibration}; zero-shot transfer shows 100\% FPR due to distribution shift.
+    \item \textbf{Adversarial:} 75\% detection rate (300/400); \textbf{Low-Entropy Mimicry achieves complete evasion}.
     \item \textbf{Overhead:} 0.52 MB model, 3.1 ms inference, suitable for Kubernetes sidecar deployment.
 \end{enumerate}
 

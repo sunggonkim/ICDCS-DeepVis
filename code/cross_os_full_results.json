@@ -1,0 +1,33 @@
+{
+  "threshold": 0.5065177137851715,
+  "cross_os": {
+    "ubuntu": {
+      "files": 913,
+      "fpr": 0.0,
+      "recall": 100.0,
+      "benign_avg_linf": 0.5053589940071106,
+      "attack_avg_linf": 0.7354767322540283
+    },
+    "centos": {
+      "files": 3028,
+      "fpr": 100.0,
+      "recall": 100.0,
+      "benign_avg_linf": 0.5295941829681396,
+      "attack_avg_linf": 0.6918542385101318
+    },
+    "debian": {
+      "files": 859,
+      "fpr": 100.0,
+      "recall": 100.0,
+      "benign_avg_linf": 0.5175069570541382,
+      "attack_avg_linf": 0.7004050016403198
+    },
+    "fedora": {
+      "files": 3329,
+      "fpr": 100.0,
+      "recall": 100.0,
+      "benign_avg_linf": 0.5395079255104065,
+      "attack_avg_linf": 0.7055461406707764
+    }
+  }
+}
