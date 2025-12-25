@@ -266,16 +266,17 @@ The tensor resolution determines the trade-off between hash collision rate, memo
 
 \begin{table}[t]
 \centering
-\caption{Resolution Scaling: Trade-offs (4 OS averaged, 30 trials each)}
+\caption{Resolution Scaling: Trade-offs (measured on Ubuntu 913 files)}
 \label{tab:resolution_ablation}
-\begin{tabular}{lcccccc}
+\scriptsize
+\begin{tabular}{lccccccc}
 \toprule
-\textbf{Res.} & \textbf{Pixels} & \textbf{Collision} & \textbf{FPR} & \textbf{Recall} & \textbf{Time} & \textbf{Model} \\
+\textbf{Res.} & \textbf{Pixels} & \textbf{Collision} & \textbf{Recall} & \textbf{Tensor} & \textbf{CAE} & \textbf{Total} & \textbf{Model} \\
 \midrule
-64$\times$64 & 4K & 20.5\% & 3.3\% & 100\% & 6.1ms & 0.1 MB \\
-128$\times$128 & 16K & 6.1\% & 4.2\% & 100\% & 4.9ms & 0.5 MB \\
-256$\times$256 & 65K & 1.6\% & 8.3\% & 100\% & 4.9ms & 2.0 MB \\
-512$\times$512 & 262K & \textbf{0.4\%} & 2.5\% & 100\% & 5.0ms & 8.0 MB \\
+64$\times$64 & 4K & 20.5\% & 100\% & 4.4ms & 0.6ms & \textbf{5.0ms} & 0.1 MB \\
+128$\times$128 & 16K & 6.1\% & 100\% & 2.2ms & 1.1ms & \textbf{3.3ms} & 0.5 MB \\
+256$\times$256 & 65K & 1.6\% & 100\% & 2.3ms & 2.8ms & \textbf{5.1ms} & 2.1 MB \\
+512$\times$512 & 262K & \textbf{0.4\%} & 100\% & 3.5ms & 7.9ms & \textbf{11.4ms} & 8.2 MB \\
 \bottomrule
 \end{tabular}
 \end{table}
