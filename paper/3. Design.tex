@@ -137,11 +137,46 @@ This isolates the single most anomalous pixel regardless of diffuse noise.
 \noindent\textbf{Known Limitation.} $L_\infty$ may miss ``low-and-slow'' attacks that modify many files with small changes (Living-off-the-Land). We discuss this in Section~\ref{Discussion}.
 
 \subsection{Implementation}
+\label{design_impl}
 
-\noindent\textbf{Snapshot Engine:} 3,200 lines C++, built on \texttt{liburing} v2.3.
+We implement \DeepVis as a hybrid Rust/Python system for production deployment.
 
-\noindent\textbf{Tensor Generator:} 800 lines Python/NumPy with \texttt{hashlib.sha256}.
+\subsubsection{Rust Snapshot Engine (io\_uring + rayon)}
 
-\noindent\textbf{Inference:} ONNX Runtime 1.16, INT8 quantization. Cold-start: 12ms. Inference: 3.15ms.
+The core metadata scanner is implemented in Rust (350 lines) using:
+\begin{itemize}
+    \item \texttt{io-uring} crate for asynchronous I/O with batched \texttt{statx()} calls
+    \item \texttt{rayon} for parallel entropy computation across CPU cores
+    \item \texttt{sha2} crate for SHA-256 coordinate hashing
+\end{itemize}
 
-\noindent\textbf{Deployment:} Kubernetes DaemonSet sidecar. Limits: 0.5 vCPU, 128 MB RAM.
+\noindent Key design decisions:
+\begin{enumerate}
+    \item \textbf{64-byte Header Read:} Entropy estimated from file magic headers only, reducing I/O by 99\%+ vs full-file reads.
+    \item \textbf{PyO3 Bindings:} Native Python integration via \texttt{pyo3}, allowing seamless CAE inference.
+\end{enumerate}
+
+\noindent Measured throughput on system-critical directories:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Directory} & \textbf{Files} & \textbf{Throughput} \\
+\midrule
+/etc (configs) & 3,610 & 22,535 f/s \\
+/usr/bin (binaries) & 88,140 & \textbf{169,450 f/s} \\
+/usr/sbin (admin) & 501 & 30,743 f/s \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Python Inference Engine}
+
+The detection layer uses PyTorch with INT8 dynamic quantization:
+\begin{itemize}
+    \item \textbf{CAE Model:} 135,331 parameters, 0.52 MB
+    \item \textbf{Inference:} 3.1 ms on CPU (no GPU required)
+    \item \textbf{Threshold:} $\tau = 0.632$ (99.9th percentile)
+\end{itemize}
+
+\noindent\textbf{Deployment:} Kubernetes DaemonSet sidecar. Resource limits: 0.5 vCPU, 128 MB RAM.
+
