@@ -53,3 +53,17 @@ Standard autoencoders use Mean Squared Error (MSE) as a loss function which aver
 If a global threshold is set to detect the attack, it generates false positives for every update. If the threshold is raised to tolerate updates, the attack is missed.
 
 To overcome this, \DeepVis employs \textit{Local Max Detection} ($L_\infty$). Instead of averaging errors, we monitor the maximum pixel-wise reconstruction error. A stealthy rootkit produces a sharp spike in the error map at its specific coordinate. By focusing on the local maximum, \DeepVis can identify sparse anomalies even in the presence of diffuse background noise from legitimate updates.
+
+\subsection{Entropy as an Attack Signature}
+
+A key observation motivating \DeepVis is that packed or encrypted malware exhibits statistically different entropy patterns compared to legitimate system files. Figure~\ref{fig:entropy_analysis} presents the entropy distribution measured from 913 real files extracted from an Ubuntu 22.04 Docker image.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/entropy_real_analysis.pdf}
+    \caption{Entropy distribution of real system files (Ubuntu 22.04, $n=913$) vs. simulated packed rootkits ($n=100$). Benign files cluster below 6.5 bits/byte, while rootkits exhibit 7.0+ bits/byte due to compression or encryption.}
+    \label{fig:entropy_analysis}
+\end{figure}
+
+\noindent
+\textbf{Key Observation.} Legitimate system files---including text configurations, libraries, and executables---rarely exceed 6.5 bits/byte entropy. In contrast, attackers commonly employ packing (e.g., UPX) or encryption (e.g., AES) to evade signature-based detection and hinder reverse engineering. These transformations produce near-uniform byte distributions with entropy approaching the theoretical maximum of 8 bits/byte. This creates a statistical anomaly that \DeepVis exploits: high-entropy files in system directories are inherently suspicious.
