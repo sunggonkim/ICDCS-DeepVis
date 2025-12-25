@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 17:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 17:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -392,10 +392,10 @@ Package pdftex.def Info: figures/entropy_real_analysis.pdf  used on input line
 63.
 (pdftex.def)             Requested size: 252.0pt x 148.99104pt.
 ) (./3. Design.tex
-<Figures/DeepVis_Overall.png, id=24, 1084.05pt x 361.35pt>
-File: Figures/DeepVis_Overall.png Graphic file (type png)
-<use Figures/DeepVis_Overall.png>
-Package pdftex.def Info: Figures/DeepVis_Overall.png  used on input line 22.
+<figures/DeepVis_Overall.png, id=24, 1084.05pt x 361.35pt>
+File: figures/DeepVis_Overall.png Graphic file (type png)
+<use figures/DeepVis_Overall.png>
+Package pdftex.def Info: figures/DeepVis_Overall.png  used on input line 22.
 (pdftex.def)             Requested size: 516.0pt x 172.00694pt.
  [3 <./figures/entropy_real_analysis.pdf>]
 Underfull \hbox (badness 2680) in paragraph at lines 38--40
@@ -408,7 +408,7 @@ File: figures/entropy_byte_patterns.pdf Graphic file (type pdf)
 Package pdftex.def Info: figures/entropy_byte_patterns.pdf  used on input line 
 60.
 (pdftex.def)             Requested size: 252.0pt x 135.48213pt.
-[4 <./Figures/DeepVis_Overall.png>]
+[4 <./figures/DeepVis_Overall.png>]
 Overfull \hbox (4.31581pt too wide) detected at line 82
 []\OT1/cmr/m/n/10 ^^H(\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 ) = []
  []
@@ -533,8 +533,8 @@ Before submitting the final camera ready copy, remember to:
 
 ] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 4984 strings out of 480247
- 87915 string characters out of 5896150
+ 4983 strings out of 480247
+ 87907 string characters out of 5896150
  392215 words of memory out of 5000000
  22826 multiletter control sequences out of 15000+600000
  515816 words of font info for 123 fonts, out of 8000000 for 9000

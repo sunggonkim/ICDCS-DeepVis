@@ -19,7 +19,7 @@ Figure~\ref{fig:deepvis_overall} shows the overall procedure of \DeepVis. The sy
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=\textwidth]{Figures/DeepVis_Overall.png}
+    \includegraphics[width=\textwidth]{figures/DeepVis_Overall.png}
     \caption{Overall procedure of \DeepVis. The Rust-based Snapshot Engine utilizes \texttt{io\_uring} for asynchronous metadata collection and parallel entropy computation. The Tensor Generator maps files to a 2D grid using SHA-256 hashing. The Inference Engine performs $O(1)$ detection using an INT8-quantized Convolutional Autoencoder.}
     \label{fig:deepvis_overall}
 \end{figure*}
