@@ -193,6 +193,20 @@ KBeast & LKM & 100/100 & 100\% & 0.681 \\
 \noindent
 \textbf{Analysis.} We evaluated against 10 real-world Linux rootkits representing LKM-based kernel modules (6 rootkits) and LD\_PRELOAD-based library interposition (4 rootkits). All rootkits were detected with 100\% recall. The lowest detection margin was Jynx2 ($L_\infty = 0.592$ vs. $\tau = 0.513$), still providing 0.08 separation. Reptile achieved the highest $L_\infty$ (0.713) due to its dual-component design (kernel + userspace).
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/linf_distribution.pdf}
+    \caption{Distribution of $L_\infty$ scores for benign variations (blue) vs. rootkit attacks (red). The threshold $\tau$ cleanly separates the two distributions, achieving perfect recall.}
+    \label{fig:linf_dist}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/rootkit_linf.pdf}
+    \caption{Per-rootkit $L_\infty$ scores. All 10 rootkits exceed the threshold $\tau$, confirming detection across diverse attack vectors (LKM, LD\_PRELOAD, hybrid).}
+    \label{fig:rootkit_linf}
+\end{figure}
+
 \subsection{Cross-Platform Generalization (Q4)}
 \label{eval_crossos}
 
@@ -295,7 +309,14 @@ Fedora (3,329) & 32.0\% & 10.0\% & 3.1\% & \textbf{0.8\%} \\
 \end{itemize}
 
 \noindent
-\textbf{Recommendation.} We recommend \textbf{128$\times$128} as the default for container-based deployments, with dynamic scaling to 256$\times$256 when file count exceeds 3,000.
+\textbf{Recommendation.} We recommend \textbf{128$\times$128} as the default for container-based deployments, with dynamic scaling to 256$\times$256 when file count exceeds 3,000. Figure~\ref{fig:resolution} visualizes this trade-off.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/resolution_collision.pdf}
+    \caption{Resolution scaling impact: higher resolution reduces hash collisions, with diminishing returns after 256$\times$256. Large file systems (CentOS, Fedora) benefit most from resolution scaling.}
+    \label{fig:resolution}
+\end{figure}
 
 \subsection{Adversarial Attack Robustness}
 \label{eval_adversarial}

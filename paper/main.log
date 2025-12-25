@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 16:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 16:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -310,11 +310,7 @@ File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count287
 \l__pdf_internal_box=\box56
 )
-(./main.aux
-
-LaTeX Warning: Label `tab:resolution' multiply defined.
-
-)
+(./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
@@ -433,52 +429,55 @@ Underfull \hbox (badness 5832) in paragraph at lines 139--141
 \OT1/ptm/m/n/10 sor gen-er-a-tion, CAE train-ing, and anomaly de-tec-tion
  []
 
-) (./4. Evaluation.tex [5] [6] [7]
+) (./4. Evaluation.tex [5] [6]
+<figures/linf_distribution.pdf, id=44, 714.13112pt x 423.32341pt>
+File: figures/linf_distribution.pdf Graphic file (type pdf)
+<use figures/linf_distribution.pdf>
+Package pdftex.def Info: figures/linf_distribution.pdf  used on input line 198.
 
-LaTeX Warning: Reference `tab:resolution_ablation' on page 8 undefined on input
- line 251.
-
-
-Underfull \hbox (badness 6842) in paragraph at lines 250--252
+(pdftex.def)             Requested size: 252.0pt x 149.37978pt.
+<figures/rootkit_linf.pdf, id=45, 867.24pt x 433.62pt>
+File: figures/rootkit_linf.pdf Graphic file (type pdf)
+<use figures/rootkit_linf.pdf>
+Package pdftex.def Info: figures/rootkit_linf.pdf  used on input line 205.
+(pdftex.def)             Requested size: 252.0pt x 125.998pt.
+ [7]
+Underfull \hbox (badness 6842) in paragraph at lines 264--266
 \OT1/ptm/b/n/10 Experiment De-sign. \OT1/ptm/m/n/10 For each res-o-lu-tion (64$
 \OMS/cmsy/m/n/10 ^^B$\OT1/ptm/m/n/10 64 to
  []
 
 
-Underfull \hbox (badness 4556) in paragraph at lines 250--252
+Underfull \hbox (badness 4556) in paragraph at lines 264--266
 \OT1/ptm/m/n/10 512$\OMS/cmsy/m/n/10 ^^B$\OT1/ptm/m/n/10 512), we mea-sured: (1
 ) hash col-li-sion rate, (2)
  []
 
-
-LaTeX Warning: Reference `tab:resolution_peros' on page 8 undefined on input li
-ne 270.
-
-
-Underfull \hbox (badness 5431) in paragraph at lines 344--346
+<figures/resolution_collision.pdf, id=53, 722.7pt x 433.62pt>
+File: figures/resolution_collision.pdf Graphic file (type pdf)
+<use figures/resolution_collision.pdf>
+Package pdftex.def Info: figures/resolution_collision.pdf  used on input line 3
+16.
+(pdftex.def)             Requested size: 252.0pt x 151.20026pt.
+[8 <./figures/linf_distribution.pdf> <./figures/rootkit_linf.pdf>]
+Underfull \hbox (badness 5431) in paragraph at lines 365--367
 \OT1/ptm/m/it/10 Permission Cam-ou-flage (100% de-tected): \OT1/ptm/m/n/10 The 
 at-tacker
  []
 
-[8]
-Underfull \hbox (badness 1975) in paragraph at lines 437--438
-[]\OT1/ptm/m/n/10 Table XV[] sum-ma-rizes \OT1/pcr/m/n/10 DeepVis\OT1/ptm/m/n/1
-0 's re-source foot-print,
- []
-
-
-Underfull \hbox (badness 2547) in paragraph at lines 464--465
+[9 <./figures/resolution_collision.pdf>]
+Underfull \hbox (badness 2547) in paragraph at lines 485--486
 []\OT1/ptm/b/n/10 Adversarial: \OT1/ptm/m/n/10 75% de-tec-tion rate (300/400); 
 \OT1/ptm/b/n/10 Low-
  []
 
-) (./5. Related Works.tex [9]) (./6. Discussion and Limitation.tex [10]
+) (./5. Related Works.tex [10]) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 5802) in paragraph at lines 31--32
 []\OT1/ptm/b/n/10 Max-Risk Pool-ing. \OT1/ptm/m/n/10 Even if a col-li-sion oc-c
 urs,
  []
 
-[11]) (./7. Conclusion.tex) (./main.bbl
+[11]) (./7. Conclusion.tex) [12] (./main.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 51--53
 []\OT1/ptm/m/n/8 m0nad, ``Di-amor-phine LKM Rootkit,'' $https : / / github . co
 m / m0nad /
@@ -508,50 +507,46 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[12] (./main.aux)
+[13
 
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 4943 strings out of 480247
- 86526 string characters out of 5896150
- 393188 words of memory out of 5000000
- 22791 multiletter control sequences out of 15000+600000
+ 4968 strings out of 480247
+ 87319 string characters out of 5896150
+ 392194 words of memory out of 5000000
+ 22812 multiletter control sequences out of 15000+600000
  515816 words of font info for 123 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  67i,12n,77p,1351b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
-5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/
-msam7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
-w/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1108445 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/symbols/msam7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/
+ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/times/utmri8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/uzdr
+.pfb>
+Output written on main.pdf (13 pages, 1155197 bytes).
 PDF statistics:
- 178 PDF objects out of 1000 (max. 8388607)
- 108 compressed objects within 2 object streams
+ 341 PDF objects out of 1000 (max. 8388607)
+ 134 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
