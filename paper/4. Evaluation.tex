@@ -261,7 +261,22 @@ Permission Camouflage & 100/100 & 0.742 \\
 \end{table}
 
 \noindent
-\textbf{Analysis.} \DeepVis successfully detects 3 of 4 adversarial attack types with 100\% recall. The \textit{Low-Entropy Mimicry} attack achieves 22\% evasion rate because it specifically targets the entropy channel. This is a known limitation: if an attacker can encode their payload as low-entropy data (e.g., base64 with controlled character distribution), the CAE cannot distinguish it from legitimate text files. We discuss mitigations in Section~\ref{Discussion}.
+\textbf{Per-Attack Analysis.} We analyze why each attack type succeeds or fails against \DeepVis:
+
+\noindent
+\textit{Parasitic Injection (100\% detected):} This attack appends a malicious payload to an existing system binary (e.g., \texttt{/usr/bin/ls}). Detection succeeds because the modification changes \textit{two} tensor channels simultaneously: (1) the file size increases by the payload size, shifting the green channel value; and (2) the header entropy increases as the appended payload introduces high-entropy bytes. Even if the attacker attempts to minimize entropy impact, the size change alone creates a detectable anomaly at the original file's coordinate.
+
+\noindent
+\textit{Timestomping (100\% detected):} The attacker backdates the \texttt{mtime} to make a malicious file appear old and legitimate. However, \DeepVis's tensor representation does \textit{not} include temporal features---only entropy, size, and permissions. Therefore, timestomping has no effect on the tensor values. The rootkit's high entropy (7.65) still produces a distinctive red channel spike that the CAE cannot reconstruct, resulting in reliable detection.
+
+\noindent
+\textit{Permission Camouflage (100\% detected):} The attacker matches the rootkit's permissions to those of benign system files (e.g., \texttt{0644} for libraries). While this makes the blue channel (permissions) appear normal, the attack fails because the entropy and size channels remain anomalous. A packed rootkit binary exhibits entropy $>7.5$, which is significantly higher than typical system libraries ($S \approx 5.5$--$6.5$). The CAE detects this single-channel anomaly through the $L_\infty$ norm's focus on the maximum deviation.
+
+\noindent
+\textit{Low-Entropy Mimicry (78\% detected):} This is the most sophisticated attack: the rootkit payload is encoded as low-entropy data (e.g., base64 with controlled character distribution) and disguised as a configuration file. With $S = 4.2$, the entropy channel appears normal. The file size (2KB) is also typical for config files, and permissions (\texttt{0644}) match expected values. As a result, all three tensor channels fall within the CAE's learned ``normal'' distribution, and the $L_\infty$ score (0.612) remains below the threshold ($\tau = 0.632$) in 22\% of cases. This represents a fundamental limitation of content-agnostic feature extraction: if an attacker can craft a payload that mimics benign statistical properties across all monitored features, the CAE cannot distinguish it from legitimate files.
+
+\noindent
+\textbf{Mitigation Discussion.} The Low-Entropy Mimicry vulnerability can be addressed through complementary defenses: (1) behavioral monitoring to detect the encoded payload's execution, (2) content-based analysis using static signatures or yara rules, or (3) extending the feature set to include structural entropy (entropy variance across file sections) rather than header-only entropy. We discuss these mitigations further in Section~\ref{Discussion}.
 
 \subsection{Comparison to Alternative Approaches (Q5)}
 \label{eval_compare}
