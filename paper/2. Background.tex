@@ -60,21 +60,23 @@ A key observation motivating \DeepVis is that packed or encrypted malware exhibi
 
 \begin{figure*}[!htb]
     \centering
-    \subfloat[Entropy Distribution: Benign vs Rootkit]{
-        \includegraphics[width=0.48\textwidth]{figures/entropy_real_analysis.pdf}
+    \subfloat[Entropy Distribution]{
+        \includegraphics[width=0.24\textwidth]{figures/entropy_real_analysis.pdf}
         \label{fig:entropy_hist}
     }
     \hfill
-    \subfloat[Normal Text File (H $\approx$ 4.2)]{
-        \includegraphics[width=0.16\textwidth]{figures/Background_entrophy/Background_Normal_text.pdf}
+    \subfloat[Text File (H $\approx$ 4.2)]{
+        \includegraphics[width=0.24\textwidth]{figures/Background_entrophy/Background_Normal_text.pdf}
         \label{fig:entropy_text}
     }
-    \subfloat[System Binary / ELF (H $\approx$ 6.1)]{
-        \includegraphics[width=0.16\textwidth]{figures/Background_entrophy/Background_System_binaray.pdf}
+    \hfill
+    \subfloat[ELF Binary (H $\approx$ 6.1)]{
+        \includegraphics[width=0.24\textwidth]{figures/Background_entrophy/Background_System_binaray.pdf}
         \label{fig:entropy_elf}
     }
-    \subfloat[Packed Rootkit (H $\approx$ 7.9)]{
-        \includegraphics[width=0.16\textwidth]{figures/Background_entrophy/Background_Rootkit.pdf}
+    \hfill
+    \subfloat[Rootkit (H $\approx$ 7.9)]{
+        \includegraphics[width=0.24\textwidth]{figures/Background_entrophy/Background_Rootkit.pdf}
         \label{fig:entropy_rootkit}
     }
     \caption{Entropy as an attack signature. (a) Distribution of Shannon entropy from real Ubuntu files ($n=913$) vs. simulated rootkits ($n=100$): benign files cluster below 6.5 bits/byte, while packed/encrypted rootkits exceed 7.0. (b-d) Byte value distributions explaining entropy differences: text files use limited ASCII range, ELF binaries show structured patterns, and encrypted rootkits exhibit uniform distribution---the ``Attacker's Paradox.''}
