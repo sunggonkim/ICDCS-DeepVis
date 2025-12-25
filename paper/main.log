@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 15:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 15:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -371,15 +371,11 @@ LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 3
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-(./1. Introduction.tex
-Overfull \hbox (108.35387pt too wide) in paragraph at lines 23--36
- [][] 
- []
-
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+(./1. Introduction.tex [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
-]) (./2. Background.tex
+])
+(./2. Background.tex
 Overfull \hbox (29.51582pt too wide) detected at line 39
 []\OT1/cmr/m/n/10 ^^H(\OML/cmm/m/it/10 path\OT1/cmr/m/n/10 ) = ([](\OML/cmm/m/i
 t/10 path\OT1/cmr/m/n/10 )([]\OML/cmm/m/it/10 W\OT1/cmr/m/n/10 )\OML/cmm/m/it/1
@@ -389,7 +385,7 @@ cmr/m/n/10 ))
  []
 
 [2]) (./3. Design.tex
-<Figures/DeepVis_Overall.png, id=25, 1084.05pt x 361.35pt>
+<Figures/DeepVis_Overall.png, id=23, 1084.05pt x 361.35pt>
 File: Figures/DeepVis_Overall.png Graphic file (type png)
 <use Figures/DeepVis_Overall.png>
 Package pdftex.def Info: Figures/DeepVis_Overall.png  used on input line 22.
@@ -482,13 +478,13 @@ Before submitting the final camera ready copy, remember to:
 
 [11] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 4936 strings out of 480247
- 86400 string characters out of 5896150
+ 4937 strings out of 480247
+ 86406 string characters out of 5896150
  390188 words of memory out of 5000000
  22785 multiletter control sequences out of 15000+600000
- 514709 words of font info for 122 fonts, out of 8000000 for 9000
+ 515816 words of font info for 123 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 67i,12n,77p,1351b,348s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 67i,12n,77p,1351b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}<
 /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/sh
 are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/te
@@ -507,14 +503,14 @@ xmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/cour
-ier/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/urw/times/utmri8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/
-uzdr.pfb>
-Output written on main.pdf (11 pages, 1100889 bytes).
+amsfonts/symbols/msam7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/couri
+er/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+urw/times/utmri8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/u
+zdr.pfb>
+Output written on main.pdf (11 pages, 1100851 bytes).
 PDF statistics:
  175 PDF objects out of 1000 (max. 8388607)
  106 compressed objects within 2 object streams

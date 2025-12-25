@@ -17,18 +17,18 @@ To overcome the limitations of traditional monitoring, researchers have proposed
 
 \begin{table}[t]
     \captionsetup{skip=2pt}
-    \caption{Categories and comparison with previous monitoring paradigms. (O(1): Constant Inference, ZRO: Zero Runtime Overhead, UT: Update Tolerance).}
+    \caption{Comparison with previous monitoring paradigms. (O(1): Constant Inference, ZRO: Zero Runtime Overhead, UT: Update Tolerance).}
     \centering
-    \footnotesize
-    \begin{tabular}{p{3.5cm}|>{\raggedright\arraybackslash}p{4.0cm}|p{1cm}|p{1cm}|p{1cm}}
+    \scriptsize
+    \begin{tabular}{l|l|c|c|c}
         \toprule \textbf{Framework} & \textbf{Method} & \textbf{O(1)} & \textbf{ZRO} & \textbf{UT} \\
         \midrule 
-        AIDE~\cite{aide} & File Hashing ($O(N)$) & & \checkmark & \\
-        Tripwire~\cite{tripwire} & File Hashing ($O(N)$) & & \checkmark & \\
-        DeepLog~\cite{du2017deeplog} & Log Sequence (LSTM) & & \checkmark & \checkmark \\
+        AIDE~\cite{aide} & File Hashing & & \checkmark & \\
+        Tripwire~\cite{tripwire} & File Hashing & & \checkmark & \\
+        DeepLog~\cite{du2017deeplog} & Log Sequence & & \checkmark & \checkmark \\
         Unicorn~\cite{unicorn} & Provenance Graph & & & \checkmark \\
         Kairos~\cite{cheng2024kairos} & Provenance Graph & & & \checkmark \\
-        Flash~\cite{flash2024} & Embedded FS Graph & & & \checkmark \\
+        Flash~\cite{flash2024} & FS Graph & & & \checkmark \\
         \textbf{\DeepVis} & \textbf{Spatial Tensor} & \textbf{\checkmark} & \textbf{\checkmark} & \textbf{\checkmark} \\
         \bottomrule
     \end{tabular}
