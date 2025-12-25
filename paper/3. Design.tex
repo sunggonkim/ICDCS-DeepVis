@@ -43,7 +43,29 @@ The snapshot engine is the performance-critical component of \DeepVis, responsib
 \begin{equation}
     S_{\text{est}}(f) = -\sum_{b=0}^{255} p_b \log_2 p_b \quad (\text{computed on first 64 bytes})
 \end{equation}
-We explicitly acknowledge this is an approximation. However, empirical validation confirms that packed binaries (e.g., UPX-compressed rootkits) exhibit high entropy in their headers due to the compression stub structure. The first 64 bytes typically contain ELF headers, shebang lines, or compression signatures---all of which are highly indicative of file type and packing status. This optimization reduces total I/O by over 99\% (from average 50KB per file to 64 bytes) while maintaining 97\% detection accuracy against our rootkit threat set (validated against VirusTotal samples).
+
+\noindent
+\textbf{Why Entropy Detects Rootkits.} Shannon entropy measures the \textit{randomness} of byte distributions: values range from 0 (all bytes identical) to 8 bits/byte (all byte values equally probable). Figure~\ref{fig:entropy_dist} illustrates how entropy differs across file types:
+
+\begin{enumerate}
+    \item \textbf{Text Files (Entropy $\approx$ 4.2):} ASCII printable characters (32--126) dominate, with common letters (e, t, a, o) appearing frequently. Only $\sim$70 of 256 possible byte values are used, creating a concentrated distribution.
+    
+    \item \textbf{ELF Binaries (Entropy $\approx$ 6.1):} Structured headers (magic number \texttt{0x7F ELF}), machine code with common opcodes (\texttt{0x48}, \texttt{0x89}), and null padding create a moderately diverse but still patterned distribution.
+    
+    \item \textbf{Encrypted/Packed Rootkits (Entropy $\approx$ 7.9):} Compression (UPX) or encryption (AES) transforms content into pseudo-random bytes. All 256 byte values appear with nearly equal probability---a uniform distribution approaching maximum entropy.
+\end{enumerate}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/entropy_explanation.pdf}
+    \caption{Byte value distributions for different file types. Text files concentrate in the ASCII range (a). ELF binaries show structure with null padding (b). Encrypted rootkits exhibit near-uniform distribution (c)---a detectable anomaly.}
+    \label{fig:entropy_dist}
+\end{figure}
+
+\noindent
+\textbf{The Attacker's Paradox.} Attackers encrypt or pack malware to evade signature-based detection and hinder reverse engineering. Ironically, this transforms the payload into \textit{high-entropy content}---a statistical anomaly that \DeepVis exploits. Legitimate system files rarely exceed 6.5 bits/byte entropy; values above 7.5 strongly indicate packed or encrypted content.
+
+We explicitly acknowledge this is an approximation. However, empirical validation confirms that packed binaries (e.g., UPX-compressed rootkits) exhibit high entropy in their headers due to the compression stub structure. The first 64 bytes typically contain ELF headers, shebang lines, or compression signatures---all of which are highly indicative of file type and packing status. This optimization reduces total I/O by over 99\% (from average 50KB per file to 64 bytes) while maintaining 97\% detection accuracy against our rootkit threat set.
 
 \noindent
 \textbf{Target Directory Scope.} \DeepVis monitors only \textit{system-critical directories} (/etc, /usr/bin, /usr/sbin, /usr/lib) rather than the entire file system. This is justified because: (1) rootkits target system binaries, libraries, and configuration files to achieve persistence; (2) user data integrity is a separate concern (ransomware detection); and (3) in immutable infrastructure deployments, user data resides on separate volumes. A typical Linux server contains 50,000--100,000 system files, which \DeepVis scans in under 1 second.
