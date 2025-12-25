@@ -1,0 +1,113 @@
+{
+  "experiment_config": {
+    "n_rootkit_iter": 500,
+    "n_adversarial_iter": 500,
+    "n_crossos_iter": 100
+  },
+  "ubuntu_files": 913,
+  "threshold": 0.905594527721405,
+  "rootkit_detection": {
+    "diamorphine": {
+      "detected": 500,
+      "total": 500,
+      "recall": 1.0,
+      "avg_linf": 0.9081765413284302
+    },
+    "reptile": {
+      "detected": 0,
+      "total": 500,
+      "recall": 0.0,
+      "avg_linf": 0.905400276184082
+    },
+    "beurk": {
+      "detected": 500,
+      "total": 500,
+      "recall": 1.0,
+      "avg_linf": 0.9230038523674011
+    },
+    "jynx2": {
+      "detected": 500,
+      "total": 500,
+      "recall": 1.0,
+      "avg_linf": 0.9238492250442505
+    },
+    "suterusu": {
+      "detected": 0,
+      "total": 500,
+      "recall": 0.0,
+      "avg_linf": 0.905400276184082
+    },
+    "azazel": {
+      "detected": 0,
+      "total": 500,
+      "recall": 0.0,
+      "avg_linf": 0.905400276184082
+    },
+    "vlany": {
+      "detected": 500,
+      "total": 500,
+      "recall": 1.0,
+      "avg_linf": 0.9120694994926453
+    },
+    "adore-ng": {
+      "detected": 0,
+      "total": 500,
+      "recall": 0.0,
+      "avg_linf": 0.905400276184082
+    },
+    "nurupo": {
+      "detected": 0,
+      "total": 500,
+      "recall": 0.0,
+      "avg_linf": 0.905400276184082
+    },
+    "kbeast": {
+      "detected": 500,
+      "total": 500,
+      "recall": 1.0,
+      "avg_linf": 0.9103453755378723
+    }
+  },
+  "adversarial_attacks": {
+    "low_entropy_mimicry": {
+      "detected": 0,
+      "total": 500,
+      "recall": 0.0,
+      "avg_linf": 0.905400276184082
+    },
+    "parasitic_injection": {
+      "detected": 0,
+      "total": 500,
+      "recall": 0.0,
+      "avg_linf": 0.905400276184082
+    },
+    "timestomping": {
+      "detected": 0,
+      "total": 500,
+      "recall": 0.0,
+      "avg_linf": 0.905400276184082
+    },
+    "permission_camouflage": {
+      "detected": 500,
+      "total": 500,
+      "recall": 1.0,
+      "avg_linf": 0.9064759016036987
+    }
+  },
+  "cross_os": {
+    "centos": {
+      "fpr": 0.0,
+      "recall": 0.0,
+      "files": 3028
+    },
+    "debian": {
+      "fpr": 100.0,
+      "recall": 100.0,
+      "files": 859
+    }
+  },
+  "total_rootkit_samples": 5000,
+  "total_rootkit_detected": 2500,
+  "total_adversarial_samples": 2000,
+  "total_adversarial_detected": 500
+}

@@ -1,0 +1,34 @@
+
+    ╔═══════════════════════════════════════════════════════════════════════╗
+    ║  DeepVis: Production-Grade Research Artifact                           ║
+    ║  ICDCS 2026 - Addressing Stanford AI Review Feedback                   ║
+    ╠═══════════════════════════════════════════════════════════════════════╣
+    ║                                                                        ║
+    ║  This run includes:                                                    ║
+    ║  • End-to-end latency breakdown                                        ║
+    ║  • Benign churn tolerance (apt upgrade simulation)                     ║
+    ║  • L2 vs L∞ comparison                                                 ║
+    ║  • Cross-OS evaluation with real Docker images                         ║
+    ║                                                                        ║
+    ╚═══════════════════════════════════════════════════════════════════════╝
+    
+╔════════════════════════════════════════════════════════════════════╗
+║  DeepVis Comprehensive Evaluation - Stanford Review Response       ║
+╚════════════════════════════════════════════════════════════════════╝
+
+[SAFETY] Resource limits set: 4GB memory, 10min CPU, nice +10
+[WARN] Docker not available: 
+[PHASE 1] Extracting REAL file system from Docker
+------------------------------------------------------------
+[WARN] Docker not available, falling back to synthetic data
+    [Fallback] Generating synthetic ubuntu file system...
+Traceback (most recent call last):
+  File "/home/bigdatalab/skim/file system fingerprinting/code/deepvis_production.py", line 2418, in <module>
+    run_comprehensive_evaluation()
+  File "/home/bigdatalab/skim/file system fingerprinting/code/deepvis_production.py", line 1934, in run_comprehensive_evaluation
+    ubuntu_baseline = loader.scan_image('ubuntu', limit=5000)
+  File "/home/bigdatalab/skim/file system fingerprinting/code/deepvis_production.py", line 677, in scan_image
+    return self._generate_fallback(os_name, limit)
+  File "/home/bigdatalab/skim/file system fingerprinting/code/deepvis_production.py", line 965, in _generate_fallback
+    size=int(np.random.lognormal(mean=8, sigma=2)),
+MemoryError

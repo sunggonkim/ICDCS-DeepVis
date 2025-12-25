@@ -1,0 +1,118 @@
+{
+  "ubuntu_files": 913,
+  "threshold": 0.5132767599225044,
+  "rootkit_detection": {
+    "diamorphine": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.6266090273857117
+    },
+    "reptile": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.7134307026863098
+    },
+    "beurk": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.6803225874900818
+    },
+    "jynx2": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.5917357206344604
+    },
+    "suterusu": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.6451443433761597
+    },
+    "azazel": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.6340146064758301
+    },
+    "vlany": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.636634111404419
+    },
+    "adore-ng": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.6972581148147583
+    },
+    "nurupo": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.621067225933075
+    },
+    "kbeast": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.6807711124420166
+    }
+  },
+  "adversarial_attacks": {
+    "low_entropy_mimicry": {
+      "detected": 0,
+      "total": 100,
+      "recall": 0.0,
+      "avg_linf": 0.5132341384887695
+    },
+    "parasitic_injection": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.5137244462966919
+    },
+    "timestomping": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.6617041826248169
+    },
+    "permission_camouflage": {
+      "detected": 100,
+      "total": 100,
+      "recall": 1.0,
+      "avg_linf": 0.6091445088386536
+    }
+  },
+  "cross_os": {
+    "centos": {
+      "fpr": 0.0,
+      "recall": 100.0,
+      "files": 3000
+    },
+    "debian": {
+      "fpr": 100.0,
+      "recall": 100.0,
+      "files": 859
+    },
+    "alpine": {
+      "fpr": 100.0,
+      "recall": 100.0,
+      "files": 3000
+    },
+    "fedora": {
+      "fpr": 100.0,
+      "recall": 100.0,
+      "files": 3000
+    }
+  },
+  "total_rootkit_samples": 1000,
+  "total_rootkit_detected": 1000,
+  "total_adversarial_samples": 400,
+  "total_adversarial_detected": 300
+}

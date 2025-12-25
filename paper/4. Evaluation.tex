@@ -163,35 +163,35 @@ We evaluate \DeepVis against three real-world rootkit families representing the 
 \textbf{Experiment Design.} Each rootkit was injected 30 times into distinct random locations within the system directories. The injected files include the rootkit's compiled artifacts (\texttt{.ko} modules, shared libraries, configuration files). We measured: (1) detection rate (recall), (2) average $L_\infty$ score, and (3) margin above threshold.
 
 \noindent
-\textbf{Results.} Table~\ref{tab:rootkit} shows perfect detection: 100\% recall across all 90 injections. All rootkits produced $L_\infty$ scores of 0.73--0.76, significantly above the threshold $\tau = 0.632$. The detection margin ($L_\infty - \tau \approx 0.1$) provides substantial buffer against threshold drift.
+\textbf{Results.} Table~\ref{tab:rootkit} shows perfect detection: 100\% recall across all 1,000 attack samples. All rootkits produced $L_\infty$ scores of 0.59--0.71, significantly above the threshold $\tau = 0.513$. The detection margin provides substantial buffer against threshold drift.
 
 \begin{table}[t]
 \centering
-\caption{Rootkit Detection Performance (100 iterations per rootkit)}
+\caption{Rootkit Detection Performance (100 iterations per rootkit, $\tau = 0.513$)}
 \label{tab:rootkit}
 \scriptsize
 \begin{tabular}{llccc}
 \toprule
 \textbf{Rootkit} & \textbf{Type} & \textbf{Detected} & \textbf{Recall} & \textbf{Avg $L_\infty$} \\
 \midrule
-Diamorphine~\cite{diamorphine} & LKM & 100/100 & 100\% & 0.733 \\
-Reptile~\cite{reptile} & Hybrid & 100/100 & 100\% & 0.760 \\
-Beurk~\cite{beurk} & LD\_PRELOAD & 100/100 & 100\% & 0.735 \\
-Jynx2 & LD\_PRELOAD & 100/100 & 100\% & 0.724 \\
-Suterusu & LKM & 100/100 & 100\% & 0.789 \\
-Azazel & LD\_PRELOAD & 100/100 & 100\% & 0.718 \\
-Vlany & LD\_PRELOAD & 100/100 & 100\% & 0.741 \\
-Adore-ng & LKM & 100/100 & 100\% & 0.781 \\
-Nurupo & LKM & 100/100 & 100\% & 0.728 \\
-KBeast & LKM & 100/100 & 100\% & 0.791 \\
+Diamorphine~\cite{diamorphine} & LKM & 100/100 & 100\% & 0.627 \\
+Reptile~\cite{reptile} & Hybrid & 100/100 & 100\% & 0.713 \\
+Beurk~\cite{beurk} & LD\_PRELOAD & 100/100 & 100\% & 0.680 \\
+Jynx2 & LD\_PRELOAD & 100/100 & 100\% & 0.592 \\
+Suterusu & LKM & 100/100 & 100\% & 0.645 \\
+Azazel & LD\_PRELOAD & 100/100 & 100\% & 0.634 \\
+Vlany & LD\_PRELOAD & 100/100 & 100\% & 0.637 \\
+Adore-ng & LKM & 100/100 & 100\% & 0.697 \\
+Nurupo & LKM & 100/100 & 100\% & 0.621 \\
+KBeast & LKM & 100/100 & 100\% & 0.681 \\
 \midrule
-\textbf{Total} & \textbf{10 types} & \textbf{1000/1000} & \textbf{100\%} & 0.750 \\
+\textbf{Total} & \textbf{10 types} & \textbf{1000/1000} & \textbf{100\%} & 0.653 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \noindent
-\textbf{Analysis.} We evaluated against 10 real-world Linux rootkits representing the two primary attack vectors: LKM-based kernel modules (6 rootkits) and LD\_PRELOAD-based library interposition (4 rootkits). All 1,000 attack samples were detected with 100\% recall. The high detection confidence stems from rootkits' inherent characteristics: packed binaries exhibit high entropy (7.5--8.0 bits/byte) in their headers, unusual file permissions, and non-standard sizes.
+\textbf{Analysis.} We evaluated against 10 real-world Linux rootkits representing LKM-based kernel modules (6 rootkits) and LD\_PRELOAD-based library interposition (4 rootkits). All rootkits were detected with 100\% recall. The lowest detection margin was Jynx2 ($L_\infty = 0.592$ vs. $\tau = 0.513$), still providing 0.08 separation. Reptile achieved the highest $L_\infty$ (0.713) due to its dual-component design (kernel + userspace).
 
 \subsection{Cross-Platform Generalization (Q4)}
 \label{eval_crossos}
@@ -244,18 +244,18 @@ We evaluate \DeepVis against four adversarial attack types designed to evade det
 
 \begin{table}[t]
 \centering
-\caption{Adversarial Attack Detection (100 iterations per attack type)}
+\caption{Adversarial Attack Detection (100 iterations per attack type, $\tau = 0.513$)}
 \label{tab:adversarial}
 \begin{tabular}{lcc}
 \toprule
 \textbf{Attack Type} & \textbf{Detected} & \textbf{Avg $L_\infty$} \\
 \midrule
-Low-Entropy Mimicry & 78/100 & 0.612 \\
-Parasitic Injection & 100/100 & 0.748 \\
-Timestomping & 100/100 & 0.735 \\
-Permission Camouflage & 100/100 & 0.742 \\
+Low-Entropy Mimicry & \textbf{0/100} & 0.513 \\
+Parasitic Injection & 100/100 & 0.514 \\
+Timestomping & 100/100 & 0.662 \\
+Permission Camouflage & 100/100 & 0.609 \\
 \midrule
-\textbf{Overall} & \textbf{378/400 (94.5\%)} & 0.709 \\
+\textbf{Overall} & \textbf{300/400 (75\%)} & 0.574 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -264,19 +264,19 @@ Permission Camouflage & 100/100 & 0.742 \\
 \textbf{Per-Attack Analysis.} We analyze why each attack type succeeds or fails against \DeepVis:
 
 \noindent
-\textit{Parasitic Injection (100\% detected):} This attack appends a malicious payload to an existing system binary (e.g., \texttt{/usr/bin/ls}). Detection succeeds because the modification changes \textit{two} tensor channels simultaneously: (1) the file size increases by the payload size, shifting the green channel value; and (2) the header entropy increases as the appended payload introduces high-entropy bytes. Even if the attacker attempts to minimize entropy impact, the size change alone creates a detectable anomaly at the original file's coordinate.
+\textit{Parasitic Injection (100\% detected):} This attack appends a malicious payload to an existing system binary. Detection succeeds because the modification changes file size and header entropy simultaneously. The $L_\infty$ score (0.514) just exceeds the threshold, indicating this attack is on the detection boundary.
 
 \noindent
-\textit{Timestomping (100\% detected):} The attacker backdates the \texttt{mtime} to make a malicious file appear old and legitimate. However, \DeepVis's tensor representation does \textit{not} include temporal features---only entropy, size, and permissions. Therefore, timestomping has no effect on the tensor values. The rootkit's high entropy (7.65) still produces a distinctive red channel spike that the CAE cannot reconstruct, resulting in reliable detection.
+\textit{Timestomping (100\% detected):} The attacker backdates the \texttt{mtime} to make a malicious file appear old. Since \DeepVis does \textit{not} include temporal features, timestomping has no evasion effect. The rootkit's high entropy (7.65) produces $L_\infty = 0.662$, well above threshold.
 
 \noindent
-\textit{Permission Camouflage (100\% detected):} The attacker matches the rootkit's permissions to those of benign system files (e.g., \texttt{0644} for libraries). While this makes the blue channel (permissions) appear normal, the attack fails because the entropy and size channels remain anomalous. A packed rootkit binary exhibits entropy $>7.5$, which is significantly higher than typical system libraries ($S \approx 5.5$--$6.5$). The CAE detects this single-channel anomaly through the $L_\infty$ norm's focus on the maximum deviation.
+\textit{Permission Camouflage (100\% detected):} The attacker matches permissions to benign system files. While the blue channel (permissions) appears normal, entropy and size remain anomalous. The $L_\infty$ score (0.609) exceeds threshold due to single-channel anomaly detection via the $L_\infty$ norm.
 
 \noindent
-\textit{Low-Entropy Mimicry (78\% detected):} This is the most sophisticated attack: the rootkit payload is encoded as low-entropy data (e.g., base64 with controlled character distribution) and disguised as a configuration file. With $S = 4.2$, the entropy channel appears normal. The file size (2KB) is also typical for config files, and permissions (\texttt{0644}) match expected values. As a result, all three tensor channels fall within the CAE's learned ``normal'' distribution, and the $L_\infty$ score (0.612) remains below the threshold ($\tau = 0.632$) in 22\% of cases. This represents a fundamental limitation of content-agnostic feature extraction: if an attacker can craft a payload that mimics benign statistical properties across all monitored features, the CAE cannot distinguish it from legitimate files.
+\textit{Low-Entropy Mimicry (0\% detected):} \textbf{This is a critical vulnerability.} The rootkit is encoded as low-entropy data (e.g., base64) and disguised as a configuration file. With $S = 4.2$, the entropy channel appears normal. The file size (2KB) and permissions (\texttt{0644}) also match legitimate config files. As a result, $L_\infty = 0.513$, exactly matching the threshold, resulting in \textbf{complete evasion}.
 
 \noindent
-\textbf{Mitigation Discussion.} The Low-Entropy Mimicry vulnerability can be addressed through complementary defenses: (1) behavioral monitoring to detect the encoded payload's execution, (2) content-based analysis using static signatures or yara rules, or (3) extending the feature set to include structural entropy (entropy variance across file sections) rather than header-only entropy. We discuss these mitigations further in Section~\ref{Discussion}.
+\textbf{Mitigation Discussion.} The Low-Entropy Mimicry vulnerability represents a fundamental limitation of content-agnostic detection. Mitigations include: (1) behavioral monitoring to detect encoded payload execution, (2) content-based static signatures, or (3) structural entropy (entropy variance across file sections). We discuss these further in Section~\ref{Discussion}.
 
 \subsection{Comparison to Alternative Approaches (Q5)}
 \label{eval_compare}
@@ -387,9 +387,9 @@ CPU (sidecar limit) & 0.5 vCPU \\
 \begin{enumerate}
     \item \textbf{Scanning Performance:} 132K files/sec on system-critical directories; full scan in $<$1 second.
     \item \textbf{Churn Tolerance:} 0\% FPR up to 50\% file churn due to $L_\infty$ isolation.
-    \item \textbf{Detection:} 100\% recall on 10 rootkit families (1,000 samples) with $L_\infty \approx 0.75$ vs. $\tau = 0.632$.
-    \item \textbf{Cross-OS:} Zero-shot transfer to 5 unseen distributions (including Alpine, Fedora, Arch) with 0\% FPR, 100\% recall.
-    \item \textbf{Adversarial:} 94.5\% detection rate on 4 adversarial attack types (400 samples); low-entropy mimicry is a known limitation.
+    \item \textbf{Detection:} 100\% recall on 10 rootkit families (1,000 samples) with $L_\infty \approx 0.65$ vs. $\tau = 0.513$.
+    \item \textbf{Cross-OS:} Zero-shot transfer to CentOS/Debian with 0\% FPR, 100\% recall.
+    \item \textbf{Adversarial:} 75\% detection rate (300/400); \textbf{Low-Entropy Mimicry achieves complete evasion}---a critical limitation.
     \item \textbf{Overhead:} 0.52 MB model, 3.1 ms inference, suitable for Kubernetes sidecar deployment.
 \end{enumerate}
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 15:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.12.24)  25 DEC 2025 16:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -435,13 +435,19 @@ Underfull \hbox (badness 5431) in paragraph at lines 272--274
 at-tacker
  []
 
-[8]) (./5. Related Works.tex [9]) (./6. Discussion and Limitation.tex
+[8]
+Underfull \hbox (badness 2547) in paragraph at lines 392--393
+[]\OT1/ptm/b/n/10 Adversarial: \OT1/ptm/m/n/10 75% de-tec-tion rate (300/400); 
+\OT1/ptm/b/n/10 Low-
+ []
+
+) (./5. Related Works.tex [9]) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 5802) in paragraph at lines 31--32
 []\OT1/ptm/b/n/10 Max-Risk Pool-ing. \OT1/ptm/m/n/10 Even if a col-li-sion oc-c
 urs,
  []
 
-[10] [11]) (./7. Conclusion.tex) (./main.bbl
+[10]) (./7. Conclusion.tex) [11] (./main.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 51--53
 []\OT1/ptm/m/n/8 m0nad, ``Di-amor-phine LKM Rootkit,'' $https : / / github . co
 m / m0nad /
@@ -471,7 +477,9 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[12] (./main.aux)
+[12
+
+] (./main.aux)
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
@@ -508,7 +516,7 @@ ive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
 w/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1107183 bytes).
+Output written on main.pdf (12 pages, 1106171 bytes).
 PDF statistics:
  178 PDF objects out of 1000 (max. 8388607)
  108 compressed objects within 2 object streams
