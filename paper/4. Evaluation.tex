@@ -103,7 +103,7 @@ A critical finding from our real-world deployment is that many modern attacks do
 \end{figure}
 
 \noindent\textbf{Visual Isolation.} 
-Figure~\ref{fig:clean_vs_infected} and Figure~\ref{fig:v3_zoom} (omitted for brevity) visualize the orthogonality of the detection channels. The Webshell \texttt{.config.php} triggered a maximal G-score of 1.00 due to \texttt{eval()} patterns, yet its R-score (0.57) and B-score (0.00) remained low. This confirms that \DeepVis provides comprehensive coverage without interference between channels.
+Figure~\ref{fig:clean_vs_infected} visualizes the multi-modal detection capability. The clean baseline (a) shows diffuse background noise from 10K benign files, while the infected state (b) reveals malware locations (cyan circles) via G-channel activation. This confirms that \DeepVis provides robust detection even for low-entropy, non-packed rootkits.
 
 %=====================================================================
 \subsection{Scalability and Performance Analysis (RQ2)}
