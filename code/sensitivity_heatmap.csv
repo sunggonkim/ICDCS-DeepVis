@@ -1,0 +1,2 @@
+noise_level,signal_strength,l_infinity,mse,detection_rate,grid_saturation
+100,0.5,0.5,1.5258789e-05,1.0,0.00616455078125

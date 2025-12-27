@@ -1,0 +1,485 @@
+\section{\ScaleQsim Design}
+
+In this section, we present the design of \ScaleQsim, a scalable quantum circuit
+simulator for HPC systems. \ScaleQsim does not partition a large quantum circuit,
+but instead allocates the full state vector across multiple nodes and GPUs. This
+allows for dynamic circuit simulation without precompiled kernels or predefined
+simulation plans. To overcome the communication overhead arising from this distributed
+state space, it distributes necessary metadata for accessing remote state vector
+space and utilizes a scalable interface protocol for inter- and intra-node communication.
+
+\subsection{Overall Procedure}
+~\label{design_1}
+%\vspace{-.3cm}
+
+Figure~\ref{overall_architecture} shows the overall procedure of \ScaleQsim.
+\ScaleQsim provides two main phases to support distributed quantum circuit
+simulation: \textit{Initialization} and \textit{Execution} phase.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=13.8cm]{figures/Architecture_test.pdf}
+    %\vspace{-.3cm}
+
+    \caption{Overall procedure of \ScaleQsim.}
+    \label{overall_architecture}
+    %\vspace{-.5cm}
+\end{figure}
+
+\noindent
+\textbf{Initialization.} When quantum circuit simulation starts, \textit{Instance
+Manager} checks the available nodes and GPUs in the distributed architecture.
+Then, it reads the metadata such as node rank, number of GPUs, memory size, and
+active or inactive status for each node (\ding{182}). Once the metadata
+collection is completed, \textit{State Generator} calculates the total required
+memory size (i.e., the size of the full state vector) based on the number of
+input qubits (e.g., $n = 36$, which corresponds to 68.7 billion amplitudes and a
+total memory size of $2^{36}\times 8$ bytes, resulting in approximately 512 GB).
+This calculation ensures that 1) the total size of the full state vector does
+not exceed the total available GPU memory capacity and 2) the full state vector can
+be evenly partitioned across all active multiple nodes and GPUs (\ding{183}).
+
+After completing the calculation of the full state vector size, \textit{State
+Allocator} checks the available node instances and performs two-phase
+partitioning to allocate the full state vector across the distributed
+architectures. This is to allocate memory regions in advance before the kernel execution
+and minimize synchronization between the distributed state vectors. First, the full
+state vector is divided among the nodes (Inter-partitioning). Then, within each node,
+the assigned subset of the state vector is further divided among the available
+GPUs (Intra-partitioning) (\ding{184}).
+
+\noindent
+\textbf{Execution.} After \textit{Initialization} phase is completed, \ScaleQsim
+enters \textit{Execution} phase. First, \ScaleQsim constructs a sequence of executable
+tasks, where each task contains one or more gates along with the affected qubits.
+For each task, \textit{TargetIndexGenerator} uses the included qubits to generate
+all possible binary combinations affected by the gate operation. These
+combinations are then converted into indices within the full state vector, which
+are called \texttt{Target Indices} and are used to create \textit{Statespace
+Structure} (\ding{185}). \textit{Statespace Structure} contains the mapping
+information from a global index in the full state vector to a distributed
+location, such as a node ID, GPU ID, and offset. This structure is then
+broadcast to all nodes (\ding{186}). By precomputing all possible combinations
+from every gate operation and their metadata, and by replicating the entire metadata
+across the nodes, \ScaleQsim avoids synchronization overhead and the need to
+iterate over the full state vector to determine which target state locations are
+affected by each task. Finally, each node kernel simulator performs computation
+based on the received \texttt{Target Index} and metadata. Each \texttt{Target
+Index} is translated into a local index according to the subset of the state vector
+in each node and passed to the GPU, where the gate operation is applied in
+parallel. Each GPU accesses only the assigned subset of the state vector,
+enabling independent execution and minimizing communication overhead (\ding{187}).
+
+\subsection{Two-phase State Space Partitioning}
+~\label{design_2}
+%\vspace{-.3cm}
+
+Before launching the simulation kernel, \ScaleQsim first allocates the
+distributed and limited memory within each node and GPU to efficiently utilize
+the distributed computing resources. Figure~\ref{overall_partition_state} shows the
+structure of the partitioned full state vector space across nodes and GPUs. As
+shown in the figure, the full state vector is represented as a linear array,
+ranging from SV$0$ to SV$N$. These SV$x$ are contiguous factors of the full
+state vector, each consisting of multiple amplitudes. For example, as shown in the
+figure, SV$0$ contains a sequence of amplitude vectors such as Amp0 (e.g., a +
+bi), Amp1, and so on. Each amplitude is a complex value corresponding to a
+specific quantum basis state, which is expressed as a binary string such as |000⟩
+or |101⟩, where each bit in the string represents the value of a qubit in that
+state. To allocate and distribute this massive full state vector, \ScaleQsim
+adopts a two-phase partitioning strategy: node-level partitioning (Inter-partitioning)
+and GPU-level partitioning (Intra-partitioning).
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=9.5cm]{figures/statespace_partition.pdf}
+    %\vspace{-.3cm}
+
+    \caption{The structure of the partitioned full state vector across multiple
+    nodes and GPUs.}
+    \label{overall_partition_state}
+    %\vspace{-.5cm}
+\end{figure}
+
+\noindent
+\textbf{Inter-partitioning.} First, \ScaleQsim performs inter-partitioning, which
+allocates the full state vector evenly across the $N$ nodes. As shown in the
+figure, the full state vector is divided and distributed across multiple nodes.
+To evenly distribute the full state vector, \ScaleQsim defines two key parameters:
+$N$ and $X$. $N$ denotes the total number of compute nodes used in the simulation.
+$X$ represents the total number of amplitudes in the full state vector. For an $n$-qubit
+quantum system, there are $2^{n}$ basis states, so the full state vector contains
+$X = 2^{n}$ amplitudes. During \ScaleQsim simulation, each node is assigned a contiguous
+subset of size $X / N$, where $X$ is the total number of amplitudes. The assignment
+is performed sequentially based on amplitude indices. For example, Node 0 is assigned
+amplitudes in the range $[0, X/N-1]$. Node 1 receives the next range, $[X/N, 2X/N
+-1]$, and so on. Node $N-1$ is assigned the final subset, from $[(N-1)X / N]$ to
+$X-1$.
+
+\noindent
+\textbf{Intra-partitioning.} After node-level partitioning, \ScaleQsim performs
+intra-partitioning, which allocates the divided subset of the node's state vector
+across multiple GPUs within the node. Existing full state vector simulation
+approaches require all operations to access a single large memory, which is often
+allocated in a shared CPU DRAM~\cite{suzuki2021qulacs} or a single GPU vRAM~\cite{bayraktar2023cuquantum}.
+However, this quickly becomes a major performance bottleneck due to memory contention
+and limited bandwidth. In contrast, \ScaleQsim\ reduces this problem through direct
+allocation, where each GPU independently manages a subset of the state vector
+partition from inter-partitioning. As shown in the figure, each node holds a
+subset of the full state vector after inter-partitioning. This subset is further
+split into four contiguous subsets (subrange), each assigned to one of the
+available GPUs within the node. Starting from Node 0, GPU 0 is assigned the
+first quarter of the subset (e.g., subrange $0$ to $X/(4N) - 1$). GPU 1 receives
+the next quarter, followed by GPU 2, and GPU 3 takes the final quarter, ending
+at subrange $X/N - 1$. Intra-partitioning continues sequentially across all nodes.
+For example, in Node $N-1$, GPU 0 begins at subrange $(N-1)X/N$, and the following
+GPUs are assigned the next quarters in order. GPU 3 ends at the final index
+$X - 1$. This layout ensures that the full state vector is divided into disjoint
+and contiguous subsets without any overlap between GPUs. Each subrange is
+aligned in a globally consistent order and assigned to each GPU.
+
+\subsection{Task-based Qubit State Management}
+~\label{design_3}
+%\vspace{-.3cm}
+
+\noindent
+\textbf{Task decomposition.} After the full state vectors are allocated in the memory
+of distributed nodes and GPUs, \ScaleQsim performs \texttt{Target Index} generation.
+Figure~\ref{overall_affectedgenerator} shows the overall procedure of \texttt{Target
+Index} generation. As shown on the left of the figure, when a quantum circuit for
+an $n$-qubit simulation is provided as input, it consists of qubit variables (e.g.,
+\texttt{q0}–\texttt{q35}) and quantum gates (e.g., CNOT) that operate on subsets
+of these qubits. \ScaleQsim utilizes the gate partitioning mechanism from \textit{Qsim}~\cite{qsim},
+which divides consecutive gates into smaller sub-circuits. Thus, each sub-circuit
+is treated as an independent task (e.g., \texttt{T1}, \texttt{T2}) in \ScaleQsim,
+with each task containing the qubit operands required for gate execution (e.g.,
+\texttt{q1}, \texttt{q2}). For example, Task \texttt{T1} operates on qubits 34 and
+35, while Task \texttt{T2} operates on qubits 2, 17, 34, and 35.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=13.8cm]{figures/AffectedIndicesgenerator_test2.pdf}
+    %\vspace{-.3cm}
+
+    \caption{The procedure of \texttt{Target Index} generation performed by \textit{TargetIndexGenerator}.}
+    \label{overall_affectedgenerator}
+    %\vspace{-.5cm}
+\end{figure}
+
+\noindent
+\textbf{Generate \texttt{Target Index}.} As the full state vector is distributed
+among multiple nodes and GPUs, not in a single large memory space, \ScaleQsim should
+identify the part of the state vector affected by each gate operation. To do
+this, \ScaleQsim defines these locations as \texttt{Target Index}, which represent
+specific positions in the full state vector that should be updated by a given task.
+For each task, \ScaleQsim generates \texttt{Target Index} for all possible
+outcomes from the gate operation included in each task. This is done for two reasons:
+1) By generating \texttt{Target Index} for all possible outcomes in advance, it reduces
+additional coordination and communication overhead during the simulation, as
+\texttt{Target Index} specifies where the update will occur. 2) At the time of execution,
+it is impossible to predict the result of the task. Therefore, we generate
+\texttt{Target Index} for all possibilities. Note that even though \ScaleQsim
+precomputes and tracks all possible \texttt{Target Indices} in advance, this
+approach introduces minimal performance and memory overhead, with 0.58 seconds and
+54.81 KB for 36 qubits. To minimize communication overhead, \ScaleQsim performs this
+operation in Node 0.
+
+As shown on the right of Figure~\ref{overall_affectedgenerator}, \textit{TargetIndexGenerator}
+reads the input qubits from each task, generates all possible binary combinations
+of the selected qubits, and converts them into corresponding \texttt{Target
+Indices} within the state vector. To do this, \textit{TargetIndexGenerator}
+employs a bitmask-based enumeration method in which only the state vector
+position of the selected qubit is modified. This is to efficiently generate the full
+set of indices while leaving unaffected state vectors unchanged, reducing the
+potential communication overhead. For example, \texttt{T1} is a task that operates
+on qubits 34 and 35. When performing the task, the possible 2-bit combinations
+are \texttt{00}, \texttt{01}, \texttt{10}, and \texttt{11}, where the left bit
+corresponds to qubit 35, and the right bit corresponds to qubit 34. If the original
+state of the qubit is \texttt{00} and the result of the gate simulation is
+\texttt{01}, the modification of the state vector occurs at the position of
+qubit 34 (i.e., $2^{34}$ = 17,179,869,184). Thus, \texttt{Target Index} is set to
+17,179,869,184. Similarly, \texttt{Target Index} for other possible qubit states
+\texttt{10}, and \texttt{11} are set to $2^{35}$ and $2^{35}$ + $2^{34}$. These combinations
+are generated by varying only the selected bit positions, while the remaining 34
+out of 36 bits remain fixed. Once all \texttt{Target Indices} generated for each
+task are stored in a structured list called \textit{List of Target Indices},
+each entry in this list consists of three fields: a bit pattern, a bitmask, and the
+computed \texttt{Target Index}. \texttt{Bit} field represents the binary
+combination assigned to the selected qubits. \texttt{Bitmask} specifies which
+positions in the state vector correspond to each bit in the pattern. ~\texttt{Target
+Index} indicates the exact location in the state vector where the gate operation
+should be applied, which is computed by mapping the bit pattern onto the
+positions specified by the bitmask using bitwise operations.
+
+\noindent
+\textbf{Manage statespace structure.} While \texttt{Target Index} represents a
+single logical location, the full state vector is physically distributed across multiple
+nodes and GPUs. Consequently, accessing this \texttt{Target Index} requires
+communication between devices, which can cause significant synchronization and communication
+overhead. While previous works~\cite{xu2024atlas, zhang2021hyquas} aim to
+overcome this by optimizing gate partitioning and executing smaller gates within
+a single GPU using precompiled kernels, this approach can suffer from limited flexibility,
+workload skewness, and execution failures due to memory overflow. Instead of
+partitioning gates, \ScaleQsim addresses this limitation by generating metadata (called
+\textit{Statespace Structure}) for inter-GPU and inter-node access and by
+utilizing a scalable communication protocol.
+
+\textit{Statespace Structure} stores essential mapping information, including
+\texttt{Target Indices} that will be affected by future gate operations and their
+corresponding physical locations (i.e., node, GPU, and local memory address).
+This information is then replicated to all nodes, allowing each to use a local copy
+during the simulation. This information is critical for two reasons. First, it
+allows local gate operations to happen entirely within a single GPU, providing memory
+locations based on the memory of each GPU rather than the full state vector.
+Second, it enables direct access to remote GPU and node memory when necessary,
+eliminating the calculation and communication overhead required to find a target
+location.
+
+Thus, as shown on the right of Figure~\ref{overall_affectedgenerator}, once the
+list of \texttt{Target Indices} is generated by \textit{TargetIndexGenerator} on
+Node 0, the corresponding metadata is constructed and stored in \textit{Statespace
+Structure}, which is then broadcast to all nodes. Each entry in \textit{Statespace
+Structure} contains detailed information required for gate execution, including
+node and GPU placement and memory offsets, as described below:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{\texttt{\#} of Qubits}: Number of qubits, which determines the
+        state vector size.
+
+    \item \textbf{\texttt{Target Index}}: Index in the full $2^{n}$-dimensional state
+        vector affected by the gate operation.
+
+    \item \textbf{Node ID}: Identifier (e.g., MPI rank) of the compute node responsible
+        for the given \texttt{Target Index}.
+
+    \item \textbf{Node Offset}: Start offset (in the full state vector) of the state
+        vector range assigned to the node.
+
+    \item \textbf{GPU ID}: Identifier of the GPU (within the node) that manages the
+        given \texttt{Target Index}.
+
+    \item \textbf{Global GPU ID}: Globally unique GPU identifier across all nodes,
+        assigned in node order (e.g., GPU 0 of Node 0 – Global GPU ID 0, GPU 0
+        of Node 1 – Global GPU ID 4).
+
+    \item \textbf{GPU Offset}: Start offset of the GPU’s assigned range within the
+        node-level state vector partition.
+\end{itemize}
+
+\subsection{Two-phase Mapping and Kernel Execution}
+~\label{design_4}
+%\vspace{-.3cm}
+
+Although \texttt{Target Index} is a logical representation of a global position,
+\ScaleQsim distributes the state vector across multiple nodes and GPUs.
+Therefore, \texttt{Target Index} must first be mapped to the specific node and
+GPU where it physically resides. To achieve this, \ScaleQsim references \textit{Statespace
+Structure} to translate each \texttt{Target Index} into a local index, which corresponds
+to a memory location based on the memory boundaries of each GPU. Then, with the translated
+local index, \ScaleQsim performs the simulation independently and in parallel on
+each GPU through kernel execution.
+
+Figure~\ref{overall_simulator} shows the process of mapping \texttt{Target Index}
+to the local index, which requires a subset of the state vector space
+distributed across multiple GPUs within a node. As shown in the figure,
+\ScaleQsim consists of two main components: \textit{StateMapper} and \textit{Kernel
+Simulator}.
+
+\noindent
+\textbf{Mapping target index to local index.} To start kernel execution, \ScaleQsim
+converts each \texttt{Target Index} defined over the full state vector into a
+local index within the memory space of its assigned GPU. This mapping is performed
+hierarchically across nodes and GPUs. As shown in Figure~\ref{overall_simulator},
+all nodes receive \textit{Statespace Structure} generated by \textit{TargetIndexGenerator},
+which includes metadata such as \texttt{Target Indices}, node IDs, and partition
+offsets for all possible resulting qubit states. The generated metadata is
+broadcast from Node 0 to all nodes using MPI communication. Each node (e.g.,
+Node 1 to N) receives the metadata and sends an acknowledgment to Node 0. After all
+acknowledgments are received, an MPI synchronization is performed.
+
+After MPI synchronization is completed, first, \textit{StateMapper} assigns each
+\texttt{Target Index} to the corresponding compute node using a static range-based
+partitioning rule. Each node $X$ is responsible for indices in the range $[X \cdot
+2^{k}, (X+1) \cdot 2^{k})$, where $k$ denotes the number of qubits represented
+by the node. Each node independently filters and selects only \texttt{Target
+Indices} within its assigned range. Then, within each node, \textit{Translator}
+in \textit{Kernel Simulator} maps the filtered \texttt{Target Indices} to local
+indices in each GPU. For example, if Node 0 - GPU 1 is responsible for the range,
+\textit{Translator} identifies all \texttt{Target Indices} that fall into this range
+and subtracts the GPU’s base index $(2^{k-2})$ to convert them into local indices
+starting from zero within GPU 1’s memory space.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=13.8cm]{figures/kernel_execution.pdf}
+    %\vspace{-.3cm}
+    \caption{The procedure for translating a \texttt{Target Index} into a local index
+    and executing quantum circuit simulations by \textit{StateMapper} and
+    \textit{Kernel Simulator}.}
+    \label{overall_simulator}
+    %\vspace{-.5cm}
+\end{figure}
+
+\noindent
+\textbf{Kernel execution.} Once all \texttt{Target Indices} have been translated
+into local indices within the GPU, \ScaleQsim starts the kernel execution, where
+gate operations are applied to the state vector. Before launching the kernel,
+\textit{Kernel Parameter Tuning} is performed to determine appropriate execution
+parameters for each GPU. This tuning process considers both the size of the
+local index set and the current GPU memory usage. More details of this tuning mechanism
+are provided in Section~\ref{design_5}. Once the kernel parameters are
+configured, each GPU launches a CUDA kernel based on its assigned set of local indices.
+Each CUDA thread processes one or more indices and updates the corresponding
+amplitudes in the state vector. Since these indices have already been translated
+according to the GPU's memory layout, they can be directly accessed during
+kernel execution without further transformation.
+
+However, when a gate operation spans multiple GPUs or nodes, communication is
+required to update the remote state vector. This problem is unique to \ScaleQsim,
+as existing frameworks~\cite{xu2024atlas,zhang2021hyquas,qsim} partition a
+circuit into sub-circuits, process them independently, and synchronize only
+after all processing is complete. To overcome this, \ScaleQsim avoids
+unnecessary synchronization by leveraging the precomputed \textit{Statespace
+Structure}, which is computed by Node~0 and broadcast to all nodes. In this structure,
+the location of each affected \texttt{Target Index} (i.e., node offset and GPU
+offset) is already determined per task. This enables \ScaleQsim to detect
+whether a task spans multiple nodes or GPUs and apply predefined communication
+without requiring synchronization during execution. A fixed mapping strategy deterministically
+assigns each \texttt{Target Index} to a specific node and GPU before the kernel
+executes. Based on this assignment, each node then computes only the amplitudes
+corresponding to its assigned \texttt{Target Indices}, which ensures exclusive
+access and prevents conflicts.
+
+Our kernel execution strategy applies consistently across both inter- and intra-node
+cases. Specifically, when a task spans multiple nodes, each node is responsible
+for processing only its assigned portion of the state vector. For example, if a
+2-qubit gate targets amplitudes $[2^{30}, 2^{30}+8]$ spanning Node~0 and Node~1,
+each node processes only its assigned part. When the task spans multiple GPUs
+within a single node, \ScaleQsim leverages CUDA Peer-to-Peer (P2P) memory access
+to enable direct reads across GPUs. Since CUDA P2P access does not enforce
+execution ordering, \ScaleQsim ensures correctness by maintaining a globally defined
+task order and assigning exclusive update responsibility to each GPU. For
+example, if GPU~0 holds $[0, 2^{28}]$ and GPU~1 holds $[2^{28}, 2^{29}]$, and
+the gate spans both, CUDA P2P allows GPU~0 to read from GPU~1’s memory without host
+involvement. This is achievable because applying a quantum gate is equivalent to
+a matrix-vector multiplication. Each element of the resulting state vector is calculated
+from a linear combination of the input elements and does not depend on other output
+amplitudes being calculated simultaneously. Thus, this process avoids race conditions
+or overlapping writes during a single gate application, thereby eliminating the
+need for synchronization within the gate.
+
+By structurally preventing concurrent updates to identical amplitudes, \ScaleQsim
+eliminates the need for fine-grained locking or synchronization during kernel execution.
+Each node proceeds independently with its assigned portion of the task, and MPI coordination
+is invoked only after kernel execution of each task to preserve global task ordering.
+
+\subsection{Adaptive Kernel Parameter Adjustment}
+~\label{design_5}
+%\vspace{-.3cm}
+
+%{-0.3cm}
+
+%\skim{I think we need a new figure with GPU architecture, block and qubit relationship.}
+
+\begin{algorithm}
+    [t!] \scriptsize
+    \begin{algorithmic}
+        [1] \State \textbf{Function} \texttt{parameterConf}(\textit{num\_qubits},
+        \textit{sv}, \textit{gpuID}) \State $G \gets sv.\texttt{size()}$, \quad
+        $k \gets 5 + G$, \quad $n \gets (num\_qubits > k)\ ?\ num\_qubits - k : 0$
+        \State $\mathrm{QUBIT\_THRESHOLD}\gets 40$, \quad
+        $\mathrm{GATE\_THRESHOLD}\gets 5$, \quad $size \gets 2^{n}$, \quad
+        $threads \gets$ \# of threads, \quad $max\_blocks \gets 2^{30}$ \Statex \Comment{\textit{\textbf{Enable memory-safe mode under high qubit pressure}}}
+        \If{$num\_qubits \geq \mathrm{QUBIT\_THRESHOLD}$ \textbf{or} $G \geq \mathrm{GATE\_THRESHOLD}$}
+        $safe\_mode \gets \texttt{true}$ \EndIf \Statex \Comment{\textit{\textbf{Block size calculation}}}
+        \If{$safe\_mode = \texttt{false}$} $blocks \gets \min(max\_blocks,\ \max(
+        1,\ size / threads))$ \Else \State $(free,\ total) \gets \texttt{cudaMemGetInfo
+        }(gpuID)$ \State $mem\_per\_thread \gets 2 \times \texttt{sizeof(fp\_type(float))
+        }$ \State $mem\_per\_block \gets threads \times mem\_per\_thread$ \State
+        $mem\_blocks \gets free / mem\_per\_block$ \State $size\_blocks \gets \max
+        (1,\ size / threads)$ \State $blocks \gets \min(max\_blocks,\ mem\_blocks
+        ,\ size\_blocks)$ \EndIf \State \texttt{LaunchKernel}$<<<blocks,\ threads
+        >>>(...)$
+    \end{algorithmic}
+    \caption{Adaptive kernel parameter adjustment.}
+    \label{alg:parameter_conf}
+\end{algorithm}
+
+When executing the simulation kernel, a fixed CUDA block size can hinder performance
+by mismatching GPU resource allocation with the actual workload. When applying
+small gates that affect a limited number of qubits, using a large number of blocks
+leads to underutilized threads and increased scheduling overhead. Conversely, for
+large gates, a fixed block size can cause memory pressure or out-of-memory (OOM)
+errors during execution. To address these issues, \ScaleQsim dynamically adjusts
+the number of CUDA blocks based on the gate size and the portion of the state
+vector assigned to each GPU. This adaptive tuning maximizes parallelism while ensuring
+memory safety across various gate sizes.
+
+Algorithm~\ref{alg:parameter_conf} describes the adaptive kernel parameter tuning
+process used by \ScaleQsim to execute gate operations on each GPU efficiently.
+The input parameters include: \texttt{num\_qubits} (the total number of qubits),
+\texttt{sv} (indices of qubits affected by the current task), and \texttt{gpuID}
+(target GPU identifier). From \texttt{sv}, the function derives $G = \texttt{sv.size()
+}$, which represents the number of affected qubits. This $G$ value is a crucial parameter,
+as it determines the total number of affected amplitudes in the full state
+vector. Specifically, operations on $G$ qubits influence a set of $2^{G}$
+\texttt{Target Indices}, which are used to identify the affected amplitudes that
+must be updated during kernel execution.
+
+Based on $G$, \ScaleQsim sets an internal threshold $k = 5 + G$, following
+\textit{Qsim}'s policy~\cite{qsim}. If \texttt{num\_qubits} exceeds this, it
+sets $n = \texttt{num\_qubits}- k$ and divides the work into $2^{n}$ tasks. Each
+task updates amplitudes defined by \texttt{Target Indices}. To execute these tasks
+on the GPU, \ScaleQsim uses the CUDA model, organizing execution using threads and
+blocks. Each block is set to a fixed number of threads, typically 32 or 64,
+following the kernel parameter configuration of \textit{Qsim}~\cite{qsim}. This
+configuration corresponds to one or two warps. A warp is the fundamental unit of
+hardware granularity in CUDA, where one warp includes 32 threads. Thus, this
+approach allows for alignment with the warp level scheduling granularity in CUDA,
+thereby improving kernel execution efficiency. \ScaleQsim also applies static
+thresholds, namely \texttt{QUBIT\_THRESHOLD} and \texttt{GATE\_THRESHOLD}, to
+decide whether to enable \texttt{safe\_mode} \textbf{(Line: 1--3)}. Once enabled,
+\texttt{safe\_mode} dynamically checks the available GPU memory (e.g., 80\,GB
+for A100) via \texttt{cudaMemGetInfo()} and constrains the number of blocks
+accordingly to prevent memory pressure during kernel execution.
+
+If the requested task size fits within the available GPU memory, \texttt{safe\_mode}
+remains disabled and the original kernel parameter is used. However, a complex
+circuit with a large number of qubits or intricate gate interactions can cause
+the number of affected state vector indices to exceed the available GPU memory. In
+such cases, \ScaleQsim activates \texttt{safe\_mode} \textbf{(Line: 4--5)}. This
+dynamically constrains the number of blocks launched on each GPU to prevent memory
+overuse from excessive parallelism. It first invokes \texttt{cudaMemGetInfo()} to
+check available GPU memory and calculates a safe upper bound for the block count
+(e.g., $2^{27}$ blocks for an 80 GB GPU). \ScaleQsim then compares this memory-constrained
+limit to the total number of blocks required by the task and launches the kernel
+with the smaller of the two values to ensure safe execution (\textbf{Line: 7--13}).
+
+For example, each thread requires 8 bytes (e.g., for single precision) and 64
+threads are assigned per block, each block consumes 512 Bytes. In a task
+involving $2^{32}$ blocks (e.g., a 42-qubit with $k = 10$), the total memory demand
+reaches 2\,TB, which is beyond the memory capacity of a single GPU. Assuming that
+if 80\,GB is available on each GPU (e.g., A100 80GB), at most
+$80 \times 2^{30}/ 2^{9} = 2^{27}$ blocks (134 million) can be safely launched. Thus,
+\ScaleQsim only executes $80 \times 2^{30}/ 2^{9} = 2^{27}$ blocks (GPU memory constraints),
+while the remaining computation of the identical task is handled by subsequent kernel
+executions. Since each GPU operates exclusively on its statically partitioned
+region of the state vector, no inter-GPU task coordination is required during this
+process. This allows each GPU to launch only the number of blocks it can execute
+efficiently, avoiding memory pressure and task scheduling overhead that may arise
+from excessive parallelism.
+
+\subsection{\ScaleQsim Implementation}
+
+We implemented \ScaleQsim by extending the Google \textit{Qsim} framework~\cite{qsim}.
+While \textit{Qsim} is open-source for single GPU simulation, it utilizes
+cuQuantum for multi-node/GPU distribution, which is closed-source. To overcome
+this, we used the identical simulation algorithm for each GPU but redesigned the
+distribution and parallelization for production HPC systems. Our implementation
+modifies approximately 600 lines of code across three core modules: \texttt{simulator\_cuda.h},
+\texttt{vectorspace\_cuda.h}, and \texttt{simulator\_cuda\_kernel.h}. 1) We
+designed a two-phase partitioning scheme to evenly divide the full state vector
+across nodes and GPUs. 2) We added a new \textit{TargetIndexGenerator} and \textit{StateMapper}
+module to track and map \texttt{Target Index} to the local index within each GPU.
+In addition, we support correct coordination between nodes and GPUs using MPI and
+CUDA P2P. 3) We extended the CUDA kernel interface to support adaptive kernel configuration
+based on resource availability and workload size. We opensource the code of
+\ScaleQsim in the following link: \url{https://github.com/ScaleQsim/ScaleQsim.git}

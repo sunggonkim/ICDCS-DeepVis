@@ -1,0 +1,4 @@
+Scenario,AIDE_Alerts,DeepVis_Alerts
+Idle,0,0
+Update_Pkg,100,0
+Rootkit,1,1

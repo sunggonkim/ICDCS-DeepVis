@@ -1,0 +1,22 @@
+%\vspace{-.1cm}
+
+\section{Conclusion}
+%\vspace{-.1cm}
+
+\begin{comment}
+In this paper, we observe that existing quantum circuit simulators exhibit limited scalability and memory inefficiency, especially when simulating large qubit systems on multi-GPU and multi-node HPC systems. To address these challenges, we design and implement \ScaleQsim, a highly scalable quantum circuit simulation framework optimized for distributed HPC systems. \ScaleQsim applies a two-phase partitioning to evenly distribute the full state vector across nodes and GPUs, enabling efficient memory usage and parallel gate execution. It also integrates adaptive kernel tuning and precomputed index management to maximize performance under diverse quantum circuits. 
+    
+\end{comment}
+
+In this paper, %we observe that existing quantum circuit simulators struggle with scalability and memory efficiency on multi-GPU and multi-node HPC systems. To overcome these limitations,
+we propose \ScaleQsim, a highly scalable simulation framework that applies two-phase
+partitioning for balanced state vector distribution and integrates adaptive
+kernel tuning with precomputed index management for performance optimization.
+%Our evaluations show that \ScaleQsim achieves up to 6.15$\times$ speedup over \textit{cusvaer} of SOTA frameworks, supports full-state simulations up to 42 qubits on 512 GPUs, and supports consistent performance with low variance. These results demonstrate its scalability and practicality for large-scale quantum circuit simulation.
+Our evaluations across various quantum circuits and scales show that \ScaleQsim achieves
+up to 77.40$\times$ speedup over the state-of-the-art simulators \textit{cusvaer},
+\textit{HyQuas}, and \textit{Atlas}, supports full state simulations up to 42
+qubits on 512 GPUs (128 nodes), and maintains consistent performance with low variance.
+These results demonstrate that \ScaleQsim effectively addresses the limitations
+of prior simulators, offering a scalable and practical solution for large-scale quantum
+circuit simulation.

@@ -1,0 +1,128 @@
+% TEMPLATE for Usenix papers, specifically to meet requirements of
+%  USENIX '05
+% originally a template for producing IEEE-format articles using LaTeX.
+%   written by Matthew Ward, CS Department, Worcester Polytechnic Institute.
+% adapted by David Beazley for his excellent SWIG paper in Proceedings,
+%   Tcl 96
+% turned into a smartass generic template by De Clarke, with thanks to
+%   both the above pioneers
+% use at your own risk.  Complaints to /dev/null.
+% make it two column with no page numbering, default is 10 point
+
+% Munged by Fred Douglis <douglis@research.att.com> 10/97 to separate
+% the .sty file from the LaTeX source template, so that people can
+% more easily include the .sty file into an existing document.  Also
+% changed to more closely follow the style guidelines as represented
+% by the Word sample file. 
+
+% Note that since 2010, USENIX does not require endnotes. If you want
+% foot of page notes, don't include the endnotes package in the 
+% usepackage command, below.
+
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix,epsfig,endnotes}
+
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{braket}
+\usepackage{amsfonts}
+\usepackage{algorithm, algpseudocode} %for procedure
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{bm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{pifont,array} %For ding
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{nccmath}
+\usepackage{xurl}
+\usepackage{xspace}
+\usepackage{comment}
+\usepackage{makecell}
+\usepackage{hyperref}
+\usepackage{colortbl }
+
+
+
+
+
+
+
+
+\begin{document}
+
+%don't want date printed
+\date{}
+
+%make title bold and 14 pt font (Latex default is non-bold, 16 pt)
+\title{\texttt{ScaleMon}: Scalable System and Application Monitoring and Attack Detection for Secure HPC Systems.}
+
+
+\maketitle
+
+% Use the following at camera-ready time to suppress page numbers.
+% Comment it out when you first submit the paper for review.
+\thispagestyle{empty}
+
+
+
+
+\definecolor{pred}{rgb}{0.7843, 0.0039, 0.3137}
+\definecolor{pred2}{rgb}{0.1592, 0.0039, 0.7137}
+\definecolor{dblue}{rgb}{0.0, 0.0, 1.0}
+\definecolor{sorange}{rgb}{0.91, 0.45, 0.32}
+\definecolor{green}{rgb}{0.3, 0.8, 0.3}
+\newcommand{\skim}[1]{{\color{sorange}{#1}}} %
+\newcommand{\sys}[1]{{\color{brown}{#1}}} % sys
+\newcommand{\changjong}[1]{{\color{pred}{#1}}}
+\newcommand{\ehan}[1]{{\color{pred2}{#1}}}
+\newcommand{\taebin}[1]{{\color{green}{#1}}}
+
+
+\newcommand{\ScaleMon}{\texttt{ScaleMon}\xspace}
+\newcommand{\IdentityVerifier}{\texttt{Identity Verifier}\xspace}
+\newcommand{\InterMon}{\texttt{Inter-Mon}\xspace}
+\newcommand{\IntraMon}{\texttt{Intra-Mon}\xspace}
+\newcommand{\LogParser}{\texttt{Log Parser}\xspace}
+\newcommand{\FingerprintGenerator}{\texttt{Fingerprint Generator}\xspace}
+
+\subsection*{Abstract}
+%In this paper, we propose \ScaleMon, a scalable HPC system security monitoring scheme for exterme scale HPC and data centers.
+\skim{
+This paper presents \ScaleMon, a scalable monitoring framework for identifying malicious activities in both applications and systems for high-performance computing (HPC) systems.
+Since a small number of applications run extensively on HPC systems, \ScaleMon focuses on patterns specific to each application and detects anomalies by analyzing I/O behaviors. 
+To achieve this, \ScaleMon 1) leverages existing HPC system monitoring tools to collect data, 2) introduces a novel data representation that converts voluminous, fine-grained DXT logs into fixed-size 3D image tensors, preserving key I/O patterns (offset, time, size) while drastically reducing data volume, 3) employs a Synthetic Anomaly Generator (SAG) to perturb benign log images, creating diverse synthetic anomalies to teach the model subtle distinctions between normal and malicious behaviors, and 4) adopts a flexible, machine learning–based detection pipeline that models individual applications and generalizes to unseen workloads.
+We implement \ScaleMon and evaluate its performance on the Leadership-scale HPC systems using I/O logs from real scientific applications. Our evaluation results show that \ScaleMon improves detection performance significantly \textbf{by XX}, outperforming four baseline one-class models in both Recall and Precision in all test cases.
+}
+
+
+
+
+\input{1. Introduction}
+\input{2. Background}
+\input{3. Threat Model}
+\input{4. Design}
+\input{5. Evaluation}
+\input{6. Discussion and Limitation}
+\input{7. Related Works}
+\input{8. Conclusion}
+
+
+
+{\footnotesize \bibliographystyle{acm}
+\bibliography{sample}}
+
+
+
+\end{document}
+
+
+
+
+
+
+
