@@ -1,0 +1,3 @@
+file_count,grid_saturation,avg_collisions_per_pixel,expected_max_benign,recall_rate,attacks_detected,attacks_total
+100000,0.9977654197967775,6.103515625,0.16571160121408526,1.0,2,2
+1000000,1.0,61.03515625,0.18571160121408525,1.0,2,2

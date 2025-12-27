@@ -1,0 +1,485 @@
+[
+  {
+    "file": "keylogger.c",
+    "size": 6946,
+    "entropy": 0.3477,
+    "linf": 0.2955,
+    "detected": false
+  },
+  {
+    "file": "module.c",
+    "size": 1007,
+    "entropy": 0.2578,
+    "linf": 0.2191,
+    "detected": false
+  },
+  {
+    "file": "main.c",
+    "size": 26637,
+    "entropy": 0.3516,
+    "linf": 0.2988,
+    "detected": false
+  },
+  {
+    "file": "hookrw.c",
+    "size": 3037,
+    "entropy": 0.2578,
+    "linf": 0.2191,
+    "detected": false
+  },
+  {
+    "file": "icmp.c",
+    "size": 2057,
+    "entropy": 0.2969,
+    "linf": 0.2523,
+    "detected": false
+  },
+  {
+    "file": "util.c",
+    "size": 6819,
+    "entropy": 0.3477,
+    "linf": 0.2955,
+    "detected": false
+  },
+  {
+    "file": "common.h",
+    "size": 2227,
+    "entropy": 0.2812,
+    "linf": 0.2391,
+    "detected": false
+  },
+  {
+    "file": "keylog.h",
+    "size": 5395,
+    "entropy": 0.375,
+    "linf": 0.3187,
+    "detected": false
+  },
+  {
+    "file": "serve.c",
+    "size": 3725,
+    "entropy": 0.3047,
+    "linf": 0.259,
+    "detected": false
+  },
+  {
+    "file": "dlexec.c",
+    "size": 6898,
+    "entropy": 0.332,
+    "linf": 0.2822,
+    "detected": false
+  },
+  {
+    "file": "sock.c",
+    "size": 7068,
+    "entropy": 0.293,
+    "linf": 0.249,
+    "detected": false
+  },
+  {
+    "file": "diamorphine.mod.c",
+    "size": 1430,
+    "entropy": 0.293,
+    "linf": 0.249,
+    "detected": false
+  },
+  {
+    "file": "diamorphine.c",
+    "size": 10847,
+    "entropy": 0.3359,
+    "linf": 0.2855,
+    "detected": false
+  },
+  {
+    "file": "diamorphine.h",
+    "size": 1004,
+    "entropy": 0.2773,
+    "linf": 0.2357,
+    "detected": false
+  },
+  {
+    "file": "diamorphine.ko",
+    "size": 361216,
+    "entropy": 1.0,
+    "linf": 0.85,
+    "detected": true
+  },
+  {
+    "file": "lstat.c",
+    "size": 131,
+    "entropy": 0.1328,
+    "linf": 0.1129,
+    "detected": false
+  },
+  {
+    "file": "open.c",
+    "size": 334,
+    "entropy": 0.1602,
+    "linf": 0.1361,
+    "detected": false
+  },
+  {
+    "file": "link.c",
+    "size": 64,
+    "entropy": 0.1211,
+    "linf": 0.1029,
+    "detected": false
+  },
+  {
+    "file": "unlinkat.c",
+    "size": 68,
+    "entropy": 0.125,
+    "linf": 0.1062,
+    "detected": false
+  },
+  {
+    "file": "access.c",
+    "size": 63,
+    "entropy": 0.1094,
+    "linf": 0.093,
+    "detected": false
+  },
+  {
+    "file": "stat.c",
+    "size": 130,
+    "entropy": 0.1328,
+    "linf": 0.1129,
+    "detected": false
+  },
+  {
+    "file": "accept.c",
+    "size": 392,
+    "entropy": 0.168,
+    "linf": 0.1428,
+    "detected": false
+  },
+  {
+    "file": "unlink.c",
+    "size": 59,
+    "entropy": 0.1094,
+    "linf": 0.093,
+    "detected": false
+  },
+  {
+    "file": "rmdir.c",
+    "size": 59,
+    "entropy": 0.1055,
+    "linf": 0.0896,
+    "detected": false
+  },
+  {
+    "file": "fopen.c",
+    "size": 67,
+    "entropy": 0.1172,
+    "linf": 0.0996,
+    "detected": false
+  },
+  {
+    "file": "readdir.c",
+    "size": 126,
+    "entropy": 0.1367,
+    "linf": 0.1162,
+    "detected": false
+  },
+  {
+    "file": "is_attacker.c",
+    "size": 397,
+    "entropy": 0.1875,
+    "linf": 0.1594,
+    "detected": false
+  },
+  {
+    "file": "hooks.h",
+    "size": 2518,
+    "entropy": 0.2617,
+    "linf": 0.2225,
+    "detected": false
+  },
+  {
+    "file": "is_procnet.c",
+    "size": 521,
+    "entropy": 0.1797,
+    "linf": 0.1527,
+    "detected": false
+  },
+  {
+    "file": "beurk.h",
+    "size": 1434,
+    "entropy": 0.2461,
+    "linf": 0.2092,
+    "detected": false
+  },
+  {
+    "file": "main.c",
+    "size": 882,
+    "entropy": 0.1992,
+    "linf": 0.1693,
+    "detected": false
+  },
+  {
+    "file": "tests.h",
+    "size": 699,
+    "entropy": 0.1445,
+    "linf": 0.1229,
+    "detected": false
+  },
+  {
+    "file": "open.c",
+    "size": 1306,
+    "entropy": 0.2422,
+    "linf": 0.2059,
+    "detected": false
+  },
+  {
+    "file": "hide_tcp_ports.c",
+    "size": 1608,
+    "entropy": 0.2422,
+    "linf": 0.2059,
+    "detected": false
+  },
+  {
+    "file": "drop_shell_backdoor.c",
+    "size": 975,
+    "entropy": 0.2188,
+    "linf": 0.1859,
+    "detected": false
+  },
+  {
+    "file": "is_hidden_file.c",
+    "size": 982,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "config.h",
+    "size": 3902,
+    "entropy": 0.293,
+    "linf": 0.249,
+    "detected": false
+  },
+  {
+    "file": "cleanup_login_records.c",
+    "size": 193,
+    "entropy": 0.1289,
+    "linf": 0.1096,
+    "detected": false
+  },
+  {
+    "file": "test.c",
+    "size": 113,
+    "entropy": 0.1172,
+    "linf": 0.0996,
+    "detected": false
+  },
+  {
+    "file": "hooks.h",
+    "size": 2309,
+    "entropy": 0.2578,
+    "linf": 0.2191,
+    "detected": false
+  },
+  {
+    "file": "beurk.h",
+    "size": 1655,
+    "entropy": 0.2578,
+    "linf": 0.2191,
+    "detected": false
+  },
+  {
+    "file": "debug.h",
+    "size": 1404,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "is_attacker.c",
+    "size": 1426,
+    "entropy": 0.2773,
+    "linf": 0.2357,
+    "detected": false
+  },
+  {
+    "file": "is_procnet.c",
+    "size": 1339,
+    "entropy": 0.2773,
+    "linf": 0.2357,
+    "detected": false
+  },
+  {
+    "file": "hide_tcp_ports.c",
+    "size": 1978,
+    "entropy": 0.2891,
+    "linf": 0.2457,
+    "detected": false
+  },
+  {
+    "file": "init.c",
+    "size": 2924,
+    "entropy": 0.3086,
+    "linf": 0.2623,
+    "detected": false
+  },
+  {
+    "file": "drop_shell_backdoor.c",
+    "size": 7496,
+    "entropy": 0.3398,
+    "linf": 0.2889,
+    "detected": false
+  },
+  {
+    "file": "is_hidden_file.c",
+    "size": 2509,
+    "entropy": 0.3008,
+    "linf": 0.2557,
+    "detected": false
+  },
+  {
+    "file": "debug.c",
+    "size": 2830,
+    "entropy": 0.2891,
+    "linf": 0.2457,
+    "detected": false
+  },
+  {
+    "file": "cleanup_login_records.c",
+    "size": 2249,
+    "entropy": 0.2812,
+    "linf": 0.2391,
+    "detected": false
+  },
+  {
+    "file": "readdir64.c",
+    "size": 1382,
+    "entropy": 0.2773,
+    "linf": 0.2357,
+    "detected": false
+  },
+  {
+    "file": "lstat.c",
+    "size": 1310,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "__xstat.c",
+    "size": 1366,
+    "entropy": 0.2695,
+    "linf": 0.2291,
+    "detected": false
+  },
+  {
+    "file": "open.c",
+    "size": 1814,
+    "entropy": 0.2695,
+    "linf": 0.2291,
+    "detected": false
+  },
+  {
+    "file": "link.c",
+    "size": 1315,
+    "entropy": 0.2695,
+    "linf": 0.2291,
+    "detected": false
+  },
+  {
+    "file": "unlinkat.c",
+    "size": 1323,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "access.c",
+    "size": 1285,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "stat.c",
+    "size": 1321,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "__lxstat64.c",
+    "size": 1353,
+    "entropy": 0.2773,
+    "linf": 0.2357,
+    "detected": false
+  },
+  {
+    "file": "__lxstat.c",
+    "size": 1341,
+    "entropy": 0.2695,
+    "linf": 0.2291,
+    "detected": false
+  },
+  {
+    "file": "accept.c",
+    "size": 1324,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "stat64.c",
+    "size": 1334,
+    "entropy": 0.2734,
+    "linf": 0.2324,
+    "detected": false
+  },
+  {
+    "file": "unlink.c",
+    "size": 1263,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "fopen64.c",
+    "size": 1381,
+    "entropy": 0.2734,
+    "linf": 0.2324,
+    "detected": false
+  },
+  {
+    "file": "rmdir.c",
+    "size": 1258,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "__xstat64.c",
+    "size": 1367,
+    "entropy": 0.2773,
+    "linf": 0.2357,
+    "detected": false
+  },
+  {
+    "file": "fopen.c",
+    "size": 1373,
+    "entropy": 0.2656,
+    "linf": 0.2258,
+    "detected": false
+  },
+  {
+    "file": "readdir.c",
+    "size": 1360,
+    "entropy": 0.2695,
+    "linf": 0.2291,
+    "detected": false
+  },
+  {
+    "file": "lstat64.c",
+    "size": 1322,
+    "entropy": 0.2734,
+    "linf": 0.2324,
+    "detected": false
+  }
+]

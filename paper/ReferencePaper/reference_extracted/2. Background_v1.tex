@@ -1,0 +1,119 @@
+
+
+\section{Background}~\label{Background}
+
+
+
+
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=8.5cm]{Figures/2. Background_HPCarch.pdf}
+    \vspace{-0.6cm}
+    \caption{HPC architecture}
+    \label{Back_hpc_architecture}
+    \vspace{-.6cm}
+\end{figure}
+
+
+
+
+\subsection{HPC Architecture}
+
+Figure~\ref{Back_hpc_architecture} shows the overall architecture of HPC system.
+As HPC systems are design to solve large-problems in a short period time, HPC systems have thousands of compute nodes connect via high-speed interconnect such as Infiniband~\cite{pfister2001introduction} and Slingshot~\cite{de2020depth}.
+Each compute node is a complete server with CPU, Memory and Storage but each HPC system have different level of abstraction and operablilty to the user. 
+Some systems run full-scale operating system~\cite{park2023myksc} while others run lightweight version of the operationing system for performance and security~\cite{wallace2007compute,kaplan2019cray, wisniewski2014mos}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{System and Application Monitoring in HPC}
+
+
+
+As HPC systems have complex architectures, analyzing systems at such extreme scale is challenging. To address this, the following system and application logging tools were tested to induce minimal to no overhead during regular application execution.
+
+
+
+\begin{itemize}
+  \item \textbf{Job Scheduler Logs (SLURM, PBS Pro):}  
+  SLURM~\cite{yoo2003slurm} and PBS Pro~\cite{pbspro} are open-source workload managers used in distributed HPC environments. These systems log job-related information using job IDs, including user accounts, application names, node and core usage, and resource allocation details. Such logs enable correlation between application executions and system behavior across large-scale platforms.
+
+  \item \textbf{Application I/O Characterization (Darshan):}  
+  Darshan~\cite{snyder2016modular} is a lightweight profiling tool designed to capture I/O behavior during application execution. It records key statistics such as total read/write volumes, metadata operation counts, and time spent in I/O, enabling identification of performance bottlenecks and inefficient I/O patterns.
+
+  \item \textbf{File System Monitoring (LMT):}  
+  The Lustre Monitoring Tool (LMT)~\cite{schwan2003lustre} provides system-level insights into Lustre storage server activity, including CPU usage and I/O operation rates. This tool assists in detecting abnormal storage behavior that may affect overall system performance.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\subsection{Security vulnerabilities and Defense Mechanisms in HPC}
+
+
+\subsubsection{Security vulnerabilities}
+The complexity and scale of HPC infrastructures also introduce substantial security vulnerabilities. Due to their interconnected and shared-resource nature, HPC systems are particularly susceptible to unauthorized access, breaches of confidentiality, and operational disruptions. These risks necessitate detailed threat assessments and comprehensive security strategies to safeguard HPC operations effectively~\cite{koleinihigh}.
+
+\noindent\textbf{Hardware-based Attacks in HPC:} 
+Hardware-level vulnerabilities pose significant threats to HPC environments due to the widespread use of performance-oriented processors and GPUs. 
+Speculative execution attacks, such as Spectre, exploit processor mechanisms intended for computational efficiency, enabling attackers to bypass isolation measures and access confidential information across processes~\cite{he2021new}.
+Additionally, Graphics Processing Units (GPUs), essential for accelerating HPC computations, have been shown to unintentionally leak sensitive data during routine operations, further compromising data confidentiality and system security~\cite{di2013cuda}.
+Finally, Side-channel attacks are a growing concern in multi-tenant HPC environments where different users share compute nodes or memory channels. These attacks exploit shared hardware resources like caches, memory buses, or performance counters to infer sensitive information from co-located processes. In HPC contexts, where high utilization is common, such co-residency scenarios are frequent and thus increase the feasibility of attacks~\cite{peisert2017security}. Recent studies show that even GPU-based computation can leak data through memory access patterns, creating new channels for information exfiltration~\cite{guo2024high}.
+
+
+
+
+\noindent\textbf{Exploitation of Parallel Runtime Systems and Job Schedulers} \\
+Parallel runtimes such as MPI and job schedulers like SLURM or PBS are core components of HPC operations. However, their complexity and central role in resource orchestration make them attractive targets for attackers. 
+For instance, poorly validated job scripts can be abused to inject payloads or manipulate environment variables to gain unintended access~\cite{elia2024systematic}.
+In addition, the attack can manipulate the systems log generated from the malicious activity to avoid attack detection.
+HPC systems face broader vulnerabilities stemming from their software and infrastructure components. Comprehensive risk assessment methodologies are required to identify and manage these threats effectively~\cite{leal2023assessing}. Moreover, proactive strategies involving specialized security testbeds enable researchers and system administrators to simulate potential attacks, thereby strengthening defensive measures and minimizing security risks~\cite{cao2024security}.
+
+
+
+
+
+
+\noindent\textbf{Data Breach} \
+HPC facilities are engineered for extreme data movement, utilizing high-speed interconnects and Data Transfer Nodes (DTNs) optimized for performance, not inspection. This architecture, while beneficial for scientific throughput, allows attackers to quickly exfiltrate data once access is obtained. Traditional security mechanisms like firewalls or deep packet inspection are often disabled or relaxed to maintain I/O performance~\cite{peisert2017security}. As a result, once attackers infiltrate a system, they can transfer large volumes of sensitive data with minimal detection. 
+For example, ES-net~\cite{koning2018coreflow}.
+In addition, as the application that utilizes network connection becomes diverse, it is becomming increasingly difficult to detect and defend~\cite{cao2024jupyter, giannakou2024understanding}
+
+
+
+
+
+
+
+
+
+\subsubsection{Defense Mechanisms}
+
+
+\skim{Written by GPT, need to change. }
+\noindent\textbf{Trusted Execution Environments (TEE): } Trusted Execution Environments (TEEs) provide hardware-enforced isolated execution contexts that protect code and data from unauthorized access, even from privileged software such as the operating system or hypervisor. In HPC, TEEs like Intel SGX have been proposed to isolate sensitive computations, such as encryption routines or authentication checks, without imposing significant overhead on the overall workflow. However, TEEs remain limited by their memory capacity, making them difficult to scale across large distributed jobs. Despite this, their integration into HPC workflows, particularly for protecting user-specific secrets or intermediate data products, is a promising research direction~\cite{peisert2017security}.
+
+\noindent\textbf{Audit-Based Provenance and Traceability} \\
+Audit logging plays a crucial role in post-incident analysis and forensic investigation. In HPC, provenance capture mechanisms—such as file access logs, system call traces, and scheduling records—enable operators to reconstruct execution workflows and detect policy violations. Peisert emphasizes the value of provenance data in understanding illicit HPC behavior and supports the idea that such logs can improve the integrity and reproducibility of scientific computing~\cite{peisert2017security}. With increasing support for audit frameworks like the Linux Audit system and workflow engines embedding lineage tracking, HPC environments are gaining visibility into system usage without introducing noticeable runtime overhead.
+
+\noindent\textbf{System and Application Logging} \\
+Effective logging mechanisms are critical for identifying anomalies and tracing malicious actions in HPC systems. Application-level tools such as Darshan provide insights into I/O behavior, while system-level tools like LMT offer visibility into storage server performance. These logging systems help detect deviations from expected access patterns or compute phases. Furthermore, integrating job scheduler logs (e.g., SLURM) allows correlation between user identity, allocated nodes, and application behavior, forming the foundation of multi-source security monitoring systems such as ScaleMon. Peisert and others have noted that a combination of lightweight logs and contextual analysis provides actionable intelligence with minimal performance tradeoffs~\cite{guo2024high}.
+
+\noindent\textbf{Workflow-Level Anomaly Detection} \\
+Scientific workflows in HPC exhibit regular patterns in data movement, computation phases, and resource utilization. Anomaly detection at the workflow level leverages this regularity to identify abnormal jobs that deviate from historical or expected profiles. Peisert demonstrated that classification models based on MPI communication patterns could accurately distinguish scientific applications~\cite{peisert2017security}. Extending this idea, recent work incorporates graph-based or image-based representations of workflows to apply ML-driven detection. These techniques are particularly effective in detecting misuse of resource allocations or unauthorized computations, such as cryptomining, while maintaining transparency for legitimate users.
+

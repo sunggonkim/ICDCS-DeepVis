@@ -1,0 +1,117 @@
+{
+  "threshold": 1.0319397269109736,
+  "benign": [
+    {
+      "filename": "/home/bigdatahpclab/benign_test/python3",
+      "size": 5490488,
+      "entropy": 0.6653048565550699,
+      "score": 1.0345685253704917
+    },
+    {
+      "filename": "/home/bigdatahpclab/benign_test/curl",
+      "size": 239848,
+      "entropy": 0.3845361054770473,
+      "score": 0.8258509891766038
+    },
+    {
+      "filename": "/home/bigdatahpclab/benign_test/gcc",
+      "size": 1158288,
+      "entropy": 0.3727998585815172,
+      "score": 0.9308302982799453
+    },
+    {
+      "filename": "/home/bigdatahpclab/benign_test/wget",
+      "size": 544472,
+      "entropy": 0.2394830076017779,
+      "score": 0.8805049088899218
+    },
+    {
+      "filename": "/home/bigdatahpclab/benign_test/nginx",
+      "size": 1195152,
+      "entropy": 0.6744956507192024,
+      "score": 0.9329189845749978
+    },
+    {
+      "filename": "/home/bigdatahpclab/benign_test/sshd",
+      "size": 884520,
+      "entropy": 0.1982074854055855,
+      "score": 0.9128534356351587
+    },
+    {
+      "filename": "/home/bigdatahpclab/benign_test/git",
+      "size": 3125840,
+      "entropy": 0.3098990747636002,
+      "score": 0.9970142616630898
+    },
+    {
+      "filename": "/home/bigdatahpclab/benign_test/make",
+      "size": 230968,
+      "entropy": 0.438272649166345,
+      "score": 0.8233359187576147
+    }
+  ],
+  "attack": [
+    {
+      "filename": "/home/bigdatahpclab/attack_test/kernel_rootkit.ko",
+      "size": 483584,
+      "entropy": 0.5215458253943103,
+      "score": 0.8725988253247999
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/cron_persistence",
+      "size": 29,
+      "entropy": 0.4435658638261315,
+      "score": 0.4435658638261315
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/passwd_backdoor",
+      "size": 31,
+      "entropy": 0.4205478754308421,
+      "score": 0.4205478754308421
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/webshell.php",
+      "size": 31,
+      "entropy": 0.5870164742822305,
+      "score": 0.5870164742822305
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/user_rootkit.so",
+      "size": 44392,
+      "entropy": 0.3672340757849827,
+      "score": 0.7133891385555589
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/timestomped_ls",
+      "size": 142144,
+      "entropy": 0.4032460204715789,
+      "score": 0.7909735294899112
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/ssh_key_inject",
+      "size": 48,
+      "entropy": 0.4994727216070874,
+      "score": 0.4994727216070874
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/ld_preload_inject.so",
+      "size": 44392,
+      "entropy": 0.3672340757849827,
+      "score": 0.7133891385555589
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/reverse_shell",
+      "size": 51200,
+      "entropy": 0.9971020409776672,
+      "score": 0.9971020409776672
+    },
+    {
+      "filename": "/home/bigdatahpclab/attack_test/crypto_miner",
+      "size": 2731288,
+      "entropy": 0.881789379067971,
+      "score": 0.9880189477933529
+    }
+  ],
+  "fpr": 0.125,
+  "tpr": 0.0
+}

@@ -1,0 +1,10 @@
+/home/bigdatahpclab/attack_test/kernel_rootkit.ko|483584|0.5215458253943103|436|0
+/home/bigdatahpclab/attack_test/cron_persistence|29|0.4435658638261315|436|0
+/home/bigdatahpclab/attack_test/passwd_backdoor|31|0.4205478754308421|436|0
+/home/bigdatahpclab/attack_test/webshell.php|31|0.5870164742822305|436|0
+/home/bigdatahpclab/attack_test/user_rootkit.so|44392|0.3672340757849827|509|0
+/home/bigdatahpclab/attack_test/timestomped_ls|142144|0.4032460204715789|493|0
+/home/bigdatahpclab/attack_test/ssh_key_inject|48|0.4994727216070874|436|0
+/home/bigdatahpclab/attack_test/ld_preload_inject.so|44392|0.3672340757849827|509|0
+/home/bigdatahpclab/attack_test/reverse_shell|51200|0.9971020409776672|436|0
+/home/bigdatahpclab/attack_test/crypto_miner|2731288|0.881789379067971|493|0

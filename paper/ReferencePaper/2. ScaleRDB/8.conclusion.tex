@@ -1,0 +1,5 @@
+%\vspace{-0.3cm}
+\section{Conclusion} \label{conclusion}
+In this paper, we observe that the existing relational database system shows limited scalability, especially when adapted to manycore systems where a large number of cores exist.
+To address this issue, we design and implement \DASCALE, a database for manycore systems based on a shared-nothing on shared-memory distributed architecture.
+By operating multiple database instances in a single manycore machine, we optimized transaction processing to be performed independently per instance, fully utilizing resources and enhancing transaction processing parallelism. Our evaluations using OLTP real-time data processing workloads showed that \DASCALE achieved higher transaction throughput by 28.06$\times$, lower latency, and high CPU utilization compared to the existing database. Moreover, it achieves a performance increase of up to 5.43$\times$ compared to state-of-the-art database systems.

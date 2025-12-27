@@ -1,0 +1,43 @@
+\section{Discussion and Limitations}\label{discussion_and_limitations}
+
+While \ScaleMon demonstrates promising results in detecting I/O-based anomalies with negligible overhead, we acknowledge limitations inherent to our design choices and experimental constraints.
+
+\noindent\textbf{Spatio-Temporal Resolution in I/O Image Compression}
+Our approach converts variable-length I/O logs into fixed-size image tensors to efficiently capture both local and global patterns with $O(1)$ inference complexity. However, we acknowledge a trade-off in this compression: attacks manifesting as extremely short-lived temporal signals or modifications to a negligible number of bytes might be obscured during pixel binning. In such specific cases, analyzing the non-compressed raw data could be needed, and we leave the exploration of such a hybrid approach to future work.
+
+\noindent\textbf{False Positive Rate and Thresholding}
+In our evaluation, the \IntraMon module exhibited a False Positive Rate (FPR) of up to 19.6\% in the worst-case scenario when calibrated to detect all attacks. We acknowledge that this rate could lead to alert fatigue in production environments. However, this result is largely a consequence of the limited training dataset used in our experiments, which failed to encompass the full diversity of benign behaviors encountered in the test set. In a real-world deployment, the repetitive nature of HPC workloads would provide a massive volume of benign execution logs, enabling the model to learn more generalized patterns and significantly improve robustness~\cite{al2020anomaly}. Furthermore, while this work utilized a simple static threshold, implementing advanced strategies—such as dynamic thresholding based on a separate validation set—can effectively mitigate false alarms without compromising detection capability.~\cite{ghafouri2016optimal}.
+
+\noindent\textbf{Reliance on Synthetic Data}
+A significant challenge in HPC security is the absence of publicly available, labeled datasets containing real-world attacks. To address this, we rigorously generated a custom dataset by executing real scientific applications and benchmarks (e.g., LAMMPS, h5bench) under various configurations and systematically injecting attack patterns based on a comprehensive threat model. Although we strove to mimic realistic behaviors, we acknowledge that synthetic anomalies may not perfectly replicate the complexity of attacks orchestrated by sophisticated adversaries. Nevertheless, since \ScaleMon adopts a one-class classification approach trained solely on benign behavior, our evaluation successfully demonstrates the system's fundamental capability to identify semantic deviations from benign patterns, regardless of the specific attack nuances. Furthermore, by open-sourcing our dataset, we aim to contribute a valuable resource to the community, fostering reproducibility and facilitating future research in HPC security. \taebin{delete last sentece?}
+
+
+% - unrealistic attack data 
+% but there's no real data in hpc (we want it!)
+
+% -  high false positive rate in \IntraMon
+
+% becuase of the lack of train data.. it may be imporved if the 
+
+% - parsing overhead (darshan parsing overhead?)
+% - potential weakness against very small attack due to compression
+% - dxt should be enabling should be required 
+% optimal:
+% h5bench_read read
+% 0
+% h5bench_read write
+% 0
+% h5bench_read delay
+% 0
+% h5bench_write read
+% 27
+% h5bench_write write
+% 11
+% h5bench_write delay
+% 11
+% lammps_reaxff read
+% 1
+% lammps_reaxff write
+% 3
+% lammps_reaxff delay
+% 1
