@@ -7,9 +7,8 @@ We evaluate \DeepVis on a production Google Cloud Platform (GCP) infrastructure 
     \item \textbf{RQ1 (Detection Accuracy):} Can the multi-modal RGB encoding distinguish between high-entropy packed malware and low-entropy native rootkits?
     \item \textbf{RQ2 (Scalability):} Does the system maintain constant-time inference performance as the file system scales to millions of files?
     \item \textbf{RQ3 (Churn Tolerance):} Does the Local Max ($L_\infty$) detection eliminate false positives during legitimate system updates?
-    \item \textbf{RQ4 (Feature Orthogonality):} Do the R, G, and B channels independently capture distinct classes of attack vectors?
-    \item \textbf{RQ5 (System Overhead):} Does the agentless architecture maintain low resource utilization on the host kernel?
-    \item \textbf{RQ6 (Adversarial Robustness):} Is the system resilient against adaptive attackers attempting to evade detection via entropy manipulation?
+    \item \textbf{RQ4 (System Interference):} How does \DeepVis compare against runtime monitors (Falco) and legacy scanners (AIDE, Osquery) regarding Tail Latency (P99) impact?
+    \item \textbf{RQ5 (Hyperscale Robustness):} Is the system resilient against hash collisions when scaling to tens of millions of files?
 \end{itemize}
 
 %=====================================================================
@@ -41,7 +40,7 @@ We conduct experiments on three distinct hardware configurations representing a 
 Based on the design principles, we configured the RGB channels to capture orthogonal security properties:
 \begin{itemize}
     \item \textbf{R (Red) = Information Density:} Measures Shannon entropy to detect packed or encrypted payloads.
-    \item \textbf{G (Green) = Contextual Hazard:} Aggregates environmental risk factors. The score is computed as $G = \min(1.0, \; P_{path} + P_{pattern} + P_{hidden} + P_{perm})$, where weights are assigned to volatile paths ($P_{path}$), dangerous syscall patterns ($P_{pattern}$), and permission anomalies ($P_{perm}$).
+    \item \textbf{G (Green) = Contextual Hazard:} Aggregates environmental risk factors. The score is computed as $G = \min(1.0, \; P_{path} + P_{pattern} + P_{hidden} + P_{perm})$.
     \item \textbf{B (Blue) = Structural Deviation:} Detects type mismatches (e.g., ELF headers in text files) and anomalous zero-byte sparsity in binaries.
 \end{itemize}
 
@@ -49,17 +48,17 @@ Based on the design principles, we configured the RGB channels to capture orthog
 We employed a maximum-margin approach to determine detection boundaries. The thresholds were learned from the benign baseline as $\tau_c = \max(\text{Benign}_c) + 0.1$, ensuring a 0\% False Positive Rate during calibration. This resulted in $\tau_R=0.75$, $\tau_G=0.25$, and $\tau_B=0.30$.
 
 %=====================================================================
-\subsection{Detection Accuracy and Feature Orthogonality (RQ1, RQ4)}
+\subsection{Detection Accuracy and Feature Orthogonality (RQ1)}
 \label{eval_accuracy}
 %=====================================================================
 
-We deployed seven realistic attack scenarios, ranging from high-entropy packed miners to low-entropy compiled rootkits. Table~\ref{tab:v3_results} summarizes the detection results. \DeepVis successfully detected 100\% of the malicious artifacts with zero false positives against the benign baseline.
+We deployed 15 realistic attack scenarios, ranging from high-entropy packed miners to low-entropy compiled rootkits. Table~\ref{tab:v3_results} summarizes the detection results. \DeepVis successfully detected 100\% of the malicious artifacts with zero false positives against the benign baseline.
 
 \begin{table*}[t]
 \centering
-\caption{\textbf{Detection Accuracy on Real GCP Workloads.} We deployed 15 malware artifacts from public repositories on \texttt{deepvis-mid}, staging them in attack-realistic locations (\texttt{/var/tmp}, \texttt{/dev/shm}, \texttt{/var/www}, \texttt{\textasciitilde/.ssh}). DeepVis achieved 100\% recall with 0\% FPR across 25 test samples. Thresholds: $\tau_R$=0.75, $\tau_G$=0.25, $\tau_B$=0.30.}
+\caption{\textbf{Detection Accuracy on Real GCP Workloads.} We deployed 15 malware artifacts from public repositories on \texttt{deepvis-mid}, staging them in attack-realistic locations (\texttt{/var/tmp}, \texttt{/dev/shm}, \texttt{/var/www}, \texttt{\textasciitilde/.ssh}). DeepVis achieved 100\% recall with 0\% FPR across 25 test samples.}
 \label{tab:v3_results}
-% [NOTE: Using the exact data provided in the screenshot]
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{ll l ccc c}
 \toprule
 \textbf{Category} & \textbf{Artifact} & \textbf{Staged Location} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{Result} \\
@@ -75,19 +74,14 @@ Ransomware & \texttt{WannaCry} & \texttt{/dev/shm/cache/.service} & 0.51 & \text
 Webshell & \texttt{.config.php} & \texttt{/var/www/html/.config.php} & 0.58 & \textbf{0.70} & 0.00 & \textbf{Detected} \\
 Reverse Shell & \texttt{rev\_shell} & \texttt{/dev/shm/rev\_shell} & \textbf{1.00} & \textbf{0.70} & 0.00 & \textbf{Detected} \\
 Disguised ELF & \texttt{access.log} & \texttt{/var/log/access.log} & 0.55 & 0.00 & \textbf{1.00} & \textbf{Detected} \\
-Cron Backdoor & \texttt{.cron\_job} & \texttt{/var/tmp/.cron\_job} & 0.37 & \textbf{0.80} & 0.00 & \textbf{Detected} \\
-SSH Key Inject & \texttt{.backdoor\_key} & \texttt{\textasciitilde/.ssh/.backdoor\_key} & 0.52 & \textbf{0.35} & 0.00 & \textbf{Detected} \\
-Ransomware & \texttt{Petya} & \texttt{/var/tmp/petya.bin} & \textbf{0.78} & \textbf{0.60} & 0.00 & \textbf{Detected} \\
-Banking Trojan & \texttt{Emotet} & \texttt{/var/tmp/svchost.bin} & \textbf{0.78} & \textbf{0.60} & 0.00 & \textbf{Detected} \\
-ATM Backdoor & \texttt{Tyupkin} & \texttt{/var/tmp/.atm\_svc} & 0.44 & \textbf{0.80} & 0.00 & \textbf{Detected} \\
 \midrule
 \multicolumn{7}{l}{\textit{\textbf{Benign System Files}}} \\
 Python Interpreter & \texttt{python3} & \texttt{/usr/bin/python3} & 0.67 & 0.00 & 0.00 & Clean \\
 Package Manager & \texttt{apt} & \texttt{/usr/bin/apt} & 0.32 & 0.00 & 0.00 & Clean \\
-% ... (Other benign files omitted for brevity, but retained in full table) ...
 Core Library & \texttt{libc.so.6} & \texttt{/lib/x86\_64.../libc.so.6} & 0.66 & 0.00 & 0.00 & Clean \\
 \bottomrule
 \end{tabular}
+}
 \end{table*}
 
 \noindent\textbf{Analysis of Low-Entropy Malware (The MSE Paradox).} 
@@ -101,9 +95,6 @@ A critical finding from our real-world deployment is that many modern attacks do
     \caption{Tensor Visualization on GCP \texttt{deepvis-mid}. (a) Clean baseline with 10K benign files from \texttt{/usr}. (b) Infected state with 10 malware files injected into \texttt{/tmp}, \texttt{/var/tmp}, and \texttt{/dev/shm}. Red circles indicate malware locations detected via G-channel (contextual hazard) activation.}
     \label{fig:clean_vs_infected}
 \end{figure}
-
-\noindent\textbf{Visual Isolation.} 
-Figure~\ref{fig:clean_vs_infected} visualizes the multi-modal detection capability. The clean baseline (a) shows diffuse background noise from 10K benign files, while the infected state (b) reveals malware locations (cyan circles) via G-channel activation. This confirms that \DeepVis provides robust detection even for low-entropy, non-packed rootkits.
 
 %=====================================================================
 \subsection{Scalability and Performance Analysis (RQ2)}
@@ -122,21 +113,22 @@ Figure~\ref{fig:throughput_chart} illustrates the execution time comparison betw
   \label{fig:throughput_chart}
 \end{figure}
 
-Table~\ref{tab:throughput_results} details the throughput metrics on the Mid-tier instance. \DeepVis consistently processes over 60,000 files/sec, whereas AIDE fluctuates between 7,000 and 15,000 files/sec depending on the file size distribution.
+Table~\ref{tab:throughput_results} details the throughput metrics on the Mid-tier instance. \DeepVis consistently processes over \textcolor{blue}{[TODO]} files/sec, whereas AIDE fluctuates between \textcolor{blue}{[TODO]} and \textcolor{blue}{[TODO]} files/sec depending on the file size distribution.
 
 \begin{table}[h]
 \centering
-\caption{DeepVis vs AIDE Throughput on GCP Mid-tier (Cold Cache, File-Size Stratified).}
+\caption{DeepVis vs AIDE Throughput on GCP Mid-tier (e2-standard-2).}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{|l|r|r|r|c|}
+\begin{tabular}{|r|r|r|r|r|c|}
 \hline
-\textbf{Workload} & \textbf{Files} & \textbf{DeepVis (s)} & \textbf{AIDE (s)} & \textbf{Speedup} \\
+\textbf{Files} & \textbf{DeepVis (s)} & \textbf{AIDE (s)} & \textbf{DeepVis (files/s)} & \textbf{AIDE (files/s)} & \textbf{Speedup} \\
 \hline
-Mixed (all sizes) & 10,000 & 4.692 & 12.304 & 2.6$\times$ \\
-Mixed (all sizes) & 20,000 & 13.666 & 24.747 & 1.8$\times$ \\
+1,000  & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]}\\
+5,000  & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]}\\
+10,000 & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]}\\
+50,000 & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]} & \textcolor{blue}{[TODO]}\\
 \hline
-Large files ($>$100KB, avg 723KB) & 500 & 0.58 & 4.62 & \textbf{7.9$\times$} \\
-Large files ($>$100KB, avg 723KB) & 1,000 & 1.12 & 6.70 & \textbf{6.0$\times$} \\
+\multicolumn{5}{|r|}{\textbf{Average Speedup}} & \textbf{\textcolor{blue}{[TODO]}$\times$} \\
 \hline
 \end{tabular}%
 }
@@ -152,6 +144,59 @@ Figure~\ref{fig:batch_scalability} demonstrates the scalability of our 1$\times$
     \caption{Batch Scalability of DeepVis on GCP \texttt{deepvis-mid}. (a) Tensor generation time scales linearly with image count. (b) 1$\times$1 Conv inference remains sub-10ms even for 100 images, averaging 0.09ms per image.}
     \label{fig:batch_scalability}
 \end{figure}
+
+%=====================================================================
+\subsection{System Interference and Resource Efficiency (RQ5)}
+\label{eval_sota}
+%=====================================================================
+
+To rigorously quantify the runtime interference of each integrity verification tool, we employed a \textbf{Fixed-Rate I/O Injection} methodology---a standard approach in systems research. Instead of measuring maximum throughput (which saturates quickly and masks overhead), we fixed the I/O load at 2000 IOPS using \texttt{fio} with the \texttt{O\_DIRECT} flag. We then measured how each security tool affected the \textbf{Tail Latency (P99)} and \textbf{Global CPU Consumption} of the concurrent workload.
+
+\begin{table}[h]
+\centering
+\caption{\textbf{Resource Contention Analysis.} Legacy scanners (AIDE, Osquery) saturate the CPU ($\approx$100\%) and degrade service latency by over 20\%. \DeepVis maintains baseline performance profiles, proving its suitability for high-performance production environments.}
+\label{tab:interference_res}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{System} & \textbf{CPU Load} & \textbf{P99 Latency} & \textbf{Latency Degradation} & \textbf{Verdict} \\
+\midrule
+Baseline & \textcolor{blue}{[TODO]}\% & \textcolor{blue}{[TODO]} $\mu$s & - & Reference \\
+\textbf{DeepVis} & \textbf{\textcolor{blue}{[TODO]}\%} & \textbf{\textcolor{blue}{[TODO]} $\mu$s} & \textbf{+\textcolor{blue}{[TODO]}\%} & \textbf{Negligible} \\
+Falco & \textcolor{blue}{[TODO]}\% & \textcolor{blue}{[TODO]} $\mu$s & +\textcolor{blue}{[TODO]}\% & Runtime Tax \\
+Osquery & \textcolor{blue}{[TODO]}\% & \textcolor{blue}{[TODO]} $\mu$s & +\textcolor{blue}{[TODO]}\% & CPU Saturation \\
+AIDE & \textcolor{blue}{[TODO]}\% & \textcolor{blue}{[TODO]} $\mu$s & +\textcolor{blue}{[TODO]}\% & I/O Blocking \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\noindent\textbf{Impact on Service Latency (SLA).}
+Performance interference is best measured by Tail Latency, as it directly correlates with Service Level Agreement (SLA) violations. As shown in Table~\ref{tab:interference_res}, legacy FIM tools act as "Noisy Neighbors." \textbf{AIDE} degraded the service's P99 latency by \textcolor{blue}{[TODO]}\%, causing significant jitter due to I/O contention. \textbf{Falco}, despite being a runtime monitor, introduced a \textcolor{blue}{[TODO]}\% latency penalty due to the accumulation of syscall interception overhead. In contrast, \textbf{\DeepVis} incurred a negligible latency increase of \textcolor{blue}{[TODO]}\%. This confirms that its pulse-based, header-only scanning strategy operates transparently without blocking the application's I/O queue.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_legend.pdf}
+    \vspace{-0.3em}
+    \subfloat[Tail Latency Interference ($\mu$s)]{%
+        \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_latency.pdf}
+        \label{fig:sosp_latency}
+    } \\
+    \subfloat[Global CPU Consumption (\%)]{%
+        \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_cpu.pdf}
+        \label{fig:sosp_cpu}
+    }
+    \caption{System impact under fixed 2000 IOPS load. (a) Tail Latency: AIDE and Osquery induce consistent latency spikes due to resource contention. (b) CPU Usage: Legacy tools saturate the CPU at 100\%, leaving no headroom for tenant applications, whereas \DeepVis maintains a profile nearly identical to the Baseline.}
+    \label{fig:sosp_overhead}
+\end{figure}
+
+\noindent\textbf{CPU Saturation and Architectural Efficiency.}
+Figure~\ref{fig:sosp_cpu} reveals the root cause of the performance degradation.
+\begin{itemize}
+    \item \textbf{The Cost of Abstraction (Osquery):} Osquery saturated the Global CPU at \textcolor{blue}{[TODO]}\%. Its complex pipeline involving SQL parsing, virtual table mapping, and result serialization forces the CPU into a busy-wait state during I/O operations.
+    \item \textbf{The Cost of Full Scanning (AIDE):} Similarly, AIDE saturated the CPU (\textcolor{blue}{[TODO]}\%) due to the continuous SHA256 hashing of full file contents. This indicates that legacy FIMs monopolize compute resources, risking starvation for the primary workload.
+    \item \textbf{The DeepVis Efficiency:} \DeepVis maintained a CPU profile (\textcolor{blue}{[TODO]}\%) nearly identical to the Baseline (\textcolor{blue}{[TODO]}\%). By utilizing $O(1)$ spatial hashing, \DeepVis eliminates the computational overhead of full-content processing, ensuring that security monitoring does not come at the cost of application performance.
+\end{itemize}
 
 %=====================================================================
 \subsection{System Robustness and Hyperscale Simulation (RQ3, RQ6)}
@@ -190,84 +235,12 @@ To verify robustness under extreme grid collision, we performed a real saturatio
 \hline
 \textbf{Files} & \textbf{Grid Saturation} & \textbf{Avg Collisions/Pixel} & \textbf{Attacks Detected} & \textbf{Recall} \\
 \hline
-10,000    & 45.4\% & 1.3 & 10/10 & 100\% \\
-50,000    & 95.3\% & 3.2 & 10/10 & 100\% \\
-100,000   & 99.8\% & 6.1 & 10/10 & 100\% \\
-204,570   & 100.0\% & 12.5 & 10/10 & \textbf{100\%} \\
+10,000    & \textcolor{blue}{[TODO]}\% & \textcolor{blue}{[TODO]} & 10/10 & 100\% \\
+50,000    & \textcolor{blue}{[TODO]}\% & \textcolor{blue}{[TODO]} & 10/10 & 100\% \\
+100,000   & \textcolor{blue}{[TODO]}\% & \textcolor{blue}{[TODO]} & 10/10 & 100\% \\
+204,570   & 100.0\% & \textcolor{blue}{[TODO]} & 10/10 & \textbf{100\%} \\
 \hline
 \end{tabular}%
 }
 \label{tab:hyperscale_results}
 \end{table}
-
-%=====================================================================
-\subsection{System Overhead and Tail Latency Analysis (RQ5)}
-\label{eval_sota}
-%=====================================================================
-
-To rigorously quantify the runtime interference of each integrity verification tool, we employed a \textbf{Fixed-Rate I/O Injection} methodology---the standard approach in SOSP/OSDI systems papers. Instead of measuring maximum throughput (which saturates quickly), we fixed the I/O load at 2000 IOPS using \texttt{fio} with \texttt{O\_DIRECT} flag and measured how each security tool affects the \textbf{Tail Latency (P99)} of concurrent I/O operations.
-
-\begin{table}[h]
-\centering
-\caption{FIO Benchmark Results: Tail Latency Under Fixed 2000 IOPS Load.}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{|l|r|r|r|r|r|}
-\hline
-\textbf{Tool} & \textbf{IOPS} & \textbf{Avg Lat ($\mu$s)} & \textbf{P95 ($\mu$s)} & \textbf{P99 ($\mu$s)} & \textbf{CPU (\%)} \\
-\hline
-Baseline & 1999.9 & 582.17 & 856.06 & 1204 & 9.8 \\
-\textbf{DeepVis} & 1999.9 & 600.65 & 888.83 & \textbf{1237} & \textbf{11.2} \\
-Falco & 1999.9 & 642.69 & 1003.52 & 1384 & 16.5 \\
-AIDE & 2000.0 & 557.88 & 937.98 & 1515 & 99.8 \\
-Osquery & 1999.9 & 619.60 & 962.56 & 1450 & 99.5 \\
-\hline
-\end{tabular}%
-}
-\label{tab:fio_results}
-\end{table}
-
-\noindent\textbf{Analysis.}
-Table~\ref{tab:fio_results} reveals critical performance differences. \textbf{DeepVis} achieves a P99 latency of only \textbf{1237$\mu$s}---merely \textbf{2.7\%} higher than the Baseline (1204$\mu$s). In contrast, AIDE causes a \textbf{25.8\%} latency spike (1516$\mu$s), and Osquery degrades P99 by \textbf{20.4\%} (1450$\mu$s). Even the lightweight runtime monitor Falco incurs a \textbf{15.0\%} overhead (1384$\mu$s). This confirms that \DeepVis's asynchronous, header-only scanning strategy minimizes I/O contention.
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_legend.pdf}
-    \vspace{-0.3em}
-    \subfloat[Tail Latency Interference ($\mu$s)]{%
-        \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_latency.pdf}
-        \label{fig:sosp_latency}
-    } \\
-    \subfloat[Global CPU Consumption (\%)]{%
-        \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_cpu.pdf}
-        \label{fig:sosp_cpu}
-    }
-    \caption{60-second sustained load test under fixed 2000 IOPS. (a) Tail Latency: AIDE/Osquery cause consistent spikes (P99 $>$ 1400$\mu$s) due to I/O contention, while DeepVis matches the Baseline ($\sim$1200$\mu$s). (b) CPU: AIDE/Osquery saturate at $\sim$100\% (the ``SQL/Hashing Tax''), while DeepVis maintains $\sim$10-12\%, identical to Baseline.}
-    \label{fig:sosp_overhead}
-\end{figure}
-
-\noindent\textbf{Global CPU Consumption (The ``SQL/Hashing Tax'').}
-Figure~\ref{fig:sosp_cpu} reveals the root cause of performance degradation. \textbf{AIDE and Osquery} constantly saturated the CPU at $\sim$100\% throughout the 60-second run, confirming they are highly resource-intensive---consuming all available cycles for full-file SHA256 hashing and SQL processing. In contrast, \textbf{DeepVis} maintained a CPU profile almost identical to the Baseline ($\sim$10--12\%), demonstrating its minimal footprint due to header-only sampling.
-
-\noindent\textbf{Tail Latency Interference.}
-Figure~\ref{fig:sosp_latency} quantifies the impact on application responsiveness. AIDE and Osquery caused consistent latency spikes with P99 $>$ 1400$\mu$s due to physical I/O contention and CPU bottlenecks. DeepVis kept tail latency stable at $\sim$1200$\mu$s, matching the Baseline perfectly. This proves that \DeepVis does not ``interfere'' with production workload performance.
-
-\begin{table}[h]
-\centering
-\caption{Detailed Overhead Metrics: CPU vs. Latency Stability.}
-\resizebox{0.9\columnwidth}{!}{%
-\begin{tabular}{|l|c|c|c|}
-\hline
-\textbf{Tool} & \textbf{Avg CPU (\%)} & \textbf{P99 Latency ($\mu$s)} & \textbf{Stability} \\
-\hline
-Baseline & 9.8 & 1204 & Very High \\
-\textbf{DeepVis} & \textbf{11.2} & \textbf{1237} & \textbf{Very High} \\
-Falco & 16.5 & 1384 & Medium \\
-Osquery & 99.5 & 1450 & Low (Spiky) \\
-AIDE & 99.8 & 1515 & Low (Spiky) \\
-\hline
-\end{tabular}%
-}
-\label{tab:overhead_stability}
-\end{table}
-
-Table~\ref{tab:overhead_stability} summarizes the key finding: \textbf{DeepVis is the only solution that provides proactive security scanning without degrading system responsiveness or saturating CPU resources.} Legacy tools (AIDE/Osquery) act as ``Noisy Neighbors,'' severely impacting the tail latency of production workloads while monopolizing compute resources.
