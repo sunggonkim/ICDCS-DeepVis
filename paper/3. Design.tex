@@ -1,0 +1,115 @@
+\section{\DeepVis System Design}
+\label{Design}
+
+In this section, we present the design of \DeepVis. To address the fundamental tension between detection fidelity and hyperscale performance, we adopt a hybrid architecture. This design decouples the $O(N)$ metadata ingestion phase from the $O(1)$ neural inference phase, ensuring that verification latency remains constant regardless of the file system size. Furthermore, we introduce cryptographic hardening and stochastic sampling techniques to mitigate adaptive evasion attacks.
+
+\subsection{Threat Model and Assumptions}
+\label{design_threat}
+
+We assume a powerful adversary with user-level privileges capable of creating, modifying, or deleting files. The adversary aims to inject persistence mechanisms (e.g., rootkits, webshells) while evading detection. We assume the adversary knows the \DeepVis architecture but does not possess the ephemeral cryptographic keys stored within the trusted execution environment (TEE). We do not address kernel-level compromises that directly tamper with the \DeepVis process memory, as we recommend deployment within a protected sidecar or enclave.
+
+\subsection{Overall Procedure}
+\label{design_1}
+
+Figure~\ref{deepvis_overall} shows the overall procedure of \DeepVis. \DeepVis provides two main phases to support distributed integrity verification: \textit{Snapshot} and \textit{Verification} phase.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=13.8cm]{Figures/DeepVis_Overall.png}
+    \caption{Overall procedure of \DeepVis.}
+    \label{deepvis_overall}
+\end{figure}
+
+\noindent
+\textbf{Snapshot Phase.} When integrity verification starts, the \textit{Snapshot Engine} initiates an asynchronous metadata collection process using the Linux \texttt{io\_uring} interface (\ding{182}). Unlike traditional synchronous calls (e.g., \texttt{find}), this engine submits batches of \texttt{statx} requests to the kernel submission queue. Once metadata is collected, the \textit{Header Sampler} reads file content using stochastic strided sampling. This design ensures that the I/O throughput saturates the NVMe bandwidth rather than being latency-bound (\ding{183}).
+
+After collecting raw metadata, the \textit{Tensor Generator} performs secure spatial mapping using HMAC-based coordinate hashing. For each coordinate, the feature values are encoded into a multi-modal RGB pixel using the encoding scheme defined in Section~\ref{design_encoding} (\ding{184}).
+
+\noindent
+\textbf{Verification Phase.} After the \textit{Snapshot} phase, \DeepVis enters the \textit{Verification} phase. First, it constructs a tensor representation of the current system state, where each pixel represents the aggregated risk of files mapping to that location. The \textit{Inference Engine} uses a pre-trained Convolutional Autoencoder (CAE) to generate a reconstructed tensor (\ding{185}). The \textit{Anomaly Detector} then computes the pixel-wise difference between the input and reconstructed tensors using Local Max Detection ($L_\infty$) (\ding{186}). By isolating the maximum deviation rather than the global average error, \DeepVis avoids the ``MSE Paradox'' where sparse attack signals are diluted by diffuse background noise. Finally, if the $L_\infty$ score exceeds a learned threshold $\tau$, an alert is raised (\ding{187}).
+
+\subsection{Secure Spatial Mapping via HMAC}
+\label{design_mapping}
+
+A critical challenge in mapping unordered files to a fixed grid is preventing ``Bucket Targeting'' attacks, where an adversary crafts filenames to force collisions with benign files, thereby masking malicious signals.
+
+To neutralize this, \DeepVis replaces static hashing with a \textbf{Keyed-Hash Message Authentication Code (HMAC)} strategy. Let $K$ be a high-entropy secret key generated at startup and held exclusively in the Analysis Engine. The coordinate $\Phi(p)$ for a file path $p$ is computed as:
+\begin{equation}
+    \Phi(p) = \left( \text{HMAC}(K, p)_{[0:32]} \bmod W, \ \text{HMAC}(K, p)_{[32:64]} \bmod H \right)
+\end{equation}
+Since the adversary does not possess $K$, they cannot compute $\Phi(p)$ offline. Consequently, the probability of an adversary successfully targeting a specific tensor coordinate drops to random chance ($1 / (W \times H)$), rendering spatial evasion computationally infeasible.
+
+\subsection{Stochastic Strided Sampling}
+\label{design_sampling}
+
+Traditional FIM tools scan entire files, causing I/O bottlenecks. Conversely, scanning only the file header (e.g., first 64 bytes) is vulnerable to ``Padding Attacks,'' where attackers prepend benign data to shift malicious payloads outside the scan window.
+
+\DeepVis adopts \textbf{Stochastic Strided Sampling} to balance performance and coverage. Instead of a linear scan, we select $k$ discrete blocks of size $B$ (e.g., 4KB) from the file. The offsets are determined deterministically based on the file's inode and the secret key $K$.
+\begin{equation}
+    P_{detection} = 1 - (1 - \rho)^k
+\end{equation}
+Equation (2) defines the detection probability, where $\rho$ is the density of the malicious payload. Even with a small $k$, \DeepVis achieves a high probability of capturing high-entropy or anomalous segments without incurring the cost of sequential I/O. This approach transforms the I/O pattern from a sequential bottleneck to a parallelizable random-access workload.
+
+\subsection{Multi-Modal Tensor Encoding}
+\label{design_encoding}
+
+To capture diverse attack vectors, we project file attributes into three orthogonal feature channels. This multi-modal representation allows the downstream neural network to learn complex non-linear correlations between file content, structure, and context.
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Channel R (Information Density):} Measures the Shannon entropy of the sampled blocks. This channel targets packed binaries and encrypted payloads. We normalize entropy to $[0, 1]$ by dividing by 8.0.
+    
+    \item \textbf{Channel G (Contextual Hazard):} Aggregates environmental risk factors. It calculates a weighted sum of path sensitivity and dangerous content patterns.
+    \begin{equation}
+        G(f) = \min(1.0, \ P_{path} + P_{pattern} + P_{hidden})
+    \end{equation}
+    Based on our threat analysis, we assign high weights to volatile paths ($P_{path}$) such as \texttt{/dev/shm} (0.70), \texttt{/tmp} (0.60), and \texttt{/var/www} (0.50). Additionally, we scan for dangerous execution patterns ($P_{pattern}$) such as \texttt{eval()}, \texttt{base64\_decode}, and \texttt{/bin/sh}. This ensures that even low-entropy scripts (e.g., webshells) generate strong visual signals.
+    
+    \item \textbf{Channel B (Structural Deviation):} Quantifies deviation from expected file formats.
+    \begin{itemize}
+        \item \textbf{Type Mismatch:} Flags text extensions (e.g., \texttt{.txt}, \texttt{.log}) containing ELF magic bytes ($0.90$).
+        \item \textbf{Extension Masquerading:} Flags files named \texttt{.so} or \texttt{.ko} that lack valid ELF headers ($0.80$).
+        \item \textbf{LKM Injection:} Flags ELF binaries with \texttt{e\_type=ET\_REL} residing in non-system paths like \texttt{/tmp} ($0.50$).
+        \item \textbf{Zero Sparsity:} Flags ELF binaries with a zero-byte ratio $< 0.15$ ($0.40$), identifying packed or stripped malware lacking standard compiler alignment padding.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Shift-Invariant Spatial Mapping}
+\label{design_shift}
+
+A critical design requirement for large-scale monitoring is \textbf{Shift Invariance}: adding or removing a file should not alter the tensor coordinates of other files. Traditional ordering-based approaches (e.g., sorting files lexicographically and assigning sequential indices) suffer from the ``shift problem''—inserting a single file causes all subsequent indices to change, triggering massive false positives.
+
+Our HMAC-based mapping inherently provides shift invariance. Each file's coordinate is computed independently via $\Phi(p) = \text{HMAC}(K, p)$, ensuring that the addition of \texttt{aa.txt} does not affect the coordinates of \texttt{b.txt} or \texttt{c.txt}. This property is essential for stable anomaly detection under high file system churn.
+
+\subsection{Pixel-wise MLP via 1$\times$1 Convolution}
+\label{design_cnn}
+
+A naive approach might apply traditional CNNs with large kernels (e.g., $3 \times 3$) to the tensor grid. However, this is fundamentally flawed: since HMAC produces pseudo-random coordinates, \textbf{neighboring pixels have no semantic relationship}. Convolving across spatially adjacent pixels would only introduce noise from unrelated files.
+
+Instead, we employ \textbf{1$\times$1 Convolution}, which is mathematically equivalent to a pixel-wise Multi-Layer Perceptron (MLP). This architecture processes each pixel $(R, G, B)$ independently, focusing exclusively on \textbf{cross-channel correlation}:
+\begin{itemize}[leftmargin=*]
+    \item A legitimate compressed archive: \textit{High R} (entropy), \textit{Low G} (safe path), \textit{Low B} (valid structure).
+    \item A packed rootkit: \textit{High R} \textbf{and} \textit{High G} (suspicious path) or \textit{High B} (structural anomaly).
+\end{itemize}
+The 1$\times$1 kernel effectively learns these multi-dimensional patterns without being distracted by the random spatial arrangement of hash-mapped pixels.
+
+\subsection{Anomaly Localization via Look-up Table}
+\label{design_lookup}
+
+While HMAC provides security against bucket targeting, it sacrifices direct path retrieval from coordinates. To enable efficient incident response, we maintain a \textbf{Look-up Table} that maps each $(x, y)$ coordinate back to the file paths that hash to that location:
+\begin{equation}
+    \text{LUT}: (x, y) \rightarrow \{p_1, p_2, \ldots, p_m\}
+\end{equation}
+This table is stored separately (e.g., in Redis or SQLite) and is \textit{not} used during model training or inference. When the anomaly detector flags coordinate $(50, 50)$, operators can immediately query the LUT to identify the specific files (e.g., \texttt{/tmp/malware.so}) for forensic analysis.
+
+\subsection{\DeepVis Implementation}
+\label{design_impl}
+
+We implemented \DeepVis using a hybrid Rust-Python architecture to balance I/O performance and ML ecosystem availability. Our implementation consists of approximately 2,500 lines of code across three core modules:
+
+\begin{itemize}
+    \item \texttt{snapshot\_engine.rs}: A Rust-based asynchronous scanner using \texttt{io\_uring} for kernel-bypass I/O and \texttt{rayon} for parallel processing. It implements the HMAC-based coordinate hashing and stochastic sampling logic to ensure high-throughput ingestion.
+    
+    \item \texttt{tensor\_gen.py}: A Python module responsible for multi-modal feature extraction. It implements the regex-based pattern matching for Channel G and the ELF header parsing for Channel B described in Section~\ref{design_encoding}.
+    
+    \item \texttt{inference.py}: A PyTorch-based CAE model for anomaly detection. We utilize ONNX quantization (INT8) to reduce the model size and accelerate inference latency to $< 2$ms on commodity CPUs.
+\end{itemize}

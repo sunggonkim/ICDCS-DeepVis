@@ -1,0 +1,46 @@
+\section{Related Work}
+\label{RelatedWork}
+
+\subsection{Distributed System Integrity Monitoring}
+
+There have been many studies that optimize system integrity monitoring to enhance security and performance. Previous studies~\cite{aide, tripwire, samhain} focused on file integrity monitoring (FIM) using cryptographic hashing. These approaches operate by maintaining a static database of file checksums and periodically scanning the file system to detect deviations. However, they suffer from $O(N)$ complexity bottlenecks and alert fatigue, making them unsuitable for dynamic DevOps environments. Other studies~\cite{du2017deeplog, logrobust, logbert} have proposed log-based anomaly detection using deep learning models such as LSTMs and Transformers. These methods treat system events as temporal sequences to predict future states. In addition, provenance-based approaches have been proposed~\cite{unicorn, cheng2024kairos, rehman2024flash}. These methods build causal graphs from system call logs to track information flow between processes and files, aiming to detect complex attacks with high precision. Some studies~\cite{nataraj2011malware, conti2008visual, codegrid} focused on visual malware analysis, where binary files or source code are converted into images for classification. These methods utilize the inherent structure of individual files to identify malicious patterns.
+
+Our study aligns with these prior efforts in improving the security and reliability of distributed systems. However, \DeepVis aims to provide a unified spatial representation of the file system rather than relying on sequential logs or heavy kernel instrumentation. Through Hash-Based Spatial Mapping, \DeepVis maps unordered file systems to fixed-size tensors and evenly distributes the representation across spatial coordinates, enabling constant-time $O(1)$ inference. Additionally, it minimizes runtime overhead by operating on storage snapshots without kernel modules. This allows \DeepVis to enhance monitoring frequency and support larger file systems than previous FIM or provenance frameworks.
+
+\subsection{Anomaly Detection in High-Dimensional Systems}
+
+To maximize detection accuracy, several anomaly detection frameworks, such as Kitsune~\cite{mirsky2018kitsune}, DAGMM~\cite{zong2018deep}, and OmniAnomaly~\cite{su2019robust} have been optimized with various representation learning schemes for high-dimensional data. Previous studies~\cite{liu2008isolation, breunig2000lof} have focused on statistical outlier detection through density estimation, distance metrics, and isolation trees. Other works~\cite{xu2018unsupervised, zhou2019vae, an2015variational} improve robustness by optimizing autoencoder architectures, variational inference, and reconstruction error analysis. In addition, several studies~\cite{pang2019deep, ruff2018deep, akcay2018ganomaly} employ deep semi-supervised learning models such as Deep SVDD and GANs, applying manifold learning to separate normal data from anomalies in latent space.
+
+These approaches highlight key techniques for improving precision and recall in anomaly detection tasks. Similarly, \DeepVis faces comparable challenges in file system monitoring, where legitimate updates create diffuse noise that masks sparse attack signals. To address this, \DeepVis employs Local Max Detection ($L_\infty$) by isolating the single worst violation in the spatial tensor. This enables the detection of sparse anomalies even in the presence of high-churn background noise. Combined with Semantic RGB Encoding and shift-invariant mapping, \DeepVis improves detection performance while minimizing false positives in distributed execution.
+
+We position \DeepVis within the broader landscape of distributed system monitoring. Table~\ref{tab:se_comparison} provides a comparative analysis against approaches from both systems and security venues.
+
+\begin{table*}[t]
+\centering
+\caption{Distributed System Monitoring Paradigms: A Systems Comparison (2017--2025)}
+\label{tab:se_comparison}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccl}
+\toprule
+\textbf{Framework} & \textbf{Venue} & \textbf{Data Type} & \textbf{Overhead} & \textbf{Latency} & \textbf{Complexity} & \textbf{Scope} & \textbf{Key Limitation} \\
+\midrule
+\multicolumn{8}{l}{\textit{\textbf{Traditional File Integrity Monitoring (1992--)}}} \\
+AIDE/Tripwire~\cite{aide,tripwire} & Industry & File Hashes & $O(N)$ scan & 30s/20K & $O(N)$ & All files & Alert on every change \\
+Samhain~\cite{samhain} & Industry & File Hashes + Logs & $O(N)$ scan & High & $O(N)$ & All files & Complex policy management \\
+\midrule
+\multicolumn{8}{l}{\textit{\textbf{Log-Based Sequential Analysis (2017--)}}} \\
+DeepLog~\cite{du2017deeplog} & CCS'17 & Log Sequences & 0\% & High (full seq) & $O(N)$ & Logs only & Temporal interleaving, Shift Problem \\
+LogRobust~\cite{logrobust} & FSE'19 & Log Semantics & 0\% & High & $O(N)$ & Logs only & Log template instability \\
+LogBERT~\cite{logbert} & arXiv'21 & Log Sequences & 0\% & Very High & $O(N^2)$ & Logs only & Quadratic attention complexity \\
+\midrule
+\multicolumn{8}{l}{\textit{\textbf{Provenance Graph Analysis (2020--)}}} \\
+Unicorn~\cite{unicorn} & NDSS'20 & Syscall DAG & 5--20\% & 50s & $O(N+E)$ & Causal chains & Kernel instrumentation overhead \\
+Kairos~\cite{cheng2024kairos} & S\&P'24 & Provenance Graph & 5--20\% & 50s & $O(N+E)$ & Causal chains & Graph explosion, storage cost \\
+Flash~\cite{rehman2024flash} & S\&P'24 & Provenance Graph & Medium & 10-100ms & $O(N+E)$ & Flash FS & Specialized to embedded \\
+\midrule
+\multicolumn{8}{l}{\textit{\textbf{Spatial Snapshot Analysis (2025, This Work)}}} \\
+\textbf{DeepVis} & ICDCS & \textbf{FS Tensor} & \textbf{0\%} & \textbf{50ms} & $\mathbf{O(1)}$ & \textbf{File system} & LOTL attacks (file-only) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}

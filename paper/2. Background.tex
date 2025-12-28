@@ -1,0 +1,79 @@
+\section{Background}
+\label{sec:background}
+
+\subsection{Integrity Verification at Cloud Scale}
+
+In cloud-native environments, the "system" is no longer a single server but a dynamic fleet of ephemeral containers and virtual machines. File integrity verification in this context must scale horizontally. Approaches are generally categorized into two types: integrity scanning and provenance analysis. Ensuring file system integrity is paramount for maintaining the security posture of modern distributed systems, ranging from container orchestration platforms like Kubernetes to large-scale HPC clusters. Operators face the critical challenge of detecting unauthorized modifications—such as persistent user-space rootkits or tampered configurations—without degrading the performance of production workloads. However, applying existing monitoring paradigms or standard deep learning approaches to this domain presents fundamental architectural and theoretical challenges that motivate the design of \DeepVis.
+
+\subsection{Limitations of Traditional Monitoring Paradigms}
+
+Current approaches to system integrity generally fall into two categories: integrity scanning and provenance-based analysis. Each forces difficult trade-offs between scalability, runtime overhead, and detection fidelity in high-churn environments.
+
+\noindent
+\textbf{Traditional Integrity Scanning (FIM). }
+Standard File Integrity Monitoring (FIM) tools, such as AIDE~\cite{aide} or Tripwire~\cite{tripwire}, operate by periodically scanning file metadata and hashes against a static baseline. While effective for relatively static servers, this approach suffers from severe $O(N)$ scalability bottlenecks. As the number of files grows in distributed storage, scan durations increase linearly, often exceeding feasible maintenance windows. Furthermore, in modern DevOps environments characterized by continuous deployment, legitimate updates modify thousands of files simultaneously. This generates massive volumes of false positive alerts, leading to "alert fatigue" and forcing operators to disable monitoring during critical update periods, thereby creating security blind spots.
+
+\noindent
+\textbf{Provenance-Based Analysis. }
+Provenance systems~\cite{unicorn, cheng2024kairos} build complex causal graphs from system calls to detect behavioral anomalies. By tracking information flow, they achieve high precision and context awareness. However, these systems require heavy kernel instrumentation (e.g., using \texttt{auditd} or eBPF), imposing a runtime overhead of 5--20\%, which is often prohibitive for latency-sensitive workloads. Additionally, the cost of graph generation and storage grows with system \textit{activity level} rather than just storage size, making them expensive for high-throughput systems.
+
+\DeepVis is designed to resolve this dichotomy. It aims to eliminate the runtime overhead of provenance systems by operating solely on storage snapshots, while resolving the scalability and noise issues of FIM by decoupling detection complexity from the sheer count of files.
+
+\subsection{The Ordering Problem in Spatial Representation}
+
+To overcome the limitations of rule-based FIM, applying deep learning for automated anomaly detection is a promising avenue. However, file systems pose unique challenges compared to domains like image processing, preventing the direct application of off-the-shelf models like Convolutional Neural Networks (CNNs).
+
+The fundamental challenge is the \textit{Ordering Problem}. Unlike images which have a fixed spatial grid, or time-series data which has an inherent sequence, file systems are unordered sets of variable-length paths. A naive approach to vectorizing a file system is to sort files alphabetically and map them to a linear vector or 2D grid. However, in a dynamic environment, inserting a single new file shifts the position of every subsequent file in the sorted representation. For a CNN trained on spatial locality, this shift is catastrophic; it destroys learned spatial patterns and causes the model to flag the entire file system state as anomalous upon any legitimate file addition. A stable, shift-invariant spatial representation is a prerequisite for effective deep learning in this domain.
+
+\subsection{The MSE Paradox: Diffuse vs. Sparse Signals}
+
+Even with a stable representation, standard autoencoder-based anomaly detection fails due to a fundamental asymmetry between legitimate system updates and stealthy attacks. We term this the \textit{MSE Paradox}.
+
+Legitimate operations, such as OS upgrades or application deployments, affect a vast number of files simultaneously, creating a "diffuse noise" signal across the system state. In contrast, stealthy rootkits typically modify a very small number of key binaries to maintain persistence, creating a "sparse signal" that is highly localized but intense. Standard loss functions like Mean Squared Error (MSE) average the reconstruction error across all inputs.
+\begin{itemize}
+    \item \textbf{Legitimate Update:} High aggregate MSE due to thousands of small changes cumulating.
+    \item \textbf{Stealthy Attack:} Low aggregate MSE due to a single localized change being diluted into the global average.
+\end{itemize}
+Consequently, using MSE forces an impossible choice: a threshold low enough to detect the sparse attack generates false positives for every diffuse update, while a threshold high enough to tolerate updates misses the attack entirely. Effective detection requires a mechanism sensitive to localized extremes rather than global averages.
+
+\subsection{The Attacker's Paradox: Entropy and Structure}
+\label{sec:paradox}
+
+While structural challenges hinder standard deep learning approaches, the nature of modern evasive malware provides unique statistical opportunities. We identify two key dimensions that distinguish malicious payloads from benign system files: \textit{Entropy} and \textit{Structural Density}.
+
+\begin{figure}[!htbp]
+    \centering
+    % Row 1
+    \subfloat[Combined]{
+        \includegraphics[width=0.45\columnwidth]{Figures/Background_entrophy/entropy_combined_a.pdf}
+        \label{fig:entropy_hist}
+    }%
+    \hfill
+    \subfloat[Text]{
+        \includegraphics[width=0.45\columnwidth]{Figures/Background_entrophy/Background_Normal_text.pdf}
+        \label{fig:entropy_text}
+    }
+    
+    % Row 2
+    \subfloat[ELF Binary]{
+        \includegraphics[width=0.45\columnwidth]{Figures/Background_entrophy/Background_System_binaray.pdf}
+        \label{fig:entropy_elf}
+    }%
+    \hfill
+    \subfloat[Packed Rootkit]{
+        \includegraphics[width=0.45\columnwidth]{Figures/Background_entrophy/Background_Rootkit.pdf}
+        \label{fig:entropy_rootkit}
+    }
+    \caption{Deep analysis of file fingerprints justifying \DeepVis design. (a) Entropy distribution shows clear separation. (b-d) Detailed Byte/Structure Analysis: (b) Normal text (\texttt{/etc/fstab}) has low entropy and 0\% zero-padding. (c) Legitimate ELFs (\texttt{/bin/bash}) exhibit high "Structural Padding" (Zero Ratio $\approx$ 25\%) due to section alignment. (d) Packed Rootkits (\texttt{Azazel}+UPX) eliminate this structure to minimize size, resulting in near-zero padding and maximum entropy. \DeepVis maps these to Red (Entropy) and Blue (Structure) channels.}
+    \label{fig:entropy_combined}
+\end{figure}
+
+\noindent
+\textbf{Entropy (The Content Signal).}
+Benign files follow strict formatting rules. Text files (Figure~\ref{fig:entropy_combined}b) are limited to visible ASCII, resulting in low entropy ($H \approx 4.8$). Legitimate binaries (Figure~\ref{fig:entropy_combined}c) contain machine code but also headers and symbol tables, averaging medium entropy ($H \approx 6.0$). In contrast, attackers use packing (e.g., UPX) or encryption to hide. As shown in Figure~\ref{fig:entropy_combined}d, this "hiding" maximizes information density, pushing entropy to the theoretical limit ($H \approx 8.0$).
+
+\noindent
+\textbf{Structural Density (The Zero-Padding Signal).}
+A less obvious but equally critical feature is \textit{Zero Padding}. Modern OS loaders require ELF sections to be aligned in memory (often to 4KB pages), forcing compilers to insert significant sequences of null bytes (0x00). Figure~\ref{fig:entropy_combined}c highlights this characteristic "Zero Spike" in standard binaries ($\approx 25\%$ zeros). Packed malware, however, compresses these gaps to minimize footprint and obfuscate structure. The result is a distinct lack of zero-padding (Figure~\ref{fig:entropy_combined}d).
+
+\DeepVis is explicitly designed to leverage this multi-dimensional signature. We map \textbf{Entropy} to the \textbf{Red} channel and \textbf{Structural Density} (inverse of zero-padding) to the \textbf{Blue} channel from the file representation, enabling the model to "see" the difference not just between text and binary, but between a native shell and a disguised rootkit.

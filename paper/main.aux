@@ -1,0 +1,163 @@
+\relax 
+\citation{aide}
+\citation{tripwire}
+\citation{du2017deeplog}
+\citation{cheng2024kairos}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
+\newlabel{Introduction}{{I}{1}}
+\citation{aide}
+\citation{tripwire}
+\citation{unicorn,cheng2024kairos}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Background}{2}{}\protected@file@percent }
+\newlabel{sec:background}{{II}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Integrity Verification at Cloud Scale}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Limitations of Traditional Monitoring Paradigms}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}The Ordering Problem in Spatial Representation}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-D}}The MSE Paradox: Diffuse vs. Sparse Signals}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}The Attacker's Paradox: Entropy and Structure}{2}{}\protected@file@percent }
+\newlabel{sec:paradox}{{\mbox  {II-E}}{2}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:entropy_hist}{{1a}{3}}
+\newlabel{sub@fig:entropy_hist}{{a}{3}}
+\newlabel{fig:entropy_text}{{1b}{3}}
+\newlabel{sub@fig:entropy_text}{{b}{3}}
+\newlabel{fig:entropy_elf}{{1c}{3}}
+\newlabel{sub@fig:entropy_elf}{{c}{3}}
+\newlabel{fig:entropy_rootkit}{{1d}{3}}
+\newlabel{sub@fig:entropy_rootkit}{{d}{3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Deep analysis of file fingerprints justifying \texttt  {DeepVis}\xspace  design. (a) Entropy distribution shows clear separation. (b-d) Detailed Byte/Structure Analysis: (b) Normal text (\texttt  {/etc/fstab}) has low entropy and 0\% zero-padding. (c) Legitimate ELFs (\texttt  {/bin/bash}) exhibit high "Structural Padding" (Zero Ratio $\approx $ 25\%) due to section alignment. (d) Packed Rootkits (\texttt  {Azazel}+UPX) eliminate this structure to minimize size, resulting in near-zero padding and maximum entropy. \texttt  {DeepVis}\xspace  maps these to Red (Entropy) and Blue (Structure) channels.\relax }}{3}{}\protected@file@percent }
+\newlabel{fig:entropy_combined}{{1}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}\texttt  {DeepVis}\xspace  System Design}{3}{}\protected@file@percent }
+\newlabel{Design}{{III}{3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Overall procedure of \texttt  {DeepVis}\xspace  .\relax }}{3}{}\protected@file@percent }
+\newlabel{deepvis_overall}{{2}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Threat Model and Assumptions}{3}{}\protected@file@percent }
+\newlabel{design_threat}{{\mbox  {III-A}}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Overall Procedure}{3}{}\protected@file@percent }
+\newlabel{design_1}{{\mbox  {III-B}}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Secure Spatial Mapping via HMAC}{4}{}\protected@file@percent }
+\newlabel{design_mapping}{{\mbox  {III-C}}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Stochastic Strided Sampling}{4}{}\protected@file@percent }
+\newlabel{design_sampling}{{\mbox  {III-D}}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Multi-Modal Tensor Encoding}{4}{}\protected@file@percent }
+\newlabel{design_encoding}{{\mbox  {III-E}}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}Shift-Invariant Spatial Mapping}{4}{}\protected@file@percent }
+\newlabel{design_shift}{{\mbox  {III-F}}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-G}}Pixel-wise MLP via 1$\times $1 Convolution}{5}{}\protected@file@percent }
+\newlabel{design_cnn}{{\mbox  {III-G}}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-H}}Anomaly Localization via Look-up Table}{5}{}\protected@file@percent }
+\newlabel{design_lookup}{{\mbox  {III-H}}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-I}}\texttt  {DeepVis}\xspace  Implementation}{5}{}\protected@file@percent }
+\newlabel{design_impl}{{\mbox  {III-I}}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Evaluation}{5}{}\protected@file@percent }
+\newlabel{sec:evaluation}{{IV}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Methodology}{5}{}\protected@file@percent }
+\newlabel{eval_setup}{{\mbox  {IV-A}}{5}}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Hardware configurations for scalability evaluation.\relax }}{5}{}\protected@file@percent }
+\newlabel{tab:hardware_specs}{{I}{5}}
+\newlabel{fig:tensor_clean}{{3a}{6}}
+\newlabel{sub@fig:tensor_clean}{{a}{6}}
+\newlabel{fig:tensor_infected}{{3b}{6}}
+\newlabel{sub@fig:tensor_infected}{{b}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Tensor Visualization on GCP \texttt  {deepvis-mid}. (a) Clean baseline with 10K benign files from \texttt  {/usr}. (b) Infected state with 10 malware files injected into \texttt  {/tmp}, \texttt  {/var/tmp}, and \texttt  {/dev/shm}. Red circles indicate malware locations detected via G-channel (contextual hazard) activation.\relax }}{6}{}\protected@file@percent }
+\newlabel{fig:clean_vs_infected}{{3}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Accuracy and Feature Orthogonality (RQ1, RQ4)}{6}{}\protected@file@percent }
+\newlabel{eval_accuracy}{{\mbox  {IV-B}}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Scalability and Performance Analysis (RQ2)}{6}{}\protected@file@percent }
+\newlabel{eval_scalability}{{\mbox  {IV-C}}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Throughput comparison between DeepVis and AIDE. DeepVis achieves up to 7.7$\times $ speedup on the High tier by leveraging asynchronous I/O and parallel spatial hashing.\relax }}{6}{}\protected@file@percent }
+\newlabel{fig:throughput_chart}{{4}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Batch Scalability of DeepVis on GCP \texttt  {deepvis-mid}. (a) Tensor generation time scales linearly with image count. (b) 1$\times $1 Conv inference remains sub-10ms even for 100 images, averaging 0.09ms per image.\relax }}{6}{}\protected@file@percent }
+\newlabel{fig:batch_scalability}{{5}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}System Robustness and Hyperscale Simulation (RQ3, RQ6)}{6}{}\protected@file@percent }
+\newlabel{eval_robustness}{{\mbox  {IV-D}}{6}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces \textbf  {Detection Accuracy on Real GCP Workloads.} We deployed 15 malware artifacts from public repositories on \texttt  {deepvis-mid}, staging them in attack-realistic locations (\texttt  {/var/tmp}, \texttt  {/dev/shm}, \texttt  {/var/www}, \texttt  {\textasciitilde /.ssh}). DeepVis achieved 100\% recall with 0\% FPR across 25 test samples. Thresholds: $\tau _R$=0.75, $\tau _G$=0.25, $\tau _B$=0.30.\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:v3_results}{{II}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces DeepVis vs AIDE Throughput on GCP Mid-tier (Cold Cache, File-Size Stratified).\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:throughput_results}{{III}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Detection Under Sysbench I/O Stress on GCP \texttt  {deepvis-mid}.\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:stress_results}{{IV}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}SOTA Comparison (RQ5)}{7}{}\protected@file@percent }
+\newlabel{eval_sota}{{\mbox  {IV-E}}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Real Hyperscale Saturation Test on GCP \texttt  {deepvis-mid} ($128 \times 128$ Grid).\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:hyperscale_results}{{V}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Unified SOTA Benchmark: Interference vs. Latency.\relax }}{7}{}\protected@file@percent }
+\newlabel{tab:sota_comparison}{{VI}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Resource Overhead Analysis}{7}{}\protected@file@percent }
+\newlabel{eval_overhead}{{\mbox  {IV-F}}{7}}
+\citation{aide,tripwire,samhain}
+\citation{du2017deeplog,logrobust,logbert}
+\citation{unicorn,cheng2024kairos,rehman2024flash}
+\citation{nataraj2011malware,conti2008visual,codegrid}
+\citation{mirsky2018kitsune}
+\citation{zong2018deep}
+\citation{su2019robust}
+\citation{liu2008isolation,breunig2000lof}
+\citation{xu2018unsupervised,zhou2019vae,an2015variational}
+\citation{pang2019deep,ruff2018deep,akcay2018ganomaly}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces 60-second sustained load test comparing system resource consumption and application throughput under different security tools. Top: CPU usage. Middle: Memory usage. Bottom: Nginx throughput (RPS). \texttt  {DeepVis}\xspace  maintains performance comparable to Baseline/Falco, while AIDE and Osquery cause sustained resource contention.\relax }}{8}{}\protected@file@percent }
+\newlabel{fig:sota_timeline}{{6}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces System overhead during DeepVis scan. CPU usage remains below 5\% on average, and memory usage is stable at approximately 72MB.\relax }}{8}{}\protected@file@percent }
+\newlabel{fig:overhead}{{7}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{8}{}\protected@file@percent }
+\newlabel{RelatedWork}{{V}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Distributed System Integrity Monitoring}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Anomaly Detection in High-Dimensional Systems}{8}{}\protected@file@percent }
+\citation{aide,tripwire}
+\citation{samhain}
+\citation{du2017deeplog}
+\citation{logrobust}
+\citation{logbert}
+\citation{unicorn}
+\citation{cheng2024kairos}
+\citation{rehman2024flash}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion and Limitation}{9}{}\protected@file@percent }
+\newlabel{DiscussionAndLimitation}{{VI}{9}}
+\newlabel{Discussion}{{VI}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Robustness Against Adaptive Attackers}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}1}Attack 1: Low-Entropy Mimicry}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}2}Attack 2: Chameleon Attack (Hash Collision)}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Operational Analysis: The SNR Advantage}{9}{}\protected@file@percent }
+\newlabel{snr_analysis}{{\mbox  {VI-B}}{9}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-B}1}The Needle in the Haystack Problem}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-B}2}The Local Max Solution ($L_\infty $)}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limitations}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}1}Memory-Only Rootkits}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}2}Low-Entropy Malware}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-C}3}Collision Density at Hyperscale}{9}{}\protected@file@percent }
+\bibstyle{IEEEtran}
+\bibdata{references}
+\bibcite{aide}{1}
+\bibcite{tripwire}{2}
+\bibcite{du2017deeplog}{3}
+\bibcite{cheng2024kairos}{4}
+\bibcite{unicorn}{5}
+\bibcite{samhain}{6}
+\bibcite{logrobust}{7}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Distributed System Monitoring Paradigms: A Systems Comparison (2017--2025)\relax }}{10}{}\protected@file@percent }
+\newlabel{tab:se_comparison}{{VII}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Deployment Considerations}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}1}Poisoned Baseline Defense}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}2}Agentless Architecture}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}3}Parallel and Incremental Architecture}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-D}4}Resource-Constrained Environments}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{10}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{10}}
+\@writefile{toc}{\contentsline {section}{References}{10}{}\protected@file@percent }
+\bibcite{logbert}{8}
+\bibcite{rehman2024flash}{9}
+\bibcite{nataraj2011malware}{10}
+\bibcite{conti2008visual}{11}
+\bibcite{codegrid}{12}
+\bibcite{mirsky2018kitsune}{13}
+\bibcite{zong2018deep}{14}
+\bibcite{su2019robust}{15}
+\bibcite{liu2008isolation}{16}
+\bibcite{breunig2000lof}{17}
+\bibcite{xu2018unsupervised}{18}
+\bibcite{zhou2019vae}{19}
+\bibcite{an2015variational}{20}
+\bibcite{pang2019deep}{21}
+\bibcite{ruff2018deep}{22}
+\bibcite{akcay2018ganomaly}{23}
+\gdef \@abspage@last{11}
