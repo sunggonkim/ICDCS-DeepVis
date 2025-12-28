@@ -271,17 +271,3 @@ AIDE & 99.8 & 1515 & Low (Spiky) \\
 \end{table}
 
 Table~\ref{tab:overhead_stability} summarizes the key finding: \textbf{DeepVis is the only solution that provides proactive security scanning without degrading system responsiveness or saturating CPU resources.} Legacy tools (AIDE/Osquery) act as ``Noisy Neighbors,'' severely impacting the tail latency of production workloads while monopolizing compute resources.
-
-%=====================================================================
-\subsection{Resource Overhead Analysis}
-\label{eval_overhead}
-%=====================================================================
-
-Figure~\ref{fig:overhead} depicts the system resource utilization during a continuous scan cycle. \DeepVis exhibits a minimal resource footprint, with CPU usage averaging below 5\% on the Mid tier instance. Memory consumption stabilizes at approximately 72MB and does not grow with the size of the target filesystem, as the streaming architecture processes metadata in bounded batches.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.9\linewidth]{Figures/system_overhead.png}
-  \caption{System overhead during DeepVis scan. CPU usage remains below 5\% on average, and memory usage is stable at approximately 72MB.}
-  \label{fig:overhead}
-\end{figure}
