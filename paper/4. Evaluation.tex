@@ -230,10 +230,19 @@ Osquery & 1999.9 & 619.60 & 962.56 & 1449.98 & 12.2 \\
 Table~\ref{tab:fio_results} reveals critical performance differences. \textbf{DeepVis} achieves a P99 latency of only \textbf{1237$\mu$s}---merely \textbf{2.7\%} higher than the Baseline (1204$\mu$s). In contrast, AIDE causes a \textbf{25.8\%} latency spike (1516$\mu$s), and Osquery degrades P99 by \textbf{20.4\%} (1450$\mu$s). Even the lightweight runtime monitor Falco incurs a \textbf{15.0\%} overhead (1384$\mu$s). This confirms that \DeepVis's asynchronous, header-only scanning strategy minimizes I/O contention.
 
 \begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{Figures/fig_sosp_overhead.pdf}
-\caption{Time-series analysis of system overhead under fixed 2000 IOPS load. (a) I/O Completion Latency: AIDE exhibits the highest latency spikes due to blocking \texttt{SHA256} full-file reads. (b) Global CPU Usage: AIDE and Osquery exhibit periodic 100\% CPU saturation, while DeepVis maintains near-Baseline levels.}
-\label{fig:sosp_overhead}
+    \centering
+    \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_legend.pdf}
+    \vspace{-0.3em}
+    \subfloat[I/O Completion Latency ($\mu$s)]{%
+        \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_latency.pdf}
+        \label{fig:sosp_latency}
+    } \\
+    \subfloat[Global CPU Usage (\%)]{%
+        \includegraphics[width=0.95\linewidth]{Figures/fig_sosp_cpu.pdf}
+        \label{fig:sosp_cpu}
+    }
+    \caption{Time-series analysis of system overhead under fixed 2000 IOPS load. (a) I/O Completion Latency: AIDE exhibits the highest latency spikes due to blocking \texttt{SHA256} full-file reads. (b) Global CPU Usage: AIDE periodically saturates to 100\%, while DeepVis maintains near-Baseline levels.}
+    \label{fig:sosp_overhead}
 \end{figure}
 
 Figure~\ref{fig:sosp_overhead} visualizes the temporal dynamics. The top subplot (a) shows that AIDE's blocking I/O pattern causes latency to spike to over 1000$\mu$s consistently, while \DeepVis remains stable. The bottom subplot (b) reveals the root cause: AIDE and Osquery periodically saturate the CPU to 100\% during hash computation, starving the \texttt{fio} benchmark of resources. \DeepVis, by contrast, maintains CPU usage comparable to the Baseline, validating our claim of non-disruptive integrity verification.
