@@ -201,40 +201,42 @@ To verify robustness under extreme grid collision, we performed a real saturatio
 \end{table}
 
 %=====================================================================
-\subsection{SOTA Comparison (RQ5)}
+\subsection{System Overhead and Tail Latency Analysis (RQ5)}
 \label{eval_sota}
 %=====================================================================
 
-To validate the $O(1)$ scalability and I/O bottleneck hypothesis, we conducted a rigorous \textbf{Unified Benchmark} on GCP \texttt{deepvis-mid}, measuring both \textbf{Runtime Interference} (Phase 1) and \textbf{Scan Latency} (Phase 2). We compared \DeepVis against \textbf{AIDE}, \textbf{Osquery}, and \textbf{Falco}.
+To rigorously quantify the runtime interference of each integrity verification tool, we employed a \textbf{Fixed-Rate I/O Injection} methodology---the standard approach in SOSP/OSDI systems papers. Instead of measuring maximum throughput (which saturates quickly), we fixed the I/O load at 2000 IOPS using \texttt{fio} with \texttt{O\_DIRECT} flag and measured how each security tool affects the \textbf{Tail Latency (P99)} of concurrent I/O operations.
 
 \begin{table}[h]
 \centering
-\caption{Unified SOTA Benchmark: Interference vs. Latency.}
+\caption{FIO Benchmark Results: Tail Latency Under Fixed 2000 IOPS Load.}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{|l|c|c|c|}
+\begin{tabular}{|l|r|r|r|r|r|}
 \hline
-\textbf{Tool} & \textbf{Detection Mode} & \textbf{Phase 1: On-the-fly Penalty} & \textbf{Phase 2: Static Latency} \\
+\textbf{Tool} & \textbf{IOPS} & \textbf{Avg Lat ($\mu$s)} & \textbf{P95 ($\mu$s)} & \textbf{P99 ($\mu$s)} & \textbf{CPU (\%)} \\
 \hline
-Falco & Runtime & 2.5\% (Always On) & N/A (Continuous) \\
-AIDE & Static & 31.2\% (Blocking I/O) & 8.2s (Slow) \\
-Osquery & Static & 29.1\% (CPU Burst) & 17.0s (Slow) \\
-\hline
-\textbf{\DeepVis} & \textbf{Static} & \textbf{4.1\% (Non-Blocking)} & \textbf{0.23s (Fast)} \\
+Baseline & 1999.9 & 582.17 & 856.06 & 1204.22 & 9.6 \\
+\textbf{DeepVis} & 1999.9 & 600.65 & 888.83 & \textbf{1236.99} & \textbf{12.0} \\
+Falco & 1999.9 & 642.69 & 1003.52 & 1384.45 & 16.6 \\
+AIDE & 2000.0 & 557.88 & 937.98 & 1515.52 & 10.1 \\
+Osquery & 1999.9 & 619.60 & 962.56 & 1449.98 & 12.2 \\
 \hline
 \end{tabular}%
 }
-\label{tab:sota_comparison}
+\label{tab:fio_results}
 \end{table}
 
 \noindent\textbf{Analysis.}
-Table~\ref{tab:sota_comparison} reveals the critical trade-off in existing tools. \textbf{Phase 1 (Interference)}: Legacy scanners (AIDE, Osquery) degrade Nginx web server throughput by $\approx$30\% during execution due to heavy I/O contention. \DeepVis, however, imposes only a 4.1\% penalty, comparable to the lightweight runtime monitor Falco (2.5\%). \textbf{Phase 2 (Latency)}: \DeepVis completes the integrity verification in \textbf{0.23 seconds}---a \textbf{35$\times$ speedup} over AIDE (8.2s) and \textbf{74$\times$} over Osquery (17.0s). This confirms that \DeepVis uniquely combines the low overhead of runtime monitors with the comprehensive coverage of static scanners.
+Table~\ref{tab:fio_results} reveals critical performance differences. \textbf{DeepVis} achieves a P99 latency of only \textbf{1237$\mu$s}---merely \textbf{2.7\%} higher than the Baseline (1204$\mu$s). In contrast, AIDE causes a \textbf{25.8\%} latency spike (1516$\mu$s), and Osquery degrades P99 by \textbf{20.4\%} (1450$\mu$s). Even the lightweight runtime monitor Falco incurs a \textbf{15.0\%} overhead (1384$\mu$s). This confirms that \DeepVis's asynchronous, header-only scanning strategy minimizes I/O contention.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{figures/fig_sota_timeline.pdf}
-\caption{60-second sustained load test comparing system resource consumption and application throughput under different security tools. Top: CPU usage. Middle: Memory usage. Bottom: Nginx throughput (RPS). \DeepVis maintains performance comparable to Baseline/Falco, while AIDE and Osquery cause sustained resource contention.}
-\label{fig:sota_timeline}
+\includegraphics[width=\columnwidth]{Figures/fig_sosp_overhead.pdf}
+\caption{Time-series analysis of system overhead under fixed 2000 IOPS load. (a) I/O Completion Latency: AIDE exhibits the highest latency spikes due to blocking \texttt{SHA256} full-file reads. (b) Global CPU Usage: AIDE and Osquery exhibit periodic 100\% CPU saturation, while DeepVis maintains near-Baseline levels.}
+\label{fig:sosp_overhead}
 \end{figure}
+
+Figure~\ref{fig:sosp_overhead} visualizes the temporal dynamics. The top subplot (a) shows that AIDE's blocking I/O pattern causes latency to spike to over 1000$\mu$s consistently, while \DeepVis remains stable. The bottom subplot (b) reveals the root cause: AIDE and Osquery periodically saturate the CPU to 100\% during hash computation, starving the \texttt{fio} benchmark of resources. \DeepVis, by contrast, maintains CPU usage comparable to the Baseline, validating our claim of non-disruptive integrity verification.
 
 %=====================================================================
 \subsection{Resource Overhead Analysis}
