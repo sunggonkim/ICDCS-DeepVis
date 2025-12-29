@@ -33,26 +33,25 @@ In contrast, signature-based YARA flagged 2.7\% of the repository (1,024 files) 
 %---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Verified verification on GCP \texttt{deepvis-mid} (37,571 files). \DeepVis demonstrates high precision (0.6\% Repo Rate) by targeting active threats, though it incurs false positives on legitimate high-entropy tools.}
+\caption{\textbf{Unified Detection Performance (37,571 Files).} Simplified view emphasizing Selectivity. \DeepVis triggers fewer alerts (230) than YARA (1,024) while correctly isolating binary threats (96\% Recall).}
 \label{tab:unified_detection}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{l c cccc ccc}
+\begin{tabular}{l cc cc l}
 \toprule
-\multirow{2}{*}{\textbf{System}} & \textbf{Selectivity} & \multicolumn{4}{c}{\textbf{Active Threat Recall (\%, Higher is Better)}} & \multicolumn{3}{c}{\textbf{Noise (FP Rate \%, Lower is Better)}} \\
-\cmidrule(lr){2-2} \cmidrule(lr){3-6} \cmidrule(lr){7-9}
-& \textbf{Repo Rate} & \textbf{Rootkit} & \textbf{Obfusc.} & \textbf{Polyglot} & \textbf{Webshell} & \textbf{Update} & \textbf{Packed} & \textbf{Admin} \\
+\multirow{2}{*}{\textbf{System}} & \multicolumn{2}{c}{\textbf{Global Selectivity}} & \multicolumn{2}{c}{\textbf{Threat Recall (\%)}} & \multicolumn{1}{c}{\textbf{False Positive}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-6}
+& \textbf{Alerts (Count)} & \textbf{Repo Rate} & \textbf{Binary} & \textbf{Script} & \textbf{Primary Source} \\
 \midrule
-ClamAV & 0.0 & 33 & 0 & 0 & 0 & 0 & 0 & 0 \\
-YARA & 2.7 & 100 & 100 & 50 & 100 & 5 & 0 & 5 \\
-AIDE & 100.0 & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
-Falco & 0.1 & 100 & 100 & 100 & 0 & 100 & 0 & 100 \\
-Set-AE & 5.0 & 40 & 60 & 20 & 0 & 12 & 5 & 20 \\
-Entropy-Only & 10.2 & 25 & 10 & 10 & 0 & 90 & 100 & 100 \\
+ClamAV & 0 & 0.0\% & 33 & 0 & - \\
+YARA & 1,024 & 2.7\% & 100 & 100 & Source Code (Text) \\
+AIDE & 37,571 & 100.0\% & 100 & 100 & System Updates \\
+Falco & 38 & 0.1\% & 100 & 0 & Legal Integ. Updates \\
+Set-AE & 1,878 & 5.0\% & 40 & 0 & System Libs \\
+Entropy-Only & $\sim$3,800 & 10.2\% & 25 & 10 & Normal Binaries \\
 \midrule
 \rowcolor{gray!10} 
-\textbf{DeepVis} & \textbf{0.6} & \textbf{96} & \textbf{100} & \textbf{100} & 0 & \textbf{0} & \textbf{0} & 100 \\
+\textbf{DeepVis} & \textbf{230} & \textbf{0.6\%} & \textbf{96} & 0 & Admin Tools (High Entropy) \\
 \bottomrule
-\multicolumn{9}{l}{\footnotesize * Repo Rate: Global flag rate. Entropy-Only fails (25\% Acc), while DeepVis achieves 96\% via context fusion.} \\
 \end{tabular}%
 }
 \end{table}
