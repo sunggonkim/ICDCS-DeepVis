@@ -100,39 +100,34 @@ To evaluate the architectural advantage of the Hash-Grid Parallel CAE, we implem
 \label{eval_scalability}
 %=====================================================================
 
-The primary architectural claim of \DeepVis is the decoupling of verification latency from file system size. We validate this through two distinct lenses: \textit{Processing Throughput} (micro-benchmark) and \textit{Service Interference} (macro-benchmark).
-
-\subsubsection{Micro-benchmark: Scan Throughput}
-We first compare \DeepVis against AIDE to demonstrate \textit{operational feasibility}. AIDE performs full-file cryptographic hashing, which provides strong integrity guarantees but incurs $O(N \times Size)$ I/O complexity. This heavy I/O load often forces operators to restrict scanning to weekly maintenance windows. \DeepVis, in contrast, targets continuous monitoring by reading only file headers.
-
-On a GCP High tier (c2-standard-4), \DeepVis achieves a 7.7$\times$ speedup over standard AIDE. To isolate the benefits of our asynchronous architecture from the reduced I/O volume, we implemented a \textit{Partial-Hash AIDE} baseline that reads only the first 128 bytes of each file. Even against this optimized baseline, \DeepVis maintains a 5.4$\times$ throughput advantage. This gain confirms that the performance boost stems not just from reading less data, but from our parallel \texttt{io\_uring} pipeline, which effectively hides I/O latency through massive concurrent queuing.
-
-\noindent\textit{Comparison with Commercial Scanners.}
-We further benchmarked \DeepVis against fuzzy hashing (ssdeep) and signature scanners (ClamAV, YARA) on the full \texttt{/usr} directory (240,827 files). As shown in Figure~\ref{fig:perf_analysis}(a), traditional tools are bottlenecked by synchronous content reads (127--1,004 files/s). \DeepVis achieves \textbf{39,993 files/s}, representing a \textbf{40$\times$ to 215$\times$ speedup} over the baselines.
+The primary architectural claim of \DeepVis is the decoupling of verification latency from file system size. We validate this through two distinct lenses: processing throughput (micro-benchmark) and service interference (macro-benchmark).
 
 \begin{figure}[t]
     \centering
-    \subfloat[Micro-benchmark: Throughput (Files/s)]{
-        \includegraphics[width=0.95\linewidth]{Figures/fig_final_throughput.pdf}
+    \subfloat[Throughput]{
+        \includegraphics[width=0.48\linewidth]{Figures/fig_final_throughput.pdf}
         \label{fig:perf_throughput}
-    } \\
-    \subfloat[Macro-benchmark: Tail Latency ($\mu$s)]{
-        \includegraphics[width=0.95\linewidth]{Figures/fig_final_latency.pdf}
+    } \hfill
+    \subfloat[Interference]{
+        \includegraphics[width=0.48\linewidth]{Figures/fig_final_latency.pdf}
         \label{fig:perf_latency}
     }
-    \caption{\textbf{Comprehensive Performance Analysis (Micro \& Macro).} (a) \textbf{Throughput (Micro)}: \DeepVis achieves hyperscale speeds ($\approx$40k files/s) via asynchronous I/O, outperforming synchronous baselines by orders of magnitude. (b) \textbf{Interference (Macro)}: Despite its speed, \DeepVis maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%), verifying operational feasibility.}
+    \caption{\textbf{Comprehensive Performance Analysis.} (a) \textbf{Throughput}: DeepVis achieves hyperscale speeds ($\approx$40k files/s) via asynchronous I/O, outperforming synchronous baselines. (b) \textbf{Interference}: Despite its speed, DeepVis maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%).}
     \label{fig:perf_analysis}
 \end{figure}
 
-\subsubsection{Macro-benchmark: Service Interference}
-While raw throughput is critical for coverage, the definitive constraint for sidecar security tools is \textit{interference} with the primary workload. High throughput is counter-productive if it monopolizes the CPU and degrades the tenant application's Service Level Agreement (SLA).
+\noindent\textbf{Micro-benchmark: Scan Throughput.}
+We first compare DeepVis against AIDE to demonstrate operational feasibility. AIDE performs full-file cryptographic hashing, which provides strong integrity guarantees but incurs $O(N \times Size)$ I/O complexity. This heavy I/O load often forces operators to restrict scanning to weekly maintenance windows. DeepVis, in contrast, targets continuous monitoring by reading only file headers. On a GCP High tier (c2-standard-4), DeepVis achieves a 7.7$\times$ speedup over standard AIDE. To isolate the benefits of our asynchronous architecture from the reduced I/O volume, we implemented a Partial-Hash AIDE baseline that reads only the first 128 bytes of each file. Even against this optimized baseline, DeepVis maintains a 5.4$\times$ throughput advantage. This gain confirms that the performance boost stems not just from reading less data, but from our parallel \texttt{io\_uring} pipeline, which effectively hides I/O latency through massive concurrent queuing.
 
-\noindent\textbf{Impact on Tail Latency.}
-We measured the P99 latency of a co-located NGINX web server while performing a full system scan. As shown in Figure~\ref{fig:perf_analysis}(b), traditional tools severely impact system responsiveness. YARA and Heuristic engines caused degradation of +546\% and +324\% respectively due to CPU-intensive pattern matching. Even AIDE induced a +291\% latency spike (12.1ms) due to blocking I/O operations.
+\noindent\textbf{Comparison with Commercial Scanners.}
+We further benchmarked DeepVis against fuzzy hashing (ssdeep) and signature scanners (ClamAV, YARA) on the full \texttt{/usr} directory (240,827 files). As shown in Figure~\ref{fig:perf_analysis}(a), traditional tools are bottlenecked by synchronous content reads (127--1,004 files/s). DeepVis achieves 39,993 files/s, representing a 40$\times$ to 215$\times$ speedup over the baselines.
 
-In contrast, \DeepVis maintained a P99 latency of 3,162$\mu$s, reflecting a negligible \textbf{+2.0\% overhead} compared to the baseline (3,100$\mu$s). This confirms that \DeepVis's spatial hashing and asynchronous design allow it to operate transparently in the background.
+\noindent\textbf{Macro-benchmark: Service Interference.}
+While raw throughput is critical for coverage, the definitive constraint for sidecar security tools is interference with the primary workload. High throughput is counter-productive if it monopolizes the CPU and degrades the tenant application's Service Level Agreement (SLA). We measured the P99 latency of a co-located NGINX web server while performing a full system scan. As shown in Figure~\ref{fig:perf_analysis}(b), traditional tools severely impact system responsiveness. YARA and Heuristic engines caused degradation of +546\% and +324\% respectively due to CPU-intensive pattern matching. Even AIDE induced a +291\% latency spike (12.1ms) due to blocking I/O operations. In contrast, DeepVis maintained a P99 latency of 3,162$\mu$s, reflecting a negligible +2.0\% overhead compared to the baseline (3,100$\mu$s). This confirms that the spatial hashing and asynchronous design of DeepVis allow it to operate transparently in the background.
+
 \noindent\textbf{CPU Resource Profile.}
-Resource contention analysis explains the latency results. Legacy FIMs and scanners such as Osquery and AIDE saturated the Global CPU at near 100\%, forcing the OS scheduler to throttle the web server. \DeepVis, however, maintained a CPU profile of 11.2\%, nearly identical to the baseline (9.8\%). Unlike runtime monitors (e.g., Falco) which incur constant context-switching overhead (+58.3\% latency degradation), \DeepVis utilizes lightweight SIMD optimizations to ensure security monitoring remains strictly orthogonal to the primary service performance.
+Resource contention analysis explains the latency results. Legacy FIMs and scanners such as Osquery and AIDE saturated the Global CPU at near 100\%, forcing the OS scheduler to throttle the web server. DeepVis, however, maintained a CPU profile of 11.2\%, nearly identical to the baseline (9.8\%). Unlike runtime monitors (e.g., Falco) which incur constant context-switching overhead (+58.3\% latency degradation), DeepVis utilizes lightweight SIMD optimizations to ensure security monitoring remains strictly orthogonal to the primary service performance.
+
 
 %=====================================================================
 \subsection{Architectural Validation: Signal Preservation vs. Dilution (RQ3)}
