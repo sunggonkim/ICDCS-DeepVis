@@ -134,13 +134,13 @@ We introduce the \textit{Hash-Grid Parallel CAE} to address the critical limitat
     % [IMPORTANT] 새로 그린 Figure 6를 이 경로/이름으로 저장해서 사용하세요.
     % 기존 파일명은 안 건드렸습니다. 이건 새로운 그림이라 이름 지정이 필요합니다.
     \includegraphics[width=9cm]{Figures/Design/CNN_Arch.pdf} 
-    \caption{Structural comparison between Set-based Autoencoder (Set-AE) and DeepVis. While Set-AE dilutes sparse attack signals into a global average vector (Signal Dilution), causing detection failures ("Spike lost"), DeepVis preserves the attack signal via independent pixel-wise processing and Local Max ($L_\infty$) pooling, enabling precise detection of sparse anomalies.}
+    \caption{Structural comparison between Set-based Autoencoder (Set-AE) and \DeepVis. While Set-AE dilutes sparse attack signals into a global average vector (Signal Dilution), causing detection failures ("Spike lost"), DeepVis preserves the attack signal via independent pixel-wise processing and Local Max ($L_\infty$) pooling, enabling precise detection of sparse anomalies.}
     \label{fig:comparison}
 \end{figure}
 
 \noindent
 \textbf{Set-based AE vs. Hash-Grid Parallel CAE.}
-Traditional Set-based Autoencoders (Set-AE) handle unordered data by aggregating all feature vectors into a single global representation using functions like Sum, Average, or Max pooling. As illustrated in the top panel of Figure~\ref{fig:comparison}, this architecture suffers from \textit{Signal Dilution}. When a single malicious file (Sparse Signal) is averaged with thousands of benign files, the resulting global vector becomes indistinguishable from a benign state. Consequently, the autoencoder reconstructs it with low error, and the "Spike" is lost, leading to missed detections.
+Traditional Set-based Autoencoders (Set-AE) handle unordered data by aggregating all feature vectors into a single global representation using functions such as Sum, Average, or Max pooling. As illustrated in the top panel of Figure~\ref{fig:comparison}, this architecture suffers from \textit{Signal Dilution}. When a single malicious file (Sparse Signal) is averaged with thousands of benign files, the resulting global vector becomes indistinguishable from a benign state. Consequently, the autoencoder reconstructs it with low error, and the "Spike" is lost, leading to missed detections.
 
 In contrast, \DeepVis prevents signal dilution through \textbf{Parallel 1$\times$1 Processing}. Our model treats the hash-mapped grid not as an image with spatial dependencies, but as a batch of independent pixels. The 1$\times$1 Convolutional layers act as shared-weight MLPs applied individually to each pixel:
 \begin{equation}
@@ -150,7 +150,7 @@ This ensures that the reconstruction of a malicious pixel depends \textit{only} 
 
 \noindent
 \textbf{Solving the MSE Paradox via $L_\infty$ Pooling.} 
-Even with a localized representation, standard detection metrics like Global Mean Squared Error (MSE) fail. In a file system, legitimate updates (e.g., \texttt{apt upgrade}) create "diffuse noise" (high global error across many pixels), while a stealthy rootkit creates a "sparse signal" (high error in only one pixel). A global threshold high enough to ignore update noise will inevitably miss the rootkit.
+Even with a localized representation, standard detection metrics such as Global Mean Squared Error (MSE) fail. In a file system, legitimate updates (e.g., \texttt{apt upgrade}) create "diffuse noise" (high global error across many pixels), while a stealthy rootkit creates a "sparse signal" (high error in only one pixel). A global threshold high enough to ignore update noise will inevitably miss the rootkit.
 
 To resolve this, we employ \textbf{Local Max ($L_\infty$) Pooling} as the final detection logic. Instead of averaging errors, we extract the single maximum deviation:
 \begin{equation}

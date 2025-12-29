@@ -30,36 +30,6 @@ G.~H. Kim and E.~H. Spafford, ``The design and implementation of {Tripwire}: A
   {File} {System} {Integrity} {Checker},'' in \emph{Proceedings of the 2nd ACM
   Conference on Computer and Communications Security (CCS)}, 1994, pp. 18--29.
 
-\bibitem{du2017deeplog}
-M.~Du, F.~Li, G.~Zheng, and V.~Srikumar, ``{DeepLog}: {A}nomaly {D}etection and
-  {D}iagnosis from {S}ystem {L}ogs through {D}eep {L}earning,'' in
-  \emph{Proceedings of the 2017 ACM SIGSAC Conference on Computer and
-  Communications Security (CCS)}, 2017, pp. 1285--1298.
-
-\bibitem{cheng2024kairos}
-Z.~Cheng, Q.~Lv, J.~Liang, Y.~Wang, D.~Sun, T.~Pasquier, and X.~Han, ``Kairos:
-  Practical intrusion detection and investigation using whole-system
-  provenance,'' in \emph{Proceedings of the 45th IEEE Symposium on Security and
-  Privacy (S\&P)}, 2024, pp. 2025--2044.
-
-\bibitem{unicorn}
-X.~Han, T.~Pasquier, A.~Bates, J.~Mickens, and M.~Seltzer, ``{UNICORN}:
-  {R}untime {P}rovenance-{B}ased {D}etector for {A}dvanced {P}ersistent
-  {T}hreats,'' in \emph{Proceedings of the 27th Annual Network and Distributed
-  System Security Symposium (NDSS)}, 2020.
-
-\bibitem{samhain}
-R.~Wichmann, ``{Samhain}: {File} {Integrity} {Checker},''
-  \url{https://www.la-samhna.de/samhain/}, 2003.
-
-\bibitem{clamav}
-I.~Cisco~Systems, ``{ClamAV}: {T}he {O}pen {S}ource {A}ntivirus {E}ngine,''
-  \url{https://www.clamav.net}, 2002.
-
-\bibitem{yara}
-V.~M. Alvarez, ``{YARA}: {T}he {P}attern {M}atching {S}wiss {K}nife for
-  {M}alware {R}esearchers,'' \url{https://github.com/VirusTotal/yara}, 2013.
-
 \bibitem{falco}
 {The Falco Project}, ``{Falco}: {C}loud {N}ative {R}untime {S}ecurity,''
   \url{https://falco.org}, 2016.
@@ -68,13 +38,116 @@ V.~M. Alvarez, ``{YARA}: {T}he {P}attern {M}atching {S}wiss {K}nife for
 D.~B. Cid, ``{OSSEC}: {Open} {Source} {Host-based} {Intrusion} {Detection}
   {System},'' \url{https://www.ossec.net}, 2008.
 
+\bibitem{arp2022dos}
+D.~Arp, E.~Quiring, F.~Pendlebury, A.~Warnecke, F.~Pierazzi, C.~Wressnegger,
+  L.~Cavallaro, and K.~Rieck, ``{D}os and {D}on'ts of {M}achine {L}earning in
+  {C}omputer {S}ecurity,'' in \emph{Proceedings of the 31st USENIX Security
+  Symposium}, 2022, pp. 1345--1362.
+
+\bibitem{clamav}
+I.~Cisco~Systems, ``{ClamAV}: {T}he {O}pen {S}ource {A}ntivirus {E}ngine,''
+  \url{https://www.clamav.net}, 2002.
+
+\bibitem{unicorn}
+X.~Han, T.~Pasquier, A.~Bates, J.~Mickens, and M.~Seltzer, ``{UNICORN}:
+  {R}untime {P}rovenance-{B}ased {D}etector for {A}dvanced {P}ersistent
+  {T}hreats,'' in \emph{Proceedings of the 27th Annual Network and Distributed
+  System Security Symposium (NDSS)}, 2020.
+
 \bibitem{zaheer2017deepsets}
 M.~Zaheer, S.~Kottur, S.~Ravanbakhsh, B.~Poczos, R.~R. Salakhutdinov, and A.~J.
   Smola, ``Deep sets,'' in \emph{Advances in Neural Information Processing
   Systems}, vol.~30, 2017.
 
-\bibitem{lkrg}
-{Openwall}, ``{LKRG}: {L}inux {K}ernel {R}untime {G}uard,''
-  \url{https://www.openwall.com/lkrg/}, 2018.
+\bibitem{samhain}
+R.~Wichmann, ``{Samhain}: {File} {Integrity} {Checker},''
+  \url{https://www.la-samhna.de/samhain/}, 2003.
+
+\bibitem{cheng2024kairos}
+Z.~Cheng, Q.~Lv, J.~Liang, Y.~Wang, D.~Sun, T.~Pasquier, and X.~Han, ``Kairos:
+  Practical intrusion detection and investigation using whole-system
+  provenance,'' in \emph{IEEE Symposium on Security and Privacy (S\&P)}, 2024.
+
+\bibitem{he2023cross}
+Y.~He \emph{et~al.}, ``{C}ross {C}ontainer {A}ttacks: {T}he {B}ewildered {eBPF}
+  on {C}louds,'' in \emph{Proceedings of the 32nd USENIX Security Symposium},
+  2023.
+
+\bibitem{tfjmp2024safebpf}
+{TFJMP Contributors}, ``{H}ardware-assisted {D}efense-in-depth for {eBPF}
+  {K}ernel {E}xtensions,'' in \emph{Proceedings of the 2024 CCS Cloud Computing
+  Security Workshop (CCSW)}, 2024.
+
+\bibitem{nataraj2011malware}
+L.~Nataraj, S.~Karthikeyan, G.~Jacob, and B.~S. Manjunath, ``{M}alware
+  {I}mages: {V}isualization and {A}utomatic {C}lassification,'' in
+  \emph{Proceedings of the 4th Workshop on Visualization for Cyber Security
+  (VizSec)}, 2011, pp. 1--7.
+
+\bibitem{conti2008visual}
+G.~Conti, E.~Dean, M.~Sinda, and B.~Sangster, ``{V}isual {R}everse
+  {E}ngineering of {B}inary and {D}ata {F}iles,'' in \emph{Proceedings of the
+  5th Workshop on Visualization for Cyber Security (VizSec)}, 2008, pp. 1--7.
+
+\bibitem{aldini2024image}
+A.~Aldini \emph{et~al.}, ``{I}mage-based {D}etection and {C}lassification of
+  {A}ndroid {M}alware using {CNN}-{LSTM} {H}ybrid {M}odels,'' in
+  \emph{Proceedings of the 2024 Annual Computer Security Applications
+  Conference (ARES)}, Vienna, Austria, 2024.
+
+\bibitem{lyda2007entropy}
+R.~Lyda and J.~Hamrock, ``{U}sing {E}ntropy {A}nalysis to {F}ind {E}ncrypted
+  and {P}acked {M}alware,'' \emph{IEEE Security \& Privacy Magazine}, vol.~5,
+  no.~2, pp. 40--45, 2007.
+
+\bibitem{ling2024wolf}
+X.~Ling \emph{et~al.}, ``{A} {W}olf in {S}heep's {C}lothing: {P}ractical
+  {B}lack-box {A}dversarial {A}ttacks for {E}vading {L}earning-based {W}indows
+  {M}alware {D}etection,'' in \emph{Proceedings of the 33rd USENIX Security
+  Symposium}, 2024.
+
+\bibitem{uetz2024detecting}
+R.~Uetz \emph{et~al.}, ``{D}etecting {E}vasions of {SIEM} {R}ules in
+  {E}nterprise {N}etworks,'' in \emph{Proceedings of the 33rd USENIX Security
+  Symposium}, 2024, pp. 1--18.
+
+\bibitem{du2017deeplog}
+M.~Du, F.~Li, G.~Zheng, and V.~Srikumar, ``{DeepLog}: {A}nomaly {D}etection and
+  {D}iagnosis from {S}ystem {L}ogs through {D}eep {L}earning,'' in
+  \emph{Proceedings of the 2017 ACM SIGSAC Conference on Computer and
+  Communications Security (CCS)}, 2017, pp. 1285--1298.
+
+\bibitem{mirsky2018kitsune}
+Y.~Mirsky, T.~Doitshman, Y.~Elovici, and A.~Shabtai, ``{Kitsune}: {A}n
+  {E}nsemble of {A}utoencoders for {O}nline {N}etwork {I}ntrusion
+  {D}etection,'' in \emph{Proceedings of the 25th Annual Network and
+  Distributed System Security Symposium (NDSS)}, 2018.
+
+\bibitem{ruff2018deep}
+L.~Ruff \emph{et~al.}, ``{D}eep {O}ne-{C}lass {C}lassification,'' in
+  \emph{Proceedings of the 35th International Conference on Machine Learning
+  (ICML)}, 2018, pp. 4390--4399.
+
+\bibitem{akcay2018ganomaly}
+S.~Akcay, A.~Atapour-Abarghouei, and T.~P. Breckon, ``{GANomaly}:
+  {S}emi-{S}upervised {A}nomaly {D}etection via {A}dversarial {T}raining,'' in
+  \emph{Proceedings of the 14th Asian Conference on Computer Vision (ACCV)},
+  2018.
+
+\bibitem{zong2018deep}
+B.~Zong \emph{et~al.}, ``{D}eep {A}utoencoding {G}aussian {M}ixture {M}odel for
+  {U}nsupervised {A}nomaly {D}etection,'' in \emph{Proceedings of the 6th
+  International Conference on Learning Representations (ICLR)}, 2018.
+
+\bibitem{su2019robust}
+Y.~Su \emph{et~al.}, ``{R}obust {A}nomaly {D}etection for {M}ultivariate {T}ime
+  {S}eries,'' in \emph{Proceedings of the 25th ACM SIGKDD Conference on
+  Knowledge Discovery and Data Mining (KDD)}, 2019, pp. 1417--1426.
+
+\bibitem{xu2018unsupervised}
+H.~Xu \emph{et~al.}, ``{U}nsupervised {A}nomaly {D}etection via {V}ariational
+  {A}uto-{E}ncoder for {S}easonal {KPI}s in {W}eb {A}pplications,'' in
+  \emph{Proceedings of the 27th World Wide Web Conference (WWW)}, 2018, pp.
+  187--196.
 
 \end{thebibliography}

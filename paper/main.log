@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  29 DEC 2025 19:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 00:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -697,43 +697,49 @@ File: pgflibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 s/tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )
+(/usr/local/texlive/2025/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2024/07/06 v1.0i Color table columns (DPC)
+\everycr=\toks37
+\minrowclearance=\skip64
+\rownum=\count322
+)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count322
+\l__color_backend_stack_int=\count323
 \l__pdf_internal_box=\box89
 )
 (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
 
 -- Lines per column: 56 (exact).
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count323
+\scratchcounter=\count324
 \scratchdimen=\dimen308
 \scratchbox=\box90
-\nofMPsegments=\count324
-\nofMParguments=\count325
-\everyMPshowfont=\toks37
-\MPscratchCnt=\count326
+\nofMPsegments=\count325
+\nofMParguments=\count326
+\everyMPshowfont=\toks38
+\MPscratchCnt=\count327
 \MPscratchDim=\dimen309
-\MPnumerator=\count327
-\makeMPintoPDFobject=\count328
-\everyMPtoPDFconversion=\toks38
+\MPnumerator=\count328
+\makeMPintoPDFobject=\count329
+\everyMPtoPDFconversion=\toks39
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -747,41 +753,70 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 4
-2.
+3.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 48.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 49.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 48.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 49.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (./1. Introduction.tex
-<Figures/fig_motivation_legend.pdf, id=4, 282.51797pt x 31.6589pt>
+
+<Figures/fig_motivation_legend.pdf, id=4, 369.99478pt x 33.96753pt>
 File: Figures/fig_motivation_legend.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_legend.pdf>
 Package pdftex.def Info: Figures/fig_motivation_legend.pdf  used on input line 
 11.
-(pdftex.def)             Requested size: 239.39923pt x 26.82709pt.
-<Figures/fig_motivation_a.pdf, id=5, 230.93382pt x 151.41882pt>
+(pdftex.def)             Requested size: 239.39923pt x 21.97858pt.
+<Figures/fig_motivation_a.pdf, id=5, 241.40062pt x 188.83987pt>
 File: Figures/fig_motivation_a.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_a.pdf>
-Package pdftex.def Info: Figures/fig_motivation_a.pdf  used on input line 18.
-(pdftex.def)             Requested size: 118.4403pt x 77.65924pt.
-<Figures/fig_motivation_b.pdf, id=6, 232.24927pt x 165.76682pt>
+Package pdftex.def Info: Figures/fig_motivation_a.pdf  used on input line 17.
+(pdftex.def)             Requested size: 118.4403pt x 92.65048pt.
+<Figures/fig_motivation_b.pdf, id=6, 241.74706pt x 190.82578pt>
 File: Figures/fig_motivation_b.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_b.pdf>
-Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 23.
-(pdftex.def)             Requested size: 118.4403pt x 84.53741pt.
+Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 22.
+(pdftex.def)             Requested size: 118.4403pt x 93.49379pt.
 
+Underfull \hbox (badness 3792) in paragraph at lines 27--28
+[]\OT1/ptm/m/n/10 Figure 1[] com-pares the scal-a-bil-ity and pre-ci-sion of
+ []
+
+
+Overfull \hbox (1.20499pt too wide) in paragraph at lines 35--35
+[]|\OT1/ptm/b/n/7 Async| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--35
+[]|\OT1/ptm/b/n/7 0-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--36
+[]|\OT1/ptm/b/n/7 Low
+ []
+
+
+Overfull \hbox (1.408pt too wide) in paragraph at lines 35--36
+\OT1/ptm/b/n/7 Ovhd.| 
+ []
+
+
+Overfull \hbox (15.47919pt too wide) in paragraph at lines 33--49
+ [][] 
+ []
 
 
 
@@ -792,7 +827,7 @@ ocal/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}
  <./Figures/fig_motivation_legend.pdf> <./Figures/fig_motivation_a.pdf> <./Figu
 res/fig_motivation_b.pdf>]) (./2. Background.tex
 
-<Figures/Background_entrophy/entropy_combined_a.pdf, id=128, 247.80171pt x 385.
+<Figures/Background_entrophy/entropy_combined_a.pdf, id=132, 247.80171pt x 385.
 2851pt>
 File: Figures/Background_entrophy/entropy_combined_a.pdf Graphic file (type pdf
 )
@@ -800,7 +835,7 @@ File: Figures/Background_entrophy/entropy_combined_a.pdf Graphic file (type pdf
 Package pdftex.def Info: Figures/Background_entrophy/entropy_combined_a.pdf  us
 ed on input line 27.
 (pdftex.def)             Requested size: 113.39923pt x 176.31616pt.
-<Figures/Background_entrophy/Background_Normal_text.pdf, id=129, 284.94691pt x 
+<Figures/Background_entrophy/Background_Normal_text.pdf, id=133, 284.94691pt x 
 465.23059pt>
 File: Figures/Background_entrophy/Background_Normal_text.pdf Graphic file (type
  pdf)
@@ -808,7 +843,7 @@ File: Figures/Background_entrophy/Background_Normal_text.pdf Graphic file (type
 Package pdftex.def Info: Figures/Background_entrophy/Background_Normal_text.pdf
   used on input line 32.
 (pdftex.def)             Requested size: 113.39923pt x 185.14479pt.
-<Figures/Background_entrophy/Background_System_binaray.pdf, id=130, 289.55978pt
+<Figures/Background_entrophy/Background_System_binaray.pdf, id=134, 289.55978pt
  x 464.29753pt>
 File: Figures/Background_entrophy/Background_System_binaray.pdf Graphic file (t
 ype pdf)
@@ -816,7 +851,7 @@ ype pdf)
 Package pdftex.def Info: Figures/Background_entrophy/Background_System_binaray.
 pdf  used on input line 37.
 (pdftex.def)             Requested size: 113.39923pt x 181.83336pt.
-<Figures/Background_entrophy/Background_Rootkit.pdf, id=131, 293.06308pt x 474.
+<Figures/Background_entrophy/Background_Rootkit.pdf, id=135, 293.06308pt x 474.
 31844pt>
 File: Figures/Background_entrophy/Background_Rootkit.pdf Graphic file (type pdf
 )
@@ -834,7 +869,7 @@ Underfull \hbox (badness 2134) in paragraph at lines 9--10
 DeepVis\OT1/ptm/m/n/10 .
  []
 
-<Figures/Design/Overall_Arch.pdf, id=139, 671.34879pt x 552.3113pt>
+<Figures/Design/Overall_Arch.pdf, id=142, 671.34879pt x 552.3113pt>
 File: Figures/Design/Overall_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Overall_Arch.pdf>
 Package pdftex.def Info: Figures/Design/Overall_Arch.pdf  used on input line 15
@@ -851,7 +886,7 @@ Overfull \hbox (4.0748pt too wide) in paragraph at lines 15--16
 _entrophy/Background_Normal_text.pdf> <./Figures/Background_entrophy/Background
 _System_binaray.pdf> <./Figures/Background_entrophy/Background_Rootkit.pdf> <./
 Figures/Design/Overall_Arch.pdf>]
-<Figures/Design/io_Arch.pdf, id=324, 756.41832pt x 550.10004pt>
+<Figures/Design/io_Arch.pdf, id=329, 756.41832pt x 550.10004pt>
 File: Figures/Design/io_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/io_Arch.pdf>
 Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 40.
@@ -861,7 +896,7 @@ Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 40.
 
 
 [4 <./Figures/Design/io_Arch.pdf>]
-<Figures/Design/Hash_Arch.pdf, id=369, 672.63974pt x 414.93048pt>
+<Figures/Design/Hash_Arch.pdf, id=374, 672.63974pt x 414.93048pt>
 File: Figures/Design/Hash_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Hash_Arch.pdf>
 Package pdftex.def Info: Figures/Design/Hash_Arch.pdf  used on input line 78.
@@ -886,7 +921,7 @@ Underfull \hbox (badness 3333) in paragraph at lines 123--124
 uc-tural
  []
 
-<Figures/Design/CNN_Arch.pdf, id=395, 737.58846pt x 539.33128pt>
+<Figures/Design/CNN_Arch.pdf, id=400, 737.58846pt x 539.33128pt>
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
 Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 136.
@@ -903,91 +938,71 @@ LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 ) (./4. Evaluation.tex
 
 [6 <./Figures/Design/CNN_Arch.pdf>]
-Underfull \hbox (badness 2617) in paragraph at lines 24--25
-\OT1/ptm/m/n/10 Beurk) and 37,571 di-verse mal-ware sam-ples from the
- []
-
-
 
 
 
 [7]
-
-<Figures/tensor_clean.png, id=466, 355.8093pt x 341.3553pt>
-File: Figures/tensor_clean.png Graphic file (type png)
-<use Figures/tensor_clean.png>
-Package pdftex.def Info: Figures/tensor_clean.png  used on input line 113.
-(pdftex.def)             Requested size: 120.95892pt x 116.04362pt.
-
-Underfull \hbox (badness 3118) in paragraph at lines 113--113
-[]\OT1/ptm/m/n/8 (a) |Clean Base-line (10K Be-nign
- []
-
-<Figures/tensor_infected.png, id=468, 355.8093pt x 341.3553pt>
-File: Figures/tensor_infected.png Graphic file (type png)
-<use Figures/tensor_infected.png>
-Package pdftex.def Info: Figures/tensor_infected.png  used on input line 115.
-(pdftex.def)             Requested size: 120.95892pt x 116.04362pt.
-
-Underfull \hbox (badness 1831) in paragraph at lines 125--126
-\OT1/ptm/m/it/10 put \OT1/ptm/m/n/10 (micro-benchmark) and \OT1/ptm/m/it/10 Ser
--vice In-ter-fer-ence \OT1/ptm/m/n/10 (macro-
- []
-
-<Figures/fig_final_throughput.pdf, id=469, 282.78659pt x 137.86507pt>
+<Figures/fig_final_throughput.pdf, id=471, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
 Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 1
-40.
-(pdftex.def)             Requested size: 239.39923pt x 116.71254pt.
-<Figures/fig_final_latency.pdf, id=470, 281.86806pt x 137.86507pt>
+10.
+(pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
+<Figures/fig_final_latency.pdf, id=472, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
-Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 144.
+Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 114.
 
-(pdftex.def)             Requested size: 239.39923pt x 117.0954pt.
-
-Underfull \hbox (badness 1661) in paragraph at lines 150--151
- \OT1/ptm/m/it/10 2) Macro-benchmark: Ser-vice In-ter-fer-ence: [][] \OT1/ptm/m
-/n/10 While raw
- []
+(pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
 
+<Figures/comparison_dilution.pdf, id=473, 730.85376pt x 333.64601pt>
+File: Figures/comparison_dilution.pdf Graphic file (type pdf)
+<use Figures/comparison_dilution.pdf>
+Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 13
+9.
+(pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
 
-[8 <./Figures/tensor_clean.png> <./Figures/tensor_infected.png>]
-Underfull \vbox (badness 1248) has occurred while \output is active []
 
-
-
-
-
-[9 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf>]
-<Figures/fig_fleet_vis.pdf, id=584, 664.56091pt x 592.72504pt>
+[8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
+gures/comparison_dilution.pdf>]
+<Figures/fig_fleet_scalability.pdf, id=636, 498.67555pt x 241.45416pt>
+File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
+<use Figures/fig_fleet_scalability.pdf>
+Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
+185.
+(pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
+<Figures/fig_fleet_vis.pdf, id=637, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 227.
-(pdftex.def)             Requested size: 239.39923pt x 213.51651pt.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 189.
+(pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
+
+
+
+[9 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>])
+(./5. Related Works.tex
 
 ) (./6. Discussion and Limitation.tex
 
-[10 <./Figures/fig_fleet_vis.pdf>]
+[10]
+Underfull \hbox (badness 1701) in paragraph at lines 10--11
+\OT1/ptm/m/n/10 est risk score dom-i-nates the pixel value ($\OML/cmm/m/it/10 T
+[] \OT1/cmr/m/n/10 =
+ []
 
 ) (./7. Conclusion.tex) (./main.bbl
 
-[11]
-Underfull \hbox (badness 4967) in paragraph at lines 52--54
+
+Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
  []
 
 
-Underfull \hbox (badness 2856) in paragraph at lines 77--79
-[]\OT1/ptm/m/n/8 Openwall, ``LKRG: Linux Ker-nel Run-time Guard,'' $https : / /
- www .
- []
 
-)
+[11])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1012,13 +1027,13 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17593 strings out of 473190
- 381018 string characters out of 5715800
- 791498 words of memory out of 5000000
- 40493 multiletter control sequences out of 15000+600000
- 605351 words of font info for 131 fonts, out of 8000000 for 9000
+ 17704 strings out of 473190
+ 382884 string characters out of 5715800
+ 792734 words of memory out of 5000000
+ 40595 multiletter control sequences out of 15000+600000
+ 606595 words of font info for 133 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,11n,91p,1166b,379s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,13n,91p,1341b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></
@@ -1034,17 +1049,18 @@ ive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive
 25/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2025/tex
-mf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2025/texmf-dist/
-fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/ty
-pe1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw
-/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utm
-bi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><
-/usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loca
-l/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1637910 bytes).
+mf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/local/texlive/2025/
+texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2025/texmf-di
+st/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts
+/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/
+urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/
+utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pf
+b></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/l
+ocal/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
+Output written on main.pdf (12 pages, 1891213 bytes).
 PDF statistics:
- 754 PDF objects out of 1000 (max. 8388607)
- 292 compressed objects within 3 object streams
+ 841 PDF objects out of 1000 (max. 8388607)
+ 317 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  93 words of extra memory for PDF output out of 10000 (max. 10000000)
 

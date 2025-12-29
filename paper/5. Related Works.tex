@@ -1,51 +1,11 @@
 \section{Related Work}
 \label{sec:related_work}
 
-\subsection{System Integrity and Runtime Monitoring}
+\noindent\textbf{Scalable Integrity and Cloud-Native Monitoring. }
+Optimizing system integrity monitoring requires balancing security depth with performance overhead. Traditional File Integrity Monitoring (FIM) tools~\cite{tripwire, aide, samhain} rely on cryptographic hashing to detect unauthorized modifications. While effective for static environments, they suffer from linear $O(N)$ complexity, making them prohibitive for hyperscale cloud environments. To address real-time constraints, provenance-based systems~\cite{unicorn, cheng2024kairos} and runtime monitors~\cite{ossec, falco} track information flow and system calls. Recent advancements leverage eBPF to reduce monitoring overhead and harden isolation~\cite{he2023cross, tfjmp2024safebpf}. However, even lightweight eBPF probes incur continuous CPU costs due to event interception and cannot detect dormant threats implanted prior to monitoring (the cold-start problem). In contrast, \DeepVis eliminates runtime instrumentation overhead by operating on asynchronous storage snapshots, decoupling the monitoring cost from the active workload while providing coverage for dormant artifacts.
 
-Optimizing system integrity monitoring to balance security and performance is a long-standing challenge. Traditional File Integrity Monitoring (FIM) tools, such as Tripwire~\cite{tripwire}, AIDE~\cite{aide}, and Samhain~\cite{samhain}, rely on cryptographic hashing to detect unauthorized modifications. While effective for static environments, they suffer from linear $O(N)$ complexity, making them too slow for hyperscale cloud environments where file systems change frequently. To address real-time constraints, host-based intrusion detection systems like OSSEC~\cite{ossec} and runtime monitors like Falco~\cite{falco} analyze logs and system calls. However, these approaches often incur significant CPU overhead due to continuous event interception.
+\noindent\textbf{Malware Visualization and Adversarial Evasion. }
+Treating binary analysis as a computer vision problem allows systems to bypass the brittleness of signature-based detection. Prior studies~\cite{nataraj2011malware, conti2008visual, aldini2024image} demonstrate that mapping binary files to grayscale images or space-filling curves reveals structural patterns distinct to malware families. Similarly, entropy analysis~\cite{lyda2007entropy} identifies packed or encrypted payloads with high information density. However, sophisticated adversaries increasingly employ evasion techniques, such as padding or mimicry, to fool learning-based detectors~\cite{ling2024wolf, uetz2024detecting}. \DeepVis addresses these challenges by extending single-file visualization to \textit{whole-system fingerprinting}. Instead of relying on a single metric susceptible to padding, \DeepVis maps the entire file system into a fixed-size RGB tensor. By encoding Entropy (Red), Context (Green), and Structure (Blue) into a spatial grid, the system leverages feature orthogonality to detect sparse anomalies that evade uni-modal analysis.
 
-More advanced runtime approaches leverage provenance graphs or kernel instrumentation. Unicorn~\cite{unicorn} builds causal graphs from system execution logs to detect advanced persistent threats. Copilot~\cite{petroni2006copilot} and Gibraltar~\cite{baliga2008gibraltar} utilize kernel runtime memory analysis to detect rootkits by monitoring data structure invariants. While these methods achieve high precision, they require heavy instrumentation or specialized hardware, limiting their deployability in cost-sensitive cloud fleets. In contrast, \DeepVis eliminates runtime instrumentation overhead by operating on storage snapshots, decoupling the monitoring cost from the active workload.
-
-\subsection{Malware Visualization and Entropy Analysis}
-
-The concept of treating binary analysis as a computer vision problem has been explored to bypass the brittleness of signature-based detection. Nataraj et al.~\cite{nataraj2011malware} and Conti et al.~\cite{conti2008visual} demonstrated that mapping binary files to grayscale images reveals structural patterns distinct to malware families. Similarly, Lyda and Hamrock~\cite{lyda2007entropy} utilized entropy analysis to identify packed or encrypted malware, which exhibits higher information density than benign code.
-
-\DeepVis extends these concepts from single-file analysis to \textit{whole-system fingerprinting}. Instead of classifying individual binaries, \DeepVis maps the entire file system state into a fixed-size RGB tensor. By encoding Entropy (Red), Context (Green), and Structure (Blue) into a spatial grid, we leverage the feature orthogonality inspired by these prior works to detect sparse anomalies within a massive file system.
-
-\subsection{Deep Learning for Anomaly Detection}
-
-Deep learning has been widely adopted to detect anomalies in high-dimensional system data. DeepLog~\cite{du2017deeplog} utilizes Long Short-Term Memory (LSTM) networks to model system logs as natural language sequences. Kitsune~\cite{mirsky2018kitsune} employs an ensemble of autoencoders to detect network intrusion patterns in real-time. For high-dimensional data, various unsupervised learning frameworks have been proposed, including Deep One-Class Classification~\cite{ruff2018deep}, GANomaly~\cite{akcay2018ganomaly}, and Deep Autoencoding Gaussian Mixture Models (DAGMM)~\cite{zong2018deep}. Additionally, OmniAnomaly~\cite{su2019robust} and Donut~\cite{xu2018unsupervised} apply variational autoencoders to time-series data for robust anomaly detection.
-
-These approaches typically focus on temporal sequences or tabular data. \DeepVis faces a different challenge: the "Ordering Problem" of unordered file systems. Unlike time-series data, file systems lack a natural sequence. \DeepVis addresses this by employing a spatial hash mapping and Local Max Detection ($L_\infty$), allowing it to apply convolutional autoencoders to unordered system states effectively.
-
-Table~\ref{tab:se_comparison} provides a comparative analysis of \DeepVis against representative approaches from these domains.
-
-\begin{table*}[t]
-\centering
-\caption{Comparison of System Monitoring Paradigms (Selected Works 1994--2025)}
-\label{tab:se_comparison}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccl}
-\toprule
-\textbf{Framework} & \textbf{Type} & \textbf{Input Data} & \textbf{Overhead} & \textbf{Latency} & \textbf{Complexity} & \textbf{Scope} & \textbf{Key Limitation} \\
-\midrule
-\multicolumn{8}{l}{\textit{\textbf{Traditional Integrity \& Scanning}}} \\
-AIDE / Tripwire~\cite{aide,tripwire} & FIM & File Hashes & High (I/O) & Minutes & $O(N)$ & All files & Linearly slow with file count \\
-ClamAV / YARA~\cite{clamav,yara} & AV & Signatures & High (CPU) & High & $O(N)$ & Known & Fails on obfuscated threats \\
-ssdeep~\cite{ssdeep} & Fuzzy Hash & Content & High (I/O) & High & $O(N)$ & All files & Requires full file read \\
-\midrule
-\multicolumn{8}{l}{\textit{\textbf{Runtime \& Log Analysis}}} \\
-OSSEC / Falco~\cite{ossec,falco} & HIDS & Logs/Events & Medium & Real-time & $O(Events)$ & Runtime & Alert fatigue, rule management \\
-DeepLog~\cite{du2017deeplog} & DL & Log Seq & Medium & Real-time & $O(Events)$ & Logs & Sequential dependency focus \\
-Unicorn~\cite{unicorn} & Provenance & Graph & High & Seconds & $O(Graph)$ & Causal & Instrumentation overhead \\
-Copilot~\cite{petroni2006copilot} & Kernel & Memory & Low & Periodic & $O(Mem)$ & Kernel & Hardware dependency (PCI) \\
-\midrule
-\multicolumn{8}{l}{\textit{\textbf{Spatial Snapshot Analysis (This Work)}}} \\
-\textbf{DeepVis} & \textbf{DL/Vision} & \textbf{FS Tensor} & \textbf{Negligible} & \textbf{Milliseconds} & $\mathbf{O(1)^\dagger}$ & \textbf{File Sys} & \textbf{Header-only scope} \\
-\bottomrule
-\end{tabular}%
-}
-\vspace{1mm}
-\footnotesize{$^\dagger$ Inference complexity is $O(1)$ relative to file count. Ingestion is $O(N)$ but parallelized via io\_uring.}
-\end{table*}
+\noindent\textbf{Deep Learning for Anomaly Detection. }
+Deep learning is widely adopted for detecting anomalies in high-dimensional system data. Approaches such as DeepLog~\cite{du2017deeplog} use LSTM networks to model system logs, while Kitsune~\cite{mirsky2018kitsune} employs autoencoders for network intrusion detection. For high-dimensional tabular or sensor data, unsupervised frameworks such as Deep One-Class Classification~\cite{ruff2018deep}, GANomaly~\cite{akcay2018ganomaly}, and DAGMM~\cite{zong2018deep} learn normal data distributions to flag outliers. Additionally, VAE-based models~\cite{su2019robust, xu2018unsupervised} are effective for multivariate time-series data. However, these methods typically rely on temporal sequences or fixed feature sets. File systems present a unique "Ordering Problem" as they are unordered sets of variable-length paths. \DeepVis resolves this by employing a deterministic spatial hash mapping and Local Max Detection ($L_\infty$), enabling the application of convolutional autoencoders to unordered system states without the signal dilution associated with global pooling.

@@ -45,8 +45,8 @@ Our key idea is to leverage a spatial hash projection architecture, enabling hig
 Specifically, \DeepVis first introduces an asynchronous snapshot engine that leverages high-performance I/O interfaces to maximize ingestion rates, allowing the system to rapidly capture file system states.
 Second, \DeepVis devises a lock-free tensor mapping pipeline, where metadata processing is sharded across processor cores to eliminate contention and achieve linear scalability.
 Finally, \DeepVis adopts a spatial anomaly detection approach, enabling the identification of sparse attack signals even amidst significant background noise caused by legitimate system updates.
-We implement \DeepVis with these three techniques and evaluate its performance on a production-grade cloud VM with 4 vCPUs and NVMe storage.
-Our evaluation results show that \DeepVis achieves a scan rate of over 8,200 files/sec and improves verification throughput by 7.7$\times$ to 9,600$\times$ compared with AIDE depending on the workload, while maintaining negligible runtime overhead (CPU impact $<2\%$).
+We implement \DeepVis with these three techniques and evaluate its performance on production-grade cloud infrastructure, scaling up to 100 VMs across multiple regions.
+Our evaluation results show that \DeepVis achieves a scan rate of approximately 40,000 files/sec and improves verification throughput by 7.7$\times$ compared with AIDE and up to 215$\times$ compared with commercial scanners, while maintaining 96\% recall on active threats with a 0.6\% repository alert rate and negligible runtime overhead (CPU impact $<2\%$).
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -57,7 +57,7 @@ Distributed Systems, File System Monitoring, Scalable Verification, Anomaly Dete
 \input{2. Background.tex}
 \input{3. Design.tex}
 \input{4. Evaluation.tex}
-% Related Work merged into Introduction
+\input{5. Related Works.tex}
 \input{6. Discussion and Limitation.tex}
 \input{7. Conclusion.tex}
 
