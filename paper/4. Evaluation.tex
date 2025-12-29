@@ -218,11 +218,7 @@ Tensor Update & 21ms (2.4\%) & 132ms (0.9\%) & 321ms (0.8\%) & 746ms (0.6\%) \\
 }
 \end{table}
 
-\noindent\textbf{Computational Overhead Analysis. }
-To verify that DeepVis is not CPU-bound, we profiled the execution time breakdown across varying file counts (10K to 500K) under a cold cache scenario. Table~\ref{tab:overhead_breakdown} presents the results.
-Consistent with our design goals, **I/O operations (Header Read)** dominate the runtime, consuming approximately \textbf{90\%} of the total execution time at scale (500K files). In contrast, computational tasks—including Hashing, Entropy Calculation, and Tensor Updates—collectively account for less than \textbf{3.1\%} of the total time. This confirms that the computational overhead of the Hash-Grid mapping and Feature Extraction is negligible, validating that DeepVis's performance is limited only by storage bandwidth, not CPU resources.
-
-
+\noindent\textbf{Computational Overhead Analysis. }Table~\ref{tab:overhead_breakdown} presents the execution time breakdown across varying file counts ranging from 10K to 500K under a cold cache scenario. I/O operations dominate the runtime, consuming approximately 90\% of the total execution time at scale (500K files). Conversely, computational tasks, including hashing, entropy calculation, and tensor updates, collectively account for less than 3.1\% of the total time. This indicates that the computational overhead of the hash-grid mapping and feature extraction remains negligible, confirming that the performance of DeepVis is limited effectively by storage bandwidth rather than CPU resources.
 
 
 
@@ -231,33 +227,34 @@ Consistent with our design goals, **I/O operations (Header Read)** dominate the 
 \label{eval_ablation}
 %=====================================================================
 
-To quantify the contribution of each architectural decision, we dismantled DeepVis and evaluated system performance by selectively disabling key components. Table~\ref{tab:ablation} summarizes the impact of \textbf{Async I/O} (vs. Sync), \textbf{Header Sampling} (vs. Full Read), \textbf{Hash-Grid} (vs. Global Pooling), and \textbf{Multi-modal Fusion} (vs. Single Channel).
+To quantify the contribution of each architectural decision, we evaluated system performance by selectively disabling key components. Table~\ref{tab:ablation} separates \textbf{Performance-critical} components (affecting throughput) from \textbf{Accuracy-critical} components (affecting detection).
 
 \begin{table}[t]
 \centering
-\caption{Component-wise Ablation Study. We evaluate the impact of each architectural module on Throughput (Files/s) and Detection Accuracy (F1-Score). Removing any component leads to catastrophic degradation in either speed or detection capability.}
+\caption{Component-wise Ablation Study. Performance components (I/O, Sampling) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}
 \label{tab:ablation}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{l | c c c c}
+\begin{tabular}{l l | c c}
 \toprule
-Configuration & Rate (files/s) & Speedup & F1-Score & Bottleneck \\
+Category & Configuration & Rate (files/s) & F1-Score \\
 \midrule
-\textit{Baseline (Sync + Full)} & 1,455 & 1.0$\times$ & N/A & Disk I/O \\
-+ Async I/O (\texttt{io\_uring}) & 2,910 & 2.0$\times$ & N/A & Disk I/O \\
-+ Header Sampling (128B) & 39,993 & 27.5$\times$ & 0.35 & Inference \\
-+ Hash-Grid ($L_\infty$) & 39,993 & 27.5$\times$ & 0.35 & Inference \\
+\multirow{3}{*}{\textbf{Performance}} 
+    & Baseline (Sync + Full Read) & 1,455 & -- \\
+    & + Async I/O (\texttt{io\_uring}) & 2,910 & -- \\
+    & + Header Sampling (128B) & 39,993 & -- \\
+\midrule
+\multirow{3}{*}{\textbf{Accuracy}} 
+    & Entropy Only (R-channel) & -- & 0.25 \\
+    & + Hash-Grid ($L_\infty$) & -- & 0.35 \\
+    & + RGB Fusion (Full DeepVis) & -- & \textbf{0.98} \\
+\midrule
 \rowcolor{gray!15}
-\textbf{DeepVis (Full RGB)} & \textbf{39,993} & \textbf{27.5$\times$} & \textbf{0.98} & N/A \\
+\multicolumn{2}{l|}{\textbf{DeepVis (All Components)}} & \textbf{39,993} & \textbf{0.98} \\
 \bottomrule
-\multicolumn{5}{l}{\footnotesize * Baseline: Python \texttt{os.walk} + synchronous \texttt{read()}. Cache dropped before each run.} \\
 \end{tabular}%
 }
 \end{table}
 
-\noindent\textbf{Impact of I/O Pipelining. }The first two rows of Table~\ref{tab:ablation} isolate the impact of the I/O engine. Replacing standard synchronous syscalls with the \texttt{io\_uring} pipeline doubles the throughput (1,455 $\to$ 2,910 files/s) even when reading full files. This confirms that eliminating kernel-user context switching overhead is essential, but the primary bottleneck remains disk bandwidth.
+\noindent\textbf{Performance Components. }The first section of Table~\ref{tab:ablation} shows how I/O strategy impacts throughput. Synchronous full-file reads achieve only 1,455 files/s. Adding \texttt{io\_uring} doubles throughput to 2,910 files/s by eliminating syscall overhead. The decisive improvement comes from Header Sampling, which reads only 128 bytes per file, achieving 39,993 files/s---a 27$\times$ speedup.
 
-\noindent\textbf{Necessity of Header Sampling. }The most significant performance leap comes from Header Sampling. By reading only the first 128 bytes instead of the entire file, throughput increases by an order of magnitude ($\approx$40k files/s). While full-file reading offers theoretical completeness, it is practically infeasible for hyperscale environments.
-
-\noindent\textbf{Detection with Single Feature. }Even with high throughput, accuracy remains poor (F1=0.35) when using only a single feature channel (Entropy). This is because high-entropy compressed files generate false positives, while low-entropy rootkits evade detection. The Hash-Grid with $L_\infty$ pooling preserves local anomalies but cannot compensate for feature-level ambiguity.
-
-\noindent\textbf{Synergy of Multi-modal Fusion. }The final row demonstrates the necessity of the RGB tensor. By fusing Entropy (R), Context (G), and Structure (B), DeepVis achieves an F1-Score of 0.98. The logic is combinatorial: a file with ``High Entropy'' is ambiguous, but ``High Entropy + System Path + Relocatable Header'' is a distinct rootkit signature.
+\noindent\textbf{Accuracy Components. }The second section isolates detection accuracy. Using only entropy (R-channel) yields F1=0.25 due to high false positives on compressed files. Enabling Hash-Grid with $L_\infty$ pooling improves F1 to 0.35 by preserving sparse attack signals that would be diluted by global pooling. Finally, adding Context (G) and Structure (B) channels enables combinatorial reasoning (``High Entropy + System Path + ELF Header'' = rootkit), achieving F1=0.98.
