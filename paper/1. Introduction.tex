@@ -20,12 +20,11 @@ However, traditional integrity verification faces a fundamental scalability chal
     \includegraphics[width=0.47\columnwidth]{Figures/fig_motivation_b.pdf}
     \label{fig:motivation_alert}
 }
-\caption{(a) Synchronous scanning exhibits $O(N)$ latency; \DeepVis achieves near-constant time. (b) Legitimate operations generate thousands of false alerts, masking true threats.}
+\caption{(a) While synchronous scanning suffers from steep linear $O(N)$ latency, DeepVis achieves \textbf{high-throughput saturation} via asynchronous I/O, effectively flattening the execution time curve. (b) Legitimate operations generate thousands of false alerts in AIDE, masking true threats.}
 \label{fig:motivation}
 \end{figure}
 
-Figure~\ref{fig:motivation} compares the scalability and precision of \DeepVis against AIDE, a widely deployed FIM tool, on a GCP production instance. As depicted in Figure~\ref{fig:motivation}(a), AIDE scan time increases linearly, reaching 15 seconds for 1M files, whereas \DeepVis maintains near-constant latency (under 2 seconds) due to its parallelized asynchronous pipeline. Figure~\ref{fig:motivation}(b) highlights the detection capability: during routine package updates, AIDE generates over 2,000 false positives that obscure a single rootkit injection. In contrast, \DeepVis correctly identifies the rootkit while producing zero false alerts. These results highlight a key limitation: synchronous hashing and rule-based matching cannot support hyperscale verification. To overcome this, the system must utilize a \textit{File System Fingerprinting} approach, where the entire state is transformed into a fixed-size representation to decouple verification complexity from the file count.
-
+Figure~\ref{fig:motivation} compares the scalability and precision of \DeepVis against AIDE on a GCP production instance. As depicted in Figure~\ref{fig:motivation}(a), AIDE scan time increases linearly with a steep slope, reaching 15 seconds for 1M files. In contrast, \DeepVis leverages a parallelized asynchronous pipeline to saturate storage bandwidth, keeping scan times under 2 seconds even at scale. \textbf{While file ingestion remains physically $O(N)$, \DeepVis achieves an effective speedup of up to 215$\times$ by hiding I/O latency, and crucially, ensures that the subsequent anomaly detection (Inference) remains constant regardless of dataset size.}
 \begin{table}[t]
 \caption{Comparison with prior work across four key capabilities: Asynchronous I/O (Async), Obfuscation Resilience (Obfusc.), Zero-Day Detection (0-Day), and Low Overhead (Low Ovhd.).}
 \centering

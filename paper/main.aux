@@ -19,7 +19,7 @@
 \newlabel{sub@fig:motivation_scale}{{(a)}{a}}
 \newlabel{fig:motivation_alert}{{1b}{1}{}{subfigure.1.2}{}}
 \newlabel{sub@fig:motivation_alert}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces (a) Synchronous scanning exhibits $O(N)$ latency; \texttt  {DeepVis}\xspace  achieves near-constant time. (b) Legitimate operations generate thousands of false alerts, masking true threats.}}{1}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces (a) While synchronous scanning suffers from steep linear $O(N)$ latency, DeepVis achieves \textbf  {high-throughput saturation} via asynchronous I/O, effectively flattening the execution time curve. (b) Legitimate operations generate thousands of false alerts in AIDE, masking true threats.}}{1}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Scalability}}}{1}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Alert Fatigue}}}{1}{}\protected@file@percent }
 \newlabel{fig:motivation}{{1}{1}{}{figure.1}{}}
@@ -79,7 +79,7 @@
 \newlabel{eval_setup}{{\mbox  {IV-A}}{7}{}{subsection.4.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Accuracy and Feature Orthogonality (RQ1)}{7}{}\protected@file@percent }
 \newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Evaluated on a rigorous \textbf  {Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf  {Global Repository} (37,571 Files). \texttt  {DeepVis}\xspace  demonstrates superior recall on active threats compared to entropy-based baselines while maintaining high selectivity on the global repository.}}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Evaluated on a rigorous \textbf  {Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf  {Global Repository} (37,571 Files). \texttt  {DeepVis}\xspace  achieves 96\% recall on active binary threats. YARA and ClamAV are included as \textit  {reference points} (full-content scanners) rather than direct baselines, to contextualize the noise and coverage trade-offs of header-only sampling.}}{7}{}\protected@file@percent }
 \newlabel{tab:unified_detection}{{III}{7}{}{table.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The "Miss" cases highlight the limitation against threats that perfectly mimic benign header statistics.}}{7}{}\protected@file@percent }
 \newlabel{tab:detailed_breakdown}{{IV}{7}{}{table.4}{}}
@@ -94,9 +94,9 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Scalability and Performance Analysis (RQ2)}{8}{}\protected@file@percent }
 \newlabel{eval_scalability}{{\mbox  {IV-C}}{8}{}{subsection.4.3}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Micro-benchmark}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Macro-benchmark}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Visualizing Signal Preservation. (Top) \texttt  {DeepVis}\xspace  maintains spatial locality, isolating the malware as a distinct red peak ($L_\infty $ Spike). (Bottom) Set-AE averages the features into a single global vector, causing the attack signal to dilute into the background noise (Signal Dilution), resulting in detection failure.}}{8}{}\protected@file@percent }
 \newlabel{fig:signal_comparison}{{8}{8}{}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Macro-benchmark}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Impact of Spatial Dimension and Hash Saturation (RQ3, RQ6)}{8}{}\protected@file@percent }
 \newlabel{eval_saturation}{{\mbox  {IV-D}}{8}{}{subsection.4.4}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Hash Saturation Analysis. High collision rates do not impact processing overhead due to $O(1)$ Max-Risk Pooling.}}{9}{}\protected@file@percent }
@@ -111,8 +111,6 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{9}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{9}{}{figure.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $90\%), confirming that \\DeepVis computational overhead (Hashing, Entropy, Tensor Update) is negligible.}}{9}{}\protected@file@percent }
-\newlabel{tab:overhead_breakdown}{{VI}{9}{}{table.6}{}}
 \citation{tripwire,aide,samhain}
 \citation{unicorn,cheng2024kairos}
 \citation{ossec,falco}
@@ -126,14 +124,14 @@
 \citation{akcay2018ganomaly}
 \citation{zong2018deep}
 \citation{su2019robust,xu2018unsupervised}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $90\%), confirming that \\DeepVis computational overhead (Hashing, Entropy, Tensor Update) is negligible.}}{10}{}\protected@file@percent }
+\newlabel{tab:overhead_breakdown}{{VI}{10}{}{table.6}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Component-wise Ablation Study. Performance components (I/O, Sampling) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}}{10}{}\protected@file@percent }
 \newlabel{tab:ablation}{{VII}{10}{}{table.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Ablation Study: Component Contribution Analysis}{10}{}\protected@file@percent }
 \newlabel{eval_ablation}{{\mbox  {IV-F}}{10}{}{subsection.4.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{10}{}\protected@file@percent }
 \newlabel{sec:related_work}{{V}{10}{}{section.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{10}{}\protected@file@percent }
-\newlabel{sec:discussion}{{VI}{10}{}{section.6}{}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
@@ -156,12 +154,14 @@
 \bibcite{uetz2024detecting}{18}
 \bibcite{du2017deeplog}{19}
 \bibcite{mirsky2018kitsune}{20}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
+\newlabel{sec:discussion}{{VI}{11}{}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
 \bibcite{ruff2018deep}{21}
 \bibcite{akcay2018ganomaly}{22}
 \bibcite{zong2018deep}{23}
 \bibcite{su2019robust}{24}
 \bibcite{xu2018unsupervised}{25}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
-\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
 \gdef \@abspage@last{12}

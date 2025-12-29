@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 00:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 08:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -789,7 +789,7 @@ File: Figures/fig_motivation_b.pdf Graphic file (type pdf)
 Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 22.
 (pdftex.def)             Requested size: 118.4403pt x 93.49379pt.
 
-Underfull \hbox (badness 3792) in paragraph at lines 27--28
+Underfull \hbox (badness 3792) in paragraph at lines 27--49
 []\OT1/ptm/m/n/10 Figure 1[] com-pares the scal-a-bil-ity and pre-ci-sion of
  []
 
@@ -837,12 +837,12 @@ ed on input line 42.
 
 
 [2]) (./3. Design.tex
-
-
 Underfull \hbox (badness 2134) in paragraph at lines 9--10
 []\OT1/ptm/m/n/10 Figure 3[] shows the over-all pro-ce-dure of \OT1/pcr/m/n/10 
 DeepVis\OT1/ptm/m/n/10 .
  []
+
+
 
 <Figures/Design/Overall_Arch.pdf, id=142, 671.34879pt x 552.3113pt>
 File: Figures/Design/Overall_Arch.pdf Graphic file (type pdf)
@@ -861,7 +861,7 @@ Overfull \hbox (4.0748pt too wide) in paragraph at lines 15--16
 _entrophy/Background_Normal_text.pdf> <./Figures/Background_entrophy/Background
 _System_binaray.pdf> <./Figures/Background_entrophy/Background_Rootkit.pdf> <./
 Figures/Design/Overall_Arch.pdf>]
-<Figures/Design/io_Arch.pdf, id=329, 756.41832pt x 550.10004pt>
+<Figures/Design/io_Arch.pdf, id=330, 756.41832pt x 550.10004pt>
 File: Figures/Design/io_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/io_Arch.pdf>
 Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 40.
@@ -891,7 +891,7 @@ Overfull \hbox (19.7101pt too wide) detected at line 104
 
 
 [5 <./Figures/Design/Hash_Arch.pdf>]
-Underfull \hbox (badness 3333) in paragraph at lines 123--124
+Underfull \hbox (badness 3333) in paragraph at lines 126--127
 []\OT1/ptm/b/n/10 Channel B (Struc-ture): \OT1/ptm/m/n/10 This quan-ti-fies str
 uc-tural
  []
@@ -899,20 +899,25 @@ uc-tural
 <Figures/Design/CNN_Arch.pdf, id=400, 737.58846pt x 539.33128pt>
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
-Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 136.
+Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 139.
 (pdftex.def)             Requested size: 256.0748pt x 187.2463pt.
 
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 136--137
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 139--140
  [][] 
  []
 
 
 
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 161.
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 164.
 ) (./4. Evaluation.tex
 
 [6 <./Figures/Design/CNN_Arch.pdf>]
+
+LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
+(Font)              using `OT1/ptm/m/it' instead on input line 35.
+
+
 
 
 
@@ -955,11 +960,17 @@ Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 189.
 
 
 
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
 
 [9 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>])
 (./5. Related Works.tex
 
 ) (./6. Discussion and Limitation.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [10]
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
@@ -967,9 +978,9 @@ Underfull \hbox (badness 1701) in paragraph at lines 10--11
 [] \OT1/cmr/m/n/10 =
  []
 
-) (./7. Conclusion.tex) (./main.bbl
+) (./7. Conclusion.tex)
 
-
+(./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1002,11 +1013,11 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17704 strings out of 473190
- 382884 string characters out of 5715800
- 792734 words of memory out of 5000000
- 40595 multiletter control sequences out of 15000+600000
- 606595 words of font info for 133 fonts, out of 8000000 for 9000
+ 17706 strings out of 473190
+ 382904 string characters out of 5715800
+ 792737 words of memory out of 5000000
+ 40596 multiletter control sequences out of 15000+600000
+ 607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,12n,91p,1341b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
@@ -1032,7 +1043,7 @@ urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/
 utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pf
 b></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/l
 ocal/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1891224 bytes).
+Output written on main.pdf (12 pages, 1891978 bytes).
 PDF statistics:
  841 PDF objects out of 1000 (max. 8388607)
  317 compressed objects within 4 object streams

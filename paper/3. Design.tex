@@ -105,6 +105,9 @@ Dec2 & Conv1$\times$1 & 16 $\to$ 3 & Sigmoid \\
 By using HMAC, the mapping provides two benefits. First, it ensures \textit{Positional Stability}: the coordinates of existing files depend only on their own paths and the key, remaining unaffected by the addition or removal of other files. Second, it prevents ``Bucket Targeting'' attacks. Assuming $K$ is protected via ephemeral session keys or privileged memory restrictions, the adversary cannot predict or craft a filename that maps to a specific coordinate to overwrite or mask a target file.
 
 \noindent
+\textit{Key Rotation without Retraining.} A critical operational advantage of the $1 \times 1$ CAE design is its independence from spatial layout. Since the model learns the joint probability of per-pixel features $(R, G, B)$ rather than inter-pixel spatial patterns, changing the secret key $K$---which merely shuffles pixel locations---does not invalidate the trained decoder. Therefore, operators can periodically rotate $K$ for security hygiene without incurring any retraining cost.
+
+\noindent
 \textit{Max-Risk Pooling for Collisions.} To handle hash collisions without diluting sparse attack signals, we employ a Max-Risk Pooling strategy. For a pixel $(x,y)$ mapping multiple files $\{f_1, ..., f_k\}$, the tensor value is computed as:
 \begin{equation}
     T_{x,y} = \left[ \max_i(R_{f_i}), \max_i(G_{f_i}), \max_i(B_{f_i}) \right]
