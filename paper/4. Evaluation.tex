@@ -21,7 +21,7 @@ We employed a maximum-margin approach to determine detection boundaries. The thr
 \label{eval_accuracy}
 %=====================================================================
 
-We evaluated \DeepVis across a large-scale malware collection, including 3 compiled rootkits (Diamorphine, Azazel, Beurk) and 37,571 diverse malware samples (mostly source code) from the \texttt{MalwareSourceCode} repository. Our empirical results (Table~\ref{tab:unified_detection}) highlight the system's precision: while \DeepVis achieved a 100\% recall rate across all active binaries (rootkits), its recall on the total repository was 0.6\% (230 files), closely matching the count of actual executables vs. dormant source code. In contrast, YARA achieved 2.7\% by matching text strings in source files, generating noise. We also acknowledge \DeepVis failed to detect script-based threats (c99.php) in legitimate contexts (0\% recall), confirming its scope is limited to binary execution anomalies.
+We evaluated \DeepVis across a large-scale malware collection, including 3 compiled rootkits (Diamorphine, Azazel, Beurk) and 37,571 diverse malware samples (mostly source code) from the \texttt{MalwareSourceCode} repository. Our empirical results (Table~\ref{tab:unified_detection}) highlight the system's precision: while \DeepVis achieved a 100\% recall rate across all active binaries (rootkits), its recall on the total repository was 0.6\% (230 files). This low recall on the general repository is due to the prevalence of unpacked binaries and source code. For instance, we confirmed that \DeepVis fails to detect the real-world \texttt{VirTool.DDoS.TCP.a} ($R=0.58, G=0.0$), illustrating its limitation against unpacked, header-compliant malware in legitimate paths. In contrast, YARA achieved 2.7\% by matching text strings.
 
 \begin{table}[t]
 \centering
@@ -68,7 +68,7 @@ Rev. Shell & \texttt{rev\_shell} & \texttt{/d/shm/rev\_shell} & \textbf{1.00} & 
 Disguised ELF & \texttt{access.log} & \texttt{/v/log/access.log} & 0.55 & 0.00 & \textbf{1.00} & \textbf{Det.} \\
 Webshell (Public) & \texttt{c99.php} & \texttt{/v/www/html/c99.php} & 0.58 & 0.00 & 0.00 & Miss \\
 Mimicry ELF & \texttt{libc\_fake.so} & \texttt{/lib/libc\_fake.so} & 0.61 & 0.00 & 0.00 & Miss \\
-Safe Path & \texttt{Implant} & \texttt{/usr/bin/implant} & 0.60 & 0.00 & 0.00 & Miss \\
+DDoS Tool (Real) & \texttt{VirTool.TCP.a} & \texttt{.../DDoS/VirTool.TCP.a} & 0.58 & 0.00 & 0.00 & Miss \\
 \midrule
 \multicolumn{7}{l}{\textit{\textbf{Benign System Files}}} \\
 Interpreter & \texttt{python3} & \texttt{/u/bin/python3} & 0.67 & 0.00 & 0.00 & Clean \\
