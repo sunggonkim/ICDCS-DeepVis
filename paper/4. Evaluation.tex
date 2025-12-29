@@ -21,7 +21,7 @@ We employed a maximum-margin approach to determine detection boundaries. The thr
 \label{eval_accuracy}
 %=====================================================================
 
-We evaluated \DeepVis across a large-scale malware collection, including 3 compiled rootkits (Diamorphine, Azazel, Beurk) and 37,571 diverse malware samples from the \texttt{MalwareSourceCode} repository. Our empirical results, summarized in Table~\ref{tab:unified_detection}, distinguish between \textit{Active Binaries} (LKM drivers, shared objects) and the \textit{Total Repository} (including dormant source code and metadata). \DeepVis achieved a 100\% recall rate across all active malicious binaries and obfuscated variants. However, for the total repository, the recall adjusted to 23.1\% as \DeepVis correctly ignores low-risk dormant scripts and non-executable metadata that do not violate system integrity constraints. In contrast, signature-based tools (ClamAV, YARA, \texttt{rkhunter}) failed against obfuscated threats (0\% recall) and exhibited near-zero detection on the custom rootkit binaries.
+We evaluated \DeepVis across a large-scale malware collection, including 3 compiled rootkits (Diamorphine, Azazel, Beurk), 37,571 diverse malware samples from the \texttt{MalwareSourceCode} repository, and \textbf{1 adversarial header-mimicking sample} explicitly engineered to evade detection. Our empirical results, summarized in Table~\ref{tab:unified_detection}, distinguish between \textit{Active Binaries} (LKM drivers, shared objects), the \textit{Total Repository}, and \textit{Adversarial Evasion}. \DeepVis achieved a 100\% recall rate across all standard active malicious binaries. However, it failed to detect the adversarial header-mimicking sample (0\% recall), confirming that if an attacker perfectly reconstructs a benign file header, \DeepVis cannot distinguish it from legitimate files solely based on metadata. For the total repository, the recall adjusted to 23.1\% as \DeepVis correctly ignores low-risk dormant scripts. In contrast, signature-based tools (ClamAV, YARA) failed against obfuscated threats (0\% recall).
 
 \begin{table}[t]
 \centering
@@ -62,18 +62,18 @@ Compressed & \texttt{changelog.gz} & \texttt{/usr/share/doc/.../} & 0.71 & 0.00 
 \caption{\textbf{Unified Detection Performance.} Verified on GCP \texttt{deepvis-mid}. DeepVis achieves 100\% recall with 0\% FP, ensuring reliability amidst system churn.}
 \label{tab:unified_detection}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{l ccc ccc}
+\begin{tabular}{l cccc ccc}
 \toprule
-\multirow{2}{*}{\textbf{System}} & \multicolumn{3}{c}{\textbf{Recall (Detection Rate)}} & \multicolumn{3}{c}{\textbf{False Positives}} \\
-\cmidrule(lr){2-4} \cmidrule(lr){5-7}
-& \textbf{Rootkit} & \textbf{Obfuscated} & \textbf{Polyglot} & \textbf{Update} & \textbf{Packed} & \textbf{Image} \\
+\multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Recall (Detection Rate)}} & \multicolumn{3}{c}{\textbf{False Positives}} \\
+\cmidrule(lr){2-5} \cmidrule(lr){6-8}
+& \textbf{Rootkit} & \textbf{Obfusc.} & \textbf{Polyglot} & \textbf{Mimicry} & \textbf{Update} & \textbf{Packed} & \textbf{Image} \\
 \midrule
-ClamAV (Sig) & 33\% & 0\% & 0\% & 0\% & 0\% & 0\% \\
-AIDE (FIM) & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\
-Sysdig Falco & 100\% & 100\% & 100\% & 100\% & 0\% & 0\% \\
-Set-AE~\cite{zaheer2017deepsets} & 40\% & 60\% & 20\% & 12\% & 5\% & 8\% \\
+ClamAV (Sig) & 33\% & 0\% & 0\% & 0\% & 0\% & 0\% & 0\% \\
+AIDE (FIM) & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\
+Sysdig Falco & 100\% & 100\% & 100\% & 0\% & 100\% & 0\% & 0\% \\
+Set-AE~\cite{zaheer2017deepsets} & 40\% & 60\% & 20\% & 0\% & 12\% & 5\% & 8\% \\
 \midrule
-\textbf{DeepVis} & \textbf{100\%} & \textbf{100\%} & \textbf{100\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} \\
+\textbf{DeepVis} & \textbf{100\%} & \textbf{100\%} & \textbf{100\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} \\
 \bottomrule
 \end{tabular}%
 }
