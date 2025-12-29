@@ -1,0 +1,66 @@
+%%
+%% ICDCS 2026 Submission - DeepVis
+%%
+\documentclass[conference]{IEEEtran}
+
+%% Packages
+\usepackage{amsmath}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage{xspace}
+\usepackage{pifont}
+\usepackage[caption=false]{subfig}  % IEEEtran compatible
+\usepackage{url}
+\usepackage{array}
+\usepackage{booktabs}
+% \usepackage[disable]{todonotes} % Removed to eliminate warning
+\usepackage{tikz}
+\usetikzlibrary{fit,shapes,arrows,positioning}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{xcolor}
+
+%% Commands
+\newcommand{\DeepVis}{\texttt{DeepVis}\xspace}
+% Colored checkmarks and X marks for tables
+\newcommand{\cmark}{{\color{green!70!black}\ding{51}}}  % Green checkmark
+\newcommand{\xmark}{{\color{red!80!black}\ding{55}}}    % Red X mark
+\newcommand{\pmark}{{\color{orange!80!black}$\triangle$}} % Orange partial
+
+\begin{document}
+
+\title{DeepVis: Deep Learning-Based File System Fingerprinting for Cloud Security}
+
+%% Anonymous author block for double-blind review
+\author{}
+
+\maketitle
+
+\begin{abstract}
+This paper presents \DeepVis, a high-throughput integrity verification system designed to improve scalability and reduce overhead in hyperscale storage environments.
+Our key idea is to leverage a spatial hash projection architecture, enabling highly parallelized metadata processing while maintaining detection accuracy via a stable tensor representation.
+Specifically, \DeepVis first introduces an asynchronous snapshot engine that leverages high-performance I/O interfaces to maximize ingestion rates, allowing the system to rapidly capture file system states.
+Second, \DeepVis devises a lock-free tensor mapping pipeline, where metadata processing is sharded across processor cores to eliminate contention and achieve linear scalability.
+Finally, \DeepVis adopts a spatial anomaly detection approach, enabling the identification of sparse attack signals even amidst significant background noise caused by legitimate system updates.
+We implement \DeepVis with these three techniques and evaluate its performance on a production-grade cloud VM with 4 vCPUs and NVMe storage.
+Our evaluation results show that \DeepVis achieves a scan rate of over 8,200 files/sec and improves verification throughput by 7.7$\times$ to 9,600$\times$ compared with AIDE depending on the workload, while maintaining negligible runtime overhead (CPU impact $<2\%$).
+\end{abstract}
+
+\begin{IEEEkeywords}
+Distributed Systems, File System Monitoring, Scalable Verification, Anomaly Detection, Spatial Representation Learning
+\end{IEEEkeywords}
+
+\input{1. Introduction.tex}
+\input{2. Background.tex}
+\input{3. Design.tex}
+\input{4. Evaluation.tex}
+% Related Work merged into Introduction
+\input{6. Discussion and Limitation.tex}
+\input{7. Conclusion.tex}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,163 @@
+\section{\DeepVis System Design}
+\label{sec:design}
+
+In this section, we present the design of \DeepVis, a scalable integrity verification framework for hyperscale cloud environments. \DeepVis does not rely on sequential file scanning or heavy kernel instrumentation, but instead employs a snapshot-based hybrid architecture that decouples metadata ingestion from anomaly detection. While metadata ingestion scales linearly with file count ($O(N)$), the subsequent inference operates on a fixed-size tensor, yielding latency independent of the file system size ($O(1)$). To overcome the I/O bottlenecks inherent in scanning millions of files, it utilizes a parallelized asynchronous pipeline for metadata collection and leverages a deterministic hash-based mapping to transform unordered file systems into fixed-size tensor representations.
+
+\subsection{Overall Procedure}
+\label{design_1}
+
+Figure~\ref{fig:overall} shows the overall procedure of \DeepVis. \DeepVis provides two main phases to support distributed integrity verification: the \textit{Snapshot} phase and the \textit{Verification} phase.
+
+\begin{figure}[t]
+    \centering
+    % [User Check] 파일명 유지함. 
+    % 단, PDF 내용이 텍스트와 일치하는지(128x128 등) 확인 필요.
+    \includegraphics[width=9cm]{Figures/Design/Overall_Arch.pdf}
+    \caption{Overall procedure of \DeepVis. It illustrates the transformation of raw file system metadata into spatially mapped tensors, followed by reconstruction via an autoencoder and anomaly detection using Local Max ($L_\infty$) logic.}
+    \label{fig:overall}
+\end{figure}
+
+\noindent
+\textbf{Snapshot Phase.} When integrity verification starts, the Snapshot Engine initiates the data collection process. Unlike traditional synchronous tools (e.g., \texttt{find} or \texttt{ls}) that block on every file access, \DeepVis utilizes a hybrid parallel architecture. First, the Parallel File Walker uses a thread pool to rapidly traverse the directory tree and collect file paths (\ding{182}). These paths are fed into a lock-free queue. Subsequently, the Asynchronous I/O Submitter batches these paths and submits read requests to the kernel using the \texttt{io\_uring} interface. This ensures that the I/O throughput saturates the storage bandwidth rather than being latency-bound (\ding{183}).
+
+After collecting raw metadata and file headers, the \textit{Tensor Encoder} performs secure spatial mapping. It calculates a deterministic coordinate for each file using a Keyed-Hash Message Authentication Code (HMAC) and extracts multi-modal features (e.g., entropy, permissions). These features are aggregated into a fixed-size 2D tensor ($128 \times 128 \times 3$), effectively transforming the file system state into an image-like representation (\ding{184}).
+
+\noindent
+\textbf{Verification Phase.} After the Snapshot phase is completed, \DeepVis enters the Verification phase. The Inference Engine feeds the generated tensor into a pre-trained 1$\times$1 Convolutional Autoencoder (CAE). The detailed architecture of the \DeepVis CAE is summarized in Table~\ref{tab:cae_arch}. While standard CNNs exploit spatial locality to find shapes, our hash-based mapping lacks semantic neighborhood relationships. Therefore, we employ 1$\times$1 Convolutions not to extract spatial features, but to learn complex cross-channel non-linear correlations (e.g., distinguishing a high-entropy zip file in a user directory from a high-entropy packed binary in a system path). This effectively acts as a learnable, non-linear per-pixel thresholding mechanism (\ding{185}).
+
+\noindent\textbf{Training Details.} The CAE is trained on benign tensors from a ``golden image'' baseline (10K--50K files per node). We use MSE loss with Adam optimizer (lr=$10^{-3}$, batch=32, epochs=50). Training completes in $<$5 minutes on a single CPU. The 95th percentile reconstruction error on benign data determines the detection threshold ($\tau$). No malware samples are used during training---a key advantage for zero-day detection.
+
+The Anomaly Detector then computes the pixel-wise difference between the input and reconstructed tensors. To resolve the statistical asymmetry between legitimate diffuse updates and sparse attacks, it utilizes Local Max Detection ($L_\infty$). This mechanism isolates the single highest deviation in the grid (\ding{186}). Finally, if the $L_\infty$ score exceeds a dynamically learned threshold, an alert is raised, identifying the presence of a stealthy anomaly such as a rootkit (\ding{187}).
+
+\subsection{Hybrid Rayon and io\_uring Snapshot Pipeline}
+\label{design_2}
+
+Before generating the tensor representation, \DeepVis must efficiently ingest metadata and file headers from the host file system. Existing approaches rely on synchronous system calls (e.g., \texttt{stat}, \texttt{open}, \texttt{read}), which incur significant context switching overhead and CPU blocking when processing millions of files. To address this, \DeepVis adopts a hybrid execution pipeline that separates CPU-intensive path traversal from I/O-intensive data reading.
+
+\begin{figure}[t]
+    \centering
+    % [User Check] 파일명 유지함
+    \includegraphics[width=8cm]{Figures/Design/io_Arch.pdf}
+    \caption{The hybrid snapshot pipeline of \DeepVis utilizing Rayon for parallel path collection and io\_uring for asynchronous I/O.}
+    \label{fig:pipeline}
+\end{figure}
+
+\noindent
+\textbf{Parallel Path Collection.} First, \DeepVis performs path collection using a work-stealing parallelism model provided by the \texttt{rayon} library. As shown on the left of Figure~\ref{fig:pipeline}, the \textit{Parallel Path Collector} spawns multiple worker threads. Each thread executes a synchronous \texttt{fs::read\_dir} operation to traverse directory structures recursively. This phase is CPU-bound as it involves parsing directory entries and managing path strings. By utilizing \texttt{rayon}, \DeepVis ensures that all CPU cores are utilized for traversal, populating a shared \textit{Pending Path Queue} at a rate that exceeds the I/O consumption speed.
+
+\noindent
+\textbf{Asynchronous I/O Processing.} Once paths are available in the queue, the bottleneck shifts to reading file headers for entropy calculation. \DeepVis employs the Linux \texttt{io\_uring} interface to eliminate kernel entry overhead. As shown in the center of Figure~\ref{fig:pipeline}, the \textit{io\_uring Submitter} retrieves paths from the queue and populates the Submission Queue (SQ) with batch read requests (\texttt{OP\_READ}). Unlike standard asynchronous I/O, \texttt{io\_uring} allows the kernel to consume these requests from a shared ring buffer without system call overhead for every file.
+
+The \textit{Data Processor} threads then poll the Completion Queue (CQ) for finished events. When a file read completes, the kernel places a completion event in the CQ. The processor retrieves the data from the pre-allocated \textit{Buffer Slab} and immediately performs hashing and entropy calculation. This design ensures that the CPU never blocks waiting for disk I/O. The \texttt{io\_uring} subsystem handles the heavy lifting of data movement in the kernel space, while the user-space threads focus exclusively on feature extraction. This pipeline allows \DeepVis to achieve throughput levels competitive with raw disk bandwidth.
+
+\subsection{High-Throughput Header Sampling}
+\label{design_sampling}
+
+Traditional FIM tools hash entire files, causing massive I/O overhead ($O(N \times Size)$). Conversely, scanning purely based on metadata (e.g., file size, name) generates high false negatives against padded malware.
+
+\DeepVis adopts Header-based Entropy Sampling to balance detection fidelity and hyperscale throughput. We observe that packed malware and ransomware inevitably alter the file header to accommodate unpacker stubs or encrypted payloads, significantly elevating the entropy of the first few blocks.
+
+Therefore, the \textit{Header Sampler} reads only the first $H$ bytes (e.g., 64--128 bytes) of each file asynchronously.
+\begin{equation}
+    E_{header} = -\sum p_i \log_2 p_i
+\end{equation}
+This approach reduces the per-file I/O to a fixed header read (independent of file size), enabling the scan rate to exceed 8,000 files/sec on NVMe storage while maintaining high sensitivity to structural anomalies in binary formats.
+
+\noindent
+\textit{Security Justification.} Header-based sampling is particularly effective against executable malware. Packed binaries, ransomware, and rootkits must modify the file header to accommodate unpacker stubs, encrypted payloads, or altered entry points. Unlike data files that can hide payloads in arbitrary offsets, executable code must be recognized by the OS loader (e.g., ELF/PE headers), forcing attackers to elevate the header entropy. \DeepVis therefore focuses on files with executable characteristics, where header tampering is a necessary precondition for malicious functionality. While deep-payload evasion is theoretically possible via sophisticated header reconstruction, \DeepVis serves as a high-frequency first-line defense, filtering the massive search space to identify suspicious artifacts for subsequent deep forensic analysis.
+
+\subsection{Hash-Based Spatial Mapping and Encoding}
+\label{design_3}
+
+\noindent
+\textit{Spatial Invariance.} After the metadata is ingested, \DeepVis must map the unordered set of files to a fixed-size tensor. Traditional ordering-based approaches (e.g., sorting files alphabetically) suffer from the ``Ordering Problem,'' where the insertion of a single file shifts the indices of all subsequent files. This destroys spatial locality and invalidates the neural network model.
+
+\begin{figure}[t]
+    \centering
+    % [User Check] 파일명 유지함
+    \includegraphics[width=9cm]{Figures/Design/Hash_Arch.pdf}
+    \caption{Shift Invariance comparison. Traditional ordering creates global shifts upon file insertion, while Hash-Based Mapping ensures local stability.}
+    \label{fig:hash}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{\DeepVis CAE Architecture specification.}
+\label{tab:cae_arch}
+\resizebox{0.8\columnwidth}{!}{%
+\begin{tabular}{llcc}
+\toprule
+\textbf{Layer} & \textbf{Type} & \textbf{Channels (In$\to$Out)} & \textbf{Activation} \\
+\midrule
+Enc1 & Conv1$\times$1 & 3 $\to$ 16 & ReLU \\
+Enc2 & Conv1$\times$1 & 16 $\to$ 8 & -- \\
+Dec1 & Conv1$\times$1 & 8 $\to$ 16 & ReLU \\
+Dec2 & Conv1$\times$1 & 16 $\to$ 3 & Sigmoid \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\DeepVis solves this by employing a deterministic Hash-Based Spatial Mapping. As illustrated in Figure~\ref{fig:hash}, let $K$ be a high-entropy secret key generated at startup. The coordinate $\Phi(p)$ for a file path $p$ is computed as:
+\begin{equation}
+    \Phi(p) = \left( \text{HMAC}(K, p)_{[0:32]} \bmod W, \ \text{HMAC}(K, p)_{[32:64]} \bmod H \right)
+\end{equation}
+By using HMAC, the mapping provides two benefits. First, it ensures \textit{Positional Stability}: the coordinates of existing files depend only on their own paths and the key, remaining unaffected by the addition or removal of other files. Second, it prevents ``Bucket Targeting'' attacks. Assuming $K$ is protected via ephemeral session keys or privileged memory restrictions, the adversary cannot predict or craft a filename that maps to a specific coordinate to overwrite or mask a target file.
+
+\noindent
+\textit{Max-Risk Pooling for Collisions.} To handle hash collisions without diluting sparse attack signals, we employ a Max-Risk Pooling strategy. For a pixel $(x,y)$ mapping multiple files $\{f_1, ..., f_k\}$, the tensor value is computed as:
+\begin{equation}
+    T_{x,y} = \left[ \max_i(R_{f_i}), \max_i(G_{f_i}), \max_i(B_{f_i}) \right]
+\end{equation}
+This ensures that a single malicious file dominates the pixel's risk score, preserving the $L_\infty$ signal regardless of benign collisions. For post-hoc attribution, the scanner maintains an inverted index (Lookup Table) mapping each pixel coordinate back to its constituent file paths. This structure offers superior \textit{Visual Explainability}: unlike Global Pooling methods (e.g., Set-AE) that compress the entire system into a single vector, the Hash-Grid preserves the spatial layout, allowing security operators to visually inspect the ``Threat Landscape'' and pinpoint attack sources via the inverted index.
+
+\noindent
+\textit{Multi-Modal Encoding.} Once the coordinate is determined, the scanner efficiently extracts raw features (entropy, metadata), and the Tensor Encoder aggregates them into a multi-channel RGB representation. This allows the downstream model to learn correlations between different metadata types.
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Channel R (Entropy):} We compute the Shannon entropy of the file header. This targets packed binaries and encrypted payloads which exhibit high entropy ($\approx 8.0$), distinguishing them from standard text or executable files.
+    \item \textbf{Channel G (Context Hazard):} This channel aggregates environmental risk factors via a weighted sum:
+    \begin{equation}
+        G = \min(1.0, P_{path} + P_{pattern} + P_{hidden} + P_{perm})
+    \end{equation}
+    where $P_{path} \in \{0.0, 0.1, 0.3, 0.6, 0.7\}$ reflects path sensitivity (\texttt{/usr/bin}$\to$0.1, \texttt{/tmp}$\to$0.7), $P_{pattern}$ adds 0.1 for suspicious naming patterns (e.g., \texttt{libsystem*.so}), $P_{hidden}$ adds 0.2 for hidden files (prefix ``.''), and $P_{perm}$ adds 0.1 for world-writable files. These weights were calibrated on Ubuntu/CentOS/Debian systems.
+    \item \textbf{Channel B (Structure):} This quantifies structural anomalies from the 64-byte ELF header. We check: (1) ELF magic (\texttt{0x7fELF}), (2) \texttt{e\_type} field---relocatable objects (\texttt{ET\_REL}=0x01) score $B=0.8$ as unexpected in user paths, dynamic objects (\texttt{ET\_DYN}=0x03) score $B=0.1$. Non-ELF files score $B=0.0$ unless extension mismatch is detected (e.g., \texttt{.txt} containing ELF header scores $B=1.0$).
+\end{itemize}
+This encoding transforms the abstract file metadata into a dense numerical vector, suitable for processing by our \textbf{Hash-Grid Parallel Convolutional Autoencoder (CAE)}.
+
+\subsection{The Model: Hash-Grid Parallel CAE}
+\label{design_4}
+
+We introduce the \textit{Hash-Grid Parallel CAE} to address the critical limitations of global pooling in anomaly detection.
+
+\begin{figure}[t]
+    \centering
+    % [IMPORTANT] 새로 그린 Figure 6를 이 경로/이름으로 저장해서 사용하세요.
+    % 기존 파일명은 안 건드렸습니다. 이건 새로운 그림이라 이름 지정이 필요합니다.
+    \includegraphics[width=9cm]{Figures/Design/CNN_Arch.pdf} 
+    \caption{Structural comparison between Set-based Autoencoder (Set-AE) and DeepVis. While Set-AE dilutes sparse attack signals into a global average vector (Signal Dilution), causing detection failures ("Spike lost"), DeepVis preserves the attack signal via independent pixel-wise processing and Local Max ($L_\infty$) pooling, enabling precise detection of sparse anomalies.}
+    \label{fig:comparison}
+\end{figure}
+
+\noindent
+\textbf{Set-based AE vs. Hash-Grid Parallel CAE.}
+Traditional Set-based Autoencoders (Set-AE) handle unordered data by aggregating all feature vectors into a single global representation using functions like Sum, Average, or Max pooling. As illustrated in the top panel of Figure~\ref{fig:comparison}, this architecture suffers from \textit{Signal Dilution}. When a single malicious file (Sparse Signal) is averaged with thousands of benign files, the resulting global vector becomes indistinguishable from a benign state. Consequently, the autoencoder reconstructs it with low error, and the "Spike" is lost, leading to missed detections.
+
+In contrast, \DeepVis prevents signal dilution through \textbf{Parallel 1$\times$1 Processing}. Our model treats the hash-mapped grid not as an image with spatial dependencies, but as a batch of independent pixels. The 1$\times$1 Convolutional layers act as shared-weight MLPs applied individually to each pixel:
+\begin{equation}
+    T'_{x,y} = \sigma(W_{dec} \cdot \text{ReLU}(W_{enc} \cdot T_{x,y}))
+\end{equation}
+This ensures that the reconstruction of a malicious pixel depends \textit{only} on its own features, unaffected by the vast number of benign files in the system.
+
+\noindent
+\textbf{Solving the MSE Paradox via $L_\infty$ Pooling.} 
+Even with a localized representation, standard detection metrics like Global Mean Squared Error (MSE) fail. In a file system, legitimate updates (e.g., \texttt{apt upgrade}) create "diffuse noise" (high global error across many pixels), while a stealthy rootkit creates a "sparse signal" (high error in only one pixel). A global threshold high enough to ignore update noise will inevitably miss the rootkit.
+
+To resolve this, we employ \textbf{Local Max ($L_\infty$) Pooling} as the final detection logic. Instead of averaging errors, we extract the single maximum deviation:
+\begin{equation}
+    Score = \max_{i,j} |T_{i,j} - T'_{i,j}|
+\end{equation}
+As shown in the bottom panel of Figure~\ref{fig:comparison}, the malicious file generates a sharp "Red Star" spike in the $L_2$ Error Map. The $L_\infty$ detector ignores the low-level noise from benign files and locks onto this single spike. This allows \DeepVis to robustly detect sparse attacks even when the global system state is noisy due to legitimate churn.
+
+\subsection{\DeepVis Implementation}
+
+We implemented \DeepVis using a hybrid Rust-Python architecture to balance high-performance I/O with the rich machine learning ecosystem. Our implementation consists of approximately 2,500 lines of code across three core modules. 1) We implemented the \texttt{deepvis\_scanner} module in Rust. This module utilizes the \texttt{io\_uring} crate for asynchronous kernel submission and \texttt{rayon} for parallel path walking. It includes the logic for HMAC-based coordinate hashing and Shannon entropy calculation using SIMD optimizations. 2) We developed a Python binding layer using \texttt{pyo3} to expose the scanner's \texttt{ScanResult} directly to the Python runtime without serialization overhead. 3) We implemented the \texttt{inference.py} module using PyTorch. This module contains the 1$\times$1 Convolutional Autoencoder and the Local Max detection logic. For deployment, the model is exported to ONNX format to support low-latency inference on CPU-only edge devices. We open-source the code of \DeepVis in the following link: \url{https://github.com/DeepVis/DeepVis.git}.

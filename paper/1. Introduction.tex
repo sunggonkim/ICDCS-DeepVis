@@ -1,0 +1,62 @@
+\section{Introduction}
+\label{Introduction}
+
+In the era of cloud computing, ensuring the integrity of workloads is a foundational security requirement. From container orchestration platforms to large-scale HPC clusters, operators must guarantee that the file systems of thousands of nodes remain free from unauthorized modifications. However, modern DevOps practices create a fundamental tension between security and agility. Traditional File Integrity Monitoring (FIM) tools, designed for static servers, generate thousands of false positive alerts on every deployment, overwhelming Security Operations Centers (SOCs) with alert fatigue. Meanwhile, advanced persistent threats exploit this noise to install stealthy user-space rootkits that evade detection.
+
+Consider a routine scenario where an administrator deploys a new container image or updates a package on a fleet of Ubuntu servers. This operation modifies thousands of files. For traditional FIM tools such as AIDE~\cite{aide} or Tripwire~\cite{tripwire}, each modification is a potential violation. SOCs face an impossible choice: investigate thousands of alerts daily or disable FIM during maintenance windows, creating blind spots. Figure~\ref{fig:motivation} illustrates this fundamental trade-off: traditional FIM exhibits $O(N)$ scan complexity that becomes prohibitive at scale, while simultaneously generating massive false positive volumes that mask true threats.
+
+\begin{figure}[t]
+    \centering
+    % Shared Legend at Top
+    \includegraphics[width=0.95\columnwidth]{Figures/fig_motivation_legend.pdf}
+    \vspace{-1mm}
+    
+    % Subfigures side by side (2x1)
+    \subfloat[Scalability]{
+        \includegraphics[width=0.47\columnwidth]{Figures/fig_motivation_a.pdf}
+        \label{fig:motivation_scale}
+    }
+    \hfill
+    \subfloat[Alert Fatigue]{
+        \includegraphics[width=0.47\columnwidth]{Figures/fig_motivation_b.pdf}
+        \label{fig:motivation_alert}
+    }
+    \caption{(a) Synchronous scanning exhibits $O(N)$ latency; DeepVis achieves near-constant time. (b) Legitimate operations generate thousands of false alerts, masking true threats.}
+    \label{fig:motivation}
+\end{figure}
+
+Figure~\ref{fig:motivation} quantifies this problem using measurements from a GCP e2-standard-2 instance with 240K files. We compare AIDE~\cite{aide}, a widely-deployed synchronous FIM tool, against \DeepVis which leverages asynchronous I/O via \texttt{io\_uring}. As shown in Figure~\ref{fig:motivation}(a), AIDE scan time grows linearly with file count, reaching 15 seconds for 1M files, while \DeepVis maintains near-constant latency (under 2 seconds) due to its parallelized ingestion pipeline. Figure~\ref{fig:motivation}(b) reveals the alert fatigue problem: during routine operations (package updates, container deployments), AIDE generates thousands of false positives that mask the single rootkit injection, which remains undetected. \DeepVis correctly identifies the rootkit while producing zero false alerts.
+
+Recent research has pivoted towards log-based anomaly detection~\cite{du2017deeplog} or provenance graph analysis~\cite{cheng2024kairos,unicorn}. While effective for tracking runtime behavior, these approaches impose 5--20\% runtime overhead due to heavy kernel instrumentation, making them prohibitive for latency-sensitive workloads. Furthermore, they track \textit{events} rather than \textit{state}, meaning they cannot detect a rootkit that was dropped before monitoring started.
+
+We propose a paradigm shift: \textbf{File System Fingerprinting}. Instead of tracing every system call, we transform the entire file system state into a fixed-size tensor, enabling inference latency that is independent of file count. However, applying deep learning to file systems poses a unique challenge. Unlike images (fixed grids) or time series (ordered sequences), a file system is an unordered set of variable-length paths. A naive attempt to vectorize this data suffers from the \textit{Ordering Problem}, where a single file addition shifts the entire representation, destroying spatial locality.
+
+\DeepVis distinguishes itself by implementing the first \textbf{Hash-Based Spatial Representation} for file systems. By mapping unordered files to a fixed-size 2D tensor via deterministic hashing, \DeepVis ensures shift invariance: adding a file only affects a specific local region of the tensor, not the global structure. This enables the use of Convolutional Neural Networks to see the file system as an image. Furthermore, we address the \textit{MSE Paradox}, where legitimate updates create diffuse noise (high global error) while stealthy attacks create sparse signals (low global error). We utilize Local Max Detection ($L_\infty$) to pinpoint these sparse anomalies.
+
+\noindent\textbf{Related Work and Positioning.}
+Table~\ref{tab:positioning} contrasts \DeepVis with representative prior approaches. Traditional FIM tools~\cite{aide,tripwire,samhain} suffer from synchronous I/O bottlenecks, becoming prohibitively slow at hyperscale. Signature-based scanners~\cite{clamav,yara} fail against obfuscated or packed malware. Runtime monitors~\cite{falco,ossec} and provenance systems~\cite{unicorn,cheng2024kairos} incur continuous overhead and cannot detect pre-existing threats. \DeepVis uniquely combines high-throughput asynchronous scanning with whole-system fingerprinting, eliminating the trade-off between coverage and performance.
+
+\begin{table}[t]
+\centering
+\caption{Comparison of System Monitoring Paradigms.}
+\label{tab:positioning}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccl}
+\toprule
+\textbf{Approach} & \textbf{Async I/O} & \textbf{Obfusc.} & \textbf{Zero-Day} & \textbf{Limitation} \\
+\midrule
+AIDE~\cite{aide} & \xmark & \cmark & \xmark & Slow at scale \\
+ClamAV~\cite{clamav} & \xmark & \xmark & \xmark & Signature-only \\
+Falco~\cite{falco} & \cmark & \pmark & \cmark & Runtime overhead \\
+Unicorn~\cite{unicorn} & \xmark & \cmark & \cmark & Instrumentation \\
+OSSEC~\cite{ossec} & \xmark & \pmark & \pmark & Log-based \\
+\midrule
+\textbf{DeepVis} & \cmark & \cmark & \cmark & Header-only \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{1mm}
+\footnotesize{\cmark = Yes, \pmark = Partial, \xmark = No. Obfusc. = Obfuscation Detection.}
+\end{table}
+
+In this paper, we present \DeepVis, a highly scalable integrity verification framework designed for hyperscale distributed systems. \DeepVis adopts a spatial snapshot approach and integrates three key techniques: (1) transforming file metadata into a fixed-size tensor using hash-based partitioning, (2) utilizing a Convolutional Autoencoder with Local Max detection to identify spatial anomalies, and (3) operating on storage snapshots to ensure zero impact on running workloads. Our evaluation on production infrastructure demonstrates that \DeepVis achieves 100\% recall with zero false positives and enables 168$\times$ more frequent monitoring than traditional FIM.

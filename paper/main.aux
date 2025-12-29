@@ -1,0 +1,148 @@
+\relax 
+\citation{aide}
+\citation{tripwire}
+\citation{aide}
+\citation{du2017deeplog}
+\citation{cheng2024kairos,unicorn}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
+\newlabel{Introduction}{{I}{1}{}{section.1}{}}
+\newlabel{fig:motivation_scale}{{1a}{1}{}{subfigure.1.1}{}}
+\newlabel{sub@fig:motivation_scale}{{(a)}{a}}
+\newlabel{fig:motivation_alert}{{1b}{1}{}{subfigure.1.2}{}}
+\newlabel{sub@fig:motivation_alert}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces (a) Synchronous scanning exhibits $O(N)$ latency; DeepVis achieves near-constant time. (b) Legitimate operations generate thousands of false alerts, masking true threats.}}{1}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Scalability}}}{1}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Alert Fatigue}}}{1}{}\protected@file@percent }
+\newlabel{fig:motivation}{{1}{1}{}{figure.1}{}}
+\citation{aide,tripwire,samhain}
+\citation{clamav,yara}
+\citation{falco,ossec}
+\citation{unicorn,cheng2024kairos}
+\citation{aide}
+\citation{clamav}
+\citation{falco}
+\citation{unicorn}
+\citation{ossec}
+\citation{aide,tripwire,samhain,falco,unicorn}
+\citation{aide}
+\citation{tripwire}
+\citation{falco,unicorn}
+\citation{falco}
+\citation{unicorn}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Comparison of System Monitoring Paradigms.}}{2}{}\protected@file@percent }
+\newlabel{tab:positioning}{{I}{2}{}{table.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Background}{2}{}\protected@file@percent }
+\newlabel{sec:background}{{II}{2}{}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Integrity Verification at Cloud Scale}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}The Attacker Paradox: Entropy and Structure}{2}{}\protected@file@percent }
+\newlabel{fig:entropy_hist}{{2a}{3}{}{subfigure.2.1}{}}
+\newlabel{sub@fig:entropy_hist}{{(a)}{a}}
+\newlabel{fig:entropy_text}{{2b}{3}{}{subfigure.2.2}{}}
+\newlabel{sub@fig:entropy_text}{{(b)}{b}}
+\newlabel{fig:entropy_elf}{{2c}{3}{}{subfigure.2.3}{}}
+\newlabel{sub@fig:entropy_elf}{{(c)}{c}}
+\newlabel{fig:entropy_rootkit}{{2d}{3}{}{subfigure.2.4}{}}
+\newlabel{sub@fig:entropy_rootkit}{{(d)}{d}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces File fingerprint analysis via byte-value histograms. (a) Combined entropy distribution across file types. (b) Text files use only printable ASCII, resulting in low entropy ($H \approx 4.8$) and zero null bytes. (c) ELF binaries show structured headers with significant zero-padding (40--85\% null bytes) for section alignment, yielding $H \approx 6.0$. (d) Packed rootkits eliminate all structure and null bytes ($<$1\%), maximizing entropy near the theoretical limit ($H \approx 8.0$).}}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Combined}}}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Text}}}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {ELF Binary}}}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Packed Rootkit}}}{3}{}\protected@file@percent }
+\newlabel{fig:entropy_combined}{{2}{3}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}\texttt  {DeepVis}\xspace  System Design}{3}{}\protected@file@percent }
+\newlabel{sec:design}{{III}{3}{}{section.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Overall procedure of \texttt  {DeepVis}\xspace  . It illustrates the transformation of raw file system metadata into spatially mapped tensors, followed by reconstruction via an autoencoder and anomaly detection using Local Max ($L_\infty $) logic.}}{3}{}\protected@file@percent }
+\newlabel{fig:overall}{{3}{3}{}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Overall Procedure}{3}{}\protected@file@percent }
+\newlabel{design_1}{{\mbox  {III-A}}{3}{}{subsection.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Hybrid Rayon and io\_uring Snapshot Pipeline}{4}{}\protected@file@percent }
+\newlabel{design_2}{{\mbox  {III-B}}{4}{}{subsection.3.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The hybrid snapshot pipeline of \texttt  {DeepVis}\xspace  utilizing Rayon for parallel path collection and io\_uring for asynchronous I/O.}}{4}{}\protected@file@percent }
+\newlabel{fig:pipeline}{{4}{4}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}High-Throughput Header Sampling}{4}{}\protected@file@percent }
+\newlabel{design_sampling}{{\mbox  {III-C}}{4}{}{subsection.3.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Shift Invariance comparison. Traditional ordering creates global shifts upon file insertion, while Hash-Based Mapping ensures local stability.}}{5}{}\protected@file@percent }
+\newlabel{fig:hash}{{5}{5}{}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Hash-Based Spatial Mapping and Encoding}{5}{}\protected@file@percent }
+\newlabel{design_3}{{\mbox  {III-D}}{5}{}{subsection.3.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces \texttt  {DeepVis}\xspace  CAE Architecture specification.}}{5}{}\protected@file@percent }
+\newlabel{tab:cae_arch}{{II}{5}{}{table.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Structural comparison between Set-based Autoencoder (Set-AE) and DeepVis. While Set-AE dilutes sparse attack signals into a global average vector (Signal Dilution), causing detection failures ("Spike lost"), DeepVis preserves the attack signal via independent pixel-wise processing and Local Max ($L_\infty $) pooling, enabling precise detection of sparse anomalies.}}{6}{}\protected@file@percent }
+\newlabel{fig:comparison}{{6}{6}{}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}The Model: Hash-Grid Parallel CAE}{6}{}\protected@file@percent }
+\newlabel{design_4}{{\mbox  {III-E}}{6}{}{subsection.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}\texttt  {DeepVis}\xspace  Implementation}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Evaluation}{6}{}\protected@file@percent }
+\newlabel{sec:evaluation}{{IV}{6}{}{section.4}{}}
+\citation{zaheer2017deepsets}
+\citation{zaheer2017deepsets}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Detection Accuracy (RQ1).} DeepVis achieves 100\% recall across 15 diverse attack scenarios. Paths are abbreviated for brevity.}}{7}{}\protected@file@percent }
+\newlabel{tab:v3_results}{{III}{7}{}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Methodology}{7}{}\protected@file@percent }
+\newlabel{eval_setup}{{\mbox  {IV-A}}{7}{}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Accuracy and Feature Orthogonality (RQ1)}{7}{}\protected@file@percent }
+\newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Unified Detection Performance.} Verified on GCP \texttt  {deepvis-mid}. DeepVis achieves 100\% recall with 0\% FP, ensuring reliability amidst system churn.}}{7}{}\protected@file@percent }
+\newlabel{tab:unified_detection}{{IV}{7}{}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Visualizing Threat Landscapes via RGB Tensors}{7}{}\protected@file@percent }
+\newlabel{eval_visual}{{\mbox  {IV-C}}{7}{}{subsection.4.3}{}}
+\citation{falco}
+\newlabel{fig:tensor_clean}{{7a}{8}{}{subfigure.7.1}{}}
+\newlabel{sub@fig:tensor_clean}{{(a)}{a}}
+\newlabel{fig:tensor_infected}{{7b}{8}{}{subfigure.7.2}{}}
+\newlabel{sub@fig:tensor_infected}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Tensor Visualization on GCP \texttt  {deepvis-mid}. (a) Clean baseline with 10K benign files from \texttt  {/usr}. (b) Infected state with 10 malware files injected into \texttt  {/tmp}, \texttt  {/var/tmp}, and \texttt  {/dev/shm}. Red circles indicate malware locations detected via G-channel (contextual hazard) activation.}}{8}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Clean Baseline (10K Benign Files)}}}{8}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Infected State (10K Benign + 10 Malware)}}}{8}{}\protected@file@percent }
+\newlabel{fig:clean_vs_infected}{{7}{8}{}{figure.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Scalability and Performance Analysis (RQ2)}{8}{}\protected@file@percent }
+\newlabel{eval_scalability}{{\mbox  {IV-D}}{8}{}{subsection.4.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-D}1}Micro-benchmark: Scan Throughput}{8}{}\protected@file@percent }
+\newlabel{fig:perf_throughput}{{8a}{9}{}{subfigure.8.1}{}}
+\newlabel{sub@fig:perf_throughput}{{(a)}{a}}
+\newlabel{fig:perf_latency}{{8b}{9}{}{subfigure.8.2}{}}
+\newlabel{sub@fig:perf_latency}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textbf  {Comprehensive Performance Analysis (Micro \& Macro).} (a) \textbf  {Throughput (Micro)}: \texttt  {DeepVis}\xspace  achieves hyperscale speeds ($\approx $40k files/s) via asynchronous I/O, outperforming synchronous baselines by orders of magnitude. (b) \textbf  {Interference (Macro)}: Despite its speed, \texttt  {DeepVis}\xspace  maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%), verifying operational feasibility.}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Micro-benchmark: Throughput (Files/s)}}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Macro-benchmark: Tail Latency ($\mu $s)}}}{9}{}\protected@file@percent }
+\newlabel{fig:perf_analysis}{{8}{9}{}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-D}2}Macro-benchmark: Service Interference}{9}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Signal-to-Noise Ratio (SNR) Analysis. Live Churn results from real \texttt  {apt} updates vs. Rootkit injection on GCP \texttt  {deepvis-mid}.}}{9}{}\protected@file@percent }
+\newlabel{tab:snr_analysis}{{V}{9}{}{table.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Saturation Simulation ($128 \times 128$ Grid). Uniform distribution mitigates collision impact, and Local Max ensures 100\% recall.}}{9}{}\protected@file@percent }
+\newlabel{tab:hyperscale_saturation}{{VI}{9}{}{table.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}System Robustness and Hyperscale Simulation (RQ3, RQ6)}{9}{}\protected@file@percent }
+\newlabel{eval_robustness}{{\mbox  {IV-E}}{9}{}{subsection.4.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \textbf  {Fleet Latency Heatmap (100 Nodes).} Real-world scan latency distribution across the 100-node fleet. The heatmap reveals checking performance consistency across three regions (\texttt  {us-central1}, \texttt  {us-east1}, \texttt  {us-west1}). Despite regional network variances, \texttt  {DeepVis}\xspace  maintains a tight latency bound (avg 4.29s, max 6.0s), demonstrating resilience against "noisy neighbor" effects in public cloud environments.}}{10}{}\protected@file@percent }
+\newlabel{fig:fleet_vis}{{9}{10}{}{figure.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Fleet-Scale Scalability (RQ7)}{10}{}\protected@file@percent }
+\newlabel{eval_fleet}{{\mbox  {IV-F}}{10}{}{subsection.4.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Fleet-Scale Scalability. Scan latency increases slightly with scale due to cloud contention, but effective throughput scales linearly.}}{10}{}\protected@file@percent }
+\newlabel{tab:fleet_scalability}{{VII}{10}{}{table.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Ablation Study}{10}{}\protected@file@percent }
+\newlabel{eval_ablation}{{\mbox  {IV-G}}{10}{}{subsection.4.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Discussion and Limitation}{10}{}\protected@file@percent }
+\newlabel{sec:discussion}{{V}{10}{}{section.5}{}}
+\citation{lkrg}
+\bibstyle{IEEEtran}
+\bibdata{references}
+\bibcite{aide}{1}
+\bibcite{tripwire}{2}
+\bibcite{du2017deeplog}{3}
+\bibcite{cheng2024kairos}{4}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Robustness Against Adaptive Attackers}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Operational Analysis: The SNR Advantage}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Limitations and Future Work}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Deployment Considerations}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{11}{}\protected@file@percent }
+\newlabel{Conclusion}{{VI}{11}{}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
+\bibcite{unicorn}{5}
+\bibcite{samhain}{6}
+\bibcite{clamav}{7}
+\bibcite{yara}{8}
+\bibcite{falco}{9}
+\bibcite{ossec}{10}
+\bibcite{zaheer2017deepsets}{11}
+\bibcite{lkrg}{12}
+\gdef \@abspage@last{12}

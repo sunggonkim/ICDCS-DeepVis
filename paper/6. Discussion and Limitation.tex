@@ -1,0 +1,28 @@
+\section{Discussion and Limitation}
+\label{sec:discussion}
+
+We critically analyze the security properties, limitations, and potential evasion strategies of \DeepVis, evaluating robustness against adaptive attackers and operational constraints.
+
+\subsection{Robustness Against Adaptive Attackers}
+We assume a white-box adversary who knows the system architecture but does not possess the HMAC secret key $K$, which is secured within a Trusted Execution Environment (TEE).
+
+\noindent\textbf{Low-Entropy Mimicry.} An attacker might pad a malicious binary with null bytes or NOP sleds to lower its entropy (Red channel evasion). However, this forces a \textit{Trilemma}: padding increases file size, triggering the \textbf{Green (Context)} channel, while execution requirements (e.g., SUID bits) trigger the \textbf{Blue (Structure)} channel. The attacker cannot simultaneously minimize all three detection signals while maintaining utility.
+
+\noindent\textbf{Chameleon Attack (Hash Collision).} An attacker might craft a filename to collide with a high-churn benign file (e.g., system logs). \DeepVis mitigates this via \textbf{Max-Risk Pooling}: for any pixel mapping multiple files, the tensor value is computed as $T_{x,y} = \max_i (\text{Feature}(f_i))$. This ensures the highest-risk signal (the attack) dominates the pixel, preventing dilution by benign noise. Additionally, the secret key $K$ randomizes the mapping, preventing targeted collisions.
+
+\noindent\textbf{Contextual Masking.} Hiding a rootkit in a safe path (e.g., \texttt{/usr/bin}) lowers the Green channel score but exposes \textbf{Structural Mismatches}. For instance, a kernel module (\texttt{.ko}) in a binary directory is a structural anomaly detected by the Blue channel, while packed binaries exhibit entropy deviations (Red channel) regardless of location.
+
+\subsection{Operational Analysis: The SNR Advantage}
+The "MSE Paradox" identified in Section~\ref{sec:background} is resolved by \DeepVis's Local Max ($L_\infty$) detection. In hyperscale systems with $N$ files, a single rootkit ($k \approx 1$) is statistically invisible under Global MSE ($L_2$) as $SNR_{Global} \propto \frac{k}{N} \cdot \delta \to 0$. In contrast, Local Max isolates the single worst violation, maintaining $SNR_{Local} \propto \delta$ regardless of system scale. This property ensures detection sensitivity does not degrade as the file system grows.
+
+\subsection{Limitations and Future Work}
+\noindent\textbf{Header-Only Sampling.} \DeepVis reads only the first 64--128 bytes to maximize throughput. While effective against executable malware that must modify headers (e.g., ELF/PE) for loading, it may miss script-based attacks or polyglots hiding payloads deep within files. Our empirical analysis confirms that packed binaries exhibit high entropy even in the first 64 bytes (Header $\approx 0.71$) compared to benign binaries (Header $\approx 0.29$), justifying this tradeoff for executable threats.
+
+\noindent\textbf{Same-Structure Replacement.} A sophisticated attacker replacing a legitimate binary with a malicious one of identical entropy and structure would produce identical features. Such attacks are invisible to snapshot-based monitors and require complementary behavioral monitoring.
+
+\noindent\textbf{Key Management.} The security of the spatial mapping relies on the secrecy of $K$. In agent-based deployments, $K$ resides in memory; for stronger security, we recommend offloading key management to a TEE or HSM.
+
+\noindent\textbf{Memory-Only Threats.} Rootkits residing solely in RAM (e.g., via \texttt{ptrace}) leave no disk footprint and are outside the scope of file system monitoring. We recommend pairing \DeepVis with memory forensics tools like LKRG~\cite{lkrg} or Volatility.
+
+\subsection{Deployment Considerations}
+To prevent baseline poisoning, we enforce \textbf{Golden Image Attestation}, verifying the initial state against a cryptographically signed image. The trained CAE model is stored in a read-only repository with content-addressable hashing. To minimize the Trusted Computing Base (TCB), \DeepVis supports an \textbf{Agentless Architecture} where target disks are mounted read-only on a trusted analysis instance, isolating the monitoring process from the compromised host kernel. For future scalability beyond millions of files, we propose a \textbf{Parallel Asynchronous Architecture} with sharded metadata collection and incremental visual updates, reducing update complexity from $O(N)$ to $O(|\Delta|)$.
