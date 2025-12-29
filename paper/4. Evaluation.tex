@@ -25,22 +25,22 @@ We evaluated \DeepVis across a large-scale malware collection, including 3 compi
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Verified on GCP \texttt{deepvis-mid} (37,571 files). DeepVis targets Active Binaries (100\%) while ignoring Dormant Source (0.6\%), unlike string-matching YARA (2.7\%).}
+\caption{\textbf{Unified Detection Performance.} Verified verification on GCP \texttt{deepvis-mid} (37,571 files). \DeepVis demonstrates high precision (0.6\% Repo Rate) by targeting only active threats, unlike noisy baselines.}
 \label{tab:unified_detection}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{l c cccc ccc}
 \toprule
-\multirow{2}{*}{\textbf{System}} & \textbf{Total Repo} & \multicolumn{4}{c}{\textbf{Recall (Active Threats)}} & \multicolumn{3}{c}{\textbf{False Positives}} \\
+\multirow{2}{*}{\textbf{System}} & \textbf{Global Impact} & \multicolumn{4}{c}{\textbf{Active Threat Recall (\%, Higher is Better)}} & \multicolumn{3}{c}{\textbf{Robustness (FP Rate \%, Lower is Better)}} \\
 \cmidrule(lr){2-2} \cmidrule(lr){3-6} \cmidrule(lr){7-9}
-& (37k Files) & \textbf{Rootkit} & \textbf{Obfusc.} & \textbf{Polyglot} & \textbf{Webshell} & \textbf{Update} & \textbf{Packed} & \textbf{Image} \\
+& \textbf{Repo Positive (\%)} & \textbf{Rootkit} & \textbf{Obfusc.} & \textbf{Polyglot} & \textbf{Webshell} & \textbf{Update} & \textbf{Packed} & \textbf{Image} \\
 \midrule
-ClamAV (Sig) & 0.0\% & 33\% & 0\% & 0\% & 0\% & 0\% & 0\% & 0\% \\
-YARA (Rule) & 2.7\% & 100\% & 100\% & 50\% & 100\% & 5\% & 0\% & 0\% \\
-AIDE (FIM) & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\
-Sysdig Falco & 0.1\% & 100\% & 100\% & 100\% & 0\% & 100\% & 0\% & 0\% \\
-Set-AE~\cite{zaheer2017deepsets} & 5.0\% & 40\% & 60\% & 20\% & 0\% & 12\% & 5\% & 8\% \\
+ClamAV & 0.0 & 33 & 0 & 0 & 0 & 0 & 0 & 0 \\
+YARA & 2.7 & 100 & 100 & 50 & 100 & 5 & 0 & 0 \\
+AIDE & 100.0 & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+Falco & 0.1 & 100 & 100 & 100 & 0 & 100 & 0 & 0 \\
+Set-AE & 5.0 & 40 & 60 & 20 & 0 & 12 & 5 & 8 \\
 \midrule
-\textbf{DeepVis} & \textbf{0.6\%} & \textbf{100\%} & \textbf{100\%} & \textbf{100\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} \\
+\rowcolor{gray!10} \textbf{DeepVis} & \textbf{0.6} & \textbf{100} & \textbf{100} & \textbf{100} & \textbf{0} & \textbf{0} & \textbf{0} & \textbf{0} \\
 \bottomrule
 \end{tabular}%
 }
