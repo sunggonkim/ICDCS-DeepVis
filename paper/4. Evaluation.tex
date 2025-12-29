@@ -116,88 +116,58 @@ The primary architectural claim of \DeepVis is the decoupling of verification la
     \label{fig:perf_analysis}
 \end{figure}
 
-\noindent\textbf{Micro-benchmark: Scan Throughput. }Figure~\ref{fig:perf_analysis}(a) compares DeepVis against AIDE to demonstrate operational feasibility. AIDE performs full-file cryptographic hashing, providing strong integrity guarantees but incurring $O(N \times Size)$ I/O complexity. This heavy I/O load often forces operators to restrict scanning to weekly maintenance windows. On a GCP High tier (c2-standard-4), DeepVis achieves a 7.7$\times$ speedup over standard AIDE. Even against an optimized Partial-Hash AIDE baseline that reads only the first 128 bytes, DeepVis maintains a 5.4$\times$ throughput advantage. This gain confirms that the performance boost stems not just from reading less data, but from the parallel \texttt{io\_uring} pipeline, which effectively hides I/O latency through massive concurrent queuing.
+\subsubsection{Micro-benchmark}
+\noindent\textbf{Scan Throughput. }Figure~\ref{fig:perf_analysis}(a) compares DeepVis against AIDE to demonstrate operational feasibility. AIDE performs full-file cryptographic hashing, providing strong integrity guarantees but incurring $O(N \times Size)$ I/O complexity. This heavy I/O load often forces operators to restrict scanning to weekly maintenance windows. On a GCP High tier (c2-standard-4), DeepVis achieves a 7.7$\times$ speedup over standard AIDE. Even against an optimized Partial-Hash AIDE baseline that reads only the first 128 bytes, DeepVis maintains a 5.4$\times$ throughput advantage. This gain confirms that the performance boost stems not just from reading less data, but from the parallel \texttt{io\_uring} pipeline, which effectively hides I/O latency through massive concurrent queuing.
 
 \noindent\textbf{Comparison with Commercial Scanners. }Benchmarking against fuzzy hashing (ssdeep) and signature scanners (ClamAV, YARA) on the full \texttt{/usr} directory (240,827 files) reveals that traditional tools are bottlenecked by synchronous content reads (127--1,004 files/s). In contrast, DeepVis achieves 39,993 files/s, representing a 40$\times$ to 215$\times$ speedup over the baselines. This throughput demonstrates the efficiency of the asynchronous snapshot engine in hyperscale environments.
 
-\noindent\textbf{Macro-benchmark: Service Interference. }Figure~\ref{fig:perf_analysis}(b) illustrates the P99 latency of a co-located NGINX web server during a full system scan. While raw throughput is critical, interference defines the operational constraint. Traditional tools severely impact system responsiveness; YARA and Heuristic engines cause degradation of +546\% and +324\% respectively due to CPU-intensive pattern matching. AIDE induces a +291\% latency spike (12.1ms) due to blocking I/O operations. In contrast, DeepVis maintains a P99 latency of 3,162$\mu$s, reflecting a negligible +2.0\% overhead compared to the baseline (3,100$\mu$s). This confirms that the spatial hashing and asynchronous design allow the system to operate transparently in the background.
+\subsubsection{Macro-benchmark}
+\noindent\textbf{Service Interference. }Figure~\ref{fig:perf_analysis}(b) illustrates the P99 latency of a co-located NGINX web server during a full system scan. While raw throughput is critical, interference defines the operational constraint. Traditional tools severely impact system responsiveness; YARA and Heuristic engines cause degradation of +546\% and +324\% respectively due to CPU-intensive pattern matching. AIDE induces a +291\% latency spike (12.1ms) due to blocking I/O operations. In contrast, DeepVis maintains a P99 latency of 3,162$\mu$s, reflecting a negligible +2.0\% overhead compared to the baseline (3,100$\mu$s). This confirms that the spatial hashing and asynchronous design allow the system to operate transparently in the background.
 
 \noindent\textbf{CPU Resource Profile. }Resource contention analysis explains the latency results. Legacy FIMs and scanners such as Osquery and AIDE saturate the Global CPU at near 100\%, forcing the OS scheduler to throttle the web server. DeepVis, however, maintains a CPU profile of 11.2\%, nearly identical to the baseline (9.8\%). Unlike runtime monitors (e.g., Falco) which incur constant context-switching overhead (+58.3\% latency degradation), DeepVis utilizes lightweight SIMD optimizations to ensure security monitoring remains strictly orthogonal to the primary service performance.
 
+
 %=====================================================================
-\subsection{Architectural Validation: Signal Preservation vs. Dilution (RQ3)}
-\label{eval_architectural}
+\subsection{Impact of Spatial Dimension and Hash Saturation (RQ3, RQ6)}
+\label{eval_saturation}
 %=====================================================================
 
-We explicitly validate the core architectural claim of \DeepVis: that the Hash-Grid with Local Max Pooling preserves sparse attack signals otherwise lost by Set-based Global Pooling (Set-AE). We demonstrate this through comparative visualization and quantitative Signal-to-Noise Ratio (SNR) analysis.
+We evaluate the structural limits of the fixed-size tensor representation, focusing on signal preservation against dimensional reduction and robustness against hash collisions.
 
 \begin{figure}[t]
     \centering
-    % [User Note] 새로 생성한 그림을 여기에 넣으세요 (DeepVis Grid vs Set-AE Vector)
     \includegraphics[width=0.95\linewidth]{Figures/comparison_dilution.pdf} 
     \caption{Visualizing Signal Preservation. (Top) DeepVis maintains spatial locality, isolating the malware as a distinct red peak ($L_\infty$ Spike). (Bottom) Set-AE averages the features into a single global vector, causing the attack signal to dilute into the background noise (Signal Dilution), resulting in detection failure.}
     \label{fig:signal_comparison}
 \end{figure}
 
-\noindent \textit{Visualizing the Attack Signal.}
-Figure~\ref{fig:signal_comparison} compares the internal representations of the two architectures under an identical attack scenario (10 malware files injected among 10,000 benign files). The top panel illustrates the reconstruction error map of the 1$\times$1 CAE in \DeepVis. The injected malware manifests as sharp, localized peaks against the diffuse background noise. This confirms that the Hash-Grid architecture maintains the spatial isolation of anomalies. In contrast, the bottom panel depicts the global feature vector of Set-AE. The global pooling mechanism aggregates the sparse attack signal with thousands of benign signals, washing out the anomaly. The resulting vector shows no distinct features distinguishing it from a benign state, visually confirming the phenomenon of signal dilution.
+\noindent\textbf{Impact of Spatial Dimension. }Figure~\ref{fig:signal_comparison} compares the internal representations under an active attack scenario. The top panel demonstrates that the 2D Hash-Grid architecture maintains the spatial isolation of anomalies, manifesting injected malware as sharp, localized peaks against diffuse background noise. In contrast, the bottom panel shows that reducing the dimension to a single global vector (Set-AE) aggregates sparse attack signals with thousands of benign signals, washing out the anomaly. Quantitatively, measurements during a live system update confirm this observation. The global pooling approach fails to distinguish the attack from update noise, resulting in a negligible Signal-to-Noise Ratio (SNR) of 1.09. Conversely, the spatial isolation of DeepVis yields a superior SNR of 2.71, ensuring robust detection even during high churn.
 
-\noindent \textit{Quantifying the SNR Advantage.}
-To quantify this isolation, we measured the Signal-to-Noise Ratio (SNR) during a live system update (\texttt{apt upgrade}). As shown in Table~\ref{tab:snr_analysis}, the standard Global MSE metric fails to distinguish the attack. The massive number of legitimate file updates creates a high noise floor ($\mu_{noise}=0.35$) which drowns out the sparse attack signal, resulting in a negligible SNR of 1.09. This quantitative evidence supports the signal dilution flaw inherent in architectures based on global pooling.
-
-Conversely, the Local Max logic of \DeepVis effectively filters out this diffuse noise. While the benign updates raise the global error average, the single maximum pixel value remains low (0.353). However, the rootkit injection triggers a sharp local spike (0.950). This yields a superior SNR of 2.71, providing a safety margin that remains robust against system churn.
+\noindent\textbf{Resilience to Hash Saturation. }To validate the stability of the hash mapping as the file count ($N$) exceeds the grid capacity ($W \times H$), we stress-tested the system by injecting up to 204,000 files into the $128 \times 128$ grid. Table~\ref{tab:hyperscale_saturation} shows that even at 99.99\% saturation (high collision state), the system maintains stability. Unlike traditional hash tables where collisions degrade performance to $O(N)$, our Max-Risk Pooling strategy ($\text{Grid}[h] = \max(\text{Grid}[h], s)$) ensures that tensor construction remains strictly $O(1)$. Collisions do not increase computational overhead; they merely aggregate risk scores, ensuring that detection latency remains constant regardless of file density.
 
 \begin{table}[t]
 \centering
-\caption{Signal Preservation Analysis. Comparison of detection metrics during a live system update. Global MSE (Set-AE approach) fails to distinguish the attack from update noise (SNR $\approx$ 1), whereas Local Max (DeepVis) isolates the threat (SNR $>$ 2.7).}
-\label{tab:snr_analysis}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{l ccc l}
-\toprule
-Metric (Architecture) & Noise (Update) & Signal (Attack) & SNR & Result \\
-\midrule
-Global MSE (Set-AE) & 0.35 & 0.38 & 1.09 & Missed \\
-\rowcolor{gray!10} 
-Local Max ($L_\infty$) & 0.35 & 0.95 & 2.71 & Detected \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
-
-
-
-%=====================================================================
-\subsection{Hyperscale Robustness and Saturation (RQ6)}
-\label{eval_robustness}
-%=====================================================================
-
-A potential concern with fixed-size grids is the impact of hash collisions as the number of files scales ($N \to \infty$). We stress-tested the system by injecting up to 204,000 files into the $128 \times 128$ grid (16,384 cells).
-
-\noindent\textbf{Resilience to Collisions.}
-Table~\ref{tab:hyperscale_saturation} presents the results. Even at \textbf{99.99\% saturation} (where every cell contains $\approx$12.45 files), \DeepVis maintained a \textbf{100\% Recall}. This robustness is due to the \textit{Max-Risk Pooling} strategy: even if a benign file (error 0.1) collides with a malicious file (error 0.9) in the same pixel, the pixel's value becomes $\max(0.1, 0.9) = 0.9$. Thus, the attack signal is never diluted by collisions, only obscured by a "worse" attacker, which still triggers an alert.
-
-\begin{table}[t]
-\centering
-\caption{\textbf{Hyperscale Saturation Test.} Even when the grid is completely saturated (204K files $\to$ 16K cells), Max-Risk pooling ensures the attack signal is never diluted, maintaining 100\% recall.}
+\caption{Hash Saturation Analysis. High collision rates do not impact processing overhead due to $O(1)$ Max-Risk Pooling.}
 \label{tab:hyperscale_saturation}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{r c c c}
+\resizebox{0.7\columnwidth}{!}{%
+\begin{tabular}{r c c}
 \toprule
-\textbf{Files ($N$)} & \textbf{Grid Saturation} & \textbf{Avg. Collisions} & \textbf{Recall} \\
+Files ($N$) & Grid Saturation & Avg. Collisions \\
 \midrule
-10,000 & 45.47\% & 0.61 & 100\% \\
-50,000 & 95.21\% & 3.05 & 100\% \\
-100,000 & 99.87\% & 6.10 & 100\% \\
+10,000 & 45.47\% & 0.61 \\
+50,000 & 95.21\% & 3.05 \\
+100,000 & 99.87\% & 6.10 \\
 \rowcolor{gray!10} 
-\textbf{204,000} & \textbf{99.99\%} & \textbf{12.45} & \textbf{100\%} \\
+204,000 & 99.99\% & 12.45 \\
 \bottomrule
 \end{tabular}%
 }
 \end{table}
 
-\noindent\textbf{Overhead Analysis.}
-Our component analysis at scale (500K files) confirms that \DeepVis is effectively I/O-bound. The \texttt{io\_uring} based file reading consumes 90.1\% of the total scan time, while the hashing, tensor mapping, and CAE inference account for negligible overhead ($<3\%$). This validates that our $O(1)$ inference architecture successfully decouples detection complexity from file system size.
+\noindent\textbf{Component Overhead. }Component analysis at scale (500K files) confirms that the hashing and mapping process is computationally efficient. The \texttt{io\_uring} based file reading consumes 90.1\% of the total scan time, while hashing, tensor mapping, and CAE inference account for negligible overhead ($<3\%$). This validates that the Hash-Grid architecture effectively decouples detection complexity from file system size without introducing computational bottlenecks.
+
+
+
 %=====================================================================
 \subsection{Fleet-Scale Scalability (RQ7)}
 \label{eval_fleet}
