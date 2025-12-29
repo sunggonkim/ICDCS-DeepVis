@@ -32,7 +32,7 @@ On the global repository containing 37,571 files, \DeepVis maintained a surgical
 %---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Evaluated on a \textbf{Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf{Global Repository} (37,571 Files). \DeepVis achieves 96\% recall on active binary threats with only 0.6\% repository alerts. \textit{Reference Points} (YARA, ClamAV) are full-content scanners included to contextualize the efficiency of header-only sampling---their higher noise/lower coverage is expected given their design goals.}
+\caption{\textbf{Unified Detection Performance.} Evaluated on a \textbf{Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf{Global Repository} (37,571 Files). \DeepVis achieves 96\% recall on active binary threats with only 0.6\% repository alerts. ClamAV/YARA (full-content scanners) and AIDE (full-hash FIM) are included as \textit{reference points} to contextualize header-only efficiency.}
 \label{tab:unified_detection}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{l cc c l}
@@ -40,17 +40,16 @@ On the global repository containing 37,571 files, \DeepVis maintained a surgical
 \multirow{2}{*}{\textbf{System}} & \textbf{Active Recall} & \textbf{Benign FP} & \textbf{Repo Rate} & \multicolumn{1}{c}{\textbf{Primary Failure Mode}} \\
 & \textbf{(N=68)} & \textbf{(N=667)} & \textbf{(N=37k)} & \multicolumn{1}{c}{\textit{(Source of Miss/FP)}} \\
 \midrule
-\multicolumn{5}{l}{\textit{Header-Only Approaches (Target Comparison)}} \\
-DeepVis (Entropy) & 25.0\% & 10.2\% & 10.2\% & Unpacked Binaries (Miss) \\
+ClamAV$^\dagger$ & 33.0\% & 0.0\% & 0.0\% & Misses Zero-Day \\
+YARA$^\dagger$ & 100.0\% & 45.0\% & 2.7\% & Text Matches (FP) \\
+AIDE$^\dagger$ & 100.0\% & 100.0\% & 100.0\% & System Updates (FP) \\
 Set-AE & 40.0\% & 5.0\% & 5.0\% & Global Pooling (Miss) \\
-AIDE & 100.0\% & 100.0\% & 100.0\% & System Updates (FP) \\
+\midrule
+DeepVis (Entropy) & 25.0\% & 10.2\% & 10.2\% & Unpacked Binaries (Miss) \\
 \rowcolor{gray!10} 
 \textbf{DeepVis (Full)} & \textbf{96.0\%} & \textbf{0.1\%} & \textbf{0.6\%} & Admin Tools (FP) \\
-\midrule
-\multicolumn{5}{l}{\textit{Full-Content Reference Points (Not Direct Baselines)}} \\
-ClamAV & 33.0\% & 0.0\% & 0.0\% & Misses Zero-Day \\
-YARA & 100.0\% & 45.0\% & 2.7\% & Text Matches (FP) \\
 \bottomrule
+\multicolumn{5}{l}{\scriptsize $^\dagger$Full-content/hash scanners (Reference Points, not direct baselines for header-only comparison).}
 \end{tabular}%
 }
 \end{table}
