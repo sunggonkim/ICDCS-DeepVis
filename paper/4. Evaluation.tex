@@ -25,7 +25,29 @@ We evaluated \DeepVis across a large-scale malware collection, including 3 compi
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Detection Accuracy (RQ1).} DeepVis detects 15/16 scenarios, successfully flagging binaries and hidden scripts, but failing on public-facing webshells (c99.php).}
+\caption{\textbf{Unified Detection Performance.} Verified on GCP \texttt{deepvis-mid}. DeepVis achieves 100\% recall on binaries (Rootkits) but fails on Mimicry (Webshell), clarifying the valid security scope.}
+\label{tab:unified_detection}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l cccc ccc}
+\toprule
+\multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Recall (Detection Rate)}} & \multicolumn{3}{c}{\textbf{False Positives}} \\
+\cmidrule(lr){2-5} \cmidrule(lr){6-8}
+& \textbf{Rootkit} & \textbf{Obfusc.} & \textbf{Polyglot} & \textbf{Webshell} & \textbf{Update} & \textbf{Packed} & \textbf{Image} \\
+\midrule
+ClamAV (Sig) & 33\% & 0\% & 0\% & 0\% & 0\% & 0\% & 0\% \\
+AIDE (FIM) & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\
+Sysdig Falco & 100\% & 100\% & 100\% & 0\% & 100\% & 0\% & 0\% \\
+Set-AE~\cite{zaheer2017deepsets} & 40\% & 60\% & 20\% & 0\% & 12\% & 5\% & 8\% \\
+\midrule
+\textbf{DeepVis} & \textbf{100\%} & \textbf{100\%} & \textbf{100\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Detailed Detection Accuracy.} Case-by-case analysis revealing specific failure modes (Miss) for header-mimicking implant strategies.}
 \label{tab:v3_results}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{ll l ccc c}
@@ -44,6 +66,8 @@ Webshell & \texttt{.config.php} & \texttt{/v/www/.conf.php} & 0.58 & \textbf{0.7
 Rev. Shell & \texttt{rev\_shell} & \texttt{/d/shm/rev\_shell} & \textbf{1.00} & \textbf{0.70} & 0.00 & \textbf{Det.} \\
 Disguised ELF & \texttt{access.log} & \texttt{/v/log/access.log} & 0.55 & 0.00 & \textbf{1.00} & \textbf{Det.} \\
 Webshell (Public) & \texttt{c99.php} & \texttt{/v/www/html/c99.php} & 0.58 & 0.00 & 0.00 & Miss \\
+Mimicry ELF & \texttt{libc\_fake.so} & \texttt{/lib/libc\_fake.so} & 0.61 & 0.00 & 0.00 & Miss \\
+Safe Path & \texttt{Implant} & \texttt{/usr/bin/implant} & 0.60 & 0.00 & 0.00 & Miss \\
 \midrule
 \multicolumn{7}{l}{\textit{\textbf{Benign System Files}}} \\
 Interpreter & \texttt{python3} & \texttt{/u/bin/python3} & 0.67 & 0.00 & 0.00 & Clean \\
@@ -55,28 +79,6 @@ Image (PNG) & \texttt{ubuntu-logo.png} & \texttt{/usr/share/plymouth/} & 0.53 & 
 Compressed & \texttt{changelog.gz} & \texttt{/usr/share/doc/.../} & 0.71 & 0.00 & 0.00 & Clean \\
 \bottomrule
 \end{tabular}
-}
-\end{table}
-
-\begin{table}[t]
-\centering
-\caption{\textbf{Unified Detection Performance.} Verified on GCP \texttt{deepvis-mid}. DeepVis achieves 100\% recall with 0\% FP, ensuring reliability amidst system churn.}
-\label{tab:unified_detection}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{l cccc ccc}
-\toprule
-\multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Recall (Detection Rate)}} & \multicolumn{3}{c}{\textbf{False Positives}} \\
-\cmidrule(lr){2-5} \cmidrule(lr){6-8}
-& \textbf{Rootkit} & \textbf{Obfusc.} & \textbf{Polyglot} & \textbf{Webshell} & \textbf{Update} & \textbf{Packed} & \textbf{Image} \\
-\midrule
-ClamAV (Sig) & 33\% & 0\% & 0\% & 0\% & 0\% & 0\% & 0\% \\
-AIDE (FIM) & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\
-Sysdig Falco & 100\% & 100\% & 100\% & 0\% & 100\% & 0\% & 0\% \\
-Set-AE~\cite{zaheer2017deepsets} & 40\% & 60\% & 20\% & 0\% & 12\% & 5\% & 8\% \\
-\midrule
-\textbf{DeepVis} & \textbf{100\%} & \textbf{100\%} & \textbf{100\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} & \textbf{0\%} \\
-\bottomrule
-\end{tabular}%
 }
 \end{table}
 
