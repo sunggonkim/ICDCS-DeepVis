@@ -79,10 +79,13 @@
 \newlabel{eval_setup}{{\mbox  {IV-A}}{7}{}{subsection.4.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Accuracy and Feature Orthogonality (RQ1)}{7}{}\protected@file@percent }
 \newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Evaluated on a rigorous \textbf  {Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf  {Global Repository} (37,571 Files). \texttt  {DeepVis}\xspace  achieves 96\% recall on active binary threats. YARA and ClamAV are included as \textit  {reference points} (full-content scanners) rather than direct baselines, to contextualize the noise and coverage trade-offs of header-only sampling.}}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Evaluated on a \textbf  {Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf  {Global Repository} (37,571 Files). \texttt  {DeepVis}\xspace  achieves 96\% recall on active binary threats with only 0.6\% repository alerts. \textit  {Reference Points} (YARA, ClamAV) are full-content scanners included to contextualize the efficiency of header-only sampling---their higher noise/lower coverage is expected given their design goals.}}{7}{}\protected@file@percent }
 \newlabel{tab:unified_detection}{{III}{7}{}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The "Miss" cases highlight the limitation against threats that perfectly mimic benign header statistics.}}{7}{}\protected@file@percent }
-\newlabel{tab:detailed_breakdown}{{IV}{7}{}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Scalability and Performance Analysis (RQ2)}{7}{}\protected@file@percent }
+\newlabel{eval_scalability}{{\mbox  {IV-C}}{7}{}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Micro-benchmark}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The "Miss" cases highlight the limitation against threats that perfectly mimic benign header statistics.}}{8}{}\protected@file@percent }
+\newlabel{tab:detailed_breakdown}{{IV}{8}{}{table.4}{}}
 \newlabel{fig:perf_throughput}{{7a}{8}{}{subfigure.7.1}{}}
 \newlabel{sub@fig:perf_throughput}{{(a)}{a}}
 \newlabel{fig:perf_latency}{{7b}{8}{}{subfigure.7.2}{}}
@@ -91,9 +94,6 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{8}{}\protected@file@percent }
 \newlabel{fig:perf_analysis}{{7}{8}{}{figure.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Scalability and Performance Analysis (RQ2)}{8}{}\protected@file@percent }
-\newlabel{eval_scalability}{{\mbox  {IV-C}}{8}{}{subsection.4.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Micro-benchmark}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Visualizing Signal Preservation. (Top) \texttt  {DeepVis}\xspace  maintains spatial locality, isolating the malware as a distinct red peak ($L_\infty $ Spike). (Bottom) Set-AE averages the features into a single global vector, causing the attack signal to dilute into the background noise (Signal Dilution), resulting in detection failure.}}{8}{}\protected@file@percent }
 \newlabel{fig:signal_comparison}{{8}{8}{}{figure.8}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Macro-benchmark}{8}{}\protected@file@percent }
@@ -152,13 +152,13 @@
 \bibcite{lyda2007entropy}{16}
 \bibcite{ling2024wolf}{17}
 \bibcite{uetz2024detecting}{18}
-\bibcite{du2017deeplog}{19}
-\bibcite{mirsky2018kitsune}{20}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
 \newlabel{sec:discussion}{{VI}{11}{}{section.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
 \newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
 \@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
+\bibcite{du2017deeplog}{19}
+\bibcite{mirsky2018kitsune}{20}
 \bibcite{ruff2018deep}{21}
 \bibcite{akcay2018ganomaly}{22}
 \bibcite{zong2018deep}{23}
