@@ -22,10 +22,10 @@ We employed a maximum-margin approach to determine detection boundaries. The thr
 %=====================================================================
 
 \noindent\textbf{Rigorous Binary Evaluation.} 
-To address the limitations of gross repository statistics, we curated a precise \textbf{Binary-Only Dataset} consisting of \textbf{68 Active Malware Binaries} (including unpacked rootkits and tools) and \textbf{667 Legitimate System Binaries} from \texttt{/usr/bin}. 
-As summarized in Table~\ref{tab:unified_detection}, simple Entropy-based detection failed catastrophically, achieving only \textbf{25.0\% Recall} because many modern tools (e.g., \texttt{VirTool.DDoS}) are not packed ($R<0.6$). It also suffered a \textbf{10.2\% False Positive} rate on standard tools like \texttt{gpg} and \texttt{snap}. 
-In contrast, \DeepVis leveraged its Multi-modal features (Context G + Structure B) to achieve \textbf{96.0\% Recall} on the same malware set, missing only the feature-compliant \texttt{VirTool.DDoS.TCP.a}. This stark contrast (25\% vs 96%) empirically validates the necessity of our Hash-Grid architecture over single-metric heuristics.
-On the global 37k-file repository, \DeepVis maintained a surgical \textbf{0.6\% Alert Rate}, filtering out dormant source code that confused YARA (2.7\%) and ignoring valid updates that triggered AIDE (100\%).
+To address the limitations of gross repository statistics, we curated a precise Binary-Only Dataset consisting of 68 Active Malware Binaries (including unpacked rootkits and tools) and 667 Legitimate System Binaries from \texttt{/usr/bin}. 
+As summarized in Table~\ref{tab:unified_detection}, simple Entropy-based detection failed catastrophically, achieving only 25.0\% Recall because many modern tools (e.g., \texttt{VirTool.DDoS}) are not packed ($R<0.6$). It also suffered a 10.2\% False Positive rate on standard tools like \texttt{gpg} and \texttt{snap}. 
+In contrast, \DeepVis leveraged its Multi-modal features (Context G + Structure B) to achieve 96.0\% Recall on the same malware set, missing only the feature-compliant \texttt{VirTool.DDoS.TCP.a}. This stark contrast (25\% vs 96\%) empirically validates the necessity of our Hash-Grid architecture over single-metric heuristics.
+On the global 37k-file repository, \DeepVis maintained a surgical 0.6\% Alert Rate, filtering out dormant source code that confused YARA (2.7\%) and ignoring valid updates that triggered AIDE (100\%).
 
 In contrast, signature-based YARA flagged 2.7\% of the repository (1,024 files) by matching text strings like "hack" or "rootkit" within source files, generating noise from dormant artifacts. Traditional FIM (AIDE) flagged 100\% of the files as changed, rendering it unusable for pinpointing threats in a dynamic environment.
 
@@ -34,33 +34,30 @@ In contrast, signature-based YARA flagged 2.7\% of the repository (1,024 files) 
 %---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Evaluated on a rigorous \textbf{Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf{Global Repository} (37,571 Files). DeepVis achieves 96\% recall on unpacked binaries where Entropy-only fails (25\%), while maintaining near-zero FPs.}
+\caption{\textbf{Unified Detection Performance.} Evaluated on a rigorous \textbf{Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf{Global Repository} (37,571 Files).}
 \label{tab:unified_detection}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{l cc c l}
 \toprule
-\multirow{2}{*}{\textbf{System}} & \textbf{Malware Recall} & \textbf{Benign FP} & \textbf{Global Selectivity} & \multicolumn{1}{c}{\textbf{Primary Failure Mode}} \\
+\multirow{2}{*}{\textbf{System}} & \textbf{Malware Recall} & \textbf{Benign FP} & \textbf{Repo Alerts} & \multicolumn{1}{c}{\textbf{Primary Failure Mode}} \\
 & \textbf{(N=68)} & \textbf{(N=667)} & \textbf{(N=37k)} & \multicolumn{1}{c}{\textit{(Source of Miss/FP)}} \\
 \midrule
 ClamAV & 33.0\% & 0.0\% & 0.0\% & Misses Unknown Malware \\
 YARA & 100.0\% & 45.0\% & 2.7\% & Text Matches (FP) \\
 AIDE & 100.0\% & 100.0\% & 100.0\% & System Updates (FP) \\
 Set-AE & 40.0\% & 5.0\% & 5.0\% & Global Pooling (Miss) \\
-Entropy-Only & \textbf{25.0\%} & \textbf{10.2\%} & 10.2\% & \textbf{Unpacked Binaries (Miss)} \\
 \midrule
+DeepVis (Entropy) & 25.0\% & 10.2\% & 10.2\% & Unpacked Binaries (Miss) \\
 \rowcolor{gray!10} 
-\textbf{DeepVis} & \textbf{96.0\%} & \textbf{0.1\%} & \textbf{0.6\%} & Admin Tools (FP) \\
+\textbf{DeepVis (Full)} & \textbf{96.0\%} & \textbf{0.1\%} & \textbf{0.6\%} & Admin Tools (FP) \\
 \bottomrule
 \end{tabular}%
 }
 \end{table}
 
-\noindent\textbf{Failure Mode Analysis.} 
+\noindent Failure Mode Analysis. 
 Table~\ref{tab:detailed_breakdown} provides a granular look at detection capabilities and limitations. \DeepVis leverages feature orthogonality to detect evasive threats:
-\begin{itemize}
-    \item \textbf{Diamorphine (Rootkit):} Evaded Entropy ($R=0.52$) but was caught by Context ($G=0.60$) and Structure ($B=0.50$) due to its kernel-module nature in a temporary directory.
-    \item \textbf{Azazel (LD\_PRELOAD):} Detected via Entropy ($R=1.00$) and Context ($G=0.90$) due to packing and path anomalies.
-\end{itemize}
+Diamorphine (Rootkit) evaded Entropy ($R=0.52$) but was caught by Context ($G=0.60$) and Structure ($B=0.50$) due to its kernel-module nature in a temporary directory. Azazel (LD\_PRELOAD) was detected via Entropy ($R=1.00$) and Context ($G=0.90$) due to packing and path anomalies.
 However, the header-only approach has intrinsic blind spots. As shown in the bottom rows of Table~\ref{tab:detailed_breakdown}, \DeepVis failed to detect the public webshell \texttt{c99.php} and the DDoS tool \texttt{VirTool.TCP.a}. These files reside in structurally valid paths (e.g., \texttt{/var/www/html}) and lack binary packing anomalies ($R\approx0.58$), making them indistinguishable from benign scripts via headers alone. This confirms that \DeepVis serves as a high-speed first-line defense for binary integrity, rather than a full-content scanner.
 
 %---------------------------------------------------------------------
@@ -68,39 +65,37 @@ However, the header-only approach has intrinsic blind spots. As shown in the bot
 %---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Detailed Detection Analysis.} Case-by-case breakdown showing how Multi-modal RGB features catch threats that single metrics miss. "Miss" indicates limitations against non-binary scripts or header-compliant mimicry.}
+\caption{\textbf{Detailed Detection Analysis.} Removal of path column for clarity. Multi-modal RGB features catch threats that single metrics miss.}
 \label{tab:detailed_breakdown}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{ll l ccc c}
+\begin{tabular}{l c ccc c}
 \toprule
-\textbf{Category} & \textbf{Artifact} & \textbf{Path} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{Res.} \\
+\textbf{Type} & \textbf{Name} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{Status} \\
 \midrule
-\multicolumn{7}{l}{\textit{\textbf{detected Active Threats}}} \\
-LKM Rootkit & \texttt{Diamorphine} & \texttt{/v/tmp/nvidia.ko} & 0.52 & \textbf{0.60} & \textbf{0.50} & \textbf{Det.} \\
-LD\_PRELOAD & \texttt{Azazel} & \texttt{/v/tmp/libsys.so} & 0.37 & \textbf{0.60} & 0.00 & \textbf{Det.} \\
-Crypto Miner & \texttt{XMRig} & \texttt{/v/tmp/kthreadd} & 0.32 & \textbf{0.60} & 0.00 & \textbf{Det.} \\
-Packed Miner & \texttt{kworker-upd} & \texttt{/d/shm/.sys-priv} & \textbf{0.88} & \textbf{0.90} & 0.40 & \textbf{Det.} \\
-Encrypted RK & \texttt{azazel\_enc} & \texttt{/d/shm/.enc} & \textbf{1.00} & \textbf{0.90} & \textbf{0.80} & \textbf{Det.} \\
-Rev. Shell & \texttt{rev\_shell} & \texttt{/d/shm/rev\_shell} & \textbf{1.00} & \textbf{0.70} & 0.00 & \textbf{Det.} \\
-Disguised ELF & \texttt{access.log} & \texttt{/v/log/access.log} & 0.55 & 0.00 & \textbf{1.00} & \textbf{Det.} \\
+\multicolumn{6}{l}{\textit{Detected Active Threats}} \\
+LKM Rootkit & \texttt{Diamorphine} & 0.52 & \textbf{0.60} & \textbf{0.50} & \textbf{Det.} \\
+LD\_PRELOAD & \texttt{Azazel} & 0.37 & \textbf{0.60} & 0.00 & \textbf{Det.} \\
+Crypto Miner & \texttt{XMRig} & 0.32 & \textbf{0.60} & 0.00 & \textbf{Det.} \\
+Encrypted RK & \texttt{azazel\_enc} & \textbf{1.00} & \textbf{0.90} & \textbf{0.80} & \textbf{Det.} \\
+Rev. Shell & \texttt{rev\_shell} & \textbf{1.00} & \textbf{0.70} & 0.00 & \textbf{Det.} \\
+Disguised ELF & \texttt{access.log} & 0.55 & 0.00 & \textbf{1.00} & \textbf{Det.} \\
 \midrule
-\multicolumn{7}{l}{\textit{\textbf{Undetected (Limitations)}}} \\
-Webshell & \texttt{c99.php} & \texttt{/v/www/html/c99.php} & 0.58 & 0.00 & 0.00 & Miss \\
-Mimicry ELF & \texttt{libc\_fake.so} & \texttt{/lib/libc\_fake.so} & 0.61 & 0.00 & 0.00 & Miss \\
-DDoS Tool & \texttt{VirTool.TCP.a} & \texttt{.../DDoS/VirTool.TCP.a} & 0.58 & 0.00 & 0.00 & Miss \\
+\multicolumn{6}{l}{\textit{Undetected (Limitations)}} \\
+Webshell & \texttt{c99.php} & 0.58 & 0.00 & 0.00 & Miss \\
+Mimicry ELF & \texttt{libc\_fake.so} & 0.61 & 0.00 & 0.00 & Miss \\
+DDoS Tool & \texttt{VirTool.TCP.a} & 0.58 & 0.00 & 0.00 & Miss \\
 \midrule
-\multicolumn{7}{l}{\textit{\textbf{Benign Baselines (Clean)}}} \\
-Interpreter & \texttt{python3} & \texttt{/u/bin/python3} & 0.67 & 0.00 & 0.00 & Clean \\
-Library & \texttt{libc.so.6} & \texttt{/lib/.../libc.so} & 0.66 & 0.00 & 0.00 & Clean \\
-Image (PNG) & \texttt{ubuntu-logo} & \texttt{/usr/share/plymouth/} & 0.53 & 0.00 & 0.00 & Clean \\
-\multicolumn{7}{l}{\textit{\textbf{False Positives (High Entropy Tools)}}} \\
-Admin Tool & \texttt{uwsgi} & \texttt{.../Mazar/uwsgi} & \textbf{0.76} & 0.00 & 0.00 & \textbf{False Pos.} \\
+\multicolumn{6}{l}{\textit{Benign Baselines (Clean)}} \\
+Interpreter & \texttt{python3} & 0.67 & 0.00 & 0.00 & Clean \\
+Library & \texttt{libc.so.6} & 0.66 & 0.00 & 0.00 & Clean \\
+Image (PNG) & \texttt{ubuntu-logo} & 0.53 & 0.00 & 0.00 & Clean \\
+\multicolumn{6}{l}{\textit{False Positives (High Entropy Tools)}} \\
+Admin Tool & \texttt{uwsgi} & \textbf{0.76} & 0.00 & 0.00 & \textbf{False Pos.} \\
 \bottomrule
 \end{tabular}
 }
 \end{table}
 
-\noindent\textbf{Comparison with Set-based Approaches.} 
 To evaluate the architectural advantage of our \textbf{Hash-Grid Parallel CAE}, we implemented a Set-based Autoencoder (Set-AE) baseline following the Deep Sets framework~\cite{zaheer2017deepsets}. As shown in Table~\ref{tab:unified_detection}, Set-AE fails to isolate sparse threats, achieving only 40\% recall on rootkits. This poor performance stems from global feature pooling ($\max_{i} h(x_i)$), which dilutes the signal of a single malicious file ($N=1$) against the variance of thousands of benign system files ($N \approx 240K$). In contrast, \DeepVis projects files onto a fixed Spatial Grid ($128 \times 128$) and uses $L_\infty$ pooling, ensuring that sparse anomalies remain locally distinct spikes rather than being averaged out globally.
 
 \noindent\textbf{Feature Orthogonality in Action.} Unlike standard scanners that rely on a single metric, \DeepVis detects threats through joint violations. For instance, while \texttt{Diamorphine} exhibits moderate entropy, its placement in a non-standard directory (Channel G anomaly) and its kernel-module structure (Channel B anomaly) creates a unique RGB pixel that the CAE has never encountered in its benign-only training set. This results in a sharp reconstruction error spike, even if individual thresholds for R, G, or B were not crossed independently.
