@@ -173,47 +173,31 @@ Files ($N$) & Grid Saturation & Avg. Collisions \\
 \label{eval_fleet}
 %=====================================================================
 
-A key requirement for distributed systems conferences is demonstrating scalability across a fleet of nodes. We evaluate \DeepVis's ability to verify a large distributed cluster under realistic conditions.
+A key requirement for distributed systems is demonstrating scalability across a fleet of nodes under realistic network conditions. We evaluate the capability of DeepVis to verify a large distributed cluster by deploying 100 concurrent nodes in a public cloud environment.
 
-\noindent\textbf{Experimental Setup and Orchestration at Scale.}
-Deploying and coordinating 100 concurrent nodes in a public cloud environment presents significant orchestration challenges, including API rate limits, network saturation, and regional quotas. To overcome these, we distributed the fleet across three geographically distant GCP regions: \texttt{us-central1} (Iowa), \texttt{us-east1} (South Carolina), and \texttt{us-west1} (Oregon). 
-We utilized a hierarchical orchestration architecture where a single bastion node (\texttt{deepvis-mid}) located in \texttt{asia-northeast3} (Seoul) coordinated the entire US-based fleet via GCP's internal VPC network. This cross-region control plane demonstrates that \DeepVis can effectively manage global deployments without being co-located with the monitored nodes.
-Each e2-micro node was provisioned with a custom Golden Image containing the Rust-based \DeepVis scanner. 
-Upon activation, each node performed a full scan of its local \texttt{/usr/bin} and \texttt{/etc} directories (representing a typical microservice workload), generated a $128 \times 128 \times 3$ RGB tensor, and utilized the \DeepVis asynchronous protocol to push the tensor to the aggregator. 
+\noindent\textbf{Experimental Setup and Orchestration at Scale. }Deploying 100 concurrent nodes presents significant orchestration challenges, including API rate limits and network saturation. To mitigate these, we distributed the fleet across three geographically distant GCP regions: \texttt{us-central1} (Iowa), \texttt{us-east1} (South Carolina), and \texttt{us-west1} (Oregon). A hierarchical orchestration architecture was employed where a single bastion node (\texttt{deepvis-mid}) located in \texttt{asia-northeast3} (Seoul) coordinated the entire US-based fleet via GCP's internal VPC network. This cross-region control plane demonstrates effective management of global deployments without co-location. Each e2-micro node, provisioned with a custom Golden Image containing the Rust-based DeepVis scanner, performed a full scan of local directories upon activation. The resulting $128 \times 128 \times 3$ RGB tensors were transmitted to the aggregator via the asynchronous protocol.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.95\linewidth]{Figures/fig_fleet_vis.pdf}
-  \caption{\textbf{Fleet Latency Heatmap (100 Nodes).} Real-world scan latency distribution across the 100-node fleet. The heatmap reveals checking performance consistency across three regions (\texttt{us-central1}, \texttt{us-east1}, \texttt{us-west1}). Despite regional network variances, \DeepVis maintains a tight latency bound (avg 4.29s, max 6.0s), demonstrating resilience against "noisy neighbor" effects in public cloud environments.}
-  \label{fig:fleet_vis}
+  \subfloat[Linear Scalability]{
+    \includegraphics[width=0.8\linewidth]{Figures/fig_fleet_scalability.pdf}
+    \label{fig:fleet_scale}
+  } \\
+  \subfloat[Geo-Stability]{
+    \includegraphics[width=0.8\linewidth]{Figures/fig_fleet_vis.pdf}
+    \label{fig:fleet_heatmap}
+  }
+  \caption{\textbf{Fleet-Scale Performance.} (a) \textbf{Linear Scalability:} Throughput increases linearly with fleet size, reaching $\approx$206k files/s at 100 nodes. (b) \textbf{Geo-Stability:} The latency heatmap across 100 nodes shows consistent performance (avg 4.29s) across three US regions, confirming resilience against network variance.}
+  \label{fig:fleet_perf}
 \end{figure}
 
-\noindent\textbf{Results and Discussion.}
-Figure~\ref{fig:fleet_vis} visualizes the collected state of the 100-node fleet. Unlike traditional log aggregation, which would produce megabytes of text logs for 100 nodes, \DeepVis condenses the entire fleet's status into a single visual summary.
-It is worth noting that the per-node scan latency (4.29s) is orders of magnitude lower than the single-node scalability results shown in Figure~\ref{fig:perf_analysis}(a). This is strictly due to workload size: the micro-benchmark measures a massive sequential scan, whereas the fleet experiment distributes this load across 100 nodes (10,000 files each). Importantly, the effective throughput on \texttt{e2-micro} ($\approx$2,300 files/s) remains consistent across both experiments, confirming that our fleet performance scales linearly even on constrained hardware.
+\noindent\textbf{Linear Scalability. }Figure~\ref{fig:fleet_perf}(a) demonstrates the linear scaling capability of DeepVis. As the fleet size scales from 1 to 100 nodes, the aggregate verification throughput grows proportionally, reaching \textbf{206,611 files/sec}. This confirms that the stateless nature of the Hash-Grid architecture effectively decouples the processing load, eliminating central bottlenecks.
 
-\begin{table}[t]
-\centering
-\caption{Fleet-Scale Scalability. Scan latency increases slightly with scale due to cloud contention, but effective throughput scales linearly.}
-\label{tab:fleet_scalability}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{rrrrrr}
-\toprule
-\textbf{Nodes} & \textbf{Files} & \textbf{Scan (s)} & \textbf{Agg (ms)} & \textbf{Total (s)} & \textbf{Rate (files/s)} \\
-\midrule
-1 & 10,000 & 3.12 & 5.5 & 3.13 & 3,194 \\
-10 & 100,000 & 3.67 & 54.8 & 3.72 & 26,881 \\
-50 & 500,000 & 4.21 & 274 & 4.48 & 111,607 \\
-100 & 1,000,000 & 4.29 & 548 & 4.84 & \textbf{206,611} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
+\noindent\textbf{Global Stability. }Figure~\ref{fig:fleet_perf}(b) visualizes the scan latency distribution across the 100 nodes. Despite the geographical dispersion, DeepVis maintains a tight latency bound with an average of 4.29s and a maximum of 6.0s. Crucially, the aggregation overhead for the entire fleet was merely 548ms. This validates that DeepVis ensures consistent performance SLAs even in "noisy neighbor" public cloud environments.
 
-Crucially, the aggregation overhead for 100 nodes was merely 548ms, confirming that the network cost scales linearly with the number of nodes (tensor count) rather than the number of files. This result validates that \DeepVis effectively decouples verification latency from file system size, enabling hyperscale monitoring without the "logging bottleneck" typical of FIM solutions.
+\noindent\textbf{Network Efficiency. }Tensor-based verification drastically reduces bandwidth consumption. Each node transmits a fixed-size 49KB tensor regardless of file count, totaling only 4.9MB for the 100-node fleet. This represents a 100$\times$ reduction in network overhead compared to provenance-based systems, which can exceed 500MB under similar workloads.
 
-\noindent\textbf{Network Efficiency.}
-A critical advantage of tensor-based verification is bandwidth efficiency. Each node transmits only 49KB regardless of file count, totaling 4.9MB for a 100-node fleet. In contrast, provenance-based systems transmit full event logs, which can exceed 500MB under heavy workloads---a 100$\times$ reduction in network overhead.
+
 
 %=====================================================================
 \subsection{Ablation Study}
