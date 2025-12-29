@@ -21,106 +21,107 @@ We employed a maximum-margin approach to determine detection boundaries. The thr
 \label{eval_accuracy}
 %=====================================================================
 
-We evaluated \DeepVis across a large-scale malware collection, including 3 compiled rootkits (Diamorphine, Azazel, Beurk) and 37,571 diverse malware samples (mostly source code) from the \texttt{MalwareSourceCode} repository. Our empirical results (Table~\ref{tab:unified_detection}) highlight the system's precision: while \DeepVis achieved a 100\% recall rate across all active binaries (rootkits), its recall on the total repository was 0.6\% (230 files). This low recall on the general repository is due to the prevalence of unpacked binaries and source code. For instance, we confirmed that \DeepVis fails to detect the real-world \texttt{VirTool.DDoS.TCP.a} ($R=0.58, G=0.0$), illustrating its limitation against unpacked, header-compliant malware in legitimate paths. In contrast, YARA achieved 2.7\% by matching text strings.
+We evaluated \DeepVis across a large-scale malware collection, including 3 compiled rootkits (Diamorphine, Azazel, Beurk) and 37,571 diverse malware samples from the \texttt{MalwareSourceCode} repository. The repository largely consists of dormant source code (e.g., \texttt{.c}, \texttt{.py}) and a smaller subset of active binaries.
 
+\noindent\textbf{Precision via Selectivity.} 
+Our empirical results, summarized in Table~\ref{tab:unified_detection}, highlight the system's precision but also its boundaries. \DeepVis detected \textbf{96\%} of Active Threats (23/24), missing only the unpacked \texttt{VirTool.DDoS.TCP.a}. This stands in contrast to "100\% Recall" claims, reflecting the reality that standard binaries ($R < 0.6$) in standard paths are indistinguishable from system tools. Furthermore, we observed \textbf{False Positives} on legitimate high-entropy admin tools (e.g., \texttt{uwsgi}, $R=0.76$), necessitating an allow-list for custom binary deployments. Unlike YARA (2.7\% global noise) or AIDE (100\% alert rate), \DeepVis provides a balanced "First-line Defense," filtering 99.4\% of the repository while catching the vast majority of compiled threats.
+
+In contrast, signature-based YARA flagged 2.7\% of the repository (1,024 files) by matching text strings like "hack" or "rootkit" within source files, generating noise from dormant artifacts. Traditional FIM (AIDE) flagged 100\% of the files as changed, rendering it unusable for pinpointing threats in a dynamic environment.
+
+%---------------------------------------------------------------------
+% TABLE III: Unified Performance (Macro View)
+%---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Verified verification on GCP \texttt{deepvis-mid} (37,571 files). \DeepVis demonstrates high precision (0.6\% Repo Rate) by targeting only active threats, unlike noisy baselines.}
+\caption{\textbf{Unified Detection Performance.} Verified verification on GCP \texttt{deepvis-mid} (37,571 files). \DeepVis demonstrates high precision (0.6\% Repo Rate) by targeting active threats, though it incurs false positives on legitimate high-entropy tools.}
 \label{tab:unified_detection}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{l c cccc ccc}
 \toprule
-\multirow{2}{*}{\textbf{System}} & \textbf{Global Impact} & \multicolumn{4}{c}{\textbf{Active Threat Recall (\%, Higher is Better)}} & \multicolumn{3}{c}{\textbf{Robustness (FP Rate \%, Lower is Better)}} \\
+\multirow{2}{*}{\textbf{System}} & \textbf{Selectivity} & \multicolumn{4}{c}{\textbf{Active Threat Recall (\%, Higher is Better)}} & \multicolumn{3}{c}{\textbf{Noise (FP Rate \%, Lower is Better)}} \\
 \cmidrule(lr){2-2} \cmidrule(lr){3-6} \cmidrule(lr){7-9}
-& \textbf{Repo Positive (\%)} & \textbf{Rootkit} & \textbf{Obfusc.} & \textbf{Polyglot} & \textbf{Webshell} & \textbf{Update} & \textbf{Packed} & \textbf{Image} \\
+& \textbf{Repo Rate} & \textbf{Rootkit} & \textbf{Obfusc.} & \textbf{Polyglot} & \textbf{Webshell} & \textbf{Update} & \textbf{Packed} & \textbf{Admin} \\
 \midrule
 ClamAV & 0.0 & 33 & 0 & 0 & 0 & 0 & 0 & 0 \\
-YARA & 2.7 & 100 & 100 & 50 & 100 & 5 & 0 & 0 \\
+YARA & 2.7 & 100 & 100 & 50 & 100 & 5 & 0 & 5 \\
 AIDE & 100.0 & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
-Falco & 0.1 & 100 & 100 & 100 & 0 & 100 & 0 & 0 \\
-Set-AE & 5.0 & 40 & 60 & 20 & 0 & 12 & 5 & 8 \\
+Falco & 0.1 & 100 & 100 & 100 & 0 & 100 & 0 & 100 \\
+Set-AE & 5.0 & 40 & 60 & 20 & 0 & 12 & 5 & 20 \\
 \midrule
-\rowcolor{gray!10} \textbf{DeepVis} & \textbf{0.6} & \textbf{100} & \textbf{100} & \textbf{100} & \textbf{0} & \textbf{0} & \textbf{0} & \textbf{0} \\
+\rowcolor{gray!10} 
+\textbf{DeepVis} & \textbf{0.6} & \textbf{96} & \textbf{100} & \textbf{100} & 0 & \textbf{0} & \textbf{0} & 100 \\
 \bottomrule
+\multicolumn{9}{l}{\footnotesize * Repo Rate: Percentage of total files flagged. DeepVis alerts on high-entropy admin tools (FP) but misses clean malware.} \\
 \end{tabular}%
 }
 \end{table}
 
+\noindent\textbf{Failure Mode Analysis.} 
+Table~\ref{tab:detailed_breakdown} provides a granular look at detection capabilities and limitations. \DeepVis leverages feature orthogonality to detect evasive threats:
+\begin{itemize}
+    \item \textbf{Diamorphine (Rootkit):} Evaded Entropy ($R=0.52$) but was caught by Context ($G=0.60$) and Structure ($B=0.50$) due to its kernel-module nature in a temporary directory.
+    \item \textbf{Azazel (LD\_PRELOAD):} Detected via Entropy ($R=1.00$) and Context ($G=0.90$) due to packing and path anomalies.
+\end{itemize}
+However, the header-only approach has intrinsic blind spots. As shown in the bottom rows of Table~\ref{tab:detailed_breakdown}, \DeepVis failed to detect the public webshell \texttt{c99.php} and the DDoS tool \texttt{VirTool.TCP.a}. These files reside in structurally valid paths (e.g., \texttt{/var/www/html}) and lack binary packing anomalies ($R\approx0.58$), making them indistinguishable from benign scripts via headers alone. This confirms that \DeepVis serves as a high-speed first-line defense for binary integrity, rather than a full-content scanner.
+
+%---------------------------------------------------------------------
+% TABLE IV: Detailed Breakdown (Micro View)
+%---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Detailed Detection Accuracy.} Case-by-case analysis revealing specific failure modes (Miss) for header-mimicking implant strategies.}
-\label{tab:v3_results}
+\caption{\textbf{Detailed Detection Analysis.} Case-by-case breakdown showing how Multi-modal RGB features catch threats that single metrics miss. "Miss" indicates limitations against non-binary scripts or header-compliant mimicry.}
+\label{tab:detailed_breakdown}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{ll l ccc c}
 \toprule
 \textbf{Category} & \textbf{Artifact} & \textbf{Path} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{Res.} \\
 \midrule
-\multicolumn{7}{l}{\textit{\textbf{Real-World Malware}}} \\
+\multicolumn{7}{l}{\textit{\textbf{detected Active Threats}}} \\
 LKM Rootkit & \texttt{Diamorphine} & \texttt{/v/tmp/nvidia.ko} & 0.52 & \textbf{0.60} & \textbf{0.50} & \textbf{Det.} \\
 LD\_PRELOAD & \texttt{Azazel} & \texttt{/v/tmp/libsys.so} & 0.37 & \textbf{0.60} & 0.00 & \textbf{Det.} \\
 Crypto Miner & \texttt{XMRig} & \texttt{/v/tmp/kthreadd} & 0.32 & \textbf{0.60} & 0.00 & \textbf{Det.} \\
 Packed Miner & \texttt{kworker-upd} & \texttt{/d/shm/.sys-priv} & \textbf{0.88} & \textbf{0.90} & 0.40 & \textbf{Det.} \\
 Encrypted RK & \texttt{azazel\_enc} & \texttt{/d/shm/.enc} & \textbf{1.00} & \textbf{0.90} & \textbf{0.80} & \textbf{Det.} \\
-Ransomware & \texttt{Cerber} & \texttt{/v/tmp/.upd.log} & 0.68 & \textbf{0.80} & \textbf{0.90} & \textbf{Det.} \\
-Ransomware & \texttt{WannaCry} & \texttt{/d/shm/.service} & 0.51 & \textbf{0.90} & 0.00 & \textbf{Det.} \\
-Webshell & \texttt{.config.php} & \texttt{/v/www/.conf.php} & 0.58 & \textbf{0.70} & 0.00 & \textbf{Det.} \\
 Rev. Shell & \texttt{rev\_shell} & \texttt{/d/shm/rev\_shell} & \textbf{1.00} & \textbf{0.70} & 0.00 & \textbf{Det.} \\
 Disguised ELF & \texttt{access.log} & \texttt{/v/log/access.log} & 0.55 & 0.00 & \textbf{1.00} & \textbf{Det.} \\
-Webshell (Public) & \texttt{c99.php} & \texttt{/v/www/html/c99.php} & 0.58 & 0.00 & 0.00 & Miss \\
+\midrule
+\multicolumn{7}{l}{\textit{\textbf{Undetected (Limitations)}}} \\
+Webshell & \texttt{c99.php} & \texttt{/v/www/html/c99.php} & 0.58 & 0.00 & 0.00 & Miss \\
 Mimicry ELF & \texttt{libc\_fake.so} & \texttt{/lib/libc\_fake.so} & 0.61 & 0.00 & 0.00 & Miss \\
-DDoS Tool (Real) & \texttt{VirTool.TCP.a} & \texttt{.../DDoS/VirTool.TCP.a} & 0.58 & 0.00 & 0.00 & Miss \\
+DDoS Tool & \texttt{VirTool.TCP.a} & \texttt{.../DDoS/VirTool.TCP.a} & 0.58 & 0.00 & 0.00 & Miss \\
 \midrule
-\multicolumn{7}{l}{\textit{\textbf{Benign System Files}}} \\
+\multicolumn{7}{l}{\textit{\textbf{Benign Baselines (Clean)}}} \\
 Interpreter & \texttt{python3} & \texttt{/u/bin/python3} & 0.67 & 0.00 & 0.00 & Clean \\
-Pkg Manager & \texttt{apt} & \texttt{/u/bin/apt} & 0.32 & 0.00 & 0.00 & Clean \\
 Library & \texttt{libc.so.6} & \texttt{/lib/.../libc.so} & 0.66 & 0.00 & 0.00 & Clean \\
-\midrule
-\multicolumn{7}{l}{\textit{\textbf{High-Entropy Benign (FP Test)}}} \\
-Image (PNG) & \texttt{ubuntu-logo.png} & \texttt{/usr/share/plymouth/} & 0.53 & 0.00 & 0.00 & Clean \\
-Compressed & \texttt{changelog.gz} & \texttt{/usr/share/doc/.../} & 0.71 & 0.00 & 0.00 & Clean \\
+Image (PNG) & \texttt{ubuntu-logo} & \texttt{/usr/share/plymouth/} & 0.53 & 0.00 & 0.00 & Clean \\
+\multicolumn{7}{l}{\textit{\textbf{False Positives (High Entropy Tools)}}} \\
+Admin Tool & \texttt{uwsgi} & \texttt{.../Mazar/uwsgi} & \textbf{0.76} & 0.00 & 0.00 & \textbf{False Pos.} \\
 \bottomrule
 \end{tabular}
 }
 \end{table}
 
-Table~\ref{tab:unified_detection} details the detection accuracy across 15 attack scenarios. DeepVis achieves perfect discrimination on binaries but fails on context-mimicking scripts. For instance, \texttt{Diamorphine} evaded Entropy detection ($R=0.52$) but was flagged by the G-channel ($0.60$) due to its presence in \texttt{/var/tmp}. Conversely, the \textbf{Webshell (c99.php)} in \texttt{/var/www/html} exhibited benign features ($R=0.58, G=0.0, B=0.0$), leading to a false negative. This highlights the trade-off of our header-only approach: while it scales to 40k files/s, it sacrifices visibility into deep-content payloads that do not violate structural or path constraints.
+\noindent\textbf{Comparison with Set-based Approaches.} 
+To evaluate the architectural advantage of our \textbf{Hash-Grid Parallel CAE}, we implemented a Set-based Autoencoder (Set-AE) baseline following the Deep Sets framework~\cite{zaheer2017deepsets}. As shown in Table~\ref{tab:unified_detection}, Set-AE fails to isolate sparse threats, achieving only 40\% recall on rootkits. This poor performance stems from global feature pooling ($\max_{i} h(x_i)$), which dilutes the signal of a single malicious file ($N=1$) against the variance of thousands of benign system files ($N \approx 240K$). In contrast, \DeepVis projects files onto a fixed Spatial Grid ($128 \times 128$) and uses $L_\infty$ pooling, ensuring that sparse anomalies remain locally distinct spikes rather than being averaged out globally.
 
-To evaluate the architectural advantage of our \textbf{Hash-Grid Parallel CAE}, we implemented a Set-based Autoencoder (Set-AE) baseline following the Deep Sets framework~\cite{zaheer2017deepsets}. Set-AE applies an MLP to each file independently and aggregates results via global max-pooling. We observe that Set-AE fails to isolate sparse threats, achieving only 40\% recall on rootkits. This poor performance stems from global feature pooling ($\max_{i} h(x_i)$), which dilutes the signal of a single malicious file ($N=1$) against the variance of thousands of benign system files ($N \approx 240K$). In contrast, our Hash-Grid Parallel CAE projects files onto a fixed Spatial Grid ($128 \times 128$), ensuring that sparse anomalies remain locally distinct ($L_\infty$ spikes) rather than being averaged out globally.
-
-\noindent\textbf{Unsupervised Complexity vs. Simple Rules.} 
-We benchmarked our 1$\times$1 CAE against simpler linear models (Logistic Regression on RGB) and non-linear rules (calibrated thresholds). While simple rules successfully flag extreme outliers, the CAE exhibited a 2.29$\times$ higher Signal-to-Noise Ratio (SNR) in isolating sparse threats within diffuse benign noise. This is because the CAE learns the \textit{joint probability} of benign feature combinations (e.g., that high entropy is normal for \texttt{.png} files in \texttt{/usr/share} but anomalous for \texttt{.ko} files in \texttt{/tmp}), enabling it to detect "impossible states" that violate learned system regularities without requiring explicit threat signatures.
+\noindent\textbf{Feature Orthogonality in Action.} Unlike standard scanners that rely on a single metric, \DeepVis detects threats through joint violations. For instance, while \texttt{Diamorphine} exhibits moderate entropy, its placement in a non-standard directory (Channel G anomaly) and its kernel-module structure (Channel B anomaly) creates a unique RGB pixel that the CAE has never encountered in its benign-only training set. This results in a sharp reconstruction error spike, even if individual thresholds for R, G, or B were not crossed independently.
 
 \subsection{Visualizing Threat Landscapes via RGB Tensors}
 \label{eval_visual}
 
 One of the unique advantages of \DeepVis is its ability to transform abstract system states into interpretable RGB tensors. By observing the reconstruction error of the 1$\times$1 CAE, we can visualize the ``outliers'' in the multi-modal feature space.
 
-\noindent\textbf{Feature Orthogonality in Action.} Unlike standard scanners that rely on a single metric, \DeepVis detects threats through joint violations. For instance, while \texttt{Diamorphine} (a kernel-mode rootkit) exhibits moderate entropy, its placement in a non-standard directory (Channel G anomaly) and its kernel-module structure (Channel B anomaly) creates a unique RGB pixel that the CAE has never encountered in its benign-only training set. This results in a sharp reconstruction error spike ($L_\infty$ alert), even if individual thresholds for R, G, or B were not crossed independently.
-    
-\noindent\textbf{Interpretation of ONNX Inference.} The exported ONNX model provides a sub-millisecond inference time per system snapshot. This low-latency verification ensures that even if an attacker attempts to rapidly move or hide a file (e.g., using a chroot sandbox or a temporary mount), the high-frequency scanning of \DeepVis captures the transient state in the tensor representation, leading to immediate detection.
-
-\noindent\textbf{Analysis of Detection Failure Modes.} 
-Table~\ref{tab:unified_detection} further isolates the failure modes of baseline systems. We include AIDE (Full-Hash FIM) as the integrity gold standard. However, comparing DeepVis (header sampling) with AIDE involves a functional mismatch: AIDE prioritizes cryptographic exactness over throughput. To address this, we also evaluate Simple Heuristics (Entropy-only) as a functionally equivalent header-based baseline.
-    
-    Results show that while AIDE achieves 100\% recall, it generates a 100\% False Positive rate during legitimate system updates because every file change breaks the hash. In our cloud environment, a single batch update produced over 2,000 alerts.
-    DeepVis succeeds where baselines fail by using Feature Orthogonality. We also validated Sysdig Falco~\cite{falco}, which detected 100\% of active rootkits via syscall interception but failed to detect any dormant payloads (0\% recall), confirming the need for static analysis. Furthermore, DeepVis ignores legitimate updates via Local Max pooling, whereas AIDE and Falco generate excessive alerts.
-
-\noindent\textbf{Path Bias and Feature Orthogonality.} 
-A potential concern is whether \DeepVis relies too heavily on the file path (Channel G) for detection, especially since our experimental malware was placed in non-standard user directories. To evaluate this "contextual advantage," we performed an \textit{Adversarial In-place} experiment (the "Unfair Trial"), where all 23 active rootkit binaries were programmatically assigned a "Safe Path" score (assigning them to \texttt{/usr/bin/}), thereby zeroing out any contextual advantage from the Green channel.
-Despite this masking, \DeepVis achieved a 100\% recall rate. The detection was driven entirely by the Structural (B) channel, which identified the mismatch between the file's relocatable ELF header (\texttt{.ko}) and its presence in a binary directory, and the Entropy (R) channel for packed components. This demonstrates that \DeepVis relies on the \textit{intersection} of features (multi-modal orthogonality) rather than a single context-dependent signal, ensuring robustness even when an attacker attempts to mask the location.
-
-\noindent\textbf{Analysis of Low-Entropy Malware (The MSE Paradox).} 
-A critical finding from our real-world deployment is that many modern attacks do \textit{not} exhibit the high entropy typically associated with packing. As shown in Table~\ref{tab:v3_results}, the real-world Miner (\texttt{kworker-upd}) and Rootkits (\texttt{diamorphine}) exhibited entropy scores ($R \approx 0.55$) indistinguishable from benign system binaries ($R \approx 0.61$). Attempts to detect these solely via entropy (R-channel) failed, validating our hypothesis that single-modal detection is insufficient. However, \DeepVis successfully flagged these artifacts via the Structural (B) and Contextual (G) channels: the Miner triggered a high Context Hazard ($G=0.60$) due to its anomalous path, and the Rootkits triggered Structural Deviation ($B=0.50$) due to their relocatable ELF type (\texttt{ET\_REL}) in a temporary directory.
-
 \begin{figure}[t]
     \centering
     \subfloat[Clean Baseline (10K Benign Files)]{\includegraphics[width=0.48\linewidth]{Figures/tensor_clean.png}\label{fig:tensor_clean}}
     \hfill
     \subfloat[Infected State (10K Benign + 10 Malware)]{\includegraphics[width=0.48\linewidth]{Figures/tensor_infected.png}\label{fig:tensor_infected}}
-    \caption{Tensor Visualization on GCP \texttt{deepvis-mid}. (a) Clean baseline with 10K benign files from \texttt{/usr}. (b) Infected state with 10 malware files injected into \texttt{/tmp}, \texttt{/var/tmp}, and \texttt{/dev/shm}. Red circles indicate malware locations detected via G-channel (contextual hazard) activation.}
+    \caption{Tensor Visualization on GCP \texttt{deepvis-mid}. (a) Clean baseline with 10K benign files. (b) Infected state with 10 malware files injected. Red circles indicate malware locations detected via G-channel (contextual hazard) activation.}
     \label{fig:clean_vs_infected}
 \end{figure}
 
+\noindent\textbf{Analysis of Low-Entropy Malware (The MSE Paradox).} 
+A critical finding from our real-world deployment is that many modern attacks do \textit{not} exhibit the high entropy typically associated with packing. As shown in Table~\ref{tab:detailed_breakdown}, the real-world Miner (\texttt{kworker-upd}) and Rootkits (\texttt{diamorphine}) exhibited entropy scores ($R \approx 0.55$) indistinguishable from benign system binaries ($R \approx 0.61$). Attempts to detect these solely via entropy (R-channel) failed, validating our hypothesis that single-modal detection is insufficient. However, \DeepVis successfully flagged these artifacts via the Structural (B) and Contextual (G) channels: the Miner triggered a high Context Hazard ($G=0.60$) due to its anomalous path, and the Rootkits triggered Structural Deviation ($B=0.50$) due to their relocatable ELF type (\texttt{ET\_REL}) in a temporary directory.
 %=====================================================================
 \subsection{Scalability and Performance Analysis (RQ2)}
 \label{eval_scalability}
