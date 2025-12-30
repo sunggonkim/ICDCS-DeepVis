@@ -46,8 +46,7 @@ Our key idea is to leverage a spatial hash projection architecture, enabling hig
 Specifically, \DeepVis first introduces an asynchronous snapshot engine that leverages high-performance I/O interfaces to maximize ingestion rates, allowing the system to rapidly capture file system states.
 Second, \DeepVis devises a lock-free tensor mapping pipeline, where metadata processing is sharded across processor cores to eliminate contention and achieve linear scalability.
 Finally, \DeepVis adopts a spatial anomaly detection approach, enabling the identification of sparse attack signals even amidst significant background noise caused by legitimate system updates.
-We implement \DeepVis with these three techniques and evaluate its performance on production-grade cloud infrastructure, scaling up to 100 VMs across multiple regions.
-Our evaluation results show that \DeepVis improves verification throughput by 10.9$\times$ compared with optimized integrity monitors under cold cache conditions, while maintaining 97.1\% recall on active threats with a 0.3\% false positive rate and negligible runtime overhead (CPU impact $<2\%$).
+We evaluate \DeepVis on production-grade cloud infrastructure. Our results show that \DeepVis acts as an effective \textit{snapshot-based audit system}, detecting 97.1\% of hidden kernel modules and packed binaries in Linux environments. By achieving a 10.9$\times$ speedup over traditional FIM, \DeepVis enables frequent, full-system verification intervals, eliminating the reliance on potentially unreliable incremental event streams (e.g., fanotify).
 \end{abstract}
 
 \begin{IEEEkeywords}

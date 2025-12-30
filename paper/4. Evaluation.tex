@@ -11,7 +11,7 @@ We evaluate \DeepVis on Google Cloud Platform (GCP) using real rootkits and real
 Experiments utilize three GCP configurations: \textbf{Low} (e2-micro), \textbf{Mid} (e2-standard-2), and \textbf{High} (c2-standard-4, NVMe SSD). To simulate production environments, we populated the file system with up to 10 million files, including system binaries (e.g., \texttt{nginx}) and random artifacts.
 
 \noindent\textbf{Target Datasets. }
-We employ a \textbf{Benign Baseline} of 47,270 system binaries (Ubuntu 20.04) to measure false positives, and a \textbf{Malware Corpus} of 37,387 files, including 68 active Linux ELF rootkits (e.g., Diamorphine) and 35k+ Windows/Web artifacts. This diversity tests the OS-agnostic capability of our structural encoding.
+We employ a \textbf{Benign Baseline} of 47,270 system binaries (Ubuntu 20.04) to measure false positives, and a \textbf{Malware Corpus} of 37,387 files, including 68 active Linux ELF rootkits (e.g., Diamorphine) and 35k+ Windows/Web artifacts. While the dataset includes multi-platform samples, the feature engineering and training process were primarily focused on \textbf{Linux ELF structures}, which we discuss as a limitation for Windows PE detection in Section~\ref{sec:discussion}.
 
 %=====================================================================
 \subsection{Detection Fidelity and Orthogonality (RQ1)}
