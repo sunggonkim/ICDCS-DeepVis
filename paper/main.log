@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 20:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 20:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -959,16 +959,16 @@ Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 168.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
 
-<Figures/fig_churn_hist.pdf, id=477, 354.31226pt x 244.86606pt>
+<Figures/fig_churn_hist.pdf, id=477, 354.31226pt x 244.78639pt>
 File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
 <use Figures/fig_churn_hist.pdf>
 Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 185.
-(pdftex.def)             Requested size: 113.39923pt x 78.36993pt.
-<Figures/fig_churn_alerts.pdf, id=478, 354.57765pt x 245.87672pt>
+(pdftex.def)             Requested size: 113.39923pt x 78.34444pt.
+<Figures/fig_churn_alerts.pdf, id=478, 354.57765pt x 245.79704pt>
 File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
 <use Figures/fig_churn_alerts.pdf>
 Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 189.
-(pdftex.def)             Requested size: 113.39923pt x 78.63338pt.
+(pdftex.def)             Requested size: 113.39923pt x 78.6079pt.
 <Figures/fig_page_aligned_sensitivity.pdf, id=479, 496.69313pt x 207.01115pt>
 File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
 <use Figures/fig_page_aligned_sensitivity.pdf>
@@ -1092,9 +1092,9 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1961324 bytes).
+Output written on main.pdf (12 pages, 1952268 bytes).
 PDF statistics:
- 1042 PDF objects out of 1200 (max. 8388607)
+ 1008 PDF objects out of 1200 (max. 8388607)
  347 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)

@@ -187,7 +187,7 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
         \includegraphics[width=0.45\linewidth]{Figures/fig_churn_alerts.pdf}
         \label{fig:churn_alerts}
     }
-    \caption{\textbf{Real Multi-Workload Fleet vs. Stealthy Attack.} (a) Aggregated error distribution from 5 real workloads maintains stability (Blue Area), with the attack appearing as a distinct outlier (Red Star). (b) Analysis of alert sources shows AIDE generates 180 false alerts (Bastion + Fleet Ops), whereas DeepVis achieves zero false alerts while successfully detecting the threat.}
+    \caption{\textbf{Fleet-Scale Churn \& Alert Fatigue Analysis.} (a) Benign files form a bimodal distribution: \textbf{Configs/Logs} (low entropy, $\approx 0.2$) and \textbf{Binaries/DBs} (high entropy, $\approx 0.6$). The \textbf{LKM Rootkit} attack ($\approx 1.0$) is a singular high-entropy anomaly. (b) While AIDE detects the attack, it generates 180 false alerts (Blue Bars) from benign upgrades. DeepVis achieves detection with zero false positives.}
     \label{fig:churn_analysis}
 \end{figure}
 
