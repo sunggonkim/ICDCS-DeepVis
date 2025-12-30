@@ -39,7 +39,7 @@ ax1.plot(x_churn, y_churn, 'b-', linewidth=1.5, alpha=0.6)
 # Scores range: 0.2 (Stealth) to 0.9 (High-Hazard Rootkit)
 for i, s in enumerate(malware_scores):
     ax1.plot(s, 1.5 + i*0.5, 'r*', markersize=14, zorder=20)
-ax1.text(0.6, 12, "Attacks Detected\n(Varying Confidence)", color='red', fontweight='bold', fontsize=10, ha='center')
+ax1.text(0.75, 12, "Attacks Detected\n(Varying Confidence)", color='red', fontweight='bold', fontsize=10, ha='center')
 
 # Design Annotations
 ax1.text(tau/2, 3000, "Learned Benign Normality\n(Low Reconstruction Error)", color='navy', fontsize=10, ha='center', fontweight='bold')
