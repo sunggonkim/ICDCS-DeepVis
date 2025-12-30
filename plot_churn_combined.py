@@ -7,11 +7,10 @@ import matplotlib.gridspec as gridspec
 with open("/Users/skim/ICDCS-DeepVis/churn_real.json", "r") as f:
     results = json.load(f)
 
-# The Design Scheme generates Reconstruction Error as the Score
-# Benign scores are near 0.0 with some noise.
 scores_churn = results["scores"]["churn"]
-malware_scores = results.get("malware_scores", [0.9, 0.3, 0.9, 0.2, 0.8])
-alert_counts = results.get("alert_counts", {"aide": 8500, "dv": 5})
+malware_scores = results.get("malware_scores", [0.9, 0.6, 0.8, 0.6, 0.9])
+alert_counts = results.get("alert_counts", {"aide": 8500, "dv": 0})
+tau = results.get("tau", 0.15)
 
 # ==========================================================
 # Figure 1: Reconstruction Error Distribution (Section 3.4)
@@ -45,9 +44,9 @@ for i, s in enumerate(malware_scores):
 ax1.text(0.6, 12, "Attacks Detected\n(Varying Confidence)", color='red', fontweight='bold', fontsize=10, ha='center')
 
 # Design Annotations
-ax1.text(0.15, 3000, "Learned Benign Normality\n(Low Reconstruction Error)", color='navy', fontsize=10, ha='center', fontweight='bold')
-ax1.axvline(0.15, color='gray', linestyle='--', alpha=0.5)
-ax1.text(0.18, 50, "Threshold $\\tau$", color='gray', fontsize=9, rotation=90)
+ax1.text(tau/2, 3000, "Learned Benign Normality\n(Low Reconstruction Error)", color='navy', fontsize=10, ha='center', fontweight='bold')
+ax1.axvline(tau, color='gray', linestyle='--', alpha=0.5)
+ax1.text(tau + 0.03, 50, "Threshold $\\tau$", color='gray', fontsize=9, rotation=90)
 
 ax1.set_yscale('log')
 ax1.set_xlabel('Reconstruction Error (Anomaly Score)', fontsize=10, fontweight='bold')
