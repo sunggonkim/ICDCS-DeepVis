@@ -18,11 +18,9 @@ tau = results.get("tau", 0.15)
 fig1, ax1 = plt.subplots(figsize=(5, 3.5))
 
 def get_pdf(data, bins=100):
-    # Add small heuristic noise to benign scores to simulate "clusters"
-    # because the formal scheme places them exactly on centroids.
-    # In a real fleet, there is variance in R (entropy) and G (exact path).
-    noisy_data = np.array(data) + np.random.normal(0, 0.02, len(data))
-    noisy_data = np.clip(noisy_data, 0, 1.0)
+    # Removing artificial noise to ensure 100% mathematical rigor.
+    # The "Metadata Nuance" in the experiment already provides real variance.
+    noisy_data = np.array(data)
     
     counts, edges = np.histogram(noisy_data, bins=bins, range=(0, 1.05))
     centers = (edges[:-1] + edges[1:]) / 2
