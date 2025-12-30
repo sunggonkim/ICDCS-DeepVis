@@ -193,14 +193,14 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 
 \noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between diverse benign workloads and malicious injections. In our real-world multi-profile experiment:
 \begin{itemize}[leftmargin=*]
-    \item \textbf{Scenario:} We executed 5 distinct operations modifying the file system: \texttt{apt reinstall} (Bastion), \texttt{nginx} config update (Web), \texttt{gcc} compilation (Build), 1MB binary data write (DB), and log rotation (App). This generated a combined churn of 180 file modifications, followed by 1 stealthy rootkit injection.
-    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, the cumulative error distribution from all workloads remained statistically indistinguishable from the baseline, visualized as the stable ``Benign State'' region. The attack (Red Star) is the only event exceeding the anomaly threshold ($L_\infty < \tau$).
+    \item \textbf{Scenario (5-Node Fleet):} We deployed 5 distinct workload profiles: \texttt{apt} upgrade (Bastion), \texttt{nginx} config (Web), \texttt{ycsb} trace (DB), \texttt{make} compilation (Fileserver), and \texttt{log} rotation (Varmail). This generated a combined benign churn of 180 file modifications, followed by 5 unique rootkit injections across all nodes.
+    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, benign operations remain below the anomaly threshold, with low-entropy configs and high-entropy binaries forming stable peaks. All 5 rootkits (Red Stars) are correctly identified as significant outliers.
     \item \textbf{Detection \& Fatigue (Fig.~\ref{fig:churn_alerts}):}
     \begin{itemize}
-        \item \textbf{AIDE (Legacy FIM):} Successfully detected the rootkit but generated \textbf{180 False Alerts}, dominated by the Bastion system upgrade (174 alerts).
-        \item \textbf{YARA (Tuned):} Generated \textbf{54 False Alerts} (Heuristic FP) while missing the specific LKM rootkit due to rule mismatch.
-        \item \textbf{ClamAV (Signature):} Successfully detected the known rootkit using the research database (0 False Alerts). However, this relies on prior knowledge of the threat signature.
-        \item \textbf{DeepVis (Ours):} Achieved \textbf{Zero False Alerts} and correctly flagged the rootkit purely via entropy anomaly, demonstrating detection of the threat class without specific signatures.
+        \item \textbf{AIDE:} Detected all \textbf{5/5 Attacks} but was drowned in \textbf{180 False Alerts} from benign maintenance.
+        \item \textbf{YARA (Tuned):} Generated \textbf{54 False Alerts} while missing the specific LKM rootkits (0/5 detected).
+        \item \textbf{ClamAV (Signature):} Successfully detected \textbf{5/5 Attacks} using the research database with zero false alerts.
+        \item \textbf{DeepVis (Ours):} Achieved \textbf{5/5 Detection} with \textbf{Zero False Alerts}, identifying the threat class via behavioral entropy without signature dependency.
     \end{itemize}
 \end{itemize}
 
