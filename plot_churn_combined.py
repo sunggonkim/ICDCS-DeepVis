@@ -63,7 +63,7 @@ ax1.text(0.4, 200, "Robust Stability\n(Update $\\approx$ Baseline)", color='blue
 
 ax1.set_yscale('log')
 ax1.set_xlabel('Anomaly Score ($L_\infty$)', fontsize=10, fontweight='bold')
-ax1.set_ylabel('Frequency (Log Scale)', fontsize=10, fontweight='bold')
+ax1.set_ylabel('File Count (Log Scale)', fontsize=10, fontweight='bold')
 ax1.set_title('(a) Error Distribution Stability', fontsize=11, fontweight='bold', y=-0.25)
 ax1.grid(True, which="both", ls="--", alpha=0.3)
 ax1.legend(loc='upper right', frameon=True, fontsize=8) 
