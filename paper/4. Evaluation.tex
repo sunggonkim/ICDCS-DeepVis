@@ -8,7 +8,7 @@ We evaluate \DeepVis on Google Cloud Platform (GCP) using real rootkits and real
 \label{eval_setup}
 %=====================================================================
 \noindent\textbf{Testbed Environment. }
-Experiments utilize three GCP configurations: \textbf{Low} (e2-micro), \textbf{Mid} (e2-standard-2), and \textbf{High} (c2-standard-4, NVMe SSD). To simulate production environments, we populated the file system with up to 50 million files, including system binaries (e.g., \texttt{nginx}) and random artifacts.
+Experiments utilize three GCP configurations: \textbf{Low} (e2-micro), \textbf{Mid} (e2-standard-2), and \textbf{High} (c2-standard-4, NVMe SSD). To simulate production environments, we populated the file system with up to 10 million files, including system binaries (e.g., \texttt{nginx}) and random artifacts.
 
 \noindent\textbf{Target Datasets. }
 We employ a \textbf{Benign Baseline} of 47,270 system binaries (Ubuntu 20.04) to measure false positives, and a \textbf{Malware Corpus} of 37,387 files, including 68 active Linux ELF rootkits (e.g., Diamorphine) and 35k+ Windows/Web artifacts. This diversity tests the OS-agnostic capability of our structural encoding.
@@ -50,7 +50,7 @@ DeepVis (Entropy) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=667) and Malware (N=68) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}
+\caption{\textbf{Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=47,270) and Malware (N=37,387) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}
 \label{tab:detailed_breakdown}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{l c ccc c}
