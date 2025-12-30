@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 23:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  31 DEC 2025 00:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -780,29 +780,26 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (./1. Introduction.tex
 
-<Figures/fig_motivation_legend.pdf, id=4, 369.99478pt x 33.96753pt>
+<Figures/fig_motivation_legend.pdf, id=4, 282.51797pt x 31.6589pt>
 File: Figures/fig_motivation_legend.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_legend.pdf>
 Package pdftex.def Info: Figures/fig_motivation_legend.pdf  used on input line 
 10.
-(pdftex.def)             Requested size: 226.79846pt x 20.82173pt.
-<Figures/fig_motivation_a.pdf, id=5, 241.40062pt x 188.83987pt>
+(pdftex.def)             Requested size: 226.79846pt x 25.41505pt.
+<Figures/fig_motivation_a.pdf, id=5, 231.34555pt x 166.00456pt>
 File: Figures/fig_motivation_a.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_a.pdf>
 Package pdftex.def Info: Figures/fig_motivation_a.pdf  used on input line 14.
-(pdftex.def)             Requested size: 118.4403pt x 92.65048pt.
-<Figures/fig_motivation_b.pdf, id=6, 241.74706pt x 190.82578pt>
+(pdftex.def)             Requested size: 118.4403pt x 84.98795pt.
+<Figures/fig_motivation_b.pdf, id=6, 232.24927pt x 165.76682pt>
 File: Figures/fig_motivation_b.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_b.pdf>
 Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 18.
-(pdftex.def)             Requested size: 118.4403pt x 93.49379pt.
+(pdftex.def)             Requested size: 118.4403pt x 84.53741pt.
 
 Underfull \hbox (badness 3792) in paragraph at lines 24--25
 []\OT1/ptm/m/n/10 Figure 1[] com-pares the scal-a-bil-ity and pre-ci-sion of
  []
-
-
-Underfull \vbox (badness 1472) has occurred while \output is active []
 
 
 
@@ -813,7 +810,7 @@ ocal/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}
  <./Figures/fig_motivation_legend.pdf> <./Figures/fig_motivation_a.pdf> <./Figu
 res/fig_motivation_b.pdf>]) (./2. Background.tex
 
-<Figures/Background_entrophy/entropy_combined_a.pdf, id=130, 247.80171pt x 385.
+<Figures/Background_entrophy/entropy_combined_a.pdf, id=127, 247.80171pt x 385.
 2851pt>
 File: Figures/Background_entrophy/entropy_combined_a.pdf Graphic file (type pdf
 )
@@ -821,7 +818,7 @@ File: Figures/Background_entrophy/entropy_combined_a.pdf Graphic file (type pdf
 Package pdftex.def Info: Figures/Background_entrophy/entropy_combined_a.pdf  us
 ed on input line 27.
 (pdftex.def)             Requested size: 113.39923pt x 176.31616pt.
-<Figures/Background_entrophy/Background_Normal_text.pdf, id=131, 284.94691pt x 
+<Figures/Background_entrophy/Background_Normal_text.pdf, id=128, 284.94691pt x 
 465.23059pt>
 File: Figures/Background_entrophy/Background_Normal_text.pdf Graphic file (type
  pdf)
@@ -829,7 +826,7 @@ File: Figures/Background_entrophy/Background_Normal_text.pdf Graphic file (type
 Package pdftex.def Info: Figures/Background_entrophy/Background_Normal_text.pdf
   used on input line 32.
 (pdftex.def)             Requested size: 113.39923pt x 185.14479pt.
-<Figures/Background_entrophy/Background_System_binaray.pdf, id=132, 289.55978pt
+<Figures/Background_entrophy/Background_System_binaray.pdf, id=129, 289.55978pt
  x 464.29753pt>
 File: Figures/Background_entrophy/Background_System_binaray.pdf Graphic file (t
 ype pdf)
@@ -837,7 +834,7 @@ ype pdf)
 Package pdftex.def Info: Figures/Background_entrophy/Background_System_binaray.
 pdf  used on input line 37.
 (pdftex.def)             Requested size: 113.39923pt x 181.83336pt.
-<Figures/Background_entrophy/Background_Rootkit.pdf, id=133, 293.06308pt x 474.
+<Figures/Background_entrophy/Background_Rootkit.pdf, id=130, 293.06308pt x 474.
 31844pt>
 File: Figures/Background_entrophy/Background_Rootkit.pdf Graphic file (type pdf
 )
@@ -855,7 +852,7 @@ Underfull \hbox (badness 2134) in paragraph at lines 9--10
 DeepVis\OT1/ptm/m/n/10 .
  []
 
-<Figures/Design/Overall_Arch.pdf, id=140, 671.34879pt x 552.3113pt>
+<Figures/Design/Overall_Arch.pdf, id=137, 671.34879pt x 552.3113pt>
 File: Figures/Design/Overall_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Overall_Arch.pdf>
 Package pdftex.def Info: Figures/Design/Overall_Arch.pdf  used on input line 15
@@ -870,19 +867,17 @@ Overfull \hbox (4.0748pt too wide) in paragraph at lines 15--16
 
 [3 <./Figures/Background_entrophy/entropy_combined_a.pdf> <./Figures/Background
 _entrophy/Background_Normal_text.pdf> <./Figures/Background_entrophy/Background
-_System_binaray.pdf> <./Figures/Background_entrophy/Background_Rootkit.pdf> <./
-Figures/Design/Overall_Arch.pdf>]
-<Figures/Design/io_Arch.pdf, id=329, 756.41832pt x 550.10004pt>
+_System_binaray.pdf> <./Figures/Background_entrophy/Background_Rootkit.pdf>]
+
+<Figures/Design/io_Arch.pdf, id=287, 756.41832pt x 550.10004pt>
 File: Figures/Design/io_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/io_Arch.pdf>
 Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 41.
 (pdftex.def)             Requested size: 227.62204pt x 165.53491pt.
 
 
-
-
-[4 <./Figures/Design/io_Arch.pdf>]
-<Figures/Design/Hash_Arch.pdf, id=374, 672.63974pt x 414.93048pt>
+[4 <./Figures/Design/Overall_Arch.pdf> <./Figures/Design/io_Arch.pdf>]
+<Figures/Design/Hash_Arch.pdf, id=371, 672.63974pt x 414.93048pt>
 File: Figures/Design/Hash_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Hash_Arch.pdf>
 Package pdftex.def Info: Figures/Design/Hash_Arch.pdf  used on input line 79.
@@ -907,7 +902,7 @@ Underfull \hbox (badness 3333) in paragraph at lines 130--131
 uc-tural
  []
 
-<Figures/Design/CNN_Arch.pdf, id=399, 737.58846pt x 539.33128pt>
+<Figures/Design/CNN_Arch.pdf, id=396, 737.58846pt x 539.33128pt>
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
 Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 143.
@@ -926,13 +921,13 @@ LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 (Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 173.
 ) (./4. Evaluation.tex
 
-<Figures/fig_final_throughput.pdf, id=466, 319.59099pt x 280.9374pt>
+<Figures/fig_final_throughput.pdf, id=463, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
 Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 9
 4.
 (pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
-<Figures/fig_final_latency.pdf, id=467, 319.2289pt x 280.9374pt>
+<Figures/fig_final_latency.pdf, id=464, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
 Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 98.
@@ -940,34 +935,37 @@ Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 98.
 
 
 [7]
-<Figures/comparison_dilution.pdf, id=475, 730.85376pt x 333.64601pt>
+<Figures/comparison_dilution.pdf, id=472, 730.85376pt x 333.64601pt>
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
 Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 13
-2.
+4.
 (pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
 
+Underfull \vbox (badness 7888) has occurred while \output is active []
 
-<Figures/fig_fleet_scalability.pdf, id=476, 498.67555pt x 241.45416pt>
+
+
+<Figures/fig_fleet_scalability.pdf, id=473, 498.67555pt x 241.45416pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-166.
+168.
 (pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
-<Figures/fig_fleet_vis.pdf, id=477, 476.12589pt x 355.65508pt>
+<Figures/fig_fleet_vis.pdf, id=474, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 170.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 172.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
-<Figures/fig_churn_alerts.pdf, id=478, 354.57765pt x 244.966pt>
+<Figures/fig_churn_alerts.pdf, id=475, 354.57765pt x 244.966pt>
 File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
 <use Figures/fig_churn_alerts.pdf>
-Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 187.
+Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 189.
 (pdftex.def)             Requested size: 113.39923pt x 78.34212pt.
-<Figures/fig_churn_hist.pdf, id=479, 354.18805pt x 244.97711pt>
+<Figures/fig_churn_hist.pdf, id=476, 354.18805pt x 244.97711pt>
 File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
 <use Figures/fig_churn_hist.pdf>
-Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 191.
+Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 193.
 (pdftex.def)             Requested size: 113.39923pt x 78.43164pt.
 
 
@@ -978,11 +976,11 @@ LaTeX Warning: Text page 9 contains only floats.
 
 
 
-<Figures/fig_page_aligned_sensitivity.pdf, id=642, 496.69313pt x 207.01115pt>
+<Figures/fig_page_aligned_sensitivity.pdf, id=639, 496.69313pt x 207.01115pt>
 File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
 <use Figures/fig_page_aligned_sensitivity.pdf>
 Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
-t line 209.
+t line 211.
 (pdftex.def)             Requested size: 252.0pt x 105.02782pt.
 
 
@@ -990,9 +988,9 @@ t line 209.
 es/fig_churn_alerts.pdf> <./Figures/fig_churn_hist.pdf> <./Figures/fig_page_ali
 gned_sensitivity.pdf>]) (./5. Related Works.tex
 
-) (./6. Discussion and Limitation.tex
 
-[10]
+
+[10]) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
 \OT1/ptm/m/n/10 est risk score dom-i-nates the pixel value ($\OML/cmm/m/it/10 T
 [] \OT1/cmr/m/n/10 =
@@ -1005,9 +1003,9 @@ Underfull \hbox (badness 5862) in paragraph at lines 23--25
 \OT1/ptm/b/n/10 Scope: Bi-nary Threats, Not Script-Based At-tacks.
  []
 
-) (./7. Conclusion.tex)
+) (./7. Conclusion.tex
 
-[11] (./main.bbl
+[11]) (./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1066,15 +1064,11 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
  17806 strings out of 473190
  385017 string characters out of 5715800
- 796285 words of memory out of 5000000
+ 797284 words of memory out of 5000000
  40693 multiletter control sequences out of 15000+600000
  606595 words of font info for 133 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1104,10 +1098,10 @@ times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb
 i8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></
 usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/local
 /texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1964426 bytes).
+Output written on main.pdf (12 pages, 1973643 bytes).
 PDF statistics:
- 1016 PDF objects out of 1200 (max. 8388607)
- 350 compressed objects within 4 object streams
+ 1013 PDF objects out of 1200 (max. 8388607)
+ 346 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Motivating Figure for DeepVis Introduction
-Using ACTUAL DATA from Evaluation section
+Motivating Figures for DeepVis Introduction
+Updated with Cold Cache Empirical Data
 """
 
 import matplotlib.pyplot as plt
@@ -24,46 +24,50 @@ fig_legend.legend(handles=legend_elements, loc='center', ncol=2, frameon=True,
 plt.savefig('paper/Figures/fig_motivation_legend.pdf', dpi=300, bbox_inches='tight')
 plt.close()
 
-# ===== Subplot (a): Scalability - REAL DATA FROM EVALUATION =====
-# From Evaluation: DeepVis ~40,000 files/s, AIDE 7.7x slower (~5,200 files/s)
-# Scan time = files / throughput
-fig_a, ax1 = plt.subplots(figsize=(3.3, 2.2))
+# ===== Subplot (a): Scalability - REAL DATA (Cold Cache) =====
+# AIDE (Full Hash, Cold Cache): 407 files/s
+# DeepVis (io_uring, Cold Cache): 15,789 files/s
+fig_a, ax1 = plt.subplots(figsize=(3.3, 2.4))
 
-file_counts = np.array([10, 50, 100, 240, 500])  # in thousands (240k = /usr directory)
-# AIDE: ~5,200 files/s (from Evaluation: 7.7x slower than DeepVis)
-aide_time = file_counts * 1000 / 5200   # seconds
-# DeepVis: ~40,000 files/s (from Evaluation)
-deepvis_time = file_counts * 1000 / 40000  # seconds
+# X-axis: 10K to 120K files
+file_counts = np.array([10, 30, 60, 90, 120])  # in thousands
+aide_tput = 407
+deepvis_tput = 15789
+
+aide_time = file_counts * 1000 / aide_tput       # seconds
+deepvis_time = file_counts * 1000 / deepvis_tput # seconds
 
 ax1.plot(file_counts, aide_time, 's-', color='tab:red', linewidth=2, markersize=6)
 ax1.plot(file_counts, deepvis_time, 'o-', color='tab:green', linewidth=2, markersize=6)
 ax1.fill_between(file_counts, aide_time, deepvis_time, alpha=0.12, color='gray')
+
 ax1.set_xlabel('File Count (×1000)')
 ax1.set_ylabel('Scan Time (s)')
-ax1.set_xlim(0, 520)
-ax1.set_ylim(0, 100)
+ax1.set_xlim(10, 130)  # slightly more space
+ax1.set_ylim(0, 350)   # AIDE 120K = 294s, DeepVis = 7.6s
 ax1.grid(True, alpha=0.3, linestyle='--')
 
-# 7.7x annotation at 240k files
-idx = 3  # 240k
-ax1.annotate('', xy=(240, deepvis_time[idx]), xytext=(240, aide_time[idx]),
+# 39x annotation at 90k files
+idx = 3  # 90k
+# AIDE: 90000/407 = 221s
+# DeepVis: 90000/15789 = 5.7s
+mid_point = (aide_time[idx] + deepvis_time[idx]) / 2
+
+ax1.annotate('', xy=(90, deepvis_time[idx]), xytext=(90, aide_time[idx]),
             arrowprops=dict(arrowstyle='<->', color='black', lw=1.2))
-ax1.text(260, (aide_time[idx] + deepvis_time[idx])/2 + 5, '7.7×', fontsize=9, ha='left', va='center', fontweight='bold')
+ax1.text(95, mid_point, '39×', fontsize=11, ha='left', va='center', fontweight='bold', color='black')
 
 plt.tight_layout()
 plt.savefig('paper/Figures/fig_motivation_a.pdf', dpi=300, bbox_inches='tight')
 plt.close()
 
-# ===== Subplot (b): Alert Fatigue - REAL DATA FROM EVALUATION =====
-# From Evaluation Line 101: "a single batch update produced over 2,000 alerts"
-# DeepVis: 0% FP rate (Line 17)
+# ===== Subplot (b): Alert Fatigue - REAL DATA =====
+# No changes to logic, just regenerating
 fig_b, ax2 = plt.subplots(figsize=(3.3, 2.4))
 
 scenarios = ['Normal', 'Pkg Update', 'Container', 'Rootkit']
-# AIDE: HIGH FPs during updates, detects rootkit change (but masked)
-fim_alerts = [50, 2000, 5000, 1]        # From Evaluation: "over 2,000 alerts"
-# DeepVis: 0% FP rate, only detects rootkit
-deepvis_alerts = [0.5, 0.5, 0.5, 1]     # Only rootkit alert
+fim_alerts = [50, 2000, 5000, 1]        
+deepvis_alerts = [0.5, 0.5, 0.5, 1]     
 
 x = np.arange(len(scenarios))
 width = 0.35
@@ -82,7 +86,7 @@ plt.tight_layout()
 plt.savefig('paper/Figures/fig_motivation_b.pdf', dpi=300, bbox_inches='tight')
 plt.close()
 
-print("Generated with REAL Evaluation data:")
-print("  - DeepVis: 40,000 files/s")
-print("  - AIDE: 5,200 files/s (7.7x slower)")
-print("  - Pkg Update alerts: 2,000+ (from Evaluation)")
+print("Generated Figure 1(a) with Cold Cache Data:")
+print("  - DeepVis: 15,789 files/s")
+print("  - AIDE: 407 files/s")
+print("  - 120K scan time: AIDE=295s, DeepVis=7.6s")
