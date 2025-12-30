@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 17:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 17:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -942,36 +942,34 @@ Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 107.
 (pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
 
-<Figures/comparison_dilution.pdf, id=474, 730.85376pt x 333.64601pt>
-File: Figures/comparison_dilution.pdf Graphic file (type pdf)
-<use Figures/comparison_dilution.pdf>
-Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 13
-1.
-(pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 
 [8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf>]
+<Figures/comparison_dilution.pdf, id=585, 730.85376pt x 333.64601pt>
+File: Figures/comparison_dilution.pdf Graphic file (type pdf)
+<use Figures/comparison_dilution.pdf>
+Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 15
+0.
+(pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
+
 
 <Figures/fig_fleet_scalability.pdf, id=586, 498.67555pt x 241.45416pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-180.
+199.
 (pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
 <Figures/fig_fleet_vis.pdf, id=587, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 184.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 203.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
 
 [9 <./Figures/comparison_dilution.pdf>]
 
 
-Underfull \hbox (badness 1721) in paragraph at lines 256--257
+Underfull \hbox (badness 1721) in paragraph at lines 275--276
 \OT1/ptm/b/n/10 Detection Fi-delity. \OT1/ptm/m/n/10 Single-channel con-fig-u-r
 a-tions fail to
  []
@@ -987,9 +985,9 @@ Underfull \hbox (badness 1701) in paragraph at lines 10--11
 [] \OT1/cmr/m/n/10 =
  []
 
-) (./7. Conclusion.tex
 
-[11]) (./main.bbl
+
+[11]) (./7. Conclusion.tex) (./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1000,6 +998,8 @@ Underfull \hbox (badness 1895) in paragraph at lines 67--71
 \OT1/ptm/m/n/8 source code,'' $https : / / github . com / vxunderground / Malwa
 reSourceCode$,
  []
+
+
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 92--96
@@ -1027,8 +1027,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 92--96
 
  []
 
-
-
 )
 
 ** Conference Paper **
@@ -1050,10 +1048,10 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17708 strings out of 473190
- 382920 string characters out of 5715800
- 791688 words of memory out of 5000000
- 40598 multiletter control sequences out of 15000+600000
+ 17709 strings out of 473190
+ 382939 string characters out of 5715800
+ 791712 words of memory out of 5000000
+ 40599 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,91p,1420b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1081,7 +1079,7 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1905719 bytes).
+Output written on main.pdf (12 pages, 1906698 bytes).
 PDF statistics:
  846 PDF objects out of 1000 (max. 8388607)
  320 compressed objects within 4 object streams

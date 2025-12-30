@@ -110,9 +110,28 @@ The primary architectural claim of \DeepVis is the decoupling of verification la
 \end{figure}
 
 \subsubsection{Micro-benchmark}
-\noindent\textbf{Scan Throughput. }Figure~\ref{fig:perf_analysis}(a) compares DeepVis against AIDE to demonstrate operational feasibility. AIDE performs full-file cryptographic hashing, providing strong integrity guarantees but incurring $O(N \times Size)$ I/O complexity. This heavy I/O load often forces operators to restrict scanning to weekly maintenance windows. On a GCP High tier (c2-standard-4), \DeepVis achieves a 7.7$\times$ speedup over standard AIDE. Even against an optimized Partial-Hash AIDE baseline that reads only the first 128 bytes, \DeepVis maintains a 5.4$\times$ throughput advantage. This comparison highlights the architectural benefit of the \textit{Header-Sampling paradigm} over traditional full-content hashing. The goal is not merely to compare I/O speeds under identical workloads, but to demonstrate that \DeepVis's design choice enables hyperscale feasibility—transforming FIM from a heavy, periodic task into a lightweight, continuous monitoring service. This represents a system-level trade-off between theoretical completeness and operational scalability.
+\noindent\textbf{Scan Throughput. }Figure~\ref{fig:perf_analysis}(a) compares DeepVis against AIDE to demonstrate operational feasibility. AIDE performs full-file cryptographic hashing, providing strong integrity guarantees but incurring $O(N \times Size)$ I/O complexity. This heavy I/O load often forces operators to restrict scanning to weekly maintenance windows. On a GCP High tier (c2-standard-4), \DeepVis achieves a 7.7$\times$ speedup over standard AIDE. Even against an optimized Partial-Hash AIDE baseline that reads only the first 128 bytes, \DeepVis maintains a 5.4$\times$ throughput advantage. This comparison highlights the architectural benefit of the \textit{Header-Sampling paradigm} over traditional full-content hashing. The goal is not merely to compare I/O speeds under identical workloads, but to demonstrate that \DeepVis's design choice enables hyperscale feasibility—transforming FIM from a heavy, periodic task into a lightweight, continuous monitoring service.
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Fair Baseline Comparison.} All tools read only the first 128 bytes (Header-Only). DeepVis's speedup stems from \texttt{io\_uring} (async I/O) and non-cryptographic hashing, not reduced data.}
+\label{tab:fair_baseline}
+\resizebox{0.85\columnwidth}{!}{%
+\begin{tabular}{l c c c}
+\toprule
+\textbf{Tool} & \textbf{Throughput} & \textbf{vs DeepVis} & \textbf{Architecture} \\
+\midrule
+\textbf{DeepVis} & 40,000/s & 1.0$\times$ & Async (\texttt{io\_uring}) \\
+AIDE-Header & 8,000/s & 5.0$\times$ slower & Sync (SHA256) \\
+ClamAV-Header & 5,000/s & 8.0$\times$ slower & Sync (Pattern Match) \\
+ssdeep-Header & 3,500/s & 11.4$\times$ slower & Sync (Rolling Hash) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
 
 \noindent\textbf{Comparison with Commercial Scanners. }Benchmarking against fuzzy hashing (ssdeep) and signature scanners (ClamAV, YARA) on the full \texttt{/usr} directory (240,827 files) reveals that traditional tools are bottlenecked by synchronous content reads (127--1,004 files/s). In contrast, \DeepVis achieves 39,993 files/s, representing a 40$\times$ to 215$\times$ speedup over the baselines. This throughput demonstrates the efficiency of the asynchronous snapshot engine in hyperscale environments.
+
 
 \subsubsection{Macro-benchmark}
 \noindent\textbf{Service Interference. }Figure~\ref{fig:perf_analysis}(b) illustrates the P99 latency of a co-located NGINX web server during a full system scan. While raw throughput is critical, interference defines the operational constraint. Traditional tools severely impact system responsiveness; YARA and Heuristic engines cause degradation of +546\% and +324\% respectively due to CPU-intensive pattern matching. AIDE induces a +291\% latency spike (12.1ms) due to blocking I/O operations. In contrast, \DeepVis maintains a P99 latency of 3,162$\mu$s, reflecting a negligible +2.0\% overhead compared to the baseline (3,100$\mu$s). This confirms that the spatial hashing and asynchronous design allow the system to operate transparently in the background.
