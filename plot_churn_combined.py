@@ -42,7 +42,7 @@ for i, s in enumerate(malware_scores):
 ax1.text(0.75, 12, "Attacks Detected\n(Varying Confidence)", color='red', fontweight='bold', fontsize=10, ha='center')
 
 # Design Annotations
-ax1.text(tau/2, 3000, "Learned Benign Normality\n(Low Reconstruction Error)", color='navy', fontsize=10, ha='center', fontweight='bold')
+ax1.text(tau/2 + 0.05, 3000, "Learned Benign Normality\n(Low Reconstruction Error)", color='navy', fontsize=10, ha='center', fontweight='bold')
 ax1.axvline(tau, color='gray', linestyle='--', alpha=0.5)
 ax1.text(tau + 0.03, 50, "Threshold $\\tau$", color='gray', fontsize=9, rotation=90)
 
@@ -51,7 +51,7 @@ ax1.set_xlabel('Reconstruction Error (Anomaly Score)', fontsize=10, fontweight='
 ax1.set_ylabel('File Count (Log Scale)', fontsize=10, fontweight='bold')
 ax1.grid(True, which="both", ls="--", alpha=0.3)
 ax1.set_xlim(0, 1.05)
-ax1.set_ylim(bottom=0.5, top=10000)
+ax1.set_ylim(bottom=0.5, top=30000)
 
 plt.tight_layout()
 plt.savefig("/Users/skim/ICDCS-DeepVis/paper/Figures/fig_churn_hist.pdf", bbox_inches='tight')
@@ -81,7 +81,7 @@ ax2.set_xticks(x_pos)
 ax2.set_xticklabels(tools, fontsize=10, fontweight='bold')
 ax2.set_ylabel('False Positive Alerts (Log Scale)', fontsize=10, fontweight='bold')
 ax2.set_yscale('symlog', linthresh=0.1)
-ax2.set_ylim(0, 20000)
+ax2.set_ylim(0, 100000)
 ax2.grid(True, axis='y', ls="--", alpha=0.3)
 
 ax2.axvspan(-0.4, 0.4, color='green', alpha=0.1)
