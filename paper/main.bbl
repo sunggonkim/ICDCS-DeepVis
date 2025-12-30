@@ -81,10 +81,6 @@ V.~Ramos~Mello, ``{Diamorphine}: {LKM} rootkit for {Linux},''
 chokepoint, ``{Azazel}: Userland rootkit based on ld\_preload,''
   \url{https://github.com/chokepoint/azazel}, 2014.
 
-\bibitem{beurk}
-unix thrust, ``{BEURK}: Experimental {LD\_PRELOAD} rootkit,''
-  \url{https://github.com/unix-thrust/beurk}, 2023.
-
 \bibitem{cheng2024kairos}
 Z.~Cheng, Q.~Lv, J.~Liang, Y.~Wang, D.~Sun, T.~Pasquier, and X.~Han, ``Kairos:
   Practical intrusion detection and investigation using whole-system
