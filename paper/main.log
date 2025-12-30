@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 20:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 20:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -984,9 +984,6 @@ t line 208.
 
 
 ) (./5. Related Works.tex
-Underfull \vbox (badness 1158) has occurred while \output is active []
-
-
 
 [9 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figur
 es/fig_churn_combined.pdf> <./Figures/fig_page_aligned_sensitivity.pdf>]
@@ -1101,9 +1098,9 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1943616 bytes).
+Output written on main.pdf (12 pages, 1945953 bytes).
 PDF statistics:
- 985 PDF objects out of 1000 (max. 8388607)
+ 990 PDF objects out of 1000 (max. 8388607)
  338 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  103 words of extra memory for PDF output out of 10000 (max. 10000000)

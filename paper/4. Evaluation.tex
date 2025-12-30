@@ -180,15 +180,15 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=1.0\linewidth]{Figures/fig_churn_combined.pdf}
-    \caption{\textbf{System Churn vs. Stealthy Attack.} Comparison of error distribution and alert fatigue during real system maintenance.}
+    \caption{\textbf{System Churn vs. Stealthy Attack.} (a) Real `apt` maintenance preserves the error distribution (Stability), merging Baseline and Update profiles into a unified Benign State. (b) AIDE generates 174 alerts due to inode changes, whereas DeepVis generates 0 false alerts, isolating only the rootkit.}
     \label{fig:churn_analysis}
 \end{figure}
 
-\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between benign system updates and malicious injections. In our real-world experiment executing `apt-get reinstall` on the GCP instance (Rank Sum Test, $p<0.01$):
+\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between benign system updates and malicious injections. In our real-world experiment executing `apt-get reinstall` on the GCP instance (Rank Sum Test, $p>0.05$):
 \begin{itemize}[leftmargin=*]
     \item \textbf{Scenario:} We reinstalled core system packages (modifying 174 binaries) and injected 1 stealthy rootkit.
-    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, the system update caused a global shift in the reconstruction error distribution ($\mu_{err}$ increases), but no pixel exceeded the anomaly threshold ($L_\infty < \tau$).
-    \item \textbf{Detection:} The injected rootkit, however, created a sharp spike in the $L_\infty$ score, triggering an immediate alert.
+    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, the system update yield an error distribution statistically indistinguishable from the baseline ($\mu_{err} \approx 0.33$), visualized as the stable ``Benign State'' region. No benign file exceeded the anomaly threshold ($L_\infty < \tau$).
+    \item \textbf{Detection:} The injected rootkit, however, created a sharp spike in the $L_\infty$ score (Attack Signal), triggering an immediate alert.
     \item \textbf{Operational Efficiency:} Figure~\ref{fig:churn_alerts} compares alert fatigue across all baselines.
     \begin{itemize}
         \item \textbf{AIDE} generated \textbf{174 false alerts} due to inode/metadata changes, overwhelming analysts.

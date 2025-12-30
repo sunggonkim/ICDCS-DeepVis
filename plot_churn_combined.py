@@ -36,23 +36,35 @@ x_base, y_base = get_pdf(scores_base)
 x_upg, y_upg = get_pdf(scores_upgrade)
 x_att, y_att = get_pdf(scores_attack)
 
-# Plot Order & Style to handle overlap
-# Baseline: Filled Blue Area (Background Reference)
-ax1.fill_between(x_base, 0, y_base, color='blue', alpha=0.2, label='Baseline')
-ax1.plot(x_base, y_base, 'b-', linewidth=1, alpha=0.4) # Thin border
+# Plot Order & Style
+# Problem: Baseline and Upgrade are almost identical -> Perfect overlap -> "Where is Green?"
+# Solution: Merge them visually into "Benign State (Baseline + Upgrade)"
+# and show "Attack" deviating from it.
 
-# Upgrade: Thick Green Dashed Line (Foreground)
-ax1.plot(x_upg, y_upg, 'g--', label='After Upgrade', linewidth=2.5, alpha=1.0)
+# 1. Benign State (Baseline) - Blue Filled Area
+ax1.fill_between(x_base, 0, y_base, color='blue', alpha=0.15, label='Benign State\n(Baseline + Update)')
+ax1.plot(x_base, y_base, 'b-', linewidth=1.5, alpha=0.6)
 
-# Attack: Red Star Markers Only (No Line connection for cleaner look? Or Thin Line)
-# If we connect them, it overlaps the green line perfectly for most parts.
-# Let's plot Attack as Red Markers with a thin red line ON TOP.
-ax1.plot(x_att, y_att, 'r-*', label='With Attack', linewidth=1.5, markersize=6, alpha=1.0, zorder=10)
+# 2. Attack - Red Dashed Line + Star
+# It will follow the blue line mostly, then pop up.
+# To make it visible, use offset or just dashed red on top.
+ax1.plot(x_att, y_att, color='red', linestyle='--', dashes=(3, 1), label='With Attack', linewidth=2, marker='*', markersize=8, markevery=5) 
+# markevery to avoid clutter, but ensure the last outlier is marked.
+# Actually, let's force the outlier marker explicitly if standard marking misses it.
+# The outlier is at x=1.0.
+# Let's plot the outlier specifically.
+outlier_x = [x for x in x_att if x > 0.9]
+outlier_y = [y for x,y in zip(x_att, y_att) if x > 0.9]
+if outlier_x:
+    ax1.plot(outlier_x, outlier_y, 'r*', markersize=12, zorder=20, label='_nolegend_')
+    ax1.text(outlier_x[0]-0.1, outlier_y[0]*1.5, "Attack Signal", color='red', fontweight='bold', fontsize=9)
+
+ax1.text(0.4, 200, "Robust Stability\n(Update $\\approx$ Baseline)", color='blue', fontsize=9, ha='center', alpha=0.7)
 
 ax1.set_yscale('log')
 ax1.set_xlabel('Anomaly Score ($L_\infty$)', fontsize=10, fontweight='bold')
 ax1.set_ylabel('Frequency (Log Scale)', fontsize=10, fontweight='bold')
-ax1.set_title('(a) Error Distribution Shift', fontsize=11, fontweight='bold', y=-0.25)
+ax1.set_title('(a) Error Distribution Stability', fontsize=11, fontweight='bold', y=-0.25)
 ax1.grid(True, which="both", ls="--", alpha=0.3)
 ax1.legend(loc='upper right', frameon=True, fontsize=8) 
 ax1.set_xlim(0, 1.05)
