@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 16:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 17:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -918,17 +918,16 @@ LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 [6 <./Figures/Design/CNN_Arch.pdf>]
 
 
-Underfull \hbox (badness 1783) in paragraph at lines 87--89
-\OT1/ptm/m/n/10 y-sis of de-tec-tion ca-pa-bil-i-ties. \OT1/pcr/m/n/10 DeepVis 
-\OT1/ptm/m/n/10 de-tects eva-sive
- []
-
-
 Underfull \vbox (badness 1424) has occurred while \output is active []
 
 
 
 [7]
+Underfull \hbox (badness 1783) in paragraph at lines 87--89
+\OT1/ptm/m/n/10 y-sis of de-tec-tion ca-pa-bil-i-ties. \OT1/pcr/m/n/10 DeepVis 
+\OT1/ptm/m/n/10 de-tects eva-sive
+ []
+
 <Figures/fig_final_throughput.pdf, id=472, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
@@ -950,6 +949,9 @@ Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 13
 1.
 (pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf>]
 
@@ -965,19 +967,19 @@ File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 184.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
 
 [9 <./Figures/comparison_dilution.pdf>]
+
+
+Underfull \hbox (badness 1721) in paragraph at lines 256--257
+\OT1/ptm/b/n/10 Detection Fi-delity. \OT1/ptm/m/n/10 Single-channel con-fig-u-r
+a-tions fail to
+ []
 
 ) (./5. Related Works.tex
 
 [10 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>])
 (./6. Discussion and Limitation.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
@@ -1050,7 +1052,7 @@ L3 programming layer <2025-01-18>
 Here is how much of TeX's memory you used:
  17708 strings out of 473190
  382920 string characters out of 5715800
- 792688 words of memory out of 5000000
+ 791688 words of memory out of 5000000
  40598 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1079,7 +1081,7 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1905403 bytes).
+Output written on main.pdf (12 pages, 1905719 bytes).
 PDF statistics:
  846 PDF objects out of 1000 (max. 8388607)
  320 compressed objects within 4 object streams
