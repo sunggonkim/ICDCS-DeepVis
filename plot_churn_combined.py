@@ -18,8 +18,13 @@ fig1, ax1 = plt.subplots(figsize=(5, 3.5))
 
 # Histogram density
 def get_pdf(data, bins=50):
+    # Force range 0 to 1.05 to capture all
     counts, edges = np.histogram(data, bins=bins, range=(0, 1.05))
     centers = (edges[:-1] + edges[1:]) / 2
+    # Return all points to prevent gaps in low-density areas if using line plot
+    # But for fill_between with log scale, we need to handle 0s.
+    # We will use a small epsilon for 0s to avoid breaks in the plot line if needed,
+    # OR better, just mask > 0.
     mask = counts > 0
     return centers[mask], counts[mask]
 
@@ -29,27 +34,27 @@ x_att, y_att = get_pdf(scores_attack)
 
 # Plot: Benign State (Baseline + Fleet Ops)
 # Merge visually
-ax1.fill_between(x_base, 0, y_base, color='blue', alpha=0.15, label='Benign State\n(Baseline + Fleet Ops)')
+ax1.fill_between(x_base, 0, y_base, color='blue', alpha=0.15)
 ax1.plot(x_base, y_base, 'b-', linewidth=1.5, alpha=0.6)
 
 # Plot: Attack (Outlier Only)
-# To avoid "weird" overlapping red dashed line, we ONLY plot the attack outlier.
 outlier_x = [x for x in x_att if x > 0.9]
 outlier_y = [y for x,y in zip(x_att, y_att) if x > 0.9]
 
 if outlier_x:
-    ax1.plot(outlier_x, outlier_y, 'r*', markersize=14, zorder=20, label='Attack Signal\n(Outlier Only)')
+    ax1.plot(outlier_x, outlier_y, 'r*', markersize=14, zorder=20)
     ax1.text(outlier_x[0]-0.25, outlier_y[0]*2.0, "Attack Signal", color='red', fontweight='bold', fontsize=10)
 
-ax1.text(0.4, 200, "Robust Stability\n(Fleet Ops $\\approx$ Baseline)", color='blue', fontsize=9, ha='center', alpha=0.7)
+# Text Annotation for Blue Area (Replacing Legend)
+ax1.text(0.35, 200, "Benign State\n(Baseline + Fleet Ops)", color='blue', fontsize=10, ha='center', fontweight='bold', alpha=0.8)
 
 ax1.set_yscale('log')
 ax1.set_xlabel('Anomaly Score ($L_\infty$)', fontsize=10, fontweight='bold')
 ax1.set_ylabel('File Count (Log Scale)', fontsize=10, fontweight='bold')
 ax1.set_title('Real Fleet Error Stability', fontsize=11, fontweight='bold')
 ax1.grid(True, which="both", ls="--", alpha=0.3)
-ax1.legend(loc='upper right', frameon=True, fontsize=8) 
-ax1.set_xlim(0, 1.1)
+# Removed Legend
+ax1.set_xlim(0, 1.05)
 
 plt.tight_layout()
 plt.savefig("/Users/skim/ICDCS-DeepVis/paper/Figures/fig_churn_hist.pdf", bbox_inches='tight')
