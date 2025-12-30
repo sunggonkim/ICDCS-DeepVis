@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 09:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 09:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -915,12 +915,6 @@ LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 [6 <./Figures/Design/CNN_Arch.pdf>]
 
 
-Underfull \hbox (badness 1755) in paragraph at lines 30--32
-\OT1/ptm/b/n/10 Global Se-lec-tiv-ity. \OT1/ptm/m/n/10 On the global repos-i-to
-ry con-tain-ing
- []
-
-
 
 [7]
 <Figures/fig_final_throughput.pdf, id=472, 319.59099pt x 280.9374pt>
@@ -971,9 +965,9 @@ Underfull \hbox (badness 1701) in paragraph at lines 10--11
 [] \OT1/cmr/m/n/10 =
  []
 
-) (./7. Conclusion.tex
 
-) (./main.bbl
+
+) (./7. Conclusion.tex) (./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1014,7 +1008,7 @@ L3 programming layer <2025-01-18>
 Here is how much of TeX's memory you used:
  17711 strings out of 473190
  382963 string characters out of 5715800
- 791757 words of memory out of 5000000
+ 792757 words of memory out of 5000000
  40601 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1043,7 +1037,7 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1901283 bytes).
+Output written on main.pdf (12 pages, 1901244 bytes).
 PDF statistics:
  846 PDF objects out of 1000 (max. 8388607)
  320 compressed objects within 4 object streams
