@@ -8,6 +8,10 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
+Warning--I didn't find a database entry for "zohar2018integrity"
+Warning--I didn't find a database entry for "oprea2007integrity"
+Warning--I didn't find a database entry for "luo2019container"
+Warning--I didn't find a database entry for "bohling2020subverting"
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
@@ -15,7 +19,7 @@ Database file #1: references.bib
 Done.
 You've used 27 entries,
             4087 wiz_defined-function locations,
-            955 strings with 12529 characters,
+            959 strings with 12602 characters,
 and the built_in function-call counts, 16658 in all, are:
 = -- 1238
 > -- 381
@@ -54,3 +58,4 @@ warning$ -- 0
 while$ -- 67
 width$ -- 29
 write$ -- 252
+(There were 4 warnings)
