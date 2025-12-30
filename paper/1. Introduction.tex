@@ -9,18 +9,16 @@ However, traditional integrity verification faces a fundamental scalability chal
 \centering
 % Shared Legend at Top
 \includegraphics[width=0.95\columnwidth]{Figures/fig_motivation_legend.pdf}
-\vspace{-1cm}
-% Subfigures side by side (2x1)
 \subfloat[Scalability]{
-    \includegraphics[width=0.47\columnwidth]{Figures/fig_motivation_a.pdf}
+    \includegraphics[width=0.48\columnwidth]{Figures/fig_motivation_a.pdf}
     \label{fig:motivation_scale}
 }
 \hfill
 \subfloat[Alert Fatigue]{
-    \includegraphics[width=0.47\columnwidth]{Figures/fig_motivation_b.pdf}
+    \includegraphics[width=0.48\columnwidth]{Figures/fig_motivation_b.pdf}
     \label{fig:motivation_alert}
 }
-\caption{(a) While synchronous scanning suffers from steep linear $O(N)$ latency, DeepVis achieves \textbf{high-throughput saturation} via asynchronous I/O, effectively flattening the execution time curve. (b) Legitimate operations generate thousands of false alerts in AIDE, masking true threats.}
+\caption{(a) DeepVis achieves high-throughput saturation via asynchronous I/O. (b) Legitimate updates generate false alerts in AIDE.}
 \label{fig:motivation}
 \end{figure}
 

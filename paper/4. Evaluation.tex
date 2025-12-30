@@ -22,9 +22,9 @@ We conduct experiments on three distinct GCP configurations to represent a spect
 %---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Comparison of \DeepVis against Standard and Tuned Baselines. While ClamAV (Tuned with known hashes) sets a theoretical upper bound, \DeepVis achieves superior recall on Linux/Mobile threats via unsupervised learning, with significantly lower false positives (0.3\%) than heuristic rules (YARA: 31.0\%) or the single-channel baseline (DeepVis (Entropy): 10.2\%).}
+\caption{\textbf{Unified Detection Performance.} Comparison against tunned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats via unsupervised learning.}
 \label{tab:unified_detection}
-\resizebox{0.9\textwidth}{!}{%
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{l cccc c}
 \toprule
 \multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Active Recall by Platform}} & \textbf{False Pos.} \\
