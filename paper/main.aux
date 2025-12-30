@@ -69,17 +69,19 @@
 \newlabel{design_4}{{\mbox  {III-E}}{6}{}{subsection.3.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}\texttt  {DeepVis}\xspace  Implementation}{6}{}\protected@file@percent }
 \citation{vxunderground,themalwarerepo}
-\citation{diamorphine,azazel}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Evaluation}{7}{}\protected@file@percent }
 \newlabel{sec:evaluation}{{IV}{7}{}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Evaluation Setup}{7}{}\protected@file@percent }
 \newlabel{eval_setup}{{\mbox  {IV-A}}{7}{}{subsection.4.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Accuracy and Feature Orthogonality (RQ1)}{7}{}\protected@file@percent }
 \newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Comparison against tunned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats via unsupervised learning.}}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Comparison against tuned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats. False Positive Rate (FPR) is reported at the node/repository level (0.3\% per 10k files), ensuring manageable alert volumes for security operators.}}{7}{}\protected@file@percent }
 \newlabel{tab:unified_detection}{{III}{7}{}{table.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=667) and Malware (N=68) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}}{8}{}\protected@file@percent }
 \newlabel{tab:detailed_breakdown}{{IV}{8}{}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Scalability and Performance Analysis (RQ2)}{8}{}\protected@file@percent }
+\newlabel{eval_scalability}{{\mbox  {IV-C}}{8}{}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Micro-benchmark}{8}{}\protected@file@percent }
 \newlabel{fig:perf_throughput}{{7a}{8}{}{subfigure.7.1}{}}
 \newlabel{sub@fig:perf_throughput}{{(a)}{a}}
 \newlabel{fig:perf_latency}{{7b}{8}{}{subfigure.7.2}{}}
@@ -88,9 +90,6 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{8}{}\protected@file@percent }
 \newlabel{fig:perf_analysis}{{7}{8}{}{figure.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Scalability and Performance Analysis (RQ2)}{8}{}\protected@file@percent }
-\newlabel{eval_scalability}{{\mbox  {IV-C}}{8}{}{subsection.4.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Micro-benchmark}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Macro-benchmark}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Impact of Spatial Dimension and Hash Saturation (RQ3, RQ6)}{8}{}\protected@file@percent }
 \newlabel{eval_saturation}{{\mbox  {IV-D}}{8}{}{subsection.4.4}{}}
@@ -104,9 +103,6 @@
 \citation{unicorn,cheng2024kairos}
 \citation{ossec,falco}
 \citation{he2023cross,tfjmp2024safebpf}
-\citation{nataraj2011malware,conti2008visual,aldini2024image}
-\citation{lyda2007entropy}
-\citation{ling2024wolf,uetz2024detecting}
 \newlabel{fig:fleet_scale}{{9a}{10}{}{subfigure.9.1}{}}
 \newlabel{sub@fig:fleet_scale}{{(a)}{a}}
 \newlabel{fig:fleet_heatmap}{{9b}{10}{}{subfigure.9.2}{}}
@@ -115,7 +111,7 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{10}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{10}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{10}{}{figure.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $90\%), confirming that \\DeepVis computational overhead (Hashing, Entropy, Tensor Update) is negligible.}}{10}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{10}{}\protected@file@percent }
 \newlabel{tab:overhead_breakdown}{{VI}{10}{}{table.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Ablation Study: Component Contribution Analysis}{10}{}\protected@file@percent }
 \newlabel{eval_ablation}{{\mbox  {IV-F}}{10}{}{subsection.4.6}{}}
@@ -123,6 +119,9 @@
 \newlabel{tab:ablation}{{VII}{10}{}{table.7}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{10}{}\protected@file@percent }
 \newlabel{sec:related_work}{{V}{10}{}{section.5}{}}
+\citation{nataraj2011malware,conti2008visual,aldini2024image}
+\citation{lyda2007entropy}
+\citation{ling2024wolf,uetz2024detecting}
 \citation{du2017deeplog}
 \citation{mirsky2018kitsune}
 \citation{ruff2018deep}
@@ -132,6 +131,10 @@
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
+\newlabel{sec:discussion}{{VI}{11}{}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
 \bibcite{tripwire}{2}
 \bibcite{falco}{3}
 \bibcite{ossec}{4}
@@ -140,29 +143,23 @@
 \bibcite{unicorn}{7}
 \bibcite{zaheer2017deepsets}{8}
 \bibcite{samhain}{9}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
-\newlabel{sec:discussion}{{VI}{11}{}{section.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
-\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
 \bibcite{vxunderground}{10}
 \bibcite{themalwarerepo}{11}
-\bibcite{diamorphine}{12}
-\bibcite{azazel}{13}
-\bibcite{cheng2024kairos}{14}
-\bibcite{he2023cross}{15}
-\bibcite{tfjmp2024safebpf}{16}
-\bibcite{nataraj2011malware}{17}
-\bibcite{conti2008visual}{18}
-\bibcite{aldini2024image}{19}
-\bibcite{lyda2007entropy}{20}
-\bibcite{ling2024wolf}{21}
-\bibcite{uetz2024detecting}{22}
-\bibcite{du2017deeplog}{23}
-\bibcite{mirsky2018kitsune}{24}
-\bibcite{ruff2018deep}{25}
-\bibcite{akcay2018ganomaly}{26}
-\bibcite{zong2018deep}{27}
-\bibcite{su2019robust}{28}
-\bibcite{xu2018unsupervised}{29}
+\bibcite{cheng2024kairos}{12}
+\bibcite{he2023cross}{13}
+\bibcite{tfjmp2024safebpf}{14}
+\bibcite{nataraj2011malware}{15}
+\bibcite{conti2008visual}{16}
+\bibcite{aldini2024image}{17}
+\bibcite{lyda2007entropy}{18}
+\bibcite{ling2024wolf}{19}
+\bibcite{uetz2024detecting}{20}
+\bibcite{du2017deeplog}{21}
+\bibcite{mirsky2018kitsune}{22}
+\bibcite{ruff2018deep}{23}
+\bibcite{akcay2018ganomaly}{24}
+\bibcite{zong2018deep}{25}
+\bibcite{su2019robust}{26}
+\bibcite{xu2018unsupervised}{27}
+\@writefile{toc}{\contentsline {section}{References}{12}{}\protected@file@percent }
 \gdef \@abspage@last{12}

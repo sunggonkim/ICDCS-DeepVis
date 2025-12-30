@@ -73,14 +73,6 @@ R.~Wichmann, ``{Samhain}: {File} {Integrity} {Checker},''
 Y.~tisf Nativ, ``{theZoo} - a live malware repository,''
   \url{https://github.com/ytisf/theZoo}, 2024.
 
-\bibitem{diamorphine}
-V.~Ramos~Mello, ``{Diamorphine}: {LKM} rootkit for {Linux},''
-  \url{https://github.com/m0nad/Diamorphine}, 2023.
-
-\bibitem{azazel}
-chokepoint, ``{Azazel}: Userland rootkit based on ld\_preload,''
-  \url{https://github.com/chokepoint/azazel}, 2014.
-
 \bibitem{cheng2024kairos}
 Z.~Cheng, Q.~Lv, J.~Liang, Y.~Wang, D.~Sun, T.~Pasquier, and X.~Han, ``Kairos:
   Practical intrusion detection and investigation using whole-system
