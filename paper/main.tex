@@ -41,7 +41,7 @@
 \maketitle
 
 \begin{abstract}
-This paper presents \DeepVis, a high-throughput integrity verification system designed to improve scalability and reduce overhead in hyperscale storage environments.
+This paper presents \DeepVis, a high-throughput integrity verification system designed to act as a first-pass triage filter for extreme-scale storage environments such as cloud data centers.
 Our key idea is to leverage a spatial hash projection architecture, enabling highly parallelized metadata processing while maintaining detection accuracy via a stable tensor representation.
 Specifically, \DeepVis first introduces an asynchronous snapshot engine that leverages high-performance I/O interfaces to maximize ingestion rates, allowing the system to rapidly capture file system states.
 Second, \DeepVis devises a lock-free tensor mapping pipeline, where metadata processing is sharded across processor cores to eliminate contention and achieve linear scalability.

@@ -46,7 +46,7 @@ DeepVis (Entropy) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 }
 \end{table}
 
-\noindent\textbf{Platform-Specific Generalization. }Detection Recall increases substantially with the full architecture. On Linux, Recall jumps from 25.0\% (Entropy-only) to 97.1\% (DeepVis Full), and on Mobile from 91.7\% to 100.0\% (Table~\ref{tab:unified_detection}), indicating that multi-modal fusion is essential for isolating threats that mimic benign entropy distributions. In contrast, ClamAV (Standard) achieves only 0--33\% recall without custom signatures. While YARA (Tuned) improves detection, it incurs a prohibitive False Positive Rate (31.0\%). \DeepVis maintains a negligible False Positive Rate of 0.3\%, confirming that the learned normality model is far more robust to benign variations than static heuristics (10.2\% FP).
+\noindent\textbf{Platform-Specific Generalization. }Detection Recall increases substantially with the full architecture. On Linux, Recall jumps from 25.0\% (Entropy-only) to 97.1\% (DeepVis Full), and on Mobile from 91.7\% to 100.0\% (Table~\ref{tab:unified_detection}), indicating that multi-modal fusion is essential for isolating threats that mimic benign entropy distributions. However, performance on Windows is limited (16.9\%), primarily due to the current model's focus on Linux-centric feature engineering as discussed in Section~\ref{sec:discussion}. \DeepVis maintains a negligible global False Positive Rate of 0.3\% across the file-level dataset, confirming robustness compared to heuristic scanners (31\% FP).
 
 \noindent\textbf{Feature Orthogonality. }Micro-analysis confirms that multi-modal features catch evasion attempts. As shown in Table~\ref{tab:detailed_breakdown}, the rootkit \texttt{Diamorphine} evades the Entropy channel ($R=0.55$) but is detected by Structure ($B=1.00$) and Context ($G=0.81$). Similarly, \texttt{FormGrab.exe} triggers detection ($B=0.90$) due to structural anomalies in a Linux environment. However, limitations persist; the header-only approach misses artifacts like \texttt{setup.sh}, as they reside in valid paths without binary packing anomalies.
 
@@ -191,7 +191,7 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
         \includegraphics[width=0.45\linewidth]{Figures/fig_churn_hist.pdf}
         \label{fig:churn_hist}
     }
-    \caption{\textbf{Fleet-Scale Churn \& Alert Fatigue Analysis.} (a) Comparison of False Positive alerts and Detection Recall. AIDE generates 8,500 alerts during maintenance, whereas \DeepVis maintains zero false positives. (b) Distribution of reconstruction errors ($\mathcal{L}_\infty$). Benign churn stays strictly below the learned threshold $\tau \approx 0.4324$, while malicious rootkits manifest as high-confidence outliers.}
+    \caption{\textbf{Fleet-Scale Churn \& Alert Fatigue Analysis.} (a) Comparison of False Positive alerts and Detection Recall. AIDE generates 8,500 alerts during maintenance, whereas \DeepVis maintains zero false positives for these benign update scenarios. (b) Distribution of reconstruction errors ($\mathcal{L}_\infty$). Benign churn stays strictly below the learned threshold $\tau \approx 0.4324$, while malicious rootkits manifest as high-confidence outliers.}
     \label{fig:churn_analysis}
 \end{figure}
 
