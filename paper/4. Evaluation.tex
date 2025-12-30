@@ -11,8 +11,12 @@ We evaluate \DeepVis on a production Google Cloud Platform (GCP) infrastructure 
 \noindent\textbf{Testbed Environment.} 
 We conduct experiments on three distinct GCP configurations to represent a spectrum of cloud instances: \textbf{Low} (e2-micro, 2 vCPU, 1GB RAM, HDD), \textbf{Mid} (e2-standard-2, 2 vCPU, 8GB RAM, SSD), and \textbf{High} (c2-standard-4, 4 vCPU, 16GB RAM, NVMe SSD). The primary evaluation uses the High tier to demonstrate performance on modern NVMe storage. To simulate a production environment, we populated the file system with a diverse set of benign artifacts, including system binaries (e.g., \texttt{nginx}, \texttt{gcc}), configuration files, and Python scripts, scaling up to 50 million files for stress testing.
 
-\noindent\textbf{Target Malware Dataset.}
-We curated a comprehensive malware corpus from established open-source repositories~\cite{vxunderground, themalwarerepo}, organized by platform:
+\noindent\textbf{Target Datasets.}
+We curated two distinct datasets for rigorous evaluation:
+
+\noindent\textbf{Benign Dataset.} To establish a clean baseline, we sampled 667 legitimate ELF binaries from \texttt{/usr/bin} (e.g., \texttt{python3}, \texttt{ls}) and standard system artifacts from a clean Ubuntu 20.04 installation. This dataset serves as the ground truth for False Positive analysis and provides the representative samples listed in Table~\ref{tab:detailed_breakdown}.
+
+\noindent\textbf{Malware Dataset.} We curated a comprehensive malware corpus from established open-source repositories~\cite{vxunderground, themalwarerepo}, organized by platform:
 \textbf{(1) Linux} (305 files): LKM rootkits (Diamorphine~\cite{diamorphine}), LD\_PRELOAD rootkits (Azazel~\cite{azazel}, BEURK~\cite{beurk}), Mirai-family botnets, backdoors, and file infectors;
 \textbf{(2) Windows} (35,359 files): Win32 malware families (Zeus, Carberp, ransomware), legacy samples (Win95/98/2k);
 \textbf{(3) Web} (144 files): PHP webshells (c99.php), JavaScript-based malware, phishing kits;
@@ -71,7 +75,7 @@ Table~\ref{tab:detailed_breakdown} provides a granular analysis of detection cap
 %---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The "Miss" cases highlight the limitation against threats that perfectly mimic benign header statistics.}
+\caption{\textbf{Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=667) and Malware (N=68) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}
 \label{tab:detailed_breakdown}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{l c ccc c}
