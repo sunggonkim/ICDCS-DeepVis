@@ -98,6 +98,10 @@
 \newlabel{tab:hyperscale_saturation}{{VI}{8}{}{table.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Robustness to System Churn (RQ3)}{8}{}\protected@file@percent }
 \newlabel{eval_churn}{{\mbox  {IV-E}}{8}{}{subsection.4.5}{}}
+\citation{tripwire,aide,samhain}
+\citation{unicorn,cheng2024kairos}
+\citation{ossec,falco}
+\citation{he2023cross,tfjmp2024safebpf}
 \newlabel{fig:fleet_scale}{{9a}{9}{}{subfigure.9.1}{}}
 \newlabel{sub@fig:fleet_scale}{{(a)}{a}}
 \newlabel{fig:fleet_heatmap}{{9b}{9}{}{subfigure.9.2}{}}
@@ -106,7 +110,7 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{9}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{9}{}{figure.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {System Churn vs. Stealthy Attack.} (a) Real `apt` maintenance preserves the error distribution (Stability), merging Baseline and Update profiles into a unified Benign State. (b) AIDE generates 174 alerts due to inode changes, whereas DeepVis generates 0 false alerts, isolating only the rootkit.}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {Fleet-Scale System Churn vs. Stealthy Attack.} (a) Aggregated error distribution from 5 nodes (Web, DB, Build, App, Bastion) shows stability under diverse workloads. (b) AIDE generates 454 alerts across the fleet due to metadata churn, while DeepVis maintains 0 false alerts (Scale-Invariant), isolating only the rootkit.}}{9}{}\protected@file@percent }
 \newlabel{fig:churn_analysis}{{10}{9}{}{figure.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
 \newlabel{eval_sensitivity}{{\mbox  {IV-F}}{9}{}{subsection.4.6}{}}
@@ -114,10 +118,6 @@
 \newlabel{fig:header_sensitivity}{{11}{9}{}{figure.11}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{9}{}\protected@file@percent }
 \newlabel{tab:overhead_breakdown}{{VII}{9}{}{table.7}{}}
-\citation{tripwire,aide,samhain}
-\citation{unicorn,cheng2024kairos}
-\citation{ossec,falco}
-\citation{he2023cross,tfjmp2024safebpf}
 \citation{zohar2018integrity}
 \citation{oprea2007integrity}
 \citation{luo2019container}

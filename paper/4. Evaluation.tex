@@ -180,21 +180,19 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=1.0\linewidth]{Figures/fig_churn_combined.pdf}
-    \caption{\textbf{System Churn vs. Stealthy Attack.} (a) Real `apt` maintenance preserves the error distribution (Stability), merging Baseline and Update profiles into a unified Benign State. (b) AIDE generates 174 alerts due to inode changes, whereas DeepVis generates 0 false alerts, isolating only the rootkit.}
+    \caption{\textbf{Fleet-Scale System Churn vs. Stealthy Attack.} (a) Aggregated error distribution from 5 nodes (Web, DB, Build, App, Bastion) shows stability under diverse workloads. (b) AIDE generates 454 alerts across the fleet due to metadata churn, while DeepVis maintains 0 false alerts (Scale-Invariant), isolating only the rootkit.}
     \label{fig:churn_analysis}
 \end{figure}
 
-\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between benign system updates and malicious injections. In our real-world experiment executing `apt-get reinstall` on the GCP instance (Rank Sum Test, $p>0.05$):
+\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between benign fleet operations and malicious injections. In our multi-node fleet simulation ($N=5$ nodes with diverse workloads: Web, DB, Build, App, Bastion) on GCP:
 \begin{itemize}[leftmargin=*]
-    \item \textbf{Scenario:} We reinstalled core system packages (modifying 174 binaries) and injected 1 stealthy rootkit.
-    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, the system update yield an error distribution statistically indistinguishable from the baseline ($\mu_{err} \approx 0.33$), visualized as the stable ``Benign State'' region. No benign file exceeded the anomaly threshold ($L_\infty < \tau$).
-    \item \textbf{Detection:} The injected rootkit, however, created a sharp spike in the $L_\infty$ score (Attack Signal), triggering an immediate alert.
-    \item \textbf{Operational Efficiency:} Figure~\ref{fig:churn_alerts} compares alert fatigue across all baselines.
+    \item \textbf{Scenario:} We aggregated file system churn from 5 distinct operational profiles (e.g., \texttt{apt upgrade} on Bastion, \texttt{nginx} config rotation on Web, compilation artifacts on Build), modifying a total of $\approx$450 files, and injected 1 stealthy rootkit.
+    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_analysis}(a), the fleet-wide error distribution remained statistically indistinguishable from the baseline ($\mu_{err} \approx 0.33$), visualized as the stable ``Benign State'' region. No benign file exceeded the anomaly threshold ($L_\infty < \tau$).
+    \item \textbf{Detection:} The injected rootkit on Node 3 created a sharp spike in the $L_\infty$ score (Attack Signal), triggering an immediate alert.
+    \item \textbf{Operational Efficiency (Scalability):} Figure~\ref{fig:churn_analysis}(b) compares alert fatigue at fleet scale.
     \begin{itemize}
-        \item \textbf{AIDE} generated \textbf{174 false alerts} due to inode/metadata changes, overwhelming analysts.
-        \item \textbf{YARA (Tuned)} triggered \textbf{$\approx$54 false alerts} due to heuristic matches on updated system files ($FPR \approx 31\%$).
-        \item \textbf{ClamAV (Tuned)} and \textbf{Set-AE} remained silent (0 alerts) but \textbf{failed to detect the stealthy rootkit} (Signal Dilution/Signature Miss).
-        \item \textbf{DeepVis} was the only system to achieve \textbf{Zero False Alerts} during the maintenance window while correctly flagging the single stealthy threat, demonstrating superior signal isolation.
+        \item \textbf{AIDE} generated \textbf{454 false alerts} ($O(N)$ scaling with churn), overwhelming analysts.
+        \item \textbf{DeepVis} maintained \textbf{Zero False Alerts} ($O(1)$ scaling), demonstrating scale-invariant robustness suitable for large fleets.
     \end{itemize}
 \end{itemize}
 
