@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 09:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 09:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -919,9 +919,6 @@ LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
 (Font)              using `OT1/ptm/m/it' instead on input line 43.
 
 
-Underfull \vbox (badness 1577) has occurred while \output is active []
-
-
 
 [7]
 <Figures/fig_final_throughput.pdf, id=472, 319.59099pt x 280.9374pt>
@@ -947,9 +944,6 @@ Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 14
 
 
 [8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf>]
-Underfull \vbox (badness 6364) has occurred while \output is active []
-
-
 
 <Figures/fig_fleet_scalability.pdf, id=586, 498.67555pt x 241.45416pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
@@ -978,6 +972,9 @@ LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
 (./5. Related Works.tex
 
 [10]) (./6. Discussion and Limitation.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
@@ -1024,11 +1021,11 @@ L3 programming layer <2025-01-18>
 Here is how much of TeX's memory you used:
  17733 strings out of 473190
  383358 string characters out of 5715800
- 790817 words of memory out of 5000000
+ 791817 words of memory out of 5000000
  40620 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,13n,91p,1341b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,13n,91p,1154b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></
@@ -1053,7 +1050,7 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1904482 bytes).
+Output written on main.pdf (12 pages, 1904144 bytes).
 PDF statistics:
  846 PDF objects out of 1000 (max. 8388607)
  320 compressed objects within 4 object streams

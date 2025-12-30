@@ -78,13 +78,13 @@
 \citation{diamorphine}
 \citation{azazel}
 \citation{beurk}
+\citation{zaheer2017deepsets}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Methodology}{7}{}\protected@file@percent }
 \newlabel{eval_setup}{{\mbox  {IV-A}}{7}{}{subsection.4.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Accuracy and Feature Orthogonality (RQ1)}{7}{}\protected@file@percent }
 \newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Evaluated on a \textbf  {Binary-Only Dataset} (68 Malware, 667 Benign) and the \textbf  {Global Repository} (37,571 Files). \texttt  {DeepVis}\xspace  achieves 96\% recall on active binary threats with only 0.6\% repository alerts. ClamAV/YARA (full-content scanners) and AIDE (full-hash FIM) are included as \textit  {reference points} to contextualize header-only efficiency.}}{7}{}\protected@file@percent }
 \newlabel{tab:unified_detection}{{III}{7}{}{table.3}{}}
-\citation{zaheer2017deepsets}
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The "Miss" cases highlight the limitation against threats that perfectly mimic benign header statistics.}}{8}{}\protected@file@percent }
 \newlabel{tab:detailed_breakdown}{{IV}{8}{}{table.4}{}}
 \newlabel{fig:perf_throughput}{{7a}{8}{}{subfigure.7.1}{}}
@@ -105,6 +105,8 @@
 \newlabel{fig:signal_comparison}{{8}{9}{}{figure.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Hash Saturation Analysis. High collision rates do not impact processing overhead due to $O(1)$ Max-Risk Pooling.}}{9}{}\protected@file@percent }
 \newlabel{tab:hyperscale_saturation}{{V}{9}{}{table.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Fleet-Scale Scalability (RQ7)}{9}{}\protected@file@percent }
+\newlabel{eval_fleet}{{\mbox  {IV-E}}{9}{}{subsection.4.5}{}}
 \newlabel{fig:fleet_scale}{{9a}{9}{}{subfigure.9.1}{}}
 \newlabel{sub@fig:fleet_scale}{{(a)}{a}}
 \newlabel{fig:fleet_heatmap}{{9b}{9}{}{subfigure.9.2}{}}
@@ -113,8 +115,10 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{9}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{9}{}{figure.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Fleet-Scale Scalability (RQ7)}{9}{}\protected@file@percent }
-\newlabel{eval_fleet}{{\mbox  {IV-E}}{9}{}{subsection.4.5}{}}
+\citation{tripwire,aide,samhain}
+\citation{unicorn,cheng2024kairos}
+\citation{ossec,falco}
+\citation{he2023cross,tfjmp2024safebpf}
 \@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $90\%), confirming that \\DeepVis computational overhead (Hashing, Entropy, Tensor Update) is negligible.}}{10}{}\protected@file@percent }
 \newlabel{tab:overhead_breakdown}{{VI}{10}{}{table.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Ablation Study: Component Contribution Analysis}{10}{}\protected@file@percent }
@@ -125,10 +129,6 @@
 \newlabel{tab:crossdistro}{{VIII}{10}{}{table.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Cross-Platform Generalization}{10}{}\protected@file@percent }
 \newlabel{eval_generalization}{{\mbox  {IV-G}}{10}{}{subsection.4.7}{}}
-\citation{tripwire,aide,samhain}
-\citation{unicorn,cheng2024kairos}
-\citation{ossec,falco}
-\citation{he2023cross,tfjmp2024safebpf}
 \citation{nataraj2011malware,conti2008visual,aldini2024image}
 \citation{lyda2007entropy}
 \citation{ling2024wolf,uetz2024detecting}
@@ -142,6 +142,8 @@
 \newlabel{sec:related_work}{{V}{11}{}{section.5}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
 \newlabel{sec:discussion}{{VI}{11}{}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
@@ -174,7 +176,5 @@
 \bibcite{zong2018deep}{28}
 \bibcite{su2019robust}{29}
 \bibcite{xu2018unsupervised}{30}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{12}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{12}{}{section.7}{}}
 \@writefile{toc}{\contentsline {section}{References}{12}{}\protected@file@percent }
 \gdef \@abspage@last{12}
