@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 16:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 16:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -973,24 +973,8 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 ) (./5. Related Works.tex
 
-[10 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>]
-
-LaTeX Warning: Citation `zohar2018integrity' on page 11 undefined on input line
- 8.
-
-
-LaTeX Warning: Citation `oprea2007integrity' on page 11 undefined on input line
- 8.
-
-
-LaTeX Warning: Citation `luo2019container' on page 11 undefined on input line 8
-.
-
-
-LaTeX Warning: Citation `bohling2020subverting' on page 11 undefined on input l
-ine 8.
-
-) (./6. Discussion and Limitation.tex
+[10 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>])
+(./6. Discussion and Limitation.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -1016,6 +1000,32 @@ reSourceCode$,
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 92--96
+[]\OT1/ptm/m/n/8 M. Zo-har, ``Linux In-tegrity Sub-sys-tem & Ecosys-tem:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--96
+\OT1/ptm/m/n/8 IMA-Measurement, IMA-Appraisal, and EVM,'' Pre-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--96
+\OT1/ptm/m/n/8 sen-ta-tion at Linux Se-cu-rity Sum-mit (LSS) EU 2018,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--96
+\OT1/ptm/m/n/8 2018, avail-able at: https://events19.linuxfoundation.org/wp-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--96
+\OT1/ptm/m/n/8 content/uploads/2017/12/LSS2018-EU-LinuxIntegrityOverview[]Mimi-
+
+ []
+
+
 
 )
 
@@ -1036,15 +1046,11 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
  17708 strings out of 473190
  382920 string characters out of 5715800
- 792672 words of memory out of 5000000
+ 792688 words of memory out of 5000000
  40598 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1073,7 +1079,7 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1904944 bytes).
+Output written on main.pdf (12 pages, 1906033 bytes).
 PDF statistics:
  846 PDF objects out of 1000 (max. 8388607)
  320 compressed objects within 4 object streams

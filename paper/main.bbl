@@ -88,6 +88,31 @@ Y.~He \emph{et~al.}, ``{C}ross {C}ontainer {A}ttacks: {T}he {B}ewildered {eBPF}
   {K}ernel {E}xtensions,'' in \emph{Proceedings of the 2024 CCS Cloud Computing
   Security Workshop (CCSW)}, 2024.
 
+\bibitem{zohar2018integrity}
+M.~Zohar, ``{L}inux {I}ntegrity {S}ubsystem \& {E}cosystem:
+  {I}{M}{A}-{M}easurement, {I}{M}{A}-{A}ppraisal, and {E}{V}{M},'' Presentation
+  at Linux Security Summit (LSS) EU 2018, 2018, available at:
+  https://events19.linuxfoundation.org/wp-content/uploads/2017/12/LSS2018-EU-LinuxIntegrityOverview\_Mimi-Zohar.pdf.
+
+\bibitem{oprea2007integrity}
+A.~Oprea \emph{et~al.}, ``{I}ntegrity {C}hecking in {C}ryptographic {F}ile
+  {S}ystems with {M}erkle {T}rees,'' in \emph{Proceedings of the 14th USENIX
+  Security Symposium}.\hskip 1em plus 0.5em minus 0.4em\relax USENIX, 2007, pp.
+  1--16.
+
+\bibitem{luo2019container}
+W.~Luo, Q.~Shen, Y.~Xia, and Z.~Wu, ``{C}ontainer-{I}{M}{A}: {A}
+  {P}rivacy-{P}reserving {I}ntegrity {M}easurement {A}rchitecture for
+  {C}ontainers,'' in \emph{Proceedings of the 22nd International Symposium on
+  Research in Attacks, Intrusions and Defenses (RAID 2019)}.\hskip 1em plus
+  0.5em minus 0.4em\relax USENIX Association, 2019, pp. 487--506.
+
+\bibitem{bohling2020subverting}
+F.~Bohling, T.~Mueller, M.~Eckel, and J.~Lindemann, ``{S}ubverting {L}inux'
+  {I}ntegrity {M}easurement {A}rchitecture,'' in \emph{Proceedings of the 15th
+  International Conference on Availability, Reliability and Security (ARES
+  2020)}.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2020, pp. 1--10.
+
 \bibitem{nataraj2011malware}
 L.~Nataraj, S.~Karthikeyan, G.~Jacob, and B.~S. Manjunath, ``{M}alware
   {I}mages: {V}isualization and {A}utomatic {C}lassification,'' in

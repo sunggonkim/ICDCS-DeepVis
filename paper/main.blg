@@ -8,54 +8,49 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
-Warning--I didn't find a database entry for "zohar2018integrity"
-Warning--I didn't find a database entry for "oprea2007integrity"
-Warning--I didn't find a database entry for "luo2019container"
-Warning--I didn't find a database entry for "bohling2020subverting"
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-You've used 27 entries,
+You've used 31 entries,
             4087 wiz_defined-function locations,
-            959 strings with 12602 characters,
-and the built_in function-call counts, 16658 in all, are:
-= -- 1238
-> -- 381
-< -- 86
-+ -- 201
-- -- 74
-* -- 731
-:= -- 2496
-add.period$ -- 54
-call.type$ -- 27
-change.case$ -- 28
-chr.to.int$ -- 219
-cite$ -- 27
-duplicate$ -- 1273
-empty$ -- 1632
-format.name$ -- 94
-if$ -- 3920
+            978 strings with 13603 characters,
+and the built_in function-call counts, 19566 in all, are:
+= -- 1461
+> -- 445
+< -- 107
++ -- 235
+- -- 85
+* -- 862
+:= -- 2922
+add.period$ -- 65
+call.type$ -- 31
+change.case$ -- 33
+chr.to.int$ -- 273
+cite$ -- 31
+duplicate$ -- 1485
+empty$ -- 1905
+format.name$ -- 108
+if$ -- 4611
 int.to.chr$ -- 0
-int.to.str$ -- 27
-missing$ -- 248
-newline$ -- 104
-num.names$ -- 27
-pop$ -- 658
+int.to.str$ -- 31
+missing$ -- 287
+newline$ -- 116
+num.names$ -- 31
+pop$ -- 758
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1319
+skip$ -- 1539
 stack$ -- 0
-substring$ -- 539
-swap$ -- 859
-text.length$ -- 13
+substring$ -- 669
+swap$ -- 1017
+text.length$ -- 16
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 27
+type$ -- 31
 warning$ -- 0
-while$ -- 67
-width$ -- 29
-write$ -- 252
-(There were 4 warnings)
+while$ -- 83
+width$ -- 33
+write$ -- 288
