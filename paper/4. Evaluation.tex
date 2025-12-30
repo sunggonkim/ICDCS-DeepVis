@@ -11,17 +11,7 @@ We evaluate \DeepVis on a production Google Cloud Platform (GCP) infrastructure 
 \noindent\textbf{Testbed Environment.} 
 We conduct experiments on three distinct GCP configurations to represent a spectrum of cloud instances: \textbf{Low} (e2-micro, 2 vCPU, 1GB RAM, HDD), \textbf{Mid} (e2-standard-2, 2 vCPU, 8GB RAM, SSD), and \textbf{High} (c2-standard-4, 4 vCPU, 16GB RAM, NVMe SSD). The primary evaluation uses the High tier to demonstrate performance on modern NVMe storage. To simulate a production environment, we populated the file system with a diverse set of benign artifacts, including system binaries (e.g., \texttt{nginx}, \texttt{gcc}), configuration files, and Python scripts, scaling up to 50 million files for stress testing.
 
-\noindent\textbf{Target Datasets.}
-We curated two distinct datasets for rigorous evaluation:
-
-\noindent\textbf{Benign Dataset.} To establish a clean baseline, we sampled 667 legitimate ELF binaries from \texttt{/usr/bin} (e.g., \texttt{python3}, \texttt{ls}) and standard system artifacts from a clean Ubuntu 20.04 installation. This dataset serves as the ground truth for False Positive analysis and provides the representative samples listed in Table~\ref{tab:detailed_breakdown}.
-
-\noindent\textbf{Malware Dataset.} We curated a comprehensive malware corpus from established open-source repositories~\cite{vxunderground, themalwarerepo}, organized by platform:
-\textbf{(1) Linux} (305 files): LKM rootkits (Diamorphine~\cite{diamorphine}), LD\_PRELOAD rootkits (Azazel~\cite{azazel}, BEURK~\cite{beurk}), Mirai-family botnets, backdoors, and file infectors;
-\textbf{(2) Windows} (35,359 files): Win32 malware families (Zeus, Carberp, ransomware), legacy samples (Win95/98/2k);
-\textbf{(3) Web} (144 files): PHP webshells (c99.php), JavaScript-based malware, phishing kits;
-\textbf{(4) Mobile/Other} (1,578 files): Android malware, script-based threats (Python, Ruby, Perl).
-The corpus totals 37,387 files. For Linux-focused evaluation, we use 68 active ELF binaries including compiled rootkits and attack tools.
+\noindent\textbf{Target Datasets.} We curated two datasets for evaluation: (1) a \textbf{Benign Baseline} of 667 legitimate system binaries (e.g., \texttt{python3}) from Ubuntu 20.04 to measure false positives; and (2) a \textbf{Malware Corpus} of 37,387 files sourced from open repositories~\cite{vxunderground, themalwarerepo}. This corpus spans Linux (305 files including rootkits~\cite{diamorphine,azazel}), Windows (35k+ files), and Web artifacts. For our primary evaluation, we isolate 68 active Linux ELF binaries to rigorously test detection recall.
 
 \noindent\textbf{Threshold Learning.} 
 We employed a maximum-margin approach to determine detection boundaries. The thresholds were learned from the benign baseline as $\tau_c = \max(\text{Benign}_c) + 0.1$, ensuring a 0\% False Positive Rate during calibration. This resulted in $\tau_R=0.75$, $\tau_G=0.25$, and $\tau_B=0.30$.
@@ -83,9 +73,9 @@ Table~\ref{tab:detailed_breakdown} provides a granular analysis of detection cap
 \textbf{Type} & \textbf{Name} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{Status} \\
 \midrule
 \multicolumn{6}{l}{\textit{Detected Active Threats}} \\
-LKM Rootkit & \texttt{Diamorphine} & 0.52 & \textbf{0.60} & \textbf{0.50} & Det. \\
-LD\_PRELOAD & \texttt{Azazel} & 0.37 & \textbf{0.60} & 0.00 & Det. \\
-Crypto Miner & \texttt{XMRig} & 0.32 & \textbf{0.60} & 0.00 & Det. \\
+LKM Rootkit & \texttt{Diamorphine} & 0.59 & \textbf{0.60} & \textbf{1.00} & Det. \\
+LD\_PRELOAD & \texttt{Azazel} & 0.59 & \textbf{0.60} & 0.00 & Det. \\
+LD\_PRELOAD & \texttt{beurk} & 0.62 & \textbf{0.60} & 0.00 & Det. \\
 Encrypted RK & \texttt{azazel\_enc} & \textbf{1.00} & \textbf{0.90} & \textbf{0.80} & Det. \\
 Rev. Shell & \texttt{rev\_shell} & \textbf{1.00} & \textbf{0.70} & 0.00 & Det. \\
 Disguised ELF & \texttt{access.log} & 0.55 & 0.00 & \textbf{1.00} & Det. \\
@@ -96,11 +86,12 @@ Mimicry ELF & \texttt{libc\_fake.so} & 0.61 & 0.00 & 0.00 & Miss \\
 DDoS Tool & \texttt{VirTool.TCP.a} & 0.58 & 0.00 & 0.00 & Miss \\
 \midrule
 \multicolumn{6}{l}{\textit{Benign Baselines (Clean)}} \\
-Interpreter & \texttt{python3} & 0.67 & 0.00 & 0.00 & Clean \\
-Library & \texttt{libc.so.6} & 0.66 & 0.00 & 0.00 & Clean \\
+Interpreter & \texttt{python3} & 0.65 & 0.00 & 0.00 & Clean \\
+Library & \texttt{libc.so.6} & 0.64 & 0.00 & 0.00 & Clean \\
 Image (PNG) & \texttt{ubuntu-logo} & 0.53 & 0.00 & 0.00 & Clean \\
 \multicolumn{6}{l}{\textit{False Positives (High Entropy Tools)}} \\
 Admin Tool & \texttt{uwsgi} & \textbf{0.76} & 0.00 & 0.00 & False Pos. \\
+Admin Tool & \texttt{snap} & \textbf{0.78} & 0.00 & 0.00 & False Pos. \\
 \bottomrule
 \end{tabular}
 }
@@ -273,45 +264,8 @@ Category & Configuration & Rate (files/s) & F1-Score \\
 
 \noindent\textbf{Detection Fidelity. }Relying solely on entropy results in a poor F1-score of 0.25 due to false positives from benign compressed files. Applying the hash-grid architecture with local max pooling raises the score to 0.35, as it preserves sparse signals that are otherwise diluted by global pooling. However, the definitive improvement is achieved through multi-modal fusion. Integrating context and structure channels with entropy enables combinatorial reasoning, increasing the F1-score to 0.98. This demonstrates that architectural isolation must be paired with orthogonal feature sets to distinguish malicious artifacts from legitimate system noise.
 
-%=====================================================================
-\subsection{Cross-Platform Generalization}
-\label{eval_generalization}
-%=====================================================================
 
-Our primary B-channel implementation targets Linux-ELF environments. To evaluate generalization, we extended the analyzer to multiple platforms and tested on our organized malware corpus.
 
-\noindent\textbf{Platform-Specific Channel Design.}
-R-channel (Entropy) is universal across all platforms. G-channel (Context) and B-channel (Structure) are adapted per platform:
 
-\textbf{G-Channel (Context Hazard):}
-\textbf{(1) Linux}: Suspicious paths (\texttt{/tmp}, \texttt{/dev/shm}), hidden files, malware keywords in path;
-\textbf{(2) Windows}: Temp directories (\texttt{\textbackslash Temp}, \texttt{\textbackslash Downloads}), AppData locations;
-\textbf{(3) Web/Mobile}: Path-based keywords (``backdoor'', ``shell'', ``exploit'').
 
-\textbf{B-Channel (Structure):}
-\textbf{(1) ELF}: Kernel module detection (ET\_REL in suspicious paths), extension mismatches;
-\textbf{(2) PE}: MZ/PE signature validation, DLL in temp paths, non-standard extensions;
-\textbf{(3) PHP}: Dangerous functions (\texttt{eval}, \texttt{base64\_decode}, \texttt{shell\_exec});
-\textbf{(4) Android DEX}: Invalid path structures, wrong file extensions.
-Table~\ref{tab:multiplatform} summarizes detection results.
 
-\begin{table}[t]
-\centering
-\caption{\textbf{Multi-Platform Detection Results.} DeepVis achieves high recall on Linux (97\%), Web (90\%), and Mobile (100\%) threats. Windows detection is 15.8\% using Linux-centric G-channel heuristics; adapting path patterns for Windows would improve recall.}
-\label{tab:multiplatform}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{l c c c c c c}
-\toprule
-\textbf{Platform} & \textbf{Files} & \textbf{Detected} & \textbf{Recall} & \textbf{R (Entropy)} & \textbf{G (Context)} & \textbf{B (Structure)} \\
-\midrule
-Linux (ELF/Scripts) & 305 & 296 & \textbf{97.0\%} & 0.729 & 0.291 & 0.000 \\
-Windows (PE/Scripts) & 35,359 & 5,587 & 15.8\% & 0.630 & 0.016 & 0.001 \\
-Web (PHP/JS) & 144 & 129 & \textbf{89.6\%} & 0.677 & 0.256 & 0.008 \\
-Mobile (Android) & 24 & 24 & \textbf{100.0\%} & 0.935 & 0.067 & 0.000 \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
-\noindent\textbf{Analysis.}
-Linux threats achieve 97\% recall primarily through G-channel (mean=0.291), as malware paths contain keywords like ``rootkit'' and ``backdoor''. Mobile threats show 100\% recall via R-channel (mean=0.935), reflecting packed/obfuscated DEX files. Web threats leverage both G-channel (0.256) and B-channel PHP detection for 89.6\% recall. Windows detection reaches 15.8\% (5,587/35,359) primarily through R-channel entropy, but G-channel contributes minimally (0.016) because path heuristics (\texttt{/tmp}, \texttt{/dev/shm}) are Linux-specific. Adapting G-channel for Windows paths (\texttt{\textbackslash Temp}, \texttt{\textbackslash AppData}) represents a clear path to improved Windows detection.
