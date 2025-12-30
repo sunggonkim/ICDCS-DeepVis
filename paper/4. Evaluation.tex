@@ -179,15 +179,8 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 
 \begin{figure}[t]
     \centering
-    \subfloat[Error Distribution Shift]{
-        \includegraphics[width=0.48\linewidth]{Figures/fig_churn_hist.pdf}
-        \label{fig:churn_hist}
-    } \hfill
-    \subfloat[Alert Fatigue Analysis]{
-        \includegraphics[width=0.48\linewidth]{Figures/fig_churn_alerts.pdf}
-        \label{fig:churn_alerts}
-    }
-    \caption{\textbf{System Churn vs. Stealthy Attack.} (a) Real `apt` maintenance (174 files reinstalled) shifts error distribution but creates no outliers. (b) AIDE generates 174 alerts due to inode changes, whereas DeepVis generates 0 false alerts, isolating only the rootkit.}
+    \includegraphics[width=1.0\linewidth]{Figures/fig_churn_combined.pdf}
+    \caption{\textbf{System Churn vs. Stealthy Attack.} Comparison of error distribution and alert fatigue during real system maintenance.}
     \label{fig:churn_analysis}
 \end{figure}
 
