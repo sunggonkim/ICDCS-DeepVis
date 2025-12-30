@@ -20,6 +20,7 @@ Figure~\ref{fig:overall} shows the overall procedure of \DeepVis. \DeepVis provi
 \noindent
 \textbf{Snapshot Phase.} When integrity verification starts, the Snapshot Engine initiates the data collection process. Unlike traditional synchronous tools (e.g., \texttt{find} or \texttt{ls}) that block on every file access, \DeepVis utilizes a hybrid parallel architecture. First, the Parallel File Walker uses a thread pool to rapidly traverse the directory tree and collect file paths (\ding{182}). These paths are fed into a lock-free queue. Subsequently, the Asynchronous I/O Submitter batches these paths and submits read requests to the kernel using the \texttt{io\_uring} interface. This ensures that the I/O throughput saturates the storage bandwidth rather than being latency-bound (\ding{183}).
 
+
 After collecting raw metadata and file headers, the \textit{Tensor Encoder} performs secure spatial mapping. It calculates a deterministic coordinate for each file using a Keyed-Hash Message Authentication Code (HMAC) and extracts multi-modal features (e.g., entropy, permissions). These features are aggregated into a fixed-size 2D tensor ($128 \times 128 \times 3$), effectively transforming the file system state into an image-like representation (\ding{184}).
 
 \noindent
@@ -61,7 +62,7 @@ Therefore, the \textit{Header Sampler} reads only the first $H$ bytes (e.g., 64-
 \begin{equation}
     E_{header} = -\sum p_i \log_2 p_i
 \end{equation}
-This approach reduces the per-file I/O to a fixed header read (independent of file size), enabling the scan rate to exceed 8,000 files/sec on NVMe storage while maintaining high sensitivity to structural anomalies in binary formats.
+This approach reduces the per-file I/O to a fixed header read (independent of file size), enabling the scan rate to exceed 8,000 files/sec on NVMe storage while maintaining high sensitivity to structural anomalies in binary formats. To maximize I/O throughput, \DeepVis aligns its ingestion granularity with the underlying OS page size (typically 4KB). Although the detection logic primarily utilizes the first 128 bytes (header), reading the full 4KB page introduces negligible overhead due to the kernel's prefetching and page cache mechanisms. This \textit{Page-Aligned Sampling} ensures that every I/O operation is optimal, avoiding the penalty of sub-page reads while capturing extended entropy data for deeper inspection when necessary by stride-sampling subsequent pages (e.g., 4KB, 8KB offsets).
 
 \noindent
 \textit{Security Justification.} Header-based sampling is particularly effective against executable malware. Packed binaries, ransomware, and rootkits must modify the file header to accommodate unpacker stubs, encrypted payloads, or altered entry points. Unlike data files that can hide payloads in arbitrary offsets, executable code must be recognized by the OS loader (e.g., ELF/PE headers), forcing attackers to elevate the header entropy. \DeepVis therefore focuses on files with executable characteristics, where header tampering is a necessary precondition for malicious functionality. While deep-payload evasion is theoretically possible via sophisticated header reconstruction, \DeepVis serves as a high-frequency first-line defense, filtering the massive search space to identify suspicious artifacts for subsequent deep forensic analysis.

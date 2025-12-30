@@ -240,8 +240,8 @@ Throughput (files/s) & 41,228 & 55,689 & 66,118 & 20,180 \\
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.8\linewidth]{Figures/fig_header_sensitivity.pdf} 
-    \caption{\textbf{Header Size Sensitivity.} Verified with Cold Cache I/O. Throughput drops significantly ($28$k/s) for headers $>512$B due to I/O bottlenecks. The range 64--128B represents the optimal trade-off, achieving maximum throughput ($\approx 33$k/s) while capturing sufficient entropy for high F1-scores ($>$0.9).}
+    \includegraphics[width=0.95\linewidth]{Figures/fig_header_sensitivity_extended.pdf} 
+    \caption{\textbf{Extended Header Sensitivity (Page-Aligned Sampling).} Throughput remains stable ($\approx 28\text{--}33$k/s) up to 4KB, confirming that \DeepVis efficiently leverages OS Page Cache prefetching. Significant I/O degradation begins at 8KB+ (Multi-Page Reads), validating the 4KB-aligned ingestion strategy as the optimal throughput boundary.}
     \label{fig:header_sensitivity}
 \end{figure}
 
