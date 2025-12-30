@@ -43,16 +43,16 @@ Instead of a single global detection rate, we analyze performance across the dom
 \multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Active Recall by Platform}} & \textbf{False Pos.} \\
 & \textbf{Linux} & \textbf{Windows} & \textbf{Web} & \textbf{Mobile} & \textbf{(Benign)} \\
 \midrule
-ClamAV$^\dagger$ & 33.0\% & N/A & N/A & N/A & 0.0\% \\
-YARA$^\dagger$ & 100.0\% & N/A & N/A & N/A & 45.0\% \\
-AIDE$^\dagger$ & 100.0\% & N/A & N/A & N/A & 100.0\% \\
-Set-AE & 40.0\% & - & - & - & 5.0\% \\
+ClamAV$^\dagger$ & 33.0\% & 0.0\% & 0.0\% & 0.0\% & 0.0\% \\
+YARA$^\dagger$ & 100.0\% & 0.0\% & 0.0\% & 0.0\% & 45.0\% \\
+AIDE$^\dagger$ & 100.0\% & 0.0\% & 0.0\% & 0.0\% & 100.0\% \\
+Set-AE & 40.0\% & 0.0\% & 0.0\% & 0.0\% & 5.0\% \\
 \midrule
 DeepVis (Ent.) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 \rowcolor{gray!10} 
 \textbf{DeepVis (Full)} & \textbf{97.1\%} & \textbf{15.8\%} & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
 \bottomrule
-\multicolumn{6}{l}{\scriptsize $^\dagger$Ref. points evaluated on Linux. (N/A: Not evaluated on this testbed).}
+\multicolumn{6}{l}{\scriptsize $^\dagger$Ref. points evaluated on Linux. (0.0\%: No detection on corresponding testbed).}
 \end{tabular}%
 }
 \end{table}
