@@ -241,7 +241,7 @@ Throughput (files/s) & 41,228 & 55,689 & 66,118 & 20,180 \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{Figures/fig_page_aligned_sensitivity.pdf} 
-    \caption{\textbf{Effect of Scan Granularity (Page-Aligned Sampling).} While detection accuracy on target Linux binaries saturates at $\approx$96B ($F_1 \approx 0.97$, consistent with Table~\ref{tab:unified_detection}), throughput remains stable up to 4KB due to OS page prefetching. We therefore adopt a \textbf{4KB Page-Aligned Sampling} strategy, maximizing feature extraction without incurring additional I/O penalty compared to smaller headers.}
+    \caption{\textbf{Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx$96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf{4KB Page-Aligned Sampling} strategy.}
     \label{fig:header_sensitivity}
 \end{figure}
 
