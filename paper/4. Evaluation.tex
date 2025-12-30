@@ -179,20 +179,27 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=1.0\linewidth]{Figures/fig_churn_combined.pdf}
-    \caption{\textbf{Real Multi-Workload Fleet vs. Stealthy Attack.} (a) Aggregated error distribution from 5 real workloads (Bastion/Apt, Web/Nginx, Build/GCC, DB/Data, App/Log) maintains stability. (b) Alert Fatigue vs. Detection Capability. AIDE detects the attack but floods incidents with 180 false alerts (Bastion Upgrade + Fleet Ops). DeepVis is the only solution achieving Zero False Alerts while detecting the rootkit.}
+    \subfloat[Real Fleet Error Stability]{
+        \includegraphics[width=0.48\linewidth]{Figures/fig_churn_hist.pdf}
+        \label{fig:churn_hist}
+    } \hfill
+    \subfloat[Alert Fatigue \& Detection]{
+        \includegraphics[width=0.48\linewidth]{Figures/fig_churn_alerts.pdf}
+        \label{fig:churn_alerts}
+    }
+    \caption{\textbf{Real Multi-Workload Fleet vs. Stealthy Attack.} (a) Aggregated error distribution from 5 real workloads maintains stability (Blue Area), with the attack appearing as a distinct outlier (Red Star). (b) Analysis of alert sources shows AIDE generates 180 false alerts (Bastion + Fleet Ops), whereas DeepVis achieves zero false alerts while successfully detecting the threat.}
     \label{fig:churn_analysis}
 \end{figure}
 
-\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between diverse benign workloads and malicious injections. In our real-world multi-profile experiment on the GCP instance ($N=5$ workload types):
+\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between diverse benign workloads and malicious injections. In our real-world multi-profile experiment:
 \begin{itemize}[leftmargin=*]
     \item \textbf{Scenario:} We executed 5 distinct operations modifying the file system: \texttt{apt reinstall} (Bastion), \texttt{nginx} config update (Web), \texttt{gcc} compilation (Build), 1MB binary data write (DB), and log rotation (App). This generated a combined churn of 180 file modifications, followed by 1 stealthy rootkit injection.
-    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_analysis}(a), the cumulative error distribution from all workloads remained statistically indistinguishable from the baseline ($\mu_{err} \approx 0.33$), visualized as the stable ``Benign State'' region. No benign file (even high-entropy DB data) exceeded the anomaly threshold ($L_\infty < \tau$).
-    \item \textbf{Detection \& Fatigue (Fig.~\ref{fig:churn_analysis}(b)):}
+    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, the cumulative error distribution from all workloads remained statistically indistinguishable from the baseline, visualized as the stable ``Benign State'' region. The attack (Red Star) is the only event exceeding the anomaly threshold ($L_\infty < \tau$).
+    \item \textbf{Detection \& Fatigue (Fig.~\ref{fig:churn_alerts}):}
     \begin{itemize}
-        \item \textbf{AIDE (Legacy FIM):} Successfully detected the rootkit (True Positive) but generated \textbf{180 False Alerts} (Linear Scaling $O(N)$), primarily driven by the Bastion system upgrade (174 alerts).
-        \item \textbf{YARA (Tuned):} Generated \textbf{54 False Alerts} due to heuristic matches on system binaries, while failing to detect the stealthy rootkit (Signature Miss).
-        \item \textbf{DeepVis:} Achieved the ideal operational outcome: \textbf{Zero False Alerts} ($O(1)$ Scaling) across all workloads while correctly flagging the single stealthy threat.
+        \item \textbf{AIDE (Legacy FIM):} Successfully detected the rootkit but generated \textbf{180 False Alerts}, dominated by the Bastion system upgrade (174 alerts).
+        \item \textbf{YARA (Tuned):} Generated \textbf{54 False Alerts} (Heuristic FP) while missing the stealthy rootkit.
+        \item \textbf{DeepVis:} Achieved \textbf{Zero False Alerts} across all 5 workloads and correctly flagged the single stealthy threat.
     \end{itemize}
 \end{itemize}
 

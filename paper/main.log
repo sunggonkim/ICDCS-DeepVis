@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 20:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 20:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -951,28 +951,32 @@ Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 168.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
 
-<Figures/fig_churn_combined.pdf, id=477, 613.44183pt x 259.3372pt>
-File: Figures/fig_churn_combined.pdf Graphic file (type pdf)
-<use Figures/fig_churn_combined.pdf>
-Package pdftex.def Info: Figures/fig_churn_combined.pdf  used on input line 182
-.
-(pdftex.def)             Requested size: 252.0pt x 106.5347pt.
+<Figures/fig_churn_hist.pdf, id=477, 354.31226pt x 244.86606pt>
+File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
+<use Figures/fig_churn_hist.pdf>
+Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 185.
+(pdftex.def)             Requested size: 120.95892pt x 83.59335pt.
+<Figures/fig_churn_alerts.pdf, id=478, 354.57765pt x 245.87672pt>
+File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
+<use Figures/fig_churn_alerts.pdf>
+Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 189.
+(pdftex.def)             Requested size: 120.95892pt x 83.87836pt.
+<Figures/fig_page_aligned_sensitivity.pdf, id=479, 496.69313pt x 207.01115pt>
+File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
+<use Figures/fig_page_aligned_sensitivity.pdf>
+Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
+t line 213.
+(pdftex.def)             Requested size: 252.0pt x 105.02782pt.
 
 
 [8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
 gures/comparison_dilution.pdf>]
-<Figures/fig_page_aligned_sensitivity.pdf, id=640, 496.69313pt x 207.01115pt>
-File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
-<use Figures/fig_page_aligned_sensitivity.pdf>
-Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
-t line 206.
-(pdftex.def)             Requested size: 252.0pt x 105.02782pt.
-
 
 ) (./5. Related Works.tex
 
 [9 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figur
-es/fig_churn_combined.pdf> <./Figures/fig_page_aligned_sensitivity.pdf>]
+es/fig_churn_hist.pdf> <./Figures/fig_churn_alerts.pdf> <./Figures/fig_page_ali
+gned_sensitivity.pdf>]
 
 ) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
@@ -1049,10 +1053,10 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17725 strings out of 473190
- 383620 string characters out of 5715800
- 796755 words of memory out of 5000000
- 40615 multiletter control sequences out of 15000+600000
+ 17736 strings out of 473190
+ 383936 string characters out of 5715800
+ 796835 words of memory out of 5000000
+ 40626 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,91p,1154b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1080,10 +1084,10 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1948269 bytes).
+Output written on main.pdf (12 pages, 1960626 bytes).
 PDF statistics:
- 999 PDF objects out of 1000 (max. 8388607)
- 338 compressed objects within 4 object streams
+ 1054 PDF objects out of 1200 (max. 8388607)
+ 347 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
- 103 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

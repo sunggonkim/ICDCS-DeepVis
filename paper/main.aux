@@ -106,14 +106,20 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{9}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{9}{}{figure.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {Real Multi-Workload Fleet vs. Stealthy Attack.} (a) Aggregated error distribution from 5 real workloads (Bastion/Apt, Web/Nginx, Build/GCC, DB/Data, App/Log) maintains stability. (b) Alert Fatigue vs. Detection Capability. AIDE detects the attack but floods incidents with 180 false alerts (Bastion Upgrade + Fleet Ops). DeepVis is the only solution achieving Zero False Alerts while detecting the rootkit.}}{9}{}\protected@file@percent }
-\newlabel{fig:churn_analysis}{{10}{9}{}{figure.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
 \newlabel{eval_sensitivity}{{\mbox  {IV-F}}{9}{}{subsection.4.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx $96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf  {4KB Page-Aligned Sampling} strategy.}}{9}{}\protected@file@percent }
-\newlabel{fig:header_sensitivity}{{11}{9}{}{figure.11}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{9}{}\protected@file@percent }
 \newlabel{tab:overhead_breakdown}{{VII}{9}{}{table.7}{}}
+\newlabel{fig:churn_hist}{{10a}{9}{}{subfigure.10.1}{}}
+\newlabel{sub@fig:churn_hist}{{(a)}{a}}
+\newlabel{fig:churn_alerts}{{10b}{9}{}{subfigure.10.2}{}}
+\newlabel{sub@fig:churn_alerts}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {Real Multi-Workload Fleet vs. Stealthy Attack.} (a) Aggregated error distribution from 5 real workloads maintains stability (Blue Area), with the attack appearing as a distinct outlier (Red Star). (b) Analysis of alert sources shows AIDE generates 180 false alerts (Bastion + Fleet Ops), whereas DeepVis achieves zero false alerts while successfully detecting the threat.}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Real Fleet Error Stability}}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Alert Fatigue \& Detection}}}{9}{}\protected@file@percent }
+\newlabel{fig:churn_analysis}{{10}{9}{}{figure.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx $96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf  {4KB Page-Aligned Sampling} strategy.}}{9}{}\protected@file@percent }
+\newlabel{fig:header_sensitivity}{{11}{9}{}{figure.11}{}}
 \citation{tripwire,aide,samhain}
 \citation{unicorn,cheng2024kairos}
 \citation{ossec,falco}
@@ -158,11 +164,11 @@
 \bibcite{luo2019container}{17}
 \bibcite{bohling2020subverting}{18}
 \bibcite{nataraj2011malware}{19}
-\bibcite{conti2008visual}{20}
-\bibcite{aldini2024image}{21}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
 \newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
 \@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
+\bibcite{conti2008visual}{20}
+\bibcite{aldini2024image}{21}
 \bibcite{lyda2007entropy}{22}
 \bibcite{ling2024wolf}{23}
 \bibcite{uetz2024detecting}{24}
