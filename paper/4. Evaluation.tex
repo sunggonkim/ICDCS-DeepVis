@@ -13,29 +13,17 @@ We conduct experiments on three distinct GCP configurations to represent a spect
 
 \noindent\textbf{Target Datasets.} We curated two datasets for evaluation: (1) a \textbf{Benign Baseline} of 667 legitimate system binaries (e.g., \texttt{python3}) from Ubuntu 20.04 to measure false positives; and (2) a \textbf{Malware Corpus} of 37,387 files sourced from open repositories~\cite{vxunderground, themalwarerepo}. This corpus spans Linux (305 files including rootkits~\cite{diamorphine,azazel}), Windows (35k+ files), and Web artifacts. For our primary evaluation, we isolate 68 active Linux ELF binaries to rigorously test detection recall.
 
-\noindent\textbf{Threshold Learning.} 
-We employed a maximum-margin approach to determine detection boundaries. The thresholds were learned from the benign baseline as $\tau_c = \max(\text{Benign}_c) + 0.1$, ensuring a 0\% False Positive Rate during calibration. This resulted in $\tau_R=0.75$, $\tau_G=0.25$, and $\tau_B=0.30$.
-
-\noindent\textbf{Baseline Configuration.} 
-To represent realistic deployment scenarios, reference tools were run with default configurations. ClamAV used the standard virus database without custom signatures. YARA employed a minimal rule set matching common malware keywords and ELF headers. Neither tool was restricted to executable files, reflecting typical out-of-the-box operator usage. To isolate the learning benefit of our CAE, we include ``DeepVis (Entropy)'' as a fair header-only heuristic baseline that applies only the R-channel threshold without the learned multi-modal fusion.
-
 %=====================================================================
 \subsection{Detection Accuracy and Feature Orthogonality (RQ1)}
 \label{eval_accuracy}
 %=====================================================================
-
-\noindent\textbf{Rigorous Binary Evaluation.} 
-Using the 68 active ELF binaries from our malware corpus and 667 legitimate system binaries from \texttt{/usr/bin}, we evaluate detection accuracy. As summarized in Table~\ref{tab:unified_detection}, detection based solely on Entropy failed to identify the majority of threats, achieving a recall of only 25.0\%. This failure occurs because many modern attack tools (e.g., \texttt{VirTool.DDoS}) are not packed, resulting in low entropy scores indistinguishable from benign software. Furthermore, the entropy-based approach suffered a 10.2\% False Positive rate, incorrectly flagging standard administrative tools like \texttt{uwsgi} and \texttt{snap} that employ internal compression. In contrast, \DeepVis leverages multi-modal features by integrating Context (G) and Structure (B) channels. This fusion recovered the threats missed by entropy, achieving 96.0\% recall while suppressing false positives to 0.1\%.
-
-\noindent\textbf{Platform-Specific Analysis.}
-Instead of a single global detection rate, we analyze performance across the dominant platforms in our dataset. Table~\ref{tab:unified_detection} breaks down detection recall by platform. \DeepVis demonstrates exceptional performance on binary-heavy platforms, achieving 97.1\% Recall on Linux and 100.0\% on Android (Mobile), where structural anomalies (ELF/DEX headers) are distinct. On Web patterns (PHP/JS), recall is 89.6\%, driven by specific B-channel signatures. Windows detection stands at 15.8\%; while lower than Linux, this represents a significant capability boost over Linux-only baselines, successfully flagging 5,587 PE binaries that would otherwise go unnoticed.
 
 %---------------------------------------------------------------------
 % TABLE III: Unified Performance (Macro View)
 %---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Evaluated across four major platforms: Linux (305 files), Windows (35k), Web (144), and Mobile (24). \DeepVis achieves near-perfect recall on Linux and Mobile threats, with significant cross-platform detection capability on Web and Windows compared to Linux-only baselines.}
+\caption{\textbf{Unified Detection Performance.} Comparison of \DeepVis against Tuned Baselines across four platforms. While ClamAV (Tuned with known hashes) sets a theoretical upper bound, \DeepVis achieves comparable or superior recall on Linux/Mobile/Web threats via unsupervised learning, with significantly lower false positives (0.3\%) than heuristic rules (YARA: 31.0\%).}
 \label{tab:unified_detection}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{l cccc c}
@@ -43,22 +31,23 @@ Instead of a single global detection rate, we analyze performance across the dom
 \multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Active Recall by Platform}} & \textbf{False Pos.} \\
 & \textbf{Linux} & \textbf{Windows} & \textbf{Web} & \textbf{Mobile} & \textbf{(Benign)} \\
 \midrule
-ClamAV$^\dagger$ & 33.0\% & 0.0\% & 0.0\% & 0.0\% & 0.0\% \\
-YARA$^\dagger$ & 100.0\% & 1.9\% & 24.3\% & 0.0\% & 45.0\% \\
-AIDE$^\dagger$ & 100.0\% & 0.0\% & 0.0\% & 0.0\% & 100.0\% \\
-Set-AE & 40.0\% & 10.0\% & 6.9\% & 91.7\% & 5.0\% \\
+ClamAV (Tuned)$^\dagger$ & 95.4\% & \textbf{96.6\%} & 82.6\% & 50.0\% & \textbf{0.0\%} \\
+YARA (Tuned)$^\ddagger$ & 24.6\% & 2.6\% & 68.1\% & 79.2\% & 31.0\% \\
+AIDE & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & 100.0\% \\
 \midrule
-DeepVis (Ent.) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 \rowcolor{gray!10} 
-\textbf{DeepVis (Full)} & \textbf{97.1\%} & \textbf{15.8\%} & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
+\textbf{\DeepVis} & \textbf{97.1\%} & 15.8\% & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
 \bottomrule
-\multicolumn{6}{l}{\scriptsize $^\dagger$Ref. points evaluated on Linux. (0.0\%: No detection via standard rules/DB).}
+\multicolumn{6}{l}{\scriptsize $^\dagger$Using custom DB of known hashes. $^\ddagger$Using custom rules for LKM/Webshells.}
 \end{tabular}%
 }
 \end{table}
 
+\noindent\textbf{Baseline and Model Configuration.} 
+Reference tools were executed with default configurations to represent realistic deployment scenarios: ClamAV utilized the standard virus database, and YARA employed a minimal rule set matching common malware keywords and ELF headers. For the proposed \DeepVis system, the CAE was trained exclusively on benign artifacts to establish a normality baseline, resulting in a calibrated anomaly detection threshold of $\tau_{L_{\infty}} = 0.52$. To isolate the architectural benefit of this learned representation, we defined ``DeepVis (Entropy)'' as a heuristic baseline that applies a static threshold solely to the R-channel without multi-modal fusion.
 \noindent\textbf{Failure Mode Analysis.} 
 Table~\ref{tab:detailed_breakdown} provides a granular analysis of detection capabilities and limitations. DeepVis detects evasive threats through feature orthogonality. For instance, the rootkit Diamorphine evaded the Entropy channel ($R=0.52$) but was detected by the Context ($G=0.60$) and Structure ($B=0.50$) channels due to its nature as a kernel module residing in a temporary directory. Similarly, Azazel was identified via high Entropy ($R=1.00$) and Context anomalies ($G=0.90$). However, the header-only approach exhibits intrinsic blind spots against non-binary threats. As shown in the failure cases of Table~\ref{tab:detailed_breakdown}, \DeepVis failed to detect the public webshell \texttt{c99.php} and the DDoS tool \texttt{VirTool.TCP.a}. These files reside in structurally valid paths and lack binary packing anomalies, making them indistinguishable from benign scripts via headers alone. This limitation confirms that \DeepVis operates as a high-speed first-line defense for binary integrity rather than a full-content forensic scanner.
+
 
 %---------------------------------------------------------------------
 % TABLE IV: Detailed Breakdown (Micro View)
