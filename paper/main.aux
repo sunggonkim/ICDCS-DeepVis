@@ -88,7 +88,7 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{8}{}\protected@file@percent }
 \newlabel{fig:perf_analysis}{{7}{8}{}{figure.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces \textbf  {Fair Baseline Comparison (Cold Cache).} All tools read only the first 128 bytes. DeepVis-Sync uses identical Rust logic with standard thread pool, isolating the pure \texttt  {io\_uring} contribution.}}{8}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces \textbf  {Fair Baseline Comparison (Cold Cache).} Throughput measured on GCP \texttt  {deepvis-mid} instance targeting \texttt  {/usr/bin}. Categories distinguish between full-file scanning and header-only sampling.}}{8}{}\protected@file@percent }
 \newlabel{tab:fair_baseline}{{V}{8}{}{table.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Visualizing Signal Preservation. (Top) \texttt  {DeepVis}\xspace  maintains spatial locality, isolating the malware as a distinct red peak ($L_\infty $ Spike). (Bottom) Set-AE averages the features into a single global vector, causing the attack signal to dilute into the background noise (Signal Dilution), resulting in detection failure.}}{8}{}\protected@file@percent }
 \newlabel{fig:signal_comparison}{{8}{8}{}{figure.8}{}}
@@ -146,37 +146,35 @@
 \bibcite{aide}{1}
 \bibcite{tripwire}{2}
 \bibcite{falco}{3}
-\bibcite{ossec}{4}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
 \newlabel{sec:discussion}{{VI}{11}{}{section.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
 \newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
 \@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
+\bibcite{ossec}{4}
 \bibcite{arp2022dos}{5}
 \bibcite{clamav}{6}
 \bibcite{unicorn}{7}
 \bibcite{zaheer2017deepsets}{8}
 \bibcite{samhain}{9}
-\bibcite{vxunderground}{10}
-\bibcite{themalwarerepo}{11}
-\bibcite{cheng2024kairos}{12}
-\bibcite{he2023cross}{13}
-\bibcite{tfjmp2024safebpf}{14}
-\bibcite{zohar2018integrity}{15}
-\bibcite{oprea2007integrity}{16}
-\bibcite{luo2019container}{17}
-\bibcite{bohling2020subverting}{18}
-\bibcite{nataraj2011malware}{19}
-\bibcite{conti2008visual}{20}
-\bibcite{aldini2024image}{21}
-\bibcite{lyda2007entropy}{22}
-\bibcite{ling2024wolf}{23}
-\bibcite{uetz2024detecting}{24}
-\bibcite{du2017deeplog}{25}
-\bibcite{mirsky2018kitsune}{26}
-\bibcite{ruff2018deep}{27}
-\bibcite{akcay2018ganomaly}{28}
-\bibcite{zong2018deep}{29}
-\bibcite{su2019robust}{30}
-\bibcite{xu2018unsupervised}{31}
+\bibcite{cheng2024kairos}{10}
+\bibcite{he2023cross}{11}
+\bibcite{tfjmp2024safebpf}{12}
+\bibcite{zohar2018integrity}{13}
+\bibcite{oprea2007integrity}{14}
+\bibcite{luo2019container}{15}
+\bibcite{bohling2020subverting}{16}
+\bibcite{nataraj2011malware}{17}
+\bibcite{conti2008visual}{18}
+\bibcite{aldini2024image}{19}
+\bibcite{lyda2007entropy}{20}
+\bibcite{ling2024wolf}{21}
+\bibcite{uetz2024detecting}{22}
+\bibcite{du2017deeplog}{23}
+\bibcite{mirsky2018kitsune}{24}
+\bibcite{ruff2018deep}{25}
+\bibcite{akcay2018ganomaly}{26}
+\bibcite{zong2018deep}{27}
+\bibcite{su2019robust}{28}
+\bibcite{xu2018unsupervised}{29}
 \gdef \@abspage@last{12}
