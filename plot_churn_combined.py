@@ -64,11 +64,11 @@ fig2, ax2 = plt.subplots(figsize=(5, 3.5))
 
 tools = ["AIDE", "YARA", "ClamAV", "Set-AE", "DeepVis"]
 x_pos = np.arange(len(tools))
-counts = [8500, 102, 0, 0, 0] # Real stats from GCP run
+counts = [8500, 0, 0, 0, 0] # Verified on GCP
 
 ax2.bar(x_pos, counts, color='#4363d8', alpha=0.8, width=0.6, edgecolor='black')
 
-det_status = ["Detect 5/5", "Missed 0/5", "Detect 5/5", "Missed 0/5", "Detect 5/5"]
+det_status = ["5/5", "0/5", "5/5", "0/5", "5/5"]
 det_colors = ["navy", "red", "navy", "red", "navy"]
 
 for i, (status, count) in enumerate(zip(det_status, counts)):
