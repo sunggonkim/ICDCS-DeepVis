@@ -12,11 +12,12 @@ We evaluate \DeepVis on a production Google Cloud Platform (GCP) infrastructure 
 We conduct experiments on three distinct GCP configurations to represent a spectrum of cloud instances: \textbf{Low} (e2-micro, 2 vCPU, 1GB RAM, HDD), \textbf{Mid} (e2-standard-2, 2 vCPU, 8GB RAM, SSD), and \textbf{High} (c2-standard-4, 4 vCPU, 16GB RAM, NVMe SSD). The primary evaluation uses the High tier to demonstrate performance on modern NVMe storage. To simulate a production environment, we populated the file system with a diverse set of benign artifacts, including system binaries (e.g., \texttt{nginx}, \texttt{gcc}), configuration files, and Python scripts, scaling up to 50 million files for stress testing.
 
 \noindent\textbf{Target Malware Dataset.}
-We curated a comprehensive malware corpus from established open-source repositories~\cite{vxunderground, themalwarerepo}. The dataset includes:
-\textbf{(1) Linux Rootkits}: Diamorphine~\cite{diamorphine} (LKM-based kernel rootkit), Azazel~\cite{azazel} and BEURK~\cite{beurk} (LD\_PRELOAD userland rootkits);
-\textbf{(2) Attack Tools}: Compiled DDoS tools, reverse shells, and privilege escalation utilities;
-\textbf{(3) Web Threats}: PHP webshells (e.g., c99.php) and JavaScript-based malware.
-The corpus totals 37,571 files, of which 68 are active ELF binaries used for rigorous binary-level evaluation. This diverse set ensures evaluation across multiple attack vectors: kernel-level persistence, library injection, and script-based payloads.
+We curated a comprehensive malware corpus from established open-source repositories~\cite{vxunderground, themalwarerepo}, organized by platform:
+\textbf{(1) Linux} (305 files): LKM rootkits (Diamorphine~\cite{diamorphine}), LD\_PRELOAD rootkits (Azazel~\cite{azazel}, BEURK~\cite{beurk}), Mirai-family botnets, backdoors, and file infectors;
+\textbf{(2) Windows} (35,359 files): Win32 malware families (Zeus, Carberp, ransomware), legacy samples (Win95/98/2k);
+\textbf{(3) Web} (144 files): PHP webshells (c99.php), JavaScript-based malware, phishing kits;
+\textbf{(4) Mobile/Other} (1,578 files): Android malware, script-based threats (Python, Ruby, Perl).
+The corpus totals 37,386 files. For Linux-focused evaluation, we use 68 active ELF binaries including compiled rootkits and attack tools.
 
 \noindent\textbf{Threshold Learning.} 
 We employed a maximum-margin approach to determine detection boundaries. The thresholds were learned from the benign baseline as $\tau_c = \max(\text{Benign}_c) + 0.1$, ensuring a 0\% False Positive Rate during calibration. This resulted in $\tau_R=0.75$, $\tau_G=0.25$, and $\tau_B=0.30$.
