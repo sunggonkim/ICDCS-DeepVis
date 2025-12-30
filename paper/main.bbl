@@ -63,6 +63,28 @@ M.~Zaheer, S.~Kottur, S.~Ravanbakhsh, B.~Poczos, R.~R. Salakhutdinov, and A.~J.
 R.~Wichmann, ``{Samhain}: {File} {Integrity} {Checker},''
   \url{https://www.la-samhna.de/samhain/}, 2003.
 
+\bibitem{vxunderground}
+{vx-underground}, ``{MalwareSourceCode}: Curated collection of malware source
+  code,'' \url{https://github.com/vxunderground/MalwareSourceCode}, 2024,
+  includes Linux rootkits, Windows malware, mobile threats, and web-based
+  attacks.
+
+\bibitem{themalwarerepo}
+Y.~tisf Nativ, ``{theZoo} - a live malware repository,''
+  \url{https://github.com/ytisf/theZoo}, 2024.
+
+\bibitem{diamorphine}
+V.~Ramos~Mello, ``{Diamorphine}: {LKM} rootkit for {Linux},''
+  \url{https://github.com/m0nad/Diamorphine}, 2023.
+
+\bibitem{azazel}
+chokepoint, ``{Azazel}: Userland rootkit based on ld\_preload,''
+  \url{https://github.com/chokepoint/azazel}, 2014.
+
+\bibitem{beurk}
+unix thrust, ``{BEURK}: Experimental {LD\_PRELOAD} rootkit,''
+  \url{https://github.com/unix-thrust/beurk}, 2023.
+
 \bibitem{cheng2024kairos}
 Z.~Cheng, Q.~Lv, J.~Liang, Y.~Wang, D.~Sun, T.~Pasquier, and X.~Han, ``Kairos:
   Practical intrusion detection and investigation using whole-system
