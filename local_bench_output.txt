@@ -1,0 +1,4 @@
+--- Benchmarking YARA-Full ---
+RESULT::YARA-Full::2262.32 files/s (Total: 1345, Time: 0.59s)
+--- Benchmarking YARA-Header ---
+RESULT::YARA-Header::748.91 files/s (Total: 1345, Time: 1.80s)

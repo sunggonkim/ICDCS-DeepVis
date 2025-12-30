@@ -259,24 +259,37 @@ impl AsyncScanner {
             drop(completion);
 
             // Parallel Process completions in this batch
-            let processed_entries: Vec<FileEntry> = batch_completions.par_iter().map(|&(idx, slot, res)| {
+            let (processed_entries, batch_stats): (Vec<FileEntry>, Vec<(u128, u128)>) = batch_completions.par_iter().map(|&(idx, slot, res)| {
                 let p = &pending_vec[idx];
+                
+                let ent_start = Instant::now();
                 let entropy = if res > 0 {
                     calculate_entropy_from_buffer(&buffers[slot], res as usize)
                 } else { 0.0 };
-                
+                let ent_ns = ent_start.elapsed().as_nanos();
+
+                let hash_start = Instant::now();
                 let path_str = p.0.to_string_lossy().to_string();
                 let (x, y) = compute_hash_coords(&path_str, 128);
+                let hash_ns = hash_start.elapsed().as_nanos();
 
-                FileEntry::new(
-                    path_str,
-                    p.1.len(),
-                    p.1.mode(),
-                    p.1.mtime(),
+                let entry = FileEntry {
+                    path: path_str,
+                    size: p.1.len(),
+                    mode: p.1.mode(),
+                    mtime: p.1.mtime(),
                     entropy,
-                    x, y
-                )
-            }).collect();
+                    hash: String::new(),
+                    hash_coord_x: x,
+                    hash_coord_y: y,
+                };
+                (entry, (ent_ns, hash_ns))
+            }).unzip();
+            
+            for (ent_ns, hash_ns) in batch_stats {
+                accum_entropy_ns += ent_ns;
+                accum_hashing_ns += hash_ns;
+            }
             
             results.extend(processed_entries);
         }
