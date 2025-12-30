@@ -254,6 +254,8 @@ Category & Configuration & Rate (files/s) & F1-Score \\
     & + Hash-Grid ($L_\infty$) & -- & 0.35 \\
     & + RGB Fusion (Full DeepVis) & -- & \textbf{0.96} \\
 \midrule
+\textbf{Robustness} & Weights $\pm$20\% & -- & \textbf{0.96} \\
+\midrule
 \rowcolor{gray!15}
 \multicolumn{2}{l|}{\textbf{DeepVis (All Components)}} & \textbf{39,993} & \textbf{0.96} \\
 \bottomrule
@@ -263,4 +265,4 @@ Category & Configuration & Rate (files/s) & F1-Score \\
 
 \noindent\textbf{Performance Optimization. }Throughput increases from 1,455 files/s (Baseline) to 2,910 files/s (Async I/O), indicating that eliminating kernel-user context switching overhead improves efficiency (Table~\ref{tab:ablation}). The most substantial gain stems from \textit{Header Sampling}, where limiting the read scope to 128B triggers a 27$\times$ surge in scan rate to 39,993 files/s. This confirms that minimizing physical I/O volume is the decisive factor for achieving hyperscale monitoring capabilities.
 
-\noindent\textbf{Detection Fidelity. }F1-Score increases from 0.25 (Entropy Only) to 0.96 (RGB Fusion). Single-channel configurations prove insufficient; the R-channel yields false positives from benign compressed data, while structural features alone fail to distinguish packed binaries. Only the full \textit{RGB Fusion} achieves definitive detection, demonstrating that the orthogonality of Entropy, Context, and Structure is essential for distinguishing malicious artifacts from legitimate system noise.
+\noindent\textbf{Detection Fidelity. }F1-Score increases from 0.25 (Entropy Only) to 0.96 (RGB Fusion). Single-channel configurations prove insufficient; the R-channel yields false positives from benign compressed data, while structural features alone fail to distinguish packed binaries. Only the full \textit{RGB Fusion} achieves definitive detection, demonstrating that the orthogonality of Entropy, Context, and Structure is essential for distinguishing malicious artifacts from legitimate system noise. Weight perturbation experiments ($\pm$20\% on $P_{hidden}$ and $B_{ELF}$) confirm that F1-Score remains stable at 0.96, validating the robustness of the heuristic weights across deployment configurations.
