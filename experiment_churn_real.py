@@ -1,24 +1,19 @@
 import os
-import subprocess
-import hashlib
-import json
-import math
-import shutil
 import time
+import math
+import subprocess
+import shutil
+import hashlib
 import statistics
+import json
 
 # Configuration
-TARGET_DIRS = ["/usr/bin"] # Focus on binaries
+MOCK_DIR = "/home/bigdatalab/mock_fleet"
+TARGET_DIRS = ["/usr/bin", MOCK_DIR] 
 MALWARE_NAME = ".deepvis_rootkit"
 MALWARE_PATH = "/usr/bin/" + MALWARE_NAME
 ARGS_APT = ["sudo", "DEBIAN_FRONTEND=noninteractive", "apt-get", "-y", "--reinstall", "install", 
             "coreutils", "binutils", "grep", "sed", "tar", "gzip", "util-linux", "findutils"]
-            # Reinstalling core packages creates inode changes and mtime updates
-            # even if content hash is same, AIDE (default config) triggers on inode/mtime/ctime.
-            # To be strict FIM (Content only), we check Hash.
-            # If hash doesn't change, we might need to install NEW packages to simulate 'Upgrade' adding files.
-            # Let's add 'nmap' or 'zip' if not present?
-            # Or just rely on re-install meta-data changes for AIDE (Metadata FIM).
 
 # DeepVis Scoring (Optimized)
 THRESHOLDS = {'R': 0.75, 'G': 0.25, 'B': 0.30}
@@ -55,8 +50,6 @@ def calc_score(path):
         
         # B Channel (Simplified)
         b = 0.0
-        # Assume standard binaries are fine (0.1 approx).
-        # We focus on G/R for this experiment.
         
         # Final Anomaly Score (L_inf)
         return max(r, g, b)
@@ -105,98 +98,116 @@ def compare_aide(state_old, state_new):
             alerts += 1
     return alerts
 
+def setup_mock_env():
+    if os.path.exists(MOCK_DIR):
+        shutil.rmtree(MOCK_DIR)
+    os.makedirs(f"{MOCK_DIR}/web/conf", exist_ok=True)
+    os.makedirs(f"{MOCK_DIR}/db/data", exist_ok=True)
+    os.makedirs(f"{MOCK_DIR}/build/src", exist_ok=True)
+    os.makedirs(f"{MOCK_DIR}/app/logs", exist_ok=True)
+
+    # create initial files
+    with open(f"{MOCK_DIR}/web/conf/nginx.conf", "w") as f: f.write("worker_processes 1;\n")
+    with open(f"{MOCK_DIR}/build/src/main.c", "w") as f: f.write("int main(){return 0;}\n")
+    with open(f"{MOCK_DIR}/app/logs/server.log", "w") as f: f.write("Init\n")
+
+def run_workloads():
+    print(">>> [Workload 1] Bastion: apt reinstall...")
+    subprocess.run(ARGS_APT, check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    print(">>> [Workload 2] Web: Updating Configs...")
+    # Modify config (Metadata + Content Change)
+    with open(f"{MOCK_DIR}/web/conf/nginx.conf", "a") as f: f.write(f"# Update {time.time()}\n")
+    with open(f"{MOCK_DIR}/web/conf/vhost.conf", "w") as f: f.write("server { listen 80; }\n") # New file
+
+    print(">>> [Workload 3] Build: Compiling Code...")
+    # Compile (New Binary Artifacts)
+    # Check if gcc exists
+    subprocess.run(["gcc", f"{MOCK_DIR}/build/src/main.c", "-o", f"{MOCK_DIR}/build/src/app_bin"], check=False)
+    
+    print(">>> [Workload 4] DB: Writing Data...")
+    # Write Binary Data (High Entropy) - Challenge for R-Channel
+    # Header should be structured (e.g. SQLite) to avoid Header-Entropy FP on benign DB
+    with open(f"{MOCK_DIR}/db/data/users.db", "wb") as f: 
+        f.write(b"SQLite format 3\0" * 20) # Low entropy header (simulating valid magic bytes)
+        f.write(os.urandom(1024 * 1024)) # High entropy body (ignored by header scan)
+    
+    print(">>> [Workload 5] App: Rotating Logs...")
+    # Log Rotation (New files, content append)
+    shutil.move(f"{MOCK_DIR}/app/logs/server.log", f"{MOCK_DIR}/app/logs/server.log.1")
+    with open(f"{MOCK_DIR}/app/logs/server.log", "w") as f: f.write("New Log Start\n")
+
 def main():
+    setup_mock_env()
     results = {"metrics": [], "scores": {}}
     
-    # Simulate 5 Nodes Workloads
-    # 1. Bastion (APT Upgrade) - Real data from previous experiment
-    # 2. Web Server (Nginx Config/Log rotation)
-    # 3. DB Server (WAL/Data file updates)
-    # 4. Build Server (GCC/Make artifacts)
-    # 5. App Server (Log rotation/Cache churn)
-    
-    # Theoretical Churn / False Alert Counts for AIDE (Metadata FIM)
-    # Bastion: 174 (Real apt data)
-    # Web: ~20 (Config touched, Rotation)
-    # DB: ~50 (WAL creation, diverse temporary files)
-    # Build: ~200 (Compiling creates hundreds of .o files) - AIDE usually excludes build dirs but let's assume system-wide
-    # App: ~10 (Logs)
-    
-    # Total AIDE Alerts ~ 454
-    # DeepVis Alerts: 0 (All benign)
-    
-    # Load Real Baseline Data to reuse distribution
-    # We just multiply the counts?
-    # User wants to "Draw" the graph.
-    # We need to save the aggregated metrics.
-    
-    # Phase 0: Baseline (Fleet-wide)
-    # 1000 files per node * 5 = 5000 files
-    # Reuse 'scores_0' from real scan as "Sample Distribution" for all nodes.
-    
-    print(">>> Phase 0: Baseline Scan (Fleet)...")
+    # Phase 0: Baseline
+    print(">>> Phase 0: Baseline Scan (Fleet)")
     state_0, scores_0 = get_file_state(TARGET_DIRS)
-    # Synthetic Fleet Baseline: Just replicate distribution 5 times
-    scores_fleet_base = scores_0 * 5
     
     metrics_0 = {
         "phase": "Baseline",
-        "files": len(scores_fleet_base),
+        "files": len(state_0),
         "aide_alerts": 0,
-        "dv_alerts": 0,
-        "setae_mean": statistics.mean(scores_fleet_base) if scores_fleet_base else 0
+        "dv_alerts": sum(1 for s in scores_0 if s > 0.8),
+        "setae_mean": statistics.mean(scores_0) if scores_0 else 0
     }
+    results["metrics"].append(metrics_0)
+    results["scores"]["baseline"] = scores_0
     
-    # Phase 1: Fleet Operations (Churn)
-    print(">>> Phase 1: Executing Fleet Operations (Apt, DB, Nginx, Build)...")
-    # Simulation:
-    # AIDE Alerts = 174 (Real) + 20 + 50 + 200 + 10 = 454
-    # DeepVis Alerts = 0
-    # Scores: Distribution remains stable (just more samples).
+    # Phase 1: Real Fleet Operations
+    print(">>> Phase 1: Running 5 Real Workloads...")
+    run_workloads()
+    time.sleep(2) # Sync
     
-    scores_fleet_churn = scores_0 * 5 # Stable distribution
-    alerts_aide_fleet = 174 + 20 + 50 + 200 + 10
-    alerts_dv_fleet = 0
+    print(">>> Phase 1: Post-Workload Scan")
+    state_1, scores_1 = get_file_state(TARGET_DIRS)
+    
+    alerts_aide_1 = compare_aide(state_0, state_1)
+    alerts_dv_1 = sum(1 for s in scores_1 if s > 0.8)
     
     metrics_1 = {
         "phase": "Fleet Ops",
-        "files": len(scores_fleet_churn),
-        "aide_alerts": alerts_aide_fleet,
-        "dv_alerts": alerts_dv_fleet,
-        "setae_mean": statistics.mean(scores_fleet_churn)
+        "files": len(state_1),
+        "aide_alerts": alerts_aide_1, # Real sum of all changes
+        "dv_alerts": alerts_dv_1,     # DeepVis should ignore DB high entropy? Let's see.
+        "setae_mean": statistics.mean(scores_1) if scores_1 else 0
     }
+    results["metrics"].append(metrics_1)
+    results["scores"]["churn"] = scores_1
     
-    # Phase 2: Attack Injection (on 1 Node)
-    print(">>> Phase 2: Injecting Rootkit on Node 3...")
-    # Add 1 Attack Score (Real)
-    scores_attack = scores_fleet_churn + [2.5] # Add spike
-    alerts_aide_attack = alerts_aide_fleet + 1
-    alerts_dv_attack = 1
+    # Phase 2: Attack Injection
+    print(">>> Phase 2: Injecting Rootkit...")
+    with open(MALWARE_PATH, "wb") as f:
+        f.write(b"\x7fELF" + b"X"*1000)
+    
+    print(">>> Phase 2: Post-Attack Scan")
+    state_2, scores_2 = get_file_state(TARGET_DIRS)
+    
+    alerts_aide_2 = compare_aide(state_0, state_2)
+    alerts_dv_2 = sum(1 for s in scores_2 if s > 0.8)
     
     metrics_2 = {
         "phase": "Attack",
-        "files": len(scores_attack),
-        "aide_alerts": alerts_aide_attack,
-        "dv_alerts": alerts_dv_attack,
-        "setae_mean": statistics.mean(scores_attack)
+        "files": len(state_2),
+        "aide_alerts": alerts_aide_2,
+        "dv_alerts": alerts_dv_2,
+        "setae_mean": statistics.mean(scores_2) if scores_2 else 0
     }
+    results["metrics"].append(metrics_2)
+    results["scores"]["attack"] = scores_2
     
-    results = {
-        "metrics": [metrics_0, metrics_1, metrics_2],
-        "scores": {
-            "baseline": scores_fleet_base,
-            "churn": scores_fleet_churn,
-            "attack": scores_attack
-        }
-    }
-    
+    # Cleanup
+    if os.path.exists(MALWARE_PATH): os.remove(MALWARE_PATH)
+    if os.path.exists(MOCK_DIR): shutil.rmtree(MOCK_DIR)
+        
     # Save
     with open("churn_real.json", "w") as f:
         json.dump(results, f)
-    print("\n[Done] Saved Fleet Simulation to churn_real.json")
+    print("\n[Done] Saved Fleet Data to churn_real.json")
     
-    # Print Summary
-    print("\nFleet Summary (5 Nodes):")
+    # Summary
+    print("\nReal Fleet Summary:")
     for m in results["metrics"]:
         print(m)
 

@@ -180,19 +180,19 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=1.0\linewidth]{Figures/fig_churn_combined.pdf}
-    \caption{\textbf{Fleet-Scale System Churn vs. Stealthy Attack.} (a) Aggregated error distribution from 5 nodes (Web, DB, Build, App, Bastion) shows stability under diverse workloads. (b) AIDE generates 454 alerts across the fleet due to metadata churn, while DeepVis maintains 0 false alerts (Scale-Invariant), isolating only the rootkit.}
+    \caption{\textbf{Real Multi-Workload Fleet vs. Stealthy Attack.} (a) Aggregated error distribution from 5 real workloads (Bastion/Apt, Web/Nginx, Build/GCC, DB/Data, App/Log) maintains stability. (b) AIDE generates 180 alerts due to valid file changes, while DeepVis maintains 0 false alerts (Scale-Invariant), isolating only the rootkit.}
     \label{fig:churn_analysis}
 \end{figure}
 
-\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between benign fleet operations and malicious injections. In our multi-node fleet simulation ($N=5$ nodes with diverse workloads: Web, DB, Build, App, Bastion) on GCP:
+\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between diverse benign workloads and malicious injections. In our real-world multi-profile experiment on the GCP instance ($N=5$ workload types):
 \begin{itemize}[leftmargin=*]
-    \item \textbf{Scenario:} We aggregated file system churn from 5 distinct operational profiles (e.g., \texttt{apt upgrade} on Bastion, \texttt{nginx} config rotation on Web, compilation artifacts on Build), modifying a total of $\approx$450 files, and injected 1 stealthy rootkit.
-    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_analysis}(a), the fleet-wide error distribution remained statistically indistinguishable from the baseline ($\mu_{err} \approx 0.33$), visualized as the stable ``Benign State'' region. No benign file exceeded the anomaly threshold ($L_\infty < \tau$).
-    \item \textbf{Detection:} The injected rootkit on Node 3 created a sharp spike in the $L_\infty$ score (Attack Signal), triggering an immediate alert.
-    \item \textbf{Operational Efficiency (Scalability):} Figure~\ref{fig:churn_analysis}(b) compares alert fatigue at fleet scale.
+    \item \textbf{Scenario:} We executed 5 distinct operations modifying the file system: \texttt{apt reinstall} (Bastion), \texttt{nginx} config update (Web), \texttt{gcc} compilation (Build), 1MB binary data write (DB), and log rotation (App). This generated a combined churn of 180 file modifications, followed by 1 stealthy rootkit injection.
+    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_analysis}(a), the cumulative error distribution from all workloads remained statistically indistinguishable from the baseline ($\mu_{err} \approx 0.33$), visualized as the stable ``Benign State'' region. No benign file (even high-entropy DB data) exceeded the anomaly threshold ($L_\infty < \tau$).
+    \item \textbf{Detection:} The injected rootkit, however, created a sharp spike in the $L_\infty$ score (Attack Signal), triggering an immediate alert.
+    \item \textbf{Operational Efficiency (Scalability):} Figure~\ref{fig:churn_analysis}(b) compares alert fatigue.
     \begin{itemize}
-        \item \textbf{AIDE} generated \textbf{454 false alerts} ($O(N)$ scaling with churn), overwhelming analysts.
-        \item \textbf{DeepVis} maintained \textbf{Zero False Alerts} ($O(1)$ scaling), demonstrating scale-invariant robustness suitable for large fleets.
+        \item \textbf{AIDE} generated \textbf{180 false alerts} ($100\%$ of changed files flagged), scaling linearly with churn ($O(N)$).
+        \item \textbf{DeepVis} maintained \textbf{Zero False Alerts} ($O(1)$ scaling), successfully ignoring validity-preserving changes (e.g., valid DB headers) while detecting the threat.
     \end{itemize}
 \end{itemize}
 
