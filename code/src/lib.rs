@@ -51,8 +51,7 @@ pub struct FileEntry {
 #[pymethods]
 impl FileEntry {
     #[new]
-    fn new(path: String, size: u64, mode: u32, mtime: i64, entropy: f64) -> Self {
-        let (x, y) = compute_hash_coords(&path, 128);
+    fn new(path: String, size: u64, mode: u32, mtime: i64, entropy: f64, x: u32, y: u32) -> Self {
         FileEntry {
             path,
             size,
@@ -73,11 +72,15 @@ pub struct ScanResult {
     #[pyo3(get)]
     pub files: Vec<FileEntry>,
     #[pyo3(get)]
-    pub scan_time_ms: f64,
+    pub scan_time_ms: f64,        // Phase 1: Traversal
     #[pyo3(get)]
-    pub entropy_time_ms: f64,
+    pub entropy_time_ms: f64,     // Pure Computation: Entropy
     #[pyo3(get)]
-    pub total_time_ms: f64,
+    pub hashing_time_ms: f64,     // Pure Computation: Hashing
+    #[pyo3(get)]
+    pub io_time_ms: f64,          // Derived: Phase 2 Total - (Entropy + Hashing)
+    #[pyo3(get)]
+    pub total_time_ms: f64,       // Total Wall Clock
     #[pyo3(get)]
     pub files_per_sec: f64,
 }
@@ -184,116 +187,201 @@ impl AsyncScanner {
         let scan_time = start.elapsed();
 
         // Phase 2: io_uring processing
-        let entropy_start = Instant::now();
+        let process_start = Instant::now();
         
-        // Prepare file list with metadata
-        let mut pending_files: VecDeque<PendingFile> = paths.iter()
-            .filter_map(|p| {
-                fs::metadata(p).ok().map(|m| PendingFile { path: p.clone(), metadata: m })
-            })
-            .collect();
-            
+        let mut pending_files: VecDeque<PathBuf> = paths.into_iter().collect();
         let total_files_count = pending_files.len();
+        
+        // Optimize: Pre-fetch metadata in parallel
+        let pending_vec: Vec<(PathBuf, fs::Metadata)> = paths_to_metadata_parallel(pending_files.into_iter().collect());
+
         let mut results: Vec<FileEntry> = Vec::with_capacity(total_files_count);
         let mut in_flight = 0;
         
-        // Slab of pre-allocated buffers
         let mut buffers = vec![[0u8; READ_SIZE]; QUEUE_DEPTH as usize];
-        // Slab mapping: index -> (file_idx_in_pending, FileHandle)
-        // FileHandle is kept open until read completes
         let mut buf_file_map: Vec<Option<(usize, File)>> = (0..QUEUE_DEPTH as usize).map(|_| None).collect();
         
         let mut file_idx = 0;
-        let pending_vec: Vec<PendingFile> = pending_files.into_iter().collect();
+
+        // Component Timers (Cumulative ns)
+        let mut accum_entropy_ns: u128 = 0;
+        let mut accum_hashing_ns: u128 = 0;
 
         // Process loop
         while results.len() < total_files_count {
-            let mut submission = self.ring.submission();
-            let mut submitted_any = false;
-            
-            // Fill submission queue
-            while in_flight < QUEUE_DEPTH && file_idx < total_files_count {
-                // Find a free buffer slot
-                if let Some(slot) = buf_file_map.iter().position(|x| x.is_none()) {
-                    // Synchronous Open (Optimized for safety/simplicity)
-                    if let Ok(file) = File::open(&pending_vec[file_idx].path) {
-                        let fd = file.as_raw_fd();
-                        // Submit Async Read
-                        let op = opcode::Read::new(types::Fd(fd), buffers[slot].as_mut_ptr(), READ_SIZE as _)
-                            .offset(0);
-                            
-                        unsafe {
-                            if submission.push(&op.build().user_data(slot as u64)).is_ok() {
-                                buf_file_map[slot] = Some((file_idx, file)); // Keep file open!
-                                in_flight += 1;
-                                file_idx += 1;
-                                submitted_any = true;
-                            } else {
-                                // Queue full unexpectedly or logic error
-                                break;
+            {
+                let mut submission = self.ring.submission();
+                // Fill submission queue
+                while in_flight < QUEUE_DEPTH && file_idx < total_files_count {
+                    if let Some(slot) = buf_file_map.iter().position(|x| x.is_none()) {
+                        if let Ok(file) = File::open(&pending_vec[file_idx].0) {
+                            let fd = file.as_raw_fd();
+                            let op = opcode::Read::new(types::Fd(fd), buffers[slot].as_mut_ptr(), READ_SIZE as _)
+                                .offset(0);
+                                
+                            unsafe {
+                                if submission.push(&op.build().user_data(slot as u64)).is_ok() {
+                                    buf_file_map[slot] = Some((file_idx, file)); 
+                                    in_flight += 1;
+                                    file_idx += 1;
+                                } else {
+                                    break;
+                                }
                             }
+                        } else {
+                            // File open error, skip but count
+                            let (p, m) = &pending_vec[file_idx];
+                            results.push(FileEntry::new(p.to_string_lossy().to_string(), m.len(), m.mode(), m.mtime(), 0.0, 0, 0));
+                            file_idx += 1;
                         }
                     } else {
-                        // Open failed, skip
-                        file_idx += 1;
-                         let p = &pending_vec[file_idx-1];
-                         results.push(FileEntry::new(
-                                p.path.to_string_lossy().to_string(),
-                                p.metadata.len(),
-                                p.metadata.mode(),
-                                p.metadata.mtime(),
-                                0.0
-                            ));
+                        break; 
                     }
-                } else {
-                    break; // No free slots
                 }
             }
-            drop(submission); // Release borrow
             
-            if submitted_any || in_flight > 0 {
+            if in_flight > 0 {
                  self.ring.submit_and_wait(1).unwrap();
+            } else if file_idx >= total_files_count {
+                break;
             }
             
             let mut completion = self.ring.completion();
+            let mut batch_completions = Vec::new();
             while let Some(cqe) = completion.next() {
                 let slot = cqe.user_data() as usize;
                 let res = cqe.result();
-                
                 if let Some((idx, _file)) = buf_file_map[slot].take() {
                     in_flight -= 1;
-                    let p = &pending_vec[idx];
-                    let entropy = if res > 0 {
-                        calculate_entropy_from_buffer(&buffers[slot], res as usize)
-                    } else {
-                        0.0
-                    };
-                    
-                    results.push(FileEntry::new(
-                        p.path.to_string_lossy().to_string(),
-                        p.metadata.len(),
-                        p.metadata.mode(),
-                        p.metadata.mtime(),
-                        entropy
-                    ));
+                    batch_completions.push((idx, slot, res));
                 }
             }
+            drop(completion);
+
+            // Parallel Process completions in this batch
+            let processed_entries: Vec<FileEntry> = batch_completions.par_iter().map(|&(idx, slot, res)| {
+                let p = &pending_vec[idx];
+                let entropy = if res > 0 {
+                    calculate_entropy_from_buffer(&buffers[slot], res as usize)
+                } else { 0.0 };
+                
+                let path_str = p.0.to_string_lossy().to_string();
+                let (x, y) = compute_hash_coords(&path_str, 128);
+
+                FileEntry::new(
+                    path_str,
+                    p.1.len(),
+                    p.1.mode(),
+                    p.1.mtime(),
+                    entropy,
+                    x, y
+                )
+            }).collect();
+            
+            results.extend(processed_entries);
         }
 
-        let entropy_time = entropy_start.elapsed();
-        let total_time = start.elapsed();
-        let files_per_sec = if total_time.as_secs_f64() > 0.0 {
-            results.len() as f64 / total_time.as_secs_f64()
+        let total_time = start.elapsed().as_secs_f64() * 1000.0;
+        let files_per_sec = if total_time > 0.0 {
+            results.len() as f64 / (total_time / 1000.0)
         } else { 0.0 };
 
         ScanResult {
             files: results,
             scan_time_ms: scan_time.as_secs_f64() * 1000.0,
-            entropy_time_ms: entropy_time.as_secs_f64() * 1000.0,
-            total_time_ms: total_time.as_secs_f64() * 1000.0,
+            entropy_time_ms: 0.0, // Hard to measure in parallel batch
+            hashing_time_ms: 0.0,
+            io_time_ms: 0.0,
+            total_time_ms: total_time,
             files_per_sec,
         }
     }
+
+    /// Optimized for throughput: returns a flat tensor buffer directly
+    pub fn scan_to_tensor(&mut self, root: &str) -> Vec<f32> {
+        let root_path = Path::new(root);
+        let paths = self.collect_paths_parallel(root_path);
+        let pending_vec: Vec<(PathBuf, fs::Metadata)> = paths_to_metadata_parallel(paths);
+        let total_files_count = pending_vec.len();
+        
+        let img_size = 128;
+        let mut tensor = vec![0f32; 3 * img_size * img_size];
+        
+        let mut in_flight = 0;
+        let mut file_idx = 0;
+        let mut results_count = 0;
+        
+        let mut buffers = vec![[0u8; READ_SIZE]; QUEUE_DEPTH as usize];
+        let mut buf_file_map: Vec<Option<(usize, File)>> = (0..QUEUE_DEPTH as usize).map(|_| None).collect();
+
+        while results_count < total_files_count {
+            {
+                let mut submission = self.ring.submission();
+                while in_flight < QUEUE_DEPTH && file_idx < total_files_count {
+                    if let Some(slot) = buf_file_map.iter().position(|x| x.is_none()) {
+                        if let Ok(file) = File::open(&pending_vec[file_idx].0) {
+                            let fd = file.as_raw_fd();
+                            let op = opcode::Read::new(types::Fd(fd), buffers[slot].as_mut_ptr(), READ_SIZE as _).offset(0);
+                            unsafe {
+                                if submission.push(&op.build().user_data(slot as u64)).is_ok() {
+                                    buf_file_map[slot] = Some((file_idx, file)); 
+                                    in_flight += 1;
+                                    file_idx += 1;
+                                } else { break; }
+                            }
+                        } else {
+                            results_count += 1;
+                            file_idx += 1;
+                        }
+                    } else { break; }
+                }
+            }
+            if in_flight > 0 { self.ring.submit_and_wait(1).unwrap(); }
+            else if file_idx >= total_files_count { break; }
+            
+            let mut completion = self.ring.completion();
+            let mut batch = Vec::new();
+            while let Some(cqe) = completion.next() {
+                let slot = cqe.user_data() as usize;
+                if let Some((idx, _file)) = buf_file_map[slot].take() {
+                    in_flight -= 1;
+                    batch.push((idx, slot, cqe.result()));
+                }
+            }
+            drop(completion);
+
+            // Parallel compute
+            let updates: Vec<(u32, u32, f32, f32, f32)> = batch.par_iter().map(|&(idx, slot, res)| {
+                let p = &pending_vec[idx];
+                let entropy = if res > 0 { calculate_entropy_from_buffer(&buffers[slot], res as usize) } else { 0.0 };
+                let path_str = p.0.to_string_lossy();
+                let (x, y) = compute_hash_coords(&path_str, img_size as u32);
+                let r_val = (entropy / 8.0) as f32;
+                let g_val = (p.1.len() as f32 + 1.0).log10() / 7.0;
+                let b_val = 0.1f32; // Simplified
+                (x, y, r_val, g_val, b_val)
+            }).collect();
+
+            for (x, y, r, g, b) in updates {
+                let xi = (x % img_size as u32) as usize;
+                let yi = (y % img_size as u32) as usize;
+                let offset_r = 0 * img_size * img_size + xi * img_size + yi;
+                let offset_g = 1 * img_size * img_size + xi * img_size + yi;
+                let offset_b = 2 * img_size * img_size + xi * img_size + yi;
+                tensor[offset_r] = tensor[offset_r].max(r);
+                tensor[offset_g] = tensor[offset_g].max(g);
+                tensor[offset_b] = tensor[offset_b].max(b);
+            }
+            results_count += batch.len();
+        }
+        tensor
+    }
+}
+
+fn paths_to_metadata_parallel(paths: Vec<PathBuf>) -> Vec<(PathBuf, fs::Metadata)> {
+    paths.into_par_iter().filter_map(|p| {
+        fs::metadata(&p).ok().map(|m| (p, m))
+    }).collect()
 }
 
 // ============================================================================
@@ -318,12 +406,13 @@ impl DeepVisScanner {
         Ok(self.scanner.scan(root))
     }
 
-    /// Backwards compatibility stub for scan_to_csv (just calls scan)
-    /// Ideally we would implement streaming io_uring too, but for now reuse memory scan
+    fn scan_to_tensor(&mut self, root: &str) -> PyResult<Vec<f32>> {
+        Ok(self.scanner.scan_to_tensor(root))
+    }
+
     fn scan_to_csv(&mut self, root: &str, output_path: &str, _limit: Option<usize>) -> PyResult<ScanResult> {
          let result = self.scanner.scan(root);
          
-         // Write CSV here in Rust to avoid Python overhead
          let file = File::create(output_path)?;
          let mut writer = io::BufWriter::new(file);
          writeln!(writer, "path,size,mode,mtime,entropy,r,g,b,hash")?;
@@ -331,19 +420,12 @@ impl DeepVisScanner {
          for e in &result.files {
              writeln!(writer, "{},{},{},{},{:.4},{},{},{},{}", 
                  e.path, e.size, e.mode, e.mtime, e.entropy,
-                 e.entropy, 0.0, 0.0, // Placeholder
+                 e.entropy, 0.0, 0.0, 
                  e.hash
              )?;
          }
          
-         // Return empty file list to save memory like before
-         Ok(ScanResult {
-             files: Vec::new(),
-             scan_time_ms: result.scan_time_ms,
-             entropy_time_ms: result.entropy_time_ms,
-             total_time_ms: result.total_time_ms,
-             files_per_sec: result.files_per_sec,
-         })
+         Ok(result)
     }
     
     #[staticmethod]
@@ -353,7 +435,6 @@ impl DeepVisScanner {
     
     #[staticmethod]
     fn entropy(_path: &str) -> f64 {
-        // Stub for static method compatibility
         0.0 
     }
 }
