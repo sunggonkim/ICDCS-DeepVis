@@ -121,9 +121,9 @@ This ensures that a single malicious file dominates the pixel's risk score, pres
     \item \textbf{Channel R (Entropy):} We compute the Shannon entropy of the file header. This targets packed binaries and encrypted payloads which exhibit high entropy ($\approx 8.0$), distinguishing them from standard text or executable files.
     \item \textbf{Channel G (Context Hazard):} This channel aggregates environmental risk factors via a weighted sum:
     \begin{equation}
-        G = \min(1.0, P_{path} + P_{pattern} + P_{hidden} + P_{perm})
+        G = \min(1.0, P_{path} + P_{hidden} + P_{depth} + P_{size} + P_{perm})
     \end{equation}
-    where $P_{path} \in \{0.0, 0.1, 0.3, 0.6, 0.7\}$ reflects path sensitivity (\texttt{/usr/bin}$\to$0.1, \texttt{/tmp}$\to$0.7), $P_{pattern}$ adds 0.1 for suspicious naming patterns (e.g., \texttt{libsystem*.so}), $P_{hidden}$ adds 0.5 for hidden files (prefix ``.''), and $P_{perm}$ adds 0.1 for world-writable files. These hyperparameters were **tuned via Grid Search** on the training corpus ($N=84,657$) to maximize the $L_\infty$ separation margin between benign and malicious clusters.
+    where $P_{path}$ and $P_{hidden}$ capture categorical risk, while $P_{depth}$ (path depth) and $P_{size}$ (file size variance) provide fine-grained \textit{Metadata Nuance} to ensure a continuous anomaly score distribution.
     \item \textbf{Channel B (Structure):} This quantifies structural anomalies based on **conditional probability analysis**. Kernel modules (\texttt{.ko}) and shared objects (\texttt{.so}) score $B=1.0$ as they represent high-risk binary code. Executable scripts (\texttt{.sh}, \texttt{.py}, \texttt{.pl}) score $B=0.6$ due to their potential for command execution. Configuration files (\texttt{.conf}, \texttt{.xml}) score $B=0.3$, while standard data files score $B=0.1$. For cross-platform support, this logic extends to detecting Windows PE headers (\texttt{MZ}) and Android DEX headers as high-risk structures ($B=1.0$) when found in non-standard directories.
 \end{itemize}
 This encoding transforms the abstract file metadata into a dense numerical vector, suitable for processing by our \textbf{Hash-Grid Parallel Convolutional Autoencoder (CAE)}.
