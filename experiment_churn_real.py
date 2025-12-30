@@ -5,6 +5,7 @@ import subprocess
 import shutil
 import hashlib
 import json
+import glob
 import numpy as np
 
 # ==========================================================
@@ -88,29 +89,42 @@ def generate_tensor(root_dir):
     return tensor
 
 def run_baseline_generation():
-    print(">>> Snapshot Phase: Generating Golden Baseline (5,000 files)...")
-    for node in NODES:
-        node_dir = os.path.join(MOCK_ROOT, node, "usr/lib")
-        os.makedirs(node_dir, exist_ok=True)
-        for i in range(1000):
-            with open(os.path.join(node_dir, f"lib_{i}.so"), "wb") as f:
-                f.write(b"\x7fELF" + b"\x00"*256 + os.urandom(256))
+    print(">>> Snapshot Phase: Sampling Real System Files (5,000 files)...")
+    # Sample real libraries from /usr/lib for the baseline
+    libs = glob.glob("/usr/lib/x86_64-linux-gnu/*.so*")[:2000]
+    for i, lib in enumerate(libs):
+        node = NODES[i % len(NODES)]
+        dst_dir = os.path.join(MOCK_ROOT, node, "usr/lib")
+        os.makedirs(dst_dir, exist_ok=True)
+        try: shutil.copy(lib, os.path.join(dst_dir, os.path.basename(lib)))
+        except: pass
 
 def run_benign_churn():
-    print(">>> Verification Phase: Applying fleet churn (3,500 files + modifications)...")
-    # 1. Update 500 existing libraries (Minor entropy shift)
-    for i in range(500):
-        path = os.path.join(MOCK_ROOT, "bastion/usr/lib", f"lib_{i}.so")
-        if os.path.exists(path):
-            with open(path, "ab") as f: f.write(os.urandom(16))
-            
-    # 2. Add 3,000 new logs/configs
-    for node in NODES:
-        node_dir = os.path.join(MOCK_ROOT, node, "var/log")
-        os.makedirs(node_dir, exist_ok=True)
-        for i in range(600):
-            with open(os.path.join(node_dir, f"system.{i}.log"), "w") as f:
-                f.write("Normal log entry " * 10)
+    print(">>> Verification Phase: Sampling Real Churn (3,500 files)...")
+    # 1. Bastion (Apt): Copy real binaries
+    bins = glob.glob("/usr/bin/*")[:1000]
+    for b in bins:
+        dst_dir = os.path.join(MOCK_ROOT, "bastion/usr/bin")
+        os.makedirs(dst_dir, exist_ok=True)
+        try: shutil.copy(b, os.path.join(dst_dir, os.path.basename(b)))
+        except: pass
+        
+    # 2. Web (Nginx): Copy real configs
+    confs = glob.glob("/etc/nginx/**/*.conf", recursive=True)[:500]
+    for c in confs:
+        dst_dir = os.path.join(MOCK_ROOT, "web/etc/nginx")
+        os.makedirs(dst_dir, exist_ok=True)
+        try: shutil.copy(c, os.path.join(dst_dir, os.path.basename(c)))
+        except: pass
+        
+    # 3. DB/Mail (Logs): Copy real log samples
+    logs = glob.glob("/var/log/**/*.log", recursive=True)[:2000]
+    for i, l in enumerate(logs):
+        node = "db" if i % 2 == 0 else "varmail"
+        dst_dir = os.path.join(MOCK_ROOT, node, "var/log")
+        os.makedirs(dst_dir, exist_ok=True)
+        try: shutil.copy(l, os.path.join(dst_dir, os.path.basename(l)))
+        except: pass
 
 def inject_attacks():
     print(">>> Injecting 5 Stealthy Rootkits into System Paths...")
