@@ -98,12 +98,6 @@
 \newlabel{tab:hyperscale_saturation}{{VI}{8}{}{table.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Robustness to System Churn (RQ3)}{8}{}\protected@file@percent }
 \newlabel{eval_churn}{{\mbox  {IV-E}}{8}{}{subsection.4.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{8}{}\protected@file@percent }
-\newlabel{eval_sensitivity}{{\mbox  {IV-F}}{8}{}{subsection.4.6}{}}
-\citation{tripwire,aide,samhain}
-\citation{unicorn,cheng2024kairos}
-\citation{ossec,falco}
-\citation{he2023cross,tfjmp2024safebpf}
 \newlabel{fig:fleet_scale}{{9a}{9}{}{subfigure.9.1}{}}
 \newlabel{sub@fig:fleet_scale}{{(a)}{a}}
 \newlabel{fig:fleet_heatmap}{{9b}{9}{}{subfigure.9.2}{}}
@@ -120,12 +114,16 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Error Distribution Shift}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Alert Fatigue Analysis}}}{9}{}\protected@file@percent }
 \newlabel{fig:churn_analysis}{{10}{9}{}{figure.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
+\newlabel{eval_sensitivity}{{\mbox  {IV-F}}{9}{}{subsection.4.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx $96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf  {4KB Page-Aligned Sampling} strategy.}}{9}{}\protected@file@percent }
 \newlabel{fig:header_sensitivity}{{11}{9}{}{figure.11}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{9}{}\protected@file@percent }
 \newlabel{tab:overhead_breakdown}{{VII}{9}{}{table.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{9}{}\protected@file@percent }
-\newlabel{sec:related_work}{{V}{9}{}{section.5}{}}
+\citation{tripwire,aide,samhain}
+\citation{unicorn,cheng2024kairos}
+\citation{ossec,falco}
+\citation{he2023cross,tfjmp2024safebpf}
 \citation{zohar2018integrity}
 \citation{oprea2007integrity}
 \citation{luo2019container}
@@ -141,6 +139,8 @@
 \citation{su2019robust,xu2018unsupervised}
 \@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Component-wise Ablation Study. Performance components (I/O, Sampling) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}}{10}{}\protected@file@percent }
 \newlabel{tab:ablation}{{VIII}{10}{}{table.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{10}{}\protected@file@percent }
+\newlabel{sec:related_work}{{V}{10}{}{section.5}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{10}{}\protected@file@percent }
 \newlabel{sec:discussion}{{VI}{10}{}{section.6}{}}
 \bibstyle{IEEEtran}
@@ -165,12 +165,12 @@
 \bibcite{bohling2020subverting}{18}
 \bibcite{nataraj2011malware}{19}
 \bibcite{conti2008visual}{20}
-\bibcite{aldini2024image}{21}
-\bibcite{lyda2007entropy}{22}
-\bibcite{ling2024wolf}{23}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
 \newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
 \@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
+\bibcite{aldini2024image}{21}
+\bibcite{lyda2007entropy}{22}
+\bibcite{ling2024wolf}{23}
 \bibcite{uetz2024detecting}{24}
 \bibcite{du2017deeplog}{25}
 \bibcite{mirsky2018kitsune}{26}

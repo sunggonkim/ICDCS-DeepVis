@@ -196,7 +196,13 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
     \item \textbf{Scenario:} We modified 500 binaries (simulating version updates) and injected 1 stealthy rootkit.
     \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, the system update caused a global shift in the reconstruction error distribution ($\mu_{err}$ increases), but no pixel exceeded the anomaly threshold ($L_\infty < \tau$).
     \item \textbf{Detection:} The injected rootkit, however, created a sharp spike in the $L_\infty$ score, triggering an immediate alert.
-    \item \textbf{Operational Efficiency:} Figure~\ref{fig:churn_alerts} highlights the impact on SOC operations. AIDE generated \textbf{501 alerts} (500 updates + 1 threat), overwhelming analysts. DeepVis generated \textbf{0 false alerts} during the update window and correctly flagged only the single threat, eliminating alert fatigue.
+    \item \textbf{Operational Efficiency:} Figure~\ref{fig:churn_alerts} compares alert fatigue across all baselines.
+    \begin{itemize}
+        \item \textbf{AIDE} generated \textbf{500 false alerts} during the update, overwhelming analysts.
+        \item \textbf{YARA (Tuned)} triggered \textbf{155 false alerts} due to heuristic matches on system files ($FPR \approx 31\%$).
+        \item \textbf{ClamAV (Tuned)} and \textbf{Set-AE} remained silent during the update (0 alerts) but \textbf{failed to detect the stealthy rootkit} (Signal Dilution/Signature Miss).
+        \item \textbf{DeepVis} was the only system to achieve \textbf{Zero False Alerts} during the update window while correctly flagging the single stealthy threat, demonstrating superior signal isolation.
+    \end{itemize}
 \end{itemize}
 
 %=====================================================================

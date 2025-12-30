@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 19:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 19:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -956,24 +956,21 @@ File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
 <use Figures/fig_churn_hist.pdf>
 Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 185.
 (pdftex.def)             Requested size: 120.95892pt x 48.37984pt.
-<Figures/fig_churn_alerts.pdf, id=478, 433.62pt x 289.08pt>
+<Figures/fig_churn_alerts.pdf, id=478, 505.89pt x 289.08pt>
 File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
 <use Figures/fig_churn_alerts.pdf>
 Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 189.
-(pdftex.def)             Requested size: 120.95892pt x 80.63748pt.
-<Figures/fig_page_aligned_sensitivity.pdf, id=479, 496.69313pt x 207.01115pt>
-File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
-<use Figures/fig_page_aligned_sensitivity.pdf>
-Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
-t line 209.
-(pdftex.def)             Requested size: 252.0pt x 105.02782pt.
+(pdftex.def)             Requested size: 120.95892pt x 69.11595pt.
 
 
 [8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
 gures/comparison_dilution.pdf>]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
+<Figures/fig_page_aligned_sensitivity.pdf, id=641, 496.69313pt x 207.01115pt>
+File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
+<use Figures/fig_page_aligned_sensitivity.pdf>
+Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
+t line 215.
+(pdftex.def)             Requested size: 252.0pt x 105.02782pt.
 
 
 ) (./5. Related Works.tex
@@ -990,9 +987,9 @@ Underfull \hbox (badness 1701) in paragraph at lines 10--11
 
 
 
-[10]) (./7. Conclusion.tex) (./main.bbl
+[10]) (./7. Conclusion.tex)
 
-
+(./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1059,7 +1056,7 @@ L3 programming layer <2025-01-18>
 Here is how much of TeX's memory you used:
  17736 strings out of 473190
  383936 string characters out of 5715800
- 796834 words of memory out of 5000000
+ 796835 words of memory out of 5000000
  40626 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1088,9 +1085,9 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1944288 bytes).
+Output written on main.pdf (12 pages, 1946886 bytes).
 PDF statistics:
- 986 PDF objects out of 1000 (max. 8388607)
+ 992 PDF objects out of 1000 (max. 8388607)
  335 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
