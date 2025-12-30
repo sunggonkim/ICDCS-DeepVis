@@ -37,20 +37,24 @@ x_upg, y_upg = get_pdf(scores_upgrade)
 x_att, y_att = get_pdf(scores_attack)
 
 # Plot Order & Style to handle overlap
-# Baseline: Thick Blue Line (Bottom)
-ax1.plot(x_base, y_base, 'b-', label='Baseline', linewidth=4, alpha=0.3)
-# Upgrade: Green Dashed Line (Middle)
-ax1.plot(x_upg, y_upg, 'g--', label='After Upgrade', linewidth=2, alpha=0.9)
-# Attack: Red Star (Outlier) - Plot ONLY the outlier to avoid clutter?
-# Or plot full line thinly?
-ax1.plot(x_att, y_att, 'r-*', label='With Attack', linewidth=1, markersize=4, alpha=0.8)
+# Baseline: Filled Blue Area (Background Reference)
+ax1.fill_between(x_base, 0, y_base, color='blue', alpha=0.2, label='Baseline')
+ax1.plot(x_base, y_base, 'b-', linewidth=1, alpha=0.4) # Thin border
+
+# Upgrade: Thick Green Dashed Line (Foreground)
+ax1.plot(x_upg, y_upg, 'g--', label='After Upgrade', linewidth=2.5, alpha=1.0)
+
+# Attack: Red Star Markers Only (No Line connection for cleaner look? Or Thin Line)
+# If we connect them, it overlaps the green line perfectly for most parts.
+# Let's plot Attack as Red Markers with a thin red line ON TOP.
+ax1.plot(x_att, y_att, 'r-*', label='With Attack', linewidth=1.5, markersize=6, alpha=1.0, zorder=10)
 
 ax1.set_yscale('log')
 ax1.set_xlabel('Anomaly Score ($L_\infty$)', fontsize=10, fontweight='bold')
 ax1.set_ylabel('Frequency (Log Scale)', fontsize=10, fontweight='bold')
 ax1.set_title('(a) Error Distribution Shift', fontsize=11, fontweight='bold', y=-0.25)
 ax1.grid(True, which="both", ls="--", alpha=0.3)
-ax1.legend(loc='upper right', frameon=True, fontsize=8) # Moved inside to avoid cropping
+ax1.legend(loc='upper right', frameon=True, fontsize=8) 
 ax1.set_xlim(0, 1.05)
 
 
