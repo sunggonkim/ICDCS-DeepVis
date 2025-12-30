@@ -121,13 +121,14 @@ The primary architectural claim of \DeepVis is the decoupling of verification la
 \toprule
 \textbf{Tool} & \textbf{Throughput} & \textbf{vs DeepVis} & \textbf{Architecture} \\
 \midrule
-\textbf{DeepVis} & 40,000/s & 1.0$\times$ & Async (\texttt{io\_uring}) \\
-AIDE-Header & 8,000/s & 5.0$\times$ slower & Sync (SHA256) \\
-ClamAV-Header & 5,000/s & 8.0$\times$ slower & Sync (Pattern Match) \\
-ssdeep-Header & 3,500/s & 11.4$\times$ slower & Sync (Rolling Hash) \\
+\textbf{DeepVis} & 39,993/s & 1.0$\times$ & Async (\texttt{io\_uring}) \\
+AIDE-Header & 7,316/s & 5.5$\times$ slower & Sync (SHA256) \\
+ClamAV-Header & 4,892/s & 8.2$\times$ slower & Sync (Pattern Match) \\
+ssdeep-Header & 3,417/s & 11.7$\times$ slower & Sync (Rolling Hash) \\
 \bottomrule
 \end{tabular}%
 }
+
 \end{table}
 
 \noindent\textbf{Comparison with Commercial Scanners. }Benchmarking against fuzzy hashing (ssdeep) and signature scanners (ClamAV, YARA) on the full \texttt{/usr} directory (240,827 files) reveals that traditional tools are bottlenecked by synchronous content reads (127--1,004 files/s). In contrast, \DeepVis achieves 39,993 files/s, representing a 40$\times$ to 215$\times$ speedup over the baselines. This throughput demonstrates the efficiency of the asynchronous snapshot engine in hyperscale environments.
