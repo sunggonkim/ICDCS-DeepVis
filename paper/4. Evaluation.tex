@@ -198,8 +198,9 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
     \item \textbf{Detection \& Fatigue (Fig.~\ref{fig:churn_alerts}):}
     \begin{itemize}
         \item \textbf{AIDE (Legacy FIM):} Successfully detected the rootkit but generated \textbf{180 False Alerts}, dominated by the Bastion system upgrade (174 alerts).
-        \item \textbf{YARA (Tuned):} Generated \textbf{54 False Alerts} (Heuristic FP) while missing the stealthy rootkit.
-        \item \textbf{DeepVis:} Achieved \textbf{Zero False Alerts} across all 5 workloads and correctly flagged the single stealthy threat.
+        \item \textbf{YARA (Tuned):} Generated \textbf{54 False Alerts} (Heuristic FP) while missing the specific LKM rootkit due to rule mismatch.
+        \item \textbf{ClamAV (Signature):} Successfully detected the known rootkit using the research database (0 False Alerts). However, this relies on prior knowledge of the threat signature.
+        \item \textbf{DeepVis (Ours):} Achieved \textbf{Zero False Alerts} and correctly flagged the rootkit purely via entropy anomaly, demonstrating detection of the threat class without specific signatures.
     \end{itemize}
 \end{itemize}
 
