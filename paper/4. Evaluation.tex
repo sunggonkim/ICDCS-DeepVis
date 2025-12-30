@@ -173,6 +173,33 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 \noindent\textbf{Fleet Scalability. }Throughput scales linearly with fleet size, increasing from $\approx$2k files/s (1 Node) to 206,611 files/s (100 Nodes) as shown in Figure~\ref{fig:fleet_scale}. This confirms that the stateless architecture effectively decouples processing load. Cross-region latency remains stable (avg 4.29s) across 100 nodes (Figure~\ref{fig:fleet_heatmap}), with a minimal aggregation overhead of 548ms. Network overhead is also drastically reduced; each node transmits only 49KB, representing a 100$\times$ reduction compared to provenance-based systems.
 
 %=====================================================================
+\subsection{Robustness to System Churn (RQ3)}
+\label{eval_churn}
+%=====================================================================
+
+\begin{figure}[t]
+    \centering
+    \subfloat[Error Distribution Shift]{
+        \includegraphics[width=0.48\linewidth]{Figures/fig_churn_hist.pdf}
+        \label{fig:churn_hist}
+    } \hfill
+    \subfloat[Alert Fatigue Analysis]{
+        \includegraphics[width=0.48\linewidth]{Figures/fig_churn_alerts.pdf}
+        \label{fig:churn_alerts}
+    }
+    \caption{\textbf{System Churn vs. Stealthy Attack.} (a) Massive system update (500 files modified) shifts the error distribution (Green) but does not generate outliers. Attack injection creates a distinct outlier (Red). (b) AIDE generates 500 alerts for the update, while DeepVis generates 0, isolating only the real threat.}
+    \label{fig:churn_analysis}
+\end{figure}
+
+\noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between benign system updates and malicious injections. In our controlled experiment simulating `apt upgrade` (Rank Sum Test, $p<0.01$):
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Scenario:} We modified 500 binaries (simulating version updates) and injected 1 stealthy rootkit.
+    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, the system update caused a global shift in the reconstruction error distribution ($\mu_{err}$ increases), but no pixel exceeded the anomaly threshold ($L_\infty < \tau$).
+    \item \textbf{Detection:} The injected rootkit, however, created a sharp spike in the $L_\infty$ score, triggering an immediate alert.
+    \item \textbf{Operational Efficiency:} Figure~\ref{fig:churn_alerts} highlights the impact on SOC operations. AIDE generated \textbf{501 alerts} (500 updates + 1 threat), overwhelming analysts. DeepVis generated \textbf{0 false alerts} during the update window and correctly flagged only the single threat, eliminating alert fatigue.
+\end{itemize}
+
+%=====================================================================
 \subsection{Sensitivity and Ablation Analysis}
 \label{eval_sensitivity}
 %=====================================================================

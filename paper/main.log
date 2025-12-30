@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 18:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 19:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -867,7 +867,7 @@ Figures/Design/Overall_Arch.pdf>]
 <Figures/Design/io_Arch.pdf, id=329, 756.41832pt x 550.10004pt>
 File: Figures/Design/io_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/io_Arch.pdf>
-Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 40.
+Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 41.
 (pdftex.def)             Requested size: 227.62204pt x 165.53491pt.
 
 
@@ -877,15 +877,15 @@ Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 40.
 <Figures/Design/Hash_Arch.pdf, id=374, 672.63974pt x 414.93048pt>
 File: Figures/Design/Hash_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Hash_Arch.pdf>
-Package pdftex.def Info: Figures/Design/Hash_Arch.pdf  used on input line 78.
+Package pdftex.def Info: Figures/Design/Hash_Arch.pdf  used on input line 79.
 (pdftex.def)             Requested size: 256.0748pt x 157.96646pt.
 
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 78--79
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 79--80
  [][] 
  []
 
 
-Overfull \hbox (19.7101pt too wide) detected at line 104
+Overfull \hbox (19.7101pt too wide) detected at line 105
 []\OT1/cmr/m/n/10 ^^H(\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 ) = []
  []
 
@@ -894,7 +894,7 @@ Overfull \hbox (19.7101pt too wide) detected at line 104
 
 
 [5 <./Figures/Design/Hash_Arch.pdf>]
-Underfull \hbox (badness 3333) in paragraph at lines 126--127
+Underfull \hbox (badness 3333) in paragraph at lines 127--128
 []\OT1/ptm/b/n/10 Channel B (Struc-ture): \OT1/ptm/m/n/10 This quan-ti-fies str
 uc-tural
  []
@@ -902,93 +902,85 @@ uc-tural
 <Figures/Design/CNN_Arch.pdf, id=400, 737.58846pt x 539.33128pt>
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
-Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 139.
+Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 140.
 (pdftex.def)             Requested size: 256.0748pt x 187.2463pt.
 
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 139--140
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 140--141
  [][] 
  []
 
 
 
-LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 169.
-) (./4. Evaluation.tex
+
 
 [6 <./Figures/Design/CNN_Arch.pdf>]
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 170.
+) (./4. Evaluation.tex
 
-
-Underfull \vbox (badness 1424) has occurred while \output is active []
-
-
-
-[7]
-Underfull \hbox (badness 1783) in paragraph at lines 87--89
-\OT1/ptm/m/n/10 y-sis of de-tec-tion ca-pa-bil-i-ties. \OT1/pcr/m/n/10 DeepVis 
-\OT1/ptm/m/n/10 de-tects eva-sive
- []
-
-<Figures/fig_final_throughput.pdf, id=472, 319.59099pt x 280.9374pt>
+<Figures/fig_final_throughput.pdf, id=467, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
-Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 1
-03.
+Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 9
+2.
 (pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
-<Figures/fig_final_latency.pdf, id=473, 319.2289pt x 280.9374pt>
+<Figures/fig_final_latency.pdf, id=468, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
-Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 107.
-
+Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 96.
 (pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
 
-
-
-[8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf>]
-<Figures/comparison_dilution.pdf, id=585, 730.85376pt x 333.64601pt>
+[7]
+<Figures/comparison_dilution.pdf, id=474, 730.85376pt x 333.64601pt>
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
-Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 15
-4.
+Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 13
+0.
 (pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
-
-
-
-
-[9 <./Figures/comparison_dilution.pdf>]
-<Figures/fig_fleet_scalability.pdf, id=640, 498.67555pt x 241.45416pt>
+<Figures/fig_fleet_scalability.pdf, id=475, 498.67555pt x 241.45416pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-204.
+164.
 (pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
-<Figures/fig_fleet_vis.pdf, id=641, 476.12589pt x 355.65508pt>
+<Figures/fig_fleet_vis.pdf, id=476, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 208.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 168.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
 
+<Figures/fig_churn_hist.pdf, id=477, 722.7pt x 289.08pt>
+File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
+<use Figures/fig_churn_hist.pdf>
+Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 185.
+(pdftex.def)             Requested size: 120.95892pt x 48.37984pt.
+<Figures/fig_churn_alerts.pdf, id=478, 433.62pt x 289.08pt>
+File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
+<use Figures/fig_churn_alerts.pdf>
+Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 189.
+(pdftex.def)             Requested size: 120.95892pt x 80.63748pt.
+<Figures/fig_page_aligned_sensitivity.pdf, id=479, 496.69313pt x 207.01115pt>
+File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
+<use Figures/fig_page_aligned_sensitivity.pdf>
+Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
+t line 209.
+(pdftex.def)             Requested size: 252.0pt x 105.02782pt.
+
+
+[8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
+gures/comparison_dilution.pdf>]
+
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Figures/fig_header_sensitivity.pdf, id=642, 433.62pt x 289.08pt>
-File: Figures/fig_header_sensitivity.pdf Graphic file (type pdf)
-<use Figures/fig_header_sensitivity.pdf>
-Package pdftex.def Info: Figures/fig_header_sensitivity.pdf  used on input line
- 243.
-(pdftex.def)             Requested size: 201.60077pt x 134.40315pt.
 
 
+) (./5. Related Works.tex
 
-Underfull \hbox (badness 1721) in paragraph at lines 285--286
-\OT1/ptm/b/n/10 Detection Fi-delity. \OT1/ptm/m/n/10 Single-channel con-fig-u-r
-a-tions fail to
- []
-
-
-
-[10 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figu
-res/fig_header_sensitivity.pdf>]) (./5. Related Works.tex
+[9 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figur
+es/fig_churn_hist.pdf> <./Figures/fig_churn_alerts.pdf> <./Figures/fig_page_ali
+gned_sensitivity.pdf>]
 
 ) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
@@ -998,9 +990,9 @@ Underfull \hbox (badness 1701) in paragraph at lines 10--11
 
 
 
-[11]) (./7. Conclusion.tex)
+[10]) (./7. Conclusion.tex) (./main.bbl
 
-(./main.bbl
+
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1040,7 +1032,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 92--96
 
 
 
-[12])
+[11])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1056,7 +1048,7 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[13
+[12
 
 ] (./main.aux)
  ***********
@@ -1065,13 +1057,13 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17717 strings out of 473190
- 383273 string characters out of 5715800
- 791737 words of memory out of 5000000
- 40607 multiletter control sequences out of 15000+600000
+ 17736 strings out of 473190
+ 383936 string characters out of 5715800
+ 796834 words of memory out of 5000000
+ 40626 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,13n,91p,1420b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,13n,91p,1154b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></
@@ -1096,10 +1088,10 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (13 pages, 1929853 bytes).
+Output written on main.pdf (12 pages, 1944288 bytes).
 PDF statistics:
- 930 PDF objects out of 1000 (max. 8388607)
- 332 compressed objects within 4 object streams
+ 986 PDF objects out of 1000 (max. 8388607)
+ 335 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
- 98 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 108 words of extra memory for PDF output out of 10000 (max. 10000000)
 
