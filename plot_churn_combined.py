@@ -66,40 +66,70 @@ ax1.set_xlim(0, 1.05)
 # ==========================================================
 # (b) Fleet Alert Fatigue
 # ==========================================================
+# ==========================================================
+# (b) Fleet Alert Fatigue & Detection (Stacked Bar)
+# ==========================================================
 ax2 = plt.subplot(gs[1])
 
-stages = ["Baseline", "Fleet Ops\n(5 Workloads)", "Attack"]
-x_idx = np.arange(len(stages))
+tools = ["AIDE", "YARA", "ClamAV", "Set-AE", "DeepVis"]
+x_pos = np.arange(len(tools))
 
-aide_trend = [0, aide_fleet, aide_fleet + 1] 
-dv_trend = [0, dv_fleet, dv_fleet + 1] # 0, 0, 1
-# Projected YARA (20% FPR of 180) -> 36
-yara_val = int(aide_fleet * 0.20)
-yara_trend = [0, yara_val, yara_val]
+# Data Breakdown
+# Bastion (Apt Upgrade) vs Other Fleet Ops (Web, DB, Build, App)
+# AIDE: 174 (Bastion) + 6 (Others) = 180
+aide_bastion = 174
+aide_fleet = 6
 
-# Plot Lines (Reference Style)
-ax2.plot(x_idx, aide_trend, color='gray', marker='s', linestyle='--', label='AIDE', linewidth=2)
-ax2.plot(x_idx, yara_trend, color='orange', marker='^', linestyle='-.', label='YARA', linewidth=2)
-ax2.plot(x_idx, dv_trend, color='green', marker='o', linestyle='-', label='DeepVis', linewidth=2)
+# YARA: ~54 (Apt Heuristics) + 0
+yara_bastion = 54
+yara_fleet = 0
 
-ax2.set_xticks(x_idx)
-ax2.set_xticklabels(stages, fontsize=9, fontweight='bold')
-ax2.set_ylabel('Alert Count (Log Scale)', fontsize=10, fontweight='bold')
+# Others: 0
+clam_bastion, clam_fleet = 0, 0
+setae_bastion, setae_fleet = 0, 0
+dv_bastion, dv_fleet = 0, 0
 
-# Y-Axis Fix: Custom Log handling
-ax2.set_yscale('symlog', linthresh=1) 
-ax2.set_ylim(-0.5, 300) # Max 180 -> 300
-ax2.set_yticks([0, 1, 10, 100])
-ax2.get_yaxis().set_major_formatter(plt.ScalarFormatter())
+# Stack Data
+bastion_counts = [aide_bastion, yara_bastion, clam_bastion, setae_bastion, dv_bastion]
+fleet_counts = [aide_fleet, yara_fleet, clam_fleet, setae_fleet, dv_fleet]
 
-ax2.set_title('(b) Fleet Alert Fatigue (N=5)', fontsize=11, fontweight='bold', y=-0.25)
-ax2.grid(True, which="both", ls="--", alpha=0.3)
-ax2.legend(loc='upper left', frameon=True, fontsize=8)
+# Plot Stacks
+p1 = ax2.bar(x_pos, bastion_counts, color='#e74c3c', alpha=0.7, label='System Upgrade (Bastion)', width=0.6, edgecolor='black')
+p2 = ax2.bar(x_pos, fleet_counts, bottom=bastion_counts, color='#f39c12', alpha=0.7, label='Fleet Ops (Web/DB/Build)', width=0.6, edgecolor='black')
 
-# "Green Zone" Annotation
-ax2.axvspan(0.8, 1.2, color='green', alpha=0.1)
-ax2.text(1.0, 200, "Zero False Alerts\n(DeepVis)", color='green', fontsize=9, ha='center', fontweight='bold', 
-         bbox=dict(facecolor='white', alpha=0.8, edgecolor='none'))
+# Detection Status (Icons/Text)
+# AIDE: Detects (High FP)
+# YARA: Misses (Unknown Sig) - User implied "Heuristic FP" but likely missed rootkit if stealthy
+# ClamAV: Misses
+# Set-AE: Misses
+# DeepVis: Detects
+detection_status = ["Detected", "Missed", "Missed", "Missed", "Detected"]
+detection_colors = ["green", "red", "red", "red", "green"]
+
+for i, (status, count) in enumerate(zip(detection_status, [sum(x) for x in zip(bastion_counts, fleet_counts)])):
+    y_text = max(count, 0.8) if count > 0 else 0.8
+    marker = "✓" if status == "Detected" else "✗"
+    
+    # Text Annotation
+    ax2.text(i, y_text * 1.5, f"{marker}\n{status}", ha='center', va='bottom', 
+             fontsize=9, fontweight='bold', color=detection_colors[i])
+    
+    # Score Annotation
+    if count > 0:
+        ax2.text(i, count/2, str(count), ha='center', va='center', color='white', fontweight='bold', fontsize=9)
+
+ax2.set_xticks(x_pos)
+ax2.set_xticklabels(tools, fontsize=9, fontweight='bold')
+ax2.set_ylabel('False Positive Alerts (Log Scale)', fontsize=10, fontweight='bold')
+ax2.set_yscale('symlog', linthresh=0.1) # Handle 0 values
+ax2.set_ylim(0, 600)
+
+ax2.set_title('(b) Alert Fatigue vs. Detection', fontsize=11, fontweight='bold', y=-0.25)
+ax2.grid(True, axis='y', ls="--", alpha=0.3)
+ax2.legend(loc='upper right', frameon=True, fontsize=8)
+
+# Highlight DeepVis
+ax2.axvspan(3.6, 4.4, color='green', alpha=0.1, zorder=0)
 
 plt.tight_layout()
 plt.savefig("/Users/skim/ICDCS-DeepVis/paper/Figures/fig_churn_combined.pdf", bbox_inches='tight')

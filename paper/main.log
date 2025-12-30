@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 20:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 20:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -951,18 +951,12 @@ Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 168.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
 
-<Figures/fig_churn_combined.pdf, id=477, 618.67299pt x 262.99301pt>
+<Figures/fig_churn_combined.pdf, id=477, 613.44183pt x 259.3372pt>
 File: Figures/fig_churn_combined.pdf Graphic file (type pdf)
 <use Figures/fig_churn_combined.pdf>
 Package pdftex.def Info: Figures/fig_churn_combined.pdf  used on input line 182
 .
-(pdftex.def)             Requested size: 252.0pt x 107.12555pt.
-
-Underfull \hbox (badness 2478) in paragraph at lines 195--196
-[]\OT1/ptm/b/n/10 DeepVis \OT1/ptm/m/n/10 main-tained \OT1/ptm/b/n/10 Zero Fals
-e Alerts \OT1/ptm/m/n/10 ($\OML/cmm/m/it/10 O\OT1/cmr/m/n/10 (1)$
- []
-
+(pdftex.def)             Requested size: 252.0pt x 106.5347pt.
 
 
 [8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
@@ -1086,9 +1080,9 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1945809 bytes).
+Output written on main.pdf (12 pages, 1948269 bytes).
 PDF statistics:
- 993 PDF objects out of 1000 (max. 8388607)
+ 999 PDF objects out of 1000 (max. 8388607)
  338 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  103 words of extra memory for PDF output out of 10000 (max. 10000000)
