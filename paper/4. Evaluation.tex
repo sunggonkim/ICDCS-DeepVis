@@ -1,25 +1,23 @@
 \section{Evaluation}
 \label{sec:evaluation}
-We evaluate \DeepVis on a production Google Cloud Platform (GCP) infrastructure using real compiled rootkits and realistic attack scenarios. Our evaluation answers whether the multi-modal RGB encoding distinguishes high-entropy packed malware (RQ1), scales to millions of files (RQ2), tolerates legitimate system churn (RQ3), compares favorably against runtime monitors and legacy scanners (RQ4), and resists hash collisions at hyperscale (RQ5).
+
+We evaluate \DeepVis on Google Cloud Platform (GCP) using real rootkits and realistic attack scenarios. Our evaluation quantifies whether the multi-modal RGB encoding distinguishes packed malware (RQ1), scales to millions of files (RQ2), tolerates system churn (RQ3), and outperforms legacy monitors (RQ4, RQ5).
+
 %=====================================================================
 \subsection{Evaluation Setup}
 \label{eval_setup}
 %=====================================================================
-\noindent\textbf{Testbed Environment.}
-We conduct experiments on three distinct GCP configurations to represent a spectrum of cloud instances: \textbf{Low} (e2-micro, 2 vCPU, 1GB RAM, HDD), \textbf{Mid} (e2-standard-2, 2 vCPU, 8GB RAM, SSD), and \textbf{High} (c2-standard-4, 4 vCPU, 16GB RAM, NVMe SSD). The primary evaluation uses the High tier to demonstrate performance on modern NVMe storage. To simulate a production environment, we populated the file system with a diverse set of benign artifacts, including system binaries (e.g., \texttt{nginx}, \texttt{gcc}), configuration files, and Python scripts, scaling up to 50 million files for stress testing.
+\noindent\textbf{Testbed Environment. }
+Experiments utilize three GCP configurations: \textbf{Low} (e2-micro), \textbf{Mid} (e2-standard-2), and \textbf{High} (c2-standard-4, NVMe SSD). To simulate production environments, we populated the file system with up to 50 million files, including system binaries (e.g., \texttt{nginx}) and random artifacts.
 
-\noindent\textbf{Target Datasets.} We curated two datasets for evaluation: (1) a \textbf{Benign Baseline} of 47,270 legitimate system binaries from Ubuntu 20.04, including 667 curated binaries (e.g., \texttt{python3}) and 46,603 files from \texttt{/usr/bin}, to rigorously measure false positives; and (2) a \textbf{Malware Corpus} of 37,387 files sourced from open repositories~\cite{vxunderground, themalwarerepo}. This corpus primarily spans Windows (35k+ files) and Web artifacts, reflecting the diversity of cloud workloads. For our primary evaluation, we isolate 68 \textit{Active} Linux ELF binaries (e.g., Diamorphine, Azazel). While numerically smaller, these represent the qualitative core of stealthy cloud threats (rootkits) that direct file-based scanners often miss. We treat the cross-platform malware as a test for \textit{OS-agnostic structural awareness}.
+\noindent\textbf{Target Datasets. }
+We employ a \textbf{Benign Baseline} of 47,270 system binaries (Ubuntu 20.04) to measure false positives, and a \textbf{Malware Corpus} of 37,387 files, including 68 active Linux ELF rootkits (e.g., Diamorphine) and 35k+ Windows/Web artifacts. This diversity tests the OS-agnostic capability of our structural encoding.
 
 %=====================================================================
-\subsection{Detection Accuracy and Feature Orthogonality (RQ1)}
+\subsection{Detection Fidelity and Orthogonality (RQ1)}
 \label{eval_accuracy}
 %=====================================================================
 
-\noindent\textbf{Baseline and Model Configuration. }Reference tools utilized both default and tuned configurations to represent realistic deployment scenarios. ClamAV employed the standard virus database, while YARA used a minimal rule set matching common malware keywords and ELF headers. For DeepVis, the CAE was trained exclusively on benign artifacts to establish a normality baseline, yielding a calibrated anomaly detection threshold of $\tau_{L_{\infty}} = 0.52$. To isolate the architectural benefit of this learned representation, the evaluation includes DeepVis (Entropy), a heuristic baseline that applies a static threshold ($\tau_R=0.75$) solely to the R-channel without multi-modal fusion.
-
-%---------------------------------------------------------------------
-% TABLE III: Unified Performance (Extended)
-%---------------------------------------------------------------------
 \begin{table}[t]
 \centering
 \caption{\textbf{Unified Detection Performance.} Comparison against tuned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats. False Positive Rate (FPR) is reported at the node/repository level (0.3\% per 10k files), ensuring manageable alert volumes for security operators.}
@@ -46,13 +44,10 @@ DeepVis (Entropy) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 }
 \end{table}
 
-\noindent\textbf{Platform-Specific Generalization. }Table~\ref{tab:unified_detection} presents detection recall across four dominant platforms. ClamAV (Standard) fails to detect most samples (0--33\%), whereas the Tuned version achieves high recall (95.4--96.6\%). However, this performance is solely due to the use of a custom database containing the exact hashes of our dataset—an ex-post-facto "cheating" configuration that is inherently blind to zero-day variants. YARA (Tuned) improves detection on Web (68.1\%) and Mobile (79.2\%) but incurs a high false positive rate (31.0\%) due to aggressive heuristic rules. In contrast, \DeepVis demonstrates exceptional generalization without prior knowledge, achieving 97.1\% Recall on Linux and 100.0\% on Mobile. Furthermore, \DeepVis achieves an integrated detection rate of approximately 16.8\% across the entire malware corpus ($\approx$37k samples). While seemingly modest, this significantly outperforms platform-agnostic baselines such as YARA ($\approx$3\%) and Set-AE ($\approx$10\%), demonstrating robust structural anomaly detection even for non-target binaries (Windows/Web). Crucially, \DeepVis maintains a negligible False Positive rate of 0.3\%, confirming that the learned normality model is far more robust to benign variations than static heuristics or single-channel baselines (10.2\%).
+\noindent\textbf{Platform-Specific Generalization. }Detection Recall increases substantially with the full architecture. On Linux, Recall jumps from 25.0\% (Entropy-only) to 97.1\% (DeepVis Full), and on Mobile from 91.7\% to 100.0\% (Table~\ref{tab:unified_detection}), indicating that multi-modal fusion is essential for isolating threats that mimic benign entropy distributions. In contrast, ClamAV (Standard) achieves only 0--33\% recall without custom signatures. While YARA (Tuned) improves detection, it incurs a prohibitive False Positive Rate (31.0\%). \DeepVis maintains a negligible False Positive Rate of 0.3\%, confirming that the learned normality model is far more robust to benign variations than static heuristics (10.2\% FP).
 
-\noindent\textbf{Architectural Advantage over Set-based Learning. }Benchmarking against a Set-based Autoencoder (Set-AE) baseline evaluates the structural necessity of the Hash-Grid. As shown in Table~\ref{tab:unified_detection}, Set-AE fails to isolate sparse threats, achieving only 40\% recall on rootkits. This performance degradation stems from the global feature pooling mechanism, which dilutes the signal of a single malicious file ($N=1$) against the variance of thousands of benign system files. In contrast, DeepVis projects files onto a fixed Spatial Grid and employs $L_\infty$ pooling, ensuring that sparse anomalies remain locally distinct spikes rather than being averaged out globally.
+\noindent\textbf{Feature Orthogonality. }Micro-analysis confirms that multi-modal features catch evasion attempts. As shown in Table~\ref{tab:detailed_breakdown}, the rootkit \texttt{Diamorphine} evades the Entropy channel ($R=0.55$) but is detected by Structure ($B=1.00$) and Context ($G=0.81$). Similarly, \texttt{FormGrab.exe} triggers detection ($B=0.90$) due to structural anomalies in a Linux environment. However, limitations persist; the header-only approach misses artifacts like \texttt{setup.sh}, as they reside in valid paths without binary packing anomalies.
 
-%---------------------------------------------------------------------
-% TABLE IV: Detailed Breakdown (Micro View)
-%---------------------------------------------------------------------
 \begin{table}[t]
 \centering
 \caption{\textbf{Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=667) and Malware (N=68) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}
@@ -84,16 +79,10 @@ Config Gen & \texttt{cloud-init} & 0.72 & 0.85 & 0.30 & False Pos. \\
 }
 \end{table}
 
-\noindent\textbf{Micro View Analysis.} 
-Table~\ref{tab:detailed_breakdown} provides a granular analysis of detection capabilities. \DeepVis detects evasive threats through feature orthogonality. For instance, the rootkit \texttt{Diamorphine} evaded the Entropy channel ($R=0.55$) but was detected by the Context ($G=0.81$) and Structure ($B=1.00$) channels. Similarly, the Windows binary \texttt{FormGrab.exe} was flagged due to its alien PE structure ($B=0.90$) in a Linux environment. However, the header-only approach exhibits intrinsic blind spots. \DeepVis failed to detect the script \texttt{setup.sh} and the obfuscated library \texttt{libc\_fake.so}, as they resided in structurally valid paths and lacked binary packing anomalies. This confirms that \DeepVis operates as a high-speed first-line defense for binary integrity rather than a full-content forensic scanner.
-
-
 %=====================================================================
-\subsection{Scalability and Performance Analysis (RQ2)}
+\subsection{Throughput and Interference (RQ2)}
 \label{eval_scalability}
 %=====================================================================
-
-The primary architectural claim of \DeepVis is the decoupling of verification latency from file system size. We validate this through two distinct lenses: processing throughput (micro-benchmark) and service interference (macro-benchmark).
 
 \begin{figure}[t]
     \centering
@@ -108,9 +97,6 @@ The primary architectural claim of \DeepVis is the decoupling of verification la
     \caption{\textbf{Comprehensive Performance Analysis.} (a) \textbf{Throughput}: DeepVis achieves hyperscale speeds ($\approx$40k files/s) via asynchronous I/O, outperforming synchronous baselines. (b) \textbf{Interference}: Despite its speed, \DeepVis maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%).}
     \label{fig:perf_analysis}
 \end{figure}
-
-\subsubsection{Micro-benchmark}
-\noindent\textbf{Scan Throughput. }Figure~\ref{fig:perf_analysis}(a) compares DeepVis against AIDE to demonstrate operational feasibility. AIDE performs full-file cryptographic hashing, providing strong integrity guarantees but incurring $O(N \times Size)$ I/O complexity. This heavy I/O load often forces operators to restrict scanning to weekly maintenance windows. On a GCP High tier (c2-standard-4), \DeepVis achieves a 7.7$\times$ speedup over standard AIDE. Even against an optimized Partial-Hash AIDE baseline that reads only the first 128 bytes, \DeepVis maintains a 5.4$\times$ throughput advantage. This comparison highlights the architectural benefit of the \textit{Header-Sampling paradigm} over traditional full-content hashing. The goal is not merely to compare I/O speeds under identical workloads, but to demonstrate that \DeepVis's design choice enables hyperscale feasibility—transforming FIM from a heavy, periodic task into a lightweight, continuous monitoring service.
 
 \begin{table}[t]
 \centering
@@ -128,26 +114,16 @@ ssdeep-Header & 3,417/s & 11.7$\times$ slower & Sync (Rolling Hash) \\
 \bottomrule
 \end{tabular}%
 }
-
 \end{table}
 
-\noindent\textbf{Comparison with Commercial Scanners. }Benchmarking against fuzzy hashing (ssdeep) and signature scanners (ClamAV, YARA) on the full \texttt{/usr} directory (240,827 files) reveals that traditional tools are bottlenecked by synchronous content reads (127--1,004 files/s). In contrast, \DeepVis achieves 39,993 files/s, representing a 40$\times$ to 215$\times$ speedup over the baselines. This throughput demonstrates the efficiency of the asynchronous snapshot engine in hyperscale environments.
+\noindent\textbf{Scan Throughput. }Throughput increases substantially with architectural optimization. DeepVis achieves 39,993 files/s, representing a 5.5$\times$ speedup over the optimized AIDE-Header (7,316/s) and an 8.2$\times$ advantage over ClamAV-Header (4,892/s) (Table~\ref{tab:fair_baseline}). This is because \texttt{io\_uring} eliminates the blocking overhead inherent in synchronous read operations. Against full-content scanners like ssdeep (127 files/s), \DeepVis realizes a 215$\times$ speedup, validating that the header-sampling paradigm is critical for hyperscale feasibility.
 
-\noindent\textbf{Header Size Sensitivity. }The choice of 64--128 byte header sampling reflects an empirical trade-off between detection fidelity and I/O efficiency. Smaller headers ($<64$B) risk missing structural signatures embedded in ELF/PE headers, degrading detection of packed or obfuscated binaries. Conversely, larger headers ($>512$B) provide diminishing detection returns while significantly increasing I/O overhead: our measurements show throughput drops from $\approx$40k files/s at 128B to $\approx$8k files/s at 4KB. The 64--128B range captures critical metadata (magic bytes, section headers, entropy signatures) while avoiding the I/O bottleneck, achieving the optimal balance for hyperscale deployment.
-
-
-\subsubsection{Macro-benchmark}
-\noindent\textbf{Service Interference. }Figure~\ref{fig:perf_analysis}(b) illustrates the P99 latency of a co-located NGINX web server during a full system scan. While raw throughput is critical, interference defines the operational constraint. Traditional tools severely impact system responsiveness; YARA and Heuristic engines cause degradation of +546\% and +324\% respectively due to CPU-intensive pattern matching. AIDE induces a +291\% latency spike (12.1ms) due to blocking I/O operations. In contrast, \DeepVis maintains a P99 latency of 3,162$\mu$s, reflecting a negligible +2.0\% overhead compared to the baseline (3,100$\mu$s). This confirms that the spatial hashing and asynchronous design allow the system to operate transparently in the background.
-
-\noindent\textbf{Component Time Breakdown (Table~\ref{tab:overhead_breakdown}). }
-For cold-cache scans, I/O operations dominate the execution time (70--74\%). Throughput scales linearly up to 200K files ($\approx$66k/s), leveraging the Burst IOPS of the cloud storage. At 500K files, we verify a throughput drop to 20,180 files/s; this is an expected artifact of \textit{Cloud Disk Throttling}, where the sustained scanning exhausts the Burst IOPS credits, throttling performance to the disk's baseline limits. DeepVis's CPU logic (hashing, entropy) remains negligible ($<10\%$) even under this I/O saturation, confirming the architecture is I/O-bound rather than CPU-bound.
-
+\noindent\textbf{Service Interference. }Latency overhead decreases significantly compared to traditional monitors. As shown in Figure~\ref{fig:perf_latency}, AIDE induces a +291\% latency spike (12.1ms) and YARA causes +547\% degradation due to intensive CPU matching. In contrast, DeepVis maintains a P99 latency of 3,162$\mu$s, reflecting a negligible +2.0\% overhead over the baseline (3,100$\mu$s). This indicates that the asynchronous, spatial hashing design allows the scanner to operate transparently without disrupting co-located workloads.
 
 %=====================================================================
-\subsection{Impact of Spatial Dimension and Hash Saturation (RQ3, RQ6)}
+\subsection{Scalability and Saturation Analysis (RQ3, RQ6, RQ7)}
 \label{eval_saturation}
 %=====================================================================
-
 
 \begin{figure}[t]
     \centering
@@ -156,10 +132,7 @@ For cold-cache scans, I/O operations dominate the execution time (70--74\%). Thr
     \label{fig:signal_comparison}
 \end{figure}
 
-\noindent\textbf{Set-based vs. Hash-Grid Architectures.}Figure~\ref{fig:signal_comparison} compares the internal representations under an active attack scenario. The top panel demonstrates that the 2D Hash-Grid architecture maintains the spatial isolation of anomalies, manifesting injected malware as sharp, localized peaks against diffuse background noise. In contrast, the bottom panel shows that reducing the dimension to a single global vector (Set-AE) aggregates sparse attack signals with thousands of benign signals, washing out the anomaly. Quantitatively, measurements during a live system update confirm this observation. The global pooling approach fails to distinguish the attack from update noise because the background noise floor rises ($\mu_{noise}=0.35$), masking the attack signal and resulting in a negligible Signal-to-Noise Ratio (SNR) of 1.09. Conversely, the spatial isolation of \DeepVis effectively filters out diffuse noise, preserving the sharp attack spike ($0.95$) against the background ($0.35$). This yields a superior SNR of 2.71, ensuring robust detection even during high churn.
-
-
-\noindent\textbf{Resilience to Hash Saturation. }To validate the stability of the hash mapping as the file count ($N$) exceeds the grid capacity ($W \times H$), we stress-tested the system by simulating up to 10 million files on a $128 \times 128$ grid. Table~\ref{tab:hyperscale_saturation} shows that even at 100\% saturation with over 600 collisions per pixel, the system maintains \textbf{100\% Recall} on injected malware. Unlike traditional hash tables where collisions degrade performance to $O(N)$, our Max-Risk Pooling strategy ($\text{Grid}[h] = \max(\text{Grid}[h], s)$) ensures that tensor construction remains strictly $O(1)$. Crucially, even under extreme saturation, a single high-risk anomaly dominates the pixel value due to the \texttt{max()} operation. This design makes \DeepVis inherently resistant to \textit{Decoy Attacks}---an attempt to flood the grid with benign files to mask a threat---as low-score benign files cannot suppress the signal of a malicious file. Any information loss during saturation applies exclusively to benign details, while the attack signal is preserved as the dominant feature.
+\noindent\textbf{Signal Preservation. }Signal-to-Noise Ratio (SNR) improves from 1.09 (Set-AE) to 2.71 (\DeepVis) under active update scenarios. Figure~\ref{fig:signal_comparison} shows that Set-AE averages features globally, causing the attack signal to dilute into the background noise ($\mu_{noise}=0.35$). In contrast, \DeepVis maintains spatial locality, preserving the sharp attack spike ($0.95$). This is because the Hash-Grid effectively filters out diffuse noise, ensuring robust detection even during high churn.
 
 \begin{table}[t]
 \centering
@@ -181,20 +154,7 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 }
 \end{table}
 
-
-\noindent\textbf{Component Overhead. }Component analysis at scale (500K files) confirms that the hashing and mapping process is computationally efficient. The \texttt{io\_uring} based file reading consumes 70--74\% of the total scan time (Table~\ref{tab:ablation}), while hashing, tensor mapping, and CAE inference account for negligible overhead ($<3\%$). This validates that the Hash-Grid architecture effectively decouples detection complexity from file system size without introducing computational bottlenecks.
-
-
-
-
-%=====================================================================
-\subsection{Fleet-Scale Scalability (RQ7)}
-\label{eval_fleet}
-%=====================================================================
-
-A key requirement for distributed systems is demonstrating scalability across a fleet of nodes under realistic network conditions. We evaluate the capability of \DeepVis to verify a large distributed cluster by deploying 100 concurrent nodes in a public cloud environment.
-
-\noindent\textbf{Experimental Setup and Orchestration at Scale. }Deploying 100 concurrent nodes presents significant orchestration challenges, including API rate limits and network saturation. To mitigate these, we distributed the fleet across three geographically distant GCP regions: \texttt{us-central1} (Iowa), \texttt{us-east1} (South Carolina), and \texttt{us-west1} (Oregon). A hierarchical orchestration architecture was employed where a single bastion node (\texttt{deepvis-mid}) located in \texttt{asia-northeast3} (Seoul) coordinated the entire US-based fleet via GCP's internal VPC network. This cross-region control plane demonstrates effective management of global deployments without co-location. Each e2-micro node, provisioned with a custom Golden Image containing the Rust-based \DeepVis scanner, performed a full scan of local directories upon activation. The resulting $128 \times 128 \times 3$ RGB tensors were transmitted to the aggregator via the asynchronous protocol.
+\noindent\textbf{Resilience to Saturation. }Recall remains at 100\% even as file count increases to 10 million (Table~\ref{tab:hyperscale_saturation}). Despite the grid saturation reaching 100\% with over 610 collisions per pixel, the Max-Risk Pooling strategy ensures the high-risk anomaly dominates the pixel value. This indicates that \DeepVis is inherently resistant to decoy attacks, as low-score benign files cannot suppress the signal of a malicious file.
 
 \begin{figure}[t]
   \centering
@@ -210,11 +170,21 @@ A key requirement for distributed systems is demonstrating scalability across a 
   \label{fig:fleet_perf}
 \end{figure}
 
-\noindent\textbf{Linear Scalability. }Figure~\ref{fig:fleet_perf}(a) demonstrates the linear scaling capability of \DeepVis. As the fleet size scales from 1 to 100 nodes, the aggregate verification throughput grows proportionally, reaching \textbf{206,611 files/sec}. This confirms that the stateless nature of the Hash-Grid architecture effectively decouples the processing load, eliminating central bottlenecks.
+\noindent\textbf{Fleet Scalability. }Throughput scales linearly with fleet size, increasing from $\approx$2k files/s (1 Node) to 206,611 files/s (100 Nodes) as shown in Figure~\ref{fig:fleet_scale}. This confirms that the stateless architecture effectively decouples processing load. Cross-region latency remains stable (avg 4.29s) across 100 nodes (Figure~\ref{fig:fleet_heatmap}), with a minimal aggregation overhead of 548ms. Network overhead is also drastically reduced; each node transmits only 49KB, representing a 100$\times$ reduction compared to provenance-based systems.
 
-\noindent\textbf{Global Stability. }Figure~\ref{fig:fleet_perf}(b) visualizes the scan latency distribution across the 100 nodes. Despite the geographical dispersion, \DeepVis maintains a tight latency bound with an average of 4.29s and a maximum of 6.0s. Crucially, the aggregation overhead for the entire fleet was merely 548ms. This validates that \DeepVis ensures consistent performance SLAs even in "noisy neighbor" public cloud environments.
+%=====================================================================
+\subsection{Sensitivity and Ablation Analysis}
+\label{eval_sensitivity}
+%=====================================================================
 
-\noindent\textbf{Network Efficiency. }Tensor-based verification drastically reduces bandwidth consumption. Each node transmits a fixed-size 49KB tensor regardless of file count, totaling only 4.9MB for the 100-node fleet. This represents a 100$\times$ reduction in network overhead compared to provenance-based systems, which can exceed 500MB under similar workloads.
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1.0\columnwidth]{Figures/fig_page_aligned_sensitivity.pdf} 
+    \caption{\textbf{Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx$96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf{4KB Page-Aligned Sampling} strategy.}
+    \label{fig:header_sensitivity}
+\end{figure}
+
+\noindent\textbf{Impact of Scan Granularity. }Detection accuracy saturates rapidly, with Linux and Mobile platforms reaching peak Recall ($\approx$97--100\%) at a mere 96B scan size (Fig.~\ref{fig:header_sensitivity}). This indicates that minimal header data suffices for robust feature extraction. Throughput shows a general decline as scan size increases but remains stable up to 4KB. This stability stems from OS-level \textit{page prefetching}, where reading small chunks (e.g., 32B) incurs similar I/O costs to reading a full 4KB page. Consequently, we adopt a \textbf{4KB Page-Aligned Sampling} strategy to maximize information retrieval without penalizing I/O performance.
 
 \begin{table}[h]
 \centering
@@ -238,21 +208,7 @@ Throughput (files/s) & 41,228 & 55,689 & 66,118 & 20,180 \\
 }
 \end{table}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=1.0\columnwidth]{Figures/fig_page_aligned_sensitivity.pdf} 
-    \caption{\textbf{Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx$96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf{4KB Page-Aligned Sampling} strategy.}
-    \label{fig:header_sensitivity}
-\end{figure}
-
-
-
-%=====================================================================
-\subsection{Ablation Study: Component Contribution Analysis}
-\label{eval_ablation}
-%=====================================================================
-
-To quantify the contribution of each architectural decision, we evaluated system performance by selectively disabling key components. Table~\ref{tab:ablation} separates \textbf{Performance-critical} components (affecting throughput) from \textbf{Accuracy-critical} components (affecting detection).
+\noindent\textbf{Runtime Bottleneck Analysis. }I/O latency dominates the runtime, increasing from 172ms (10K files) to 18.3s (500K files) and accounting for $\approx$70.8\% to $\approx$73.8\% of the total execution time (Table~\ref{tab:overhead_breakdown}). In contrast, \textit{Tensor Update} time remains negligible, taking only 0.4s even for 500K files (1.6\%). This breakdown confirms that the computational overhead of \DeepVis is minimal compared to storage latency, identifying I/O throughput as the primary bottleneck for optimization.
 
 \begin{table}[t]
 \centering
@@ -280,12 +236,6 @@ Category & Configuration & Rate (files/s) & F1-Score \\
 }
 \end{table}
 
-\noindent\textbf{Performance Optimization. }Replacing synchronous operations with asynchronous I/O doubles the throughput from 1,455 files/s to 2,910 files/s. This indicates that eliminating kernel-user context switching overhead improves efficiency even when reading entire files. The most significant gain stems from header sampling. Limiting the read scope to the first 128 bytes increases the scan rate to 39,993 files/s, representing a 27$\times$ speedup. This confirms that minimizing I/O volume is the primary factor for achieving hyperscale monitoring capabilities.
+\noindent\textbf{Performance Optimization. }Throughput increases from 1,455 files/s (Baseline) to 2,910 files/s (Async I/O), indicating that eliminating kernel-user context switching overhead improves efficiency (Table~\ref{tab:ablation}). The most substantial gain stems from \textit{Header Sampling}, where limiting the read scope to 128B triggers a 27$\times$ surge in scan rate to 39,993 files/s. This confirms that minimizing physical I/O volume is the decisive factor for achieving hyperscale monitoring capabilities.
 
-\noindent\textbf{Detection Fidelity. }Single-channel configurations fail to achieve robust detection. Using only the R-channel (Entropy) yields an F1-score of 0.25 due to false positives from benign compressed files. The G-channel (Context) alone is insufficient as path-based features lack discriminative power for obfuscated artifacts. The B-channel (Structure) provides marginal improvement but cannot distinguish packed binaries from legitimate executables. Combining R and G without structural awareness (RG) still fails to cross the detection threshold ($L_\infty < \tau$). Only the full RGB fusion achieves the definitive F1-score of 0.96, demonstrating that \textit{multi-modal orthogonality} is essential for distinguishing malicious artifacts from legitimate system noise. This validates the design choice to encode Entropy, Context, and Structure as independent channels rather than concatenating them into a single feature vector.
-
-
-
-
-
-
+\noindent\textbf{Detection Fidelity. }F1-Score increases from 0.25 (Entropy Only) to 0.96 (RGB Fusion). Single-channel configurations prove insufficient; the R-channel yields false positives from benign compressed data, while structural features alone fail to distinguish packed binaries. Only the full \textit{RGB Fusion} achieves definitive detection, demonstrating that the orthogonality of Entropy, Context, and Structure is essential for distinguishing malicious artifacts from legitimate system noise.
