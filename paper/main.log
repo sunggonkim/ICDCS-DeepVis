@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 17:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 17:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -949,7 +949,7 @@ Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 107.
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
 Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 15
-1.
+3.
 (pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
 
 
@@ -957,29 +957,33 @@ Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 15
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-201.
+203.
 (pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
 <Figures/fig_fleet_vis.pdf, id=587, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 205.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 207.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
 
 [9 <./Figures/comparison_dilution.pdf>]
 
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-Underfull \hbox (badness 1721) in paragraph at lines 277--278
+
+
+
+Underfull \hbox (badness 1721) in paragraph at lines 279--280
 \OT1/ptm/b/n/10 Detection Fi-delity. \OT1/ptm/m/n/10 Single-channel con-fig-u-r
 a-tions fail to
  []
 
-) (./5. Related Works.tex
+
 
 [10 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>])
-(./6. Discussion and Limitation.tex
+(./5. Related Works.tex
 
-
+) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
 \OT1/ptm/m/n/10 est risk score dom-i-nates the pixel value ($\OML/cmm/m/it/10 T
 [] \OT1/cmr/m/n/10 =
@@ -1052,6 +1056,10 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
  17709 strings out of 473190
@@ -1085,7 +1093,7 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (13 pages, 1907906 bytes).
+Output written on main.pdf (13 pages, 1908513 bytes).
 PDF statistics:
  850 PDF objects out of 1000 (max. 8388607)
  323 compressed objects within 4 object streams
