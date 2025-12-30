@@ -44,15 +44,15 @@ Instead of a single global detection rate, we analyze performance across the dom
 & \textbf{Linux} & \textbf{Windows} & \textbf{Web} & \textbf{Mobile} & \textbf{(Benign)} \\
 \midrule
 ClamAV$^\dagger$ & 33.0\% & 0.0\% & 0.0\% & 0.0\% & 0.0\% \\
-YARA$^\dagger$ & 100.0\% & 0.0\% & 18.1\% & 0.0\% & 45.0\% \\
+YARA$^\dagger$ & 100.0\% & 1.9\% & 24.3\% & 0.0\% & 45.0\% \\
 AIDE$^\dagger$ & 100.0\% & 0.0\% & 0.0\% & 0.0\% & 100.0\% \\
-Set-AE & 40.0\% & 0.0\% & 0.0\% & 0.0\% & 5.0\% \\
+Set-AE & 40.0\% & 10.0\% & 6.9\% & 91.7\% & 5.0\% \\
 \midrule
 DeepVis (Ent.) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 \rowcolor{gray!10} 
 \textbf{DeepVis (Full)} & \textbf{97.1\%} & \textbf{15.8\%} & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
 \bottomrule
-\multicolumn{6}{l}{\scriptsize $^\dagger$Ref. points evaluated on Linux. (0.0\%: No detection on corresponding testbed).}
+\multicolumn{6}{l}{\scriptsize $^\dagger$Ref. points evaluated on Linux. (0.0\%: No detection via standard rules/DB).}
 \end{tabular}%
 }
 \end{table}
