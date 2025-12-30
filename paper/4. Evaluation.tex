@@ -15,15 +15,15 @@ We conduct experiments on three distinct GCP configurations to represent a spect
 \label{eval_accuracy}
 %=====================================================================
 
-\noindent\textbf{Baseline Tuning.} 
-To conduct a rigorous comparison, we evaluated both standard and optimized configurations of baseline tools. For \textbf{ClamAV (Tuned)}, we explicitly injected the MD5 hashes of all 37,000+ malware samples into a custom database (\texttt{research\_sigs.hdb}), simulating a perfect knowledge scenario. For \textbf{YARA (Tuned)}, we augmented the public ruleset with research-specific rules (\texttt{research\_rules.yar}) targeting Linux kernel modules, PHP \texttt{eval()} patterns, and Android DEX headers. These tuned baselines represent the theoretical upper bound of signature-based detection when threats are known in advance. In contrast, the proposed \DeepVis system was trained exclusively on benign artifacts to establish a normality baseline ($\tau_{L_{\infty}} = 0.52$), operating without any prior knowledge of the malware dataset.
+\noindent\textbf{Baseline and Model Configuration.} 
+Reference tools were executed with default and tuned configurations. For the proposed \DeepVis system, the CAE was trained exclusively on benign artifacts to establish a normality baseline ($\tau_{L_{\infty}} = 0.52$). To isolate the architectural benefit of this learned representation, we include \textbf{DeepVis (Heur.)} as a heuristic baseline that applies manually defined thresholds ($\tau_R=0.75, \tau_G=0.25, \tau_B=0.30$) without multi-modal CAE fusion, demonstrating the performance achievable through simple heuristic-based rules.
 
 %---------------------------------------------------------------------
 % TABLE III: Unified Performance (Extended)
 %---------------------------------------------------------------------
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Comparison of \DeepVis against Standard and Tuned Baselines. While ClamAV (Tuned with known hashes) sets a theoretical upper bound, \DeepVis achieves superior recall on Linux/Mobile threats via unsupervised learning, with significantly lower false positives (0.3\%) than heuristic rules (YARA: 31.0\%).}
+\caption{\textbf{Unified Detection Performance.} Comparison of \DeepVis against Standard and Tuned Baselines. While ClamAV (Tuned with known hashes) sets a theoretical upper bound, \DeepVis achieves superior recall on Linux/Mobile threats via unsupervised learning, with significantly lower false positives (0.3\%) than heuristic rules (YARA: 31.0\%) or the manual heuristic baseline (DeepVis (Heur.): 0.3\%*).}
 \label{tab:unified_detection}
 \resizebox{0.9\textwidth}{!}{%
 \begin{tabular}{l cccc c}
@@ -38,10 +38,11 @@ YARA (Tuned)$^\ddagger$ & 24.6\% & 2.6\% & 68.1\% & 79.2\% & 31.0\% \\
 AIDE & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & 100.0\% \\
 Set-AE & 40.0\% & 10.0\% & 6.9\% & 91.7\% & 5.0\% \\
 \midrule
+DeepVis (Heur.) & 97.0\% & 16.1\% & 89.6\% & 100.0\% & 0.3\%* \\
 \rowcolor{gray!10} 
-\textbf{\DeepVis (Full)} & \textbf{97.1\%} & 15.8\% & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
+\textbf{DeepVis (Full)} & \textbf{97.1\%} & \textbf{15.8\%} & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
 \bottomrule
-\multicolumn{6}{l}{\scriptsize $^\dagger$Using custom DB of known hashes. $^\ddagger$Using custom rules for LKM/Webshells.}
+\multicolumn{6}{l}{\scriptsize $^\dagger$Using custom DB of known hashes. $^\ddagger$Using custom rules for LKM/Webshells. *Manual Thresholds.}
 \end{tabular}%
 }
 \end{table}
@@ -136,7 +137,8 @@ The primary architectural claim of \DeepVis is the decoupling of verification la
     \label{fig:signal_comparison}
 \end{figure}
 
-\noindent\textbf{Impact of Spatial Dimension. }Figure~\ref{fig:signal_comparison} compares the internal representations under an active attack scenario. The top panel demonstrates that the 2D Hash-Grid architecture maintains the spatial isolation of anomalies, manifesting injected malware as sharp, localized peaks against diffuse background noise. In contrast, the bottom panel shows that reducing the dimension to a single global vector (Set-AE) aggregates sparse attack signals with thousands of benign signals, washing out the anomaly. Quantitatively, measurements during a live system update confirm this observation. The global pooling approach fails to distinguish the attack from update noise, resulting in a negligible Signal-to-Noise Ratio (SNR) of 1.09. Conversely, the spatial isolation of \DeepVis yields a superior SNR of 2.71, ensuring robust detection even during high churn.
+\noindent\textbf{Impact of Spatial Dimension. }Figure~\ref{fig:signal_comparison} compares the internal representations under an active attack scenario. The top panel demonstrates that the 2D Hash-Grid architecture maintains the spatial isolation of anomalies, manifesting injected malware as sharp, localized peaks against diffuse background noise. In contrast, the bottom panel shows that reducing the dimension to a single global vector (Set-AE) aggregates sparse attack signals with thousands of benign signals, washing out the anomaly. Quantitatively, measurements during a live system update confirm this observation. The global pooling approach fails to distinguish the attack from update noise because the background noise floor rises ($\mu_{noise}=0.35$), masking the attack signal and resulting in a negligible Signal-to-Noise Ratio (SNR) of 1.09. Conversely, the spatial isolation of \DeepVis effectively filters out diffuse noise, preserving the sharp attack spike ($0.95$) against the background ($0.35$). This yields a superior SNR of 2.71, ensuring robust detection even during high churn.
+
 
 \noindent\textbf{Resilience to Hash Saturation. }To validate the stability of the hash mapping as the file count ($N$) exceeds the grid capacity ($W \times H$), we stress-tested the system by injecting up to 204,000 files into the $128 \times 128$ grid. Table~\ref{tab:hyperscale_saturation} shows that even at 99.99\% saturation (high collision state), the system maintains stability. Unlike traditional hash tables where collisions degrade performance to $O(N)$, our Max-Risk Pooling strategy ($\text{Grid}[h] = \max(\text{Grid}[h], s)$) ensures that tensor construction remains strictly $O(1)$. Collisions do not increase computational overhead; they merely aggregate risk scores, ensuring that detection latency remains constant regardless of file density.
 
