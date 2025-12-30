@@ -240,8 +240,8 @@ Throughput (files/s) & 41,228 & 55,689 & 66,118 & 20,180 \\
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.95\linewidth]{Figures/fig_header_sensitivity_extended.pdf} 
-    \caption{\textbf{Extended Header Sensitivity (Page-Aligned Sampling).} Throughput remains stable ($\approx 28\text{--}33$k/s) up to 4KB, confirming that \DeepVis efficiently leverages OS Page Cache prefetching. Significant I/O degradation begins at 8KB+ (Multi-Page Reads), validating the 4KB-aligned ingestion strategy as the optimal throughput boundary.}
+    \includegraphics[width=0.95\linewidth]{Figures/fig_page_aligned_sensitivity.pdf} 
+    \caption{\textbf{Effect of Scan Granularity (Page-Aligned Sampling).} While detection accuracy ($F_1$-score) saturates at $\approx$96B, throughput remains stable up to 4KB due to OS page prefetching. We therefore adopt a \textbf{4KB Page-Aligned Sampling} strategy, maximizing feature extraction without incurring additional I/O penalty compared to smaller headers. Throughput degradation begins at 8KB+ due to multi-page I/O.}
     \label{fig:header_sensitivity}
 \end{figure}
 
