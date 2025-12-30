@@ -21,7 +21,7 @@ To conduct a rigorous comparison, we evaluated both standard and optimized confi
 %---------------------------------------------------------------------
 % TABLE III: Unified Performance (Extended)
 %---------------------------------------------------------------------
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \caption{\textbf{Unified Detection Performance.} Comparison of \DeepVis against Standard and Tuned Baselines. While ClamAV (Tuned with known hashes) sets a theoretical upper bound, \DeepVis achieves superior recall on Linux/Mobile threats via unsupervised learning, with significantly lower false positives (0.3\%) than heuristic rules (YARA: 31.0\%).}
 \label{tab:unified_detection}
@@ -44,7 +44,7 @@ Set-AE & 40.0\% & 10.0\% & 6.9\% & 91.7\% & 5.0\% \\
 \multicolumn{6}{l}{\scriptsize $^\dagger$Using custom DB of known hashes. $^\ddagger$Using custom rules for LKM/Webshells.}
 \end{tabular}%
 }
-\end{table*}
+\end{table}
 
 \noindent\textbf{Platform-Specific Analysis.}
 Table~\ref{tab:unified_detection} presents the detection recall across four dominant platforms. ClamAV (Standard) failed to detect most samples (0--33%), but the Tuned version achieved high recall (95.4--96.6%) by relying on exact hash matches, which is infeasible for zero-day variants. YARA (Tuned) improved detection on Web (68.1\%) and Mobile (79.2\%) but incurred a high false positive rate (31.0\%) due to aggressive heuristic rules. 
