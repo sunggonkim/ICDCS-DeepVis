@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 08:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 09:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -914,10 +914,12 @@ LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 
 [6 <./Figures/Design/CNN_Arch.pdf>]
 
+
 LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
-(Font)              using `OT1/ptm/m/it' instead on input line 35.
+(Font)              using `OT1/ptm/m/it' instead on input line 38.
 
 
+Underfull \vbox (badness 1577) has occurred while \output is active []
 
 
 
@@ -926,12 +928,12 @@ LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
 Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 1
-11.
+14.
 (pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
 <Figures/fig_final_latency.pdf, id=473, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
-Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 115.
+Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 118.
 
 (pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
@@ -940,37 +942,30 @@ Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 115.
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
 Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 14
-0.
+3.
 (pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
 
 
 [8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
 gures/comparison_dilution.pdf>]
+
 <Figures/fig_fleet_scalability.pdf, id=637, 498.67555pt x 241.45416pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-186.
+189.
 (pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
 <Figures/fig_fleet_vis.pdf, id=638, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 190.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 193.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
-
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 
 
 [9 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>])
 (./5. Related Works.tex
 
 ) (./6. Discussion and Limitation.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [10]
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
@@ -978,9 +973,9 @@ Underfull \hbox (badness 1701) in paragraph at lines 10--11
 [] \OT1/cmr/m/n/10 =
  []
 
-) (./7. Conclusion.tex)
+) (./7. Conclusion.tex
 
-(./main.bbl
+) (./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1015,7 +1010,7 @@ L3 programming layer <2025-01-18>
 Here is how much of TeX's memory you used:
  17706 strings out of 473190
  382904 string characters out of 5715800
- 792737 words of memory out of 5000000
+ 790737 words of memory out of 5000000
  40596 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1044,7 +1039,7 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1900646 bytes).
+Output written on main.pdf (12 pages, 1901482 bytes).
 PDF statistics:
  846 PDF objects out of 1000 (max. 8388607)
  320 compressed objects within 4 object streams

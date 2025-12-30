@@ -16,6 +16,9 @@ We conduct experiments on three distinct GCP configurations to represent a spect
 \noindent\textbf{Threshold Learning.} 
 We employed a maximum-margin approach to determine detection boundaries. The thresholds were learned from the benign baseline as $\tau_c = \max(\text{Benign}_c) + 0.1$, ensuring a 0\% False Positive Rate during calibration. This resulted in $\tau_R=0.75$, $\tau_G=0.25$, and $\tau_B=0.30$.
 
+\noindent\textbf{Baseline Configuration.} 
+To represent realistic deployment scenarios, reference tools were run with default configurations. ClamAV used the standard virus database without custom signatures. YARA employed a minimal rule set matching common malware keywords and ELF headers. Neither tool was restricted to executable files, reflecting typical out-of-the-box operator usage. To isolate the learning benefit of our CAE, we include ``DeepVis (Entropy)'' as a fair header-only heuristic baseline that applies only the R-channel threshold without the learned multi-modal fusion.
+
 %=====================================================================
 \subsection{Detection Accuracy and Feature Orthogonality (RQ1)}
 \label{eval_accuracy}
