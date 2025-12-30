@@ -179,7 +179,8 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 \end{table}
 
 
-\noindent\textbf{Component Overhead. }Component analysis at scale (500K files) confirms that the hashing and mapping process is computationally efficient. The \texttt{io\_uring} based file reading consumes 90.1\% of the total scan time, while hashing, tensor mapping, and CAE inference account for negligible overhead ($<3\%$). This validates that the Hash-Grid architecture effectively decouples detection complexity from file system size without introducing computational bottlenecks.
+\noindent\textbf{Component Overhead. }Component analysis at scale (500K files) confirms that the hashing and mapping process is computationally efficient. The \texttt{io\_uring} based file reading consumes 70--74\% of the total scan time (Table~\ref{tab:ablation}), while hashing, tensor mapping, and CAE inference account for negligible overhead ($<3\%$). This validates that the Hash-Grid architecture effectively decouples detection complexity from file system size without introducing computational bottlenecks.
+
 
 
 
