@@ -177,7 +177,7 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 \label{eval_churn}
 %=====================================================================
 
-\begin{figure}[t]
+\begin{figure}[t!]
     \centering
     \subfloat[Real Fleet Error Stability]{
         \includegraphics[width=0.48\linewidth]{Figures/fig_churn_hist.pdf}
@@ -204,11 +204,12 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 \end{itemize}
 
 %=====================================================================
+% Removed \clearpage to avoid whitespace
 \subsection{Sensitivity and Ablation Analysis}
 \label{eval_sensitivity}
 %=====================================================================
 
-\begin{figure}[t]
+\begin{figure}[t!]
     \centering
     \includegraphics[width=1.0\columnwidth]{Figures/fig_page_aligned_sensitivity.pdf} 
     \caption{\textbf{Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx$96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf{4KB Page-Aligned Sampling} strategy.}
@@ -217,7 +218,7 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 
 \noindent\textbf{Impact of Scan Granularity. }Detection accuracy saturates rapidly, with Linux and Mobile platforms reaching peak Recall ($\approx$97--100\%) at a mere 96B scan size (Fig.~\ref{fig:header_sensitivity}). This indicates that minimal header data suffices for robust feature extraction. Throughput shows a general decline as scan size increases but remains stable up to 4KB. This stability stems from OS-level \textit{page prefetching}, where reading small chunks (e.g., 32B) incurs similar I/O costs to reading a full 4KB page. Consequently, we adopt a \textbf{4KB Page-Aligned Sampling} strategy to maximize information retrieval without penalizing I/O performance.
 
-\begin{table}[h]
+\begin{table}[!ht]
 \centering
 \caption{\textbf{Component Time Breakdown (Cold Cache).} I/O dominates ($\approx$70--74\%), confirming that \DeepVis computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}
 \label{tab:overhead_breakdown}
@@ -241,7 +242,7 @@ Throughput (files/s) & 41,228 & 55,689 & 66,118 & 20,180 \\
 
 \noindent\textbf{Runtime Bottleneck Analysis. }I/O latency dominates the runtime, increasing from 172ms (10K files) to 18.3s (500K files) and accounting for $\approx$70.8\% to $\approx$73.8\% of the total execution time (Table~\ref{tab:overhead_breakdown}). In contrast, \textit{Tensor Update} time remains negligible, taking only 0.4s even for 500K files (1.6\%). This breakdown confirms that the computational overhead of \DeepVis is minimal compared to storage latency, identifying I/O throughput as the primary bottleneck for optimization.
 
-\begin{table}[t]
+\begin{table}[!ht]
 \centering
 \caption{Component-wise Ablation Study. Performance components (I/O, Sampling) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}
 \label{tab:ablation}
