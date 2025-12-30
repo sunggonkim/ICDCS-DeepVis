@@ -139,7 +139,8 @@ ssdeep-Header & 3,417/s & 11.7$\times$ slower & Sync (Rolling Hash) \\
 \subsubsection{Macro-benchmark}
 \noindent\textbf{Service Interference. }Figure~\ref{fig:perf_analysis}(b) illustrates the P99 latency of a co-located NGINX web server during a full system scan. While raw throughput is critical, interference defines the operational constraint. Traditional tools severely impact system responsiveness; YARA and Heuristic engines cause degradation of +546\% and +324\% respectively due to CPU-intensive pattern matching. AIDE induces a +291\% latency spike (12.1ms) due to blocking I/O operations. In contrast, \DeepVis maintains a P99 latency of 3,162$\mu$s, reflecting a negligible +2.0\% overhead compared to the baseline (3,100$\mu$s). This confirms that the spatial hashing and asynchronous design allow the system to operate transparently in the background.
 
-\noindent\textbf{CPU Resource Profile. }Resource contention analysis explains the latency results. Legacy FIMs and scanners such as Osquery and AIDE saturate the Global CPU at near 100\%, forcing the OS scheduler to throttle the web server. DeepVis, however, maintains a CPU profile of 11.2\%, nearly identical to the baseline (9.8\%). Unlike runtime monitors (e.g., Falco) which incur constant context-switching overhead (+58.3\% latency degradation), \DeepVis utilizes lightweight SIMD optimizations to ensure security monitoring remains strictly orthogonal to the primary service performance.
+\noindent\textbf{Component Time Breakdown (Table~\ref{tab:overhead_breakdown}). }
+For cold-cache scans, I/O operations dominate the execution time (70--74\%). Throughput scales linearly up to 200K files ($\approx$66k/s), leveraging the Burst IOPS of the cloud storage. At 500K files, we verify a throughput drop to 20,180 files/s; this is an expected artifact of \textit{Cloud Disk Throttling}, where the sustained scanning exhausts the Burst IOPS credits, throttling performance to the disk's baseline limits. DeepVis's CPU logic (hashing, entropy) remains negligible ($<10\%$) even under this I/O saturation, confirming the architecture is I/O-bound rather than CPU-bound.
 
 
 %=====================================================================
@@ -237,7 +238,12 @@ Throughput (files/s) & 41,228 & 55,689 & 66,118 & 20,180 \\
 }
 \end{table}
 
-\noindent\textbf{Computational Overhead Analysis. }Table~\ref{tab:overhead_breakdown} presents the execution time breakdown across varying file counts ranging from 10K to 500K under a cold cache scenario. I/O operations dominate the runtime, consuming approximately 90\% of the total execution time at scale (500K files). Conversely, computational tasks, including hashing, entropy calculation, and tensor updates, collectively account for less than 3.1\% of the total time. This indicates that the computational overhead of the hash-grid mapping and feature extraction remains negligible, confirming that the performance of \DeepVis is limited effectively by storage bandwidth rather than CPU resources.
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figures/fig_header_sensitivity.pdf} 
+    \caption{\textbf{Header Size Sensitivity.} Verified with Cold Cache I/O. Throughput drops significantly ($28$k/s) for headers $>512$B due to I/O bottlenecks. The range 64--128B represents the optimal trade-off, achieving maximum throughput ($\approx 33$k/s) while capturing sufficient entropy for high F1-scores ($>$0.9).}
+    \label{fig:header_sensitivity}
+\end{figure}
 
 
 

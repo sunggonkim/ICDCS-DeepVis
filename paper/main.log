@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 17:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  30 DEC 2025 18:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -949,39 +949,46 @@ Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 107.
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
 Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 15
-3.
+4.
 (pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
 
 
-<Figures/fig_fleet_scalability.pdf, id=586, 498.67555pt x 241.45416pt>
-File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
-<use Figures/fig_fleet_scalability.pdf>
-Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-203.
-(pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
-<Figures/fig_fleet_vis.pdf, id=587, 476.12589pt x 355.65508pt>
-File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
-<use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 207.
-(pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
 
 
 [9 <./Figures/comparison_dilution.pdf>]
+<Figures/fig_fleet_scalability.pdf, id=640, 498.67555pt x 241.45416pt>
+File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
+<use Figures/fig_fleet_scalability.pdf>
+Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
+204.
+(pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
+<Figures/fig_fleet_vis.pdf, id=641, 476.12589pt x 355.65508pt>
+File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
+<use Figures/fig_fleet_vis.pdf>
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 208.
+(pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+<Figures/fig_header_sensitivity.pdf, id=642, 433.62pt x 289.08pt>
+File: Figures/fig_header_sensitivity.pdf Graphic file (type pdf)
+<use Figures/fig_header_sensitivity.pdf>
+Package pdftex.def Info: Figures/fig_header_sensitivity.pdf  used on input line
+ 243.
+(pdftex.def)             Requested size: 201.60077pt x 134.40315pt.
 
 
 
-Underfull \hbox (badness 1721) in paragraph at lines 279--280
+Underfull \hbox (badness 1721) in paragraph at lines 285--286
 \OT1/ptm/b/n/10 Detection Fi-delity. \OT1/ptm/m/n/10 Single-channel con-fig-u-r
 a-tions fail to
  []
 
 
 
-[10 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>])
-(./5. Related Works.tex
+[10 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figu
+res/fig_header_sensitivity.pdf>]) (./5. Related Works.tex
 
 ) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
@@ -991,9 +998,9 @@ Underfull \hbox (badness 1701) in paragraph at lines 10--11
 
 
 
-[11]) (./7. Conclusion.tex) (./main.bbl
+[11]) (./7. Conclusion.tex)
 
-
+(./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1056,16 +1063,12 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 17709 strings out of 473190
- 382939 string characters out of 5715800
- 791712 words of memory out of 5000000
- 40599 multiletter control sequences out of 15000+600000
+ 17717 strings out of 473190
+ 383273 string characters out of 5715800
+ 791737 words of memory out of 5000000
+ 40607 multiletter control sequences out of 15000+600000
  607110 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,91p,1420b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1093,10 +1096,10 @@ w/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (13 pages, 1908513 bytes).
+Output written on main.pdf (13 pages, 1929853 bytes).
 PDF statistics:
- 850 PDF objects out of 1000 (max. 8388607)
- 323 compressed objects within 4 object streams
+ 930 PDF objects out of 1000 (max. 8388607)
+ 332 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
- 93 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 98 words of extra memory for PDF output out of 10000 (max. 10000000)
 

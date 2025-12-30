@@ -109,12 +109,12 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{10}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{10}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{10}{}{figure.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{10}{}\protected@file@percent }
-\newlabel{tab:overhead_breakdown}{{VII}{10}{}{table.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Component-wise Ablation Study. Performance components (I/O, Sampling) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}}{10}{}\protected@file@percent }
-\newlabel{tab:ablation}{{VIII}{10}{}{table.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Ablation Study: Component Contribution Analysis}{10}{}\protected@file@percent }
 \newlabel{eval_ablation}{{\mbox  {IV-F}}{10}{}{subsection.4.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{10}{}\protected@file@percent }
+\newlabel{tab:overhead_breakdown}{{VII}{10}{}{table.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {Header Size Sensitivity.} Verified with Cold Cache I/O. Throughput drops significantly ($28$k/s) for headers $>512$B due to I/O bottlenecks. The range 64--128B represents the optimal trade-off, achieving maximum throughput ($\approx 33$k/s) while capturing sufficient entropy for high F1-scores ($>$0.9).}}{10}{}\protected@file@percent }
+\newlabel{fig:header_sensitivity}{{10}{10}{}{figure.10}{}}
 \citation{tripwire,aide,samhain}
 \citation{unicorn,cheng2024kairos}
 \citation{ossec,falco}
@@ -132,6 +132,8 @@
 \citation{akcay2018ganomaly}
 \citation{zong2018deep}
 \citation{su2019robust,xu2018unsupervised}
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Component-wise Ablation Study. Performance components (I/O, Sampling) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}}{11}{}\protected@file@percent }
+\newlabel{tab:ablation}{{VIII}{11}{}{table.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{11}{}\protected@file@percent }
 \newlabel{sec:related_work}{{V}{11}{}{section.5}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
@@ -159,12 +161,12 @@
 \bibcite{nataraj2011malware}{19}
 \bibcite{conti2008visual}{20}
 \bibcite{aldini2024image}{21}
-\bibcite{lyda2007entropy}{22}
-\bibcite{ling2024wolf}{23}
-\bibcite{uetz2024detecting}{24}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{12}{}\protected@file@percent }
 \newlabel{Conclusion}{{VII}{12}{}{section.7}{}}
 \@writefile{toc}{\contentsline {section}{References}{12}{}\protected@file@percent }
+\bibcite{lyda2007entropy}{22}
+\bibcite{ling2024wolf}{23}
+\bibcite{uetz2024detecting}{24}
 \bibcite{du2017deeplog}{25}
 \bibcite{mirsky2018kitsune}{26}
 \bibcite{ruff2018deep}{27}
