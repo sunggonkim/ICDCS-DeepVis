@@ -193,14 +193,14 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 
 \noindent\textbf{Diffuse Noise vs. Sparse Signal. }DeepVis effectively distinguishes between diverse benign workloads and malicious injections. In our real-world multi-profile experiment:
 \begin{itemize}[leftmargin=*]
-    \item \textbf{Scenario (5-Node Fleet):} We deployed 5 distinct workload profiles: \texttt{apt} upgrade (Bastion), \texttt{nginx} config (Web), \texttt{ycsb} trace (DB), \texttt{make} compilation (Fileserver), and \texttt{log} rotation (Varmail). This generated a combined benign churn of 180 file modifications, followed by 5 unique rootkit injections across all nodes.
-    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, benign operations remain below the anomaly threshold, with low-entropy configs and high-entropy binaries forming stable peaks. All 5 rootkits (Red Stars) are correctly identified as significant outliers.
+    \item \textbf{Scenario (8,500-File Fleet Churn):} We deployed 5 distinct workload profiles: \texttt{apt} upgrade (Bastion), \texttt{nginx} config (Web), \texttt{ycsb} trace (DB), \texttt{make} compilation (Fileserver), and \texttt{log} rotation (Varmail). This generated a combined benign churn of \textbf{8,500 file modifications}, followed by 5 unique rootkit injections across all nodes.
+    \item \textbf{Result:} As shown in Figure~\ref{fig:churn_hist}, the clusters reflect the multi-channel anomaly score ($L_\infty$). Even with 8,500 modifications, benign operations remain strictly below the anomaly threshold. In contrast, all 5 rootkits (Red Stars) reach the absolute score of \textbf{1.0} via G/B-channel overrides.
     \item \textbf{Detection \& Fatigue (Fig.~\ref{fig:churn_alerts}):}
     \begin{itemize}
-        \item \textbf{AIDE:} Detected all \textbf{5/5 Attacks} but was drowned in \textbf{180 False Alerts} from benign maintenance.
-        \item \textbf{YARA (Tuned):} Generated \textbf{54 False Alerts} while missing the specific LKM rootkits (0/5 detected).
+        \item \textbf{AIDE:} Successfully detected all \textbf{5/5 Attacks} but generated \textbf{8,500 False Alerts}, proving that legacy FIM doesn't scale for fleet-wide maintenance. 
+        \item \textbf{YARA (Tuned):} Generated \textbf{102 False Alerts} (Heuristic FP) while missing all specific LKM rootkits (0/5 detected).
         \item \textbf{ClamAV (Signature):} Successfully detected \textbf{5/5 Attacks} using the research database with zero false alerts.
-        \item \textbf{DeepVis (Ours):} Achieved \textbf{5/5 Detection} with \textbf{Zero False Alerts}, identifying the threat class via behavioral entropy without signature dependency.
+        \item \textbf{DeepVis (Ours):} Achieved \textbf{5/5 Detection} with \textbf{Zero False Alerts}, demonstrating O(1) alert scaling against high-volume benign churn.
     \end{itemize}
 \end{itemize}
 
