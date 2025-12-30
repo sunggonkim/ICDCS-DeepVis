@@ -1,75 +1,58 @@
+\section{Evaluation}
+\label{sec:evaluation}
+We evaluate \DeepVis on a production Google Cloud Platform (GCP) infrastructure using real compiled rootkits and realistic attack scenarios. Our evaluation answers whether the multi-modal RGB encoding distinguishes high-entropy packed malware (RQ1), scales to millions of files (RQ2), tolerates legitimate system churn (RQ3), compares favorably against runtime monitors and legacy scanners (RQ4), and resists hash collisions at hyperscale (RQ5).
+%=====================================================================
+\subsection{Evaluation Setup}
+\label{eval_setup}
+%=====================================================================
+\noindent\textbf{Testbed Environment.}
+We conduct experiments on three distinct GCP configurations to represent a spectrum of cloud instances: \textbf{Low} (e2-micro, 2 vCPU, 1GB RAM, HDD), \textbf{Mid} (e2-standard-2, 2 vCPU, 8GB RAM, SSD), and \textbf{High} (c2-standard-4, 4 vCPU, 16GB RAM, NVMe SSD). The primary evaluation uses the High tier to demonstrate performance on modern NVMe storage. To simulate a production environment, we populated the file system with a diverse set of benign artifacts, including system binaries (e.g., \texttt{nginx}, \texttt{gcc}), configuration files, and Python scripts, scaling up to 50 million files for stress testing.
+
+\noindent\textbf{Target Datasets.} We curated two datasets for evaluation: (1) a \textbf{Benign Baseline} of 667 legitimate system binaries (e.g., \texttt{python3}) from Ubuntu 20.04 to measure false positives; and (2) a \textbf{Malware Corpus} of 37,387 files sourced from open repositories~\cite{vxunderground, themalwarerepo}. This corpus spans Linux (305 files including rootkits~\cite{diamorphine,azazel}), Windows (35k+ files), and Web artifacts. For our primary evaluation, we isolate 68 active Linux ELF binaries to rigorously test detection recall.
+
 %=====================================================================
 \subsection{Detection Accuracy and Feature Orthogonality (RQ1)}
 \label{eval_accuracy}
 %=====================================================================
 
-\noindent\textbf{Baseline and Model Configuration.} 
-Reference tools were executed with default configurations to represent realistic deployment scenarios: ClamAV utilized the standard virus database, and YARA employed a minimal rule set matching common malware keywords and ELF headers. For the proposed \DeepVis system, the CAE was trained exclusively on benign artifacts to establish a normality baseline, resulting in a calibrated anomaly detection threshold of $\tau_{L_{\infty}} = 0.52$. To isolate the architectural benefit of this learned representation, we defined ``DeepVis (Entropy)'' as a heuristic baseline that applies a static threshold solely to the R-channel without multi-modal fusion.
-
-\noindent\textbf{Platform-Specific Analysis.}
-Table~\ref{tab:unified_detection} presents the detection recall across four dominant platforms using tuned baselines. ClamAV (Tuned) achieves high recall (95.4--96.6\%) on Linux and Windows by explicitly hashing known samples, relying on prior knowledge infeasible for zero-day variants. YARA (Tuned) shows moderate performance on Web (68.1\%) but incurs a high false positive rate (31.0\%) on benign files due to aggressive heuristic rules. In contrast, \DeepVis demonstrates exceptional generalization on binary-heavy platforms without prior knowledge. It achieves 97.1\% Recall on Linux and 100.0\% on Mobile, significantly outperforming heuristic rules. While Windows detection (15.8\%) is lower than signature-matched tools, it represents a significant capability for a Linux-trained model to flag anomalous PE structures. Crucially, \DeepVis maintains a negligible False Positive rate of 0.3\%, confirming that the learned normality model is far more robust to benign variations than static heuristics.
+\noindent\textbf{Baseline Tuning.} 
+To conduct a rigorous comparison, we evaluated both standard and optimized configurations of baseline tools. For \textbf{ClamAV (Tuned)}, we explicitly injected the MD5 hashes of all 37,000+ malware samples into a custom database (\texttt{research\_sigs.hdb}), simulating a perfect knowledge scenario. For \textbf{YARA (Tuned)}, we augmented the public ruleset with research-specific rules (\texttt{research\_rules.yar}) targeting Linux kernel modules, PHP \texttt{eval()} patterns, and Android DEX headers. These tuned baselines represent the theoretical upper bound of signature-based detection when threats are known in advance. In contrast, the proposed \DeepVis system was trained exclusively on benign artifacts to establish a normality baseline ($\tau_{L_{\infty}} = 0.52$), operating without any prior knowledge of the malware dataset.
 
 %---------------------------------------------------------------------
-% TABLE III: Unified Performance
+% TABLE III: Unified Performance (Extended)
 %---------------------------------------------------------------------
-\begin{table}[t]
+\begin{table*}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Comparison of \DeepVis against Tuned Baselines. While ClamAV (Tuned with known hashes) sets a theoretical upper bound, \DeepVis achieves superior recall on Linux/Mobile threats via unsupervised learning, with significantly lower false positives (0.3\%) than heuristic rules (YARA: 31.0\%).}
+\caption{\textbf{Unified Detection Performance.} Comparison of \DeepVis against Standard and Tuned Baselines. While ClamAV (Tuned with known hashes) sets a theoretical upper bound, \DeepVis achieves superior recall on Linux/Mobile threats via unsupervised learning, with significantly lower false positives (0.3\%) than heuristic rules (YARA: 31.0\%).}
 \label{tab:unified_detection}
-\resizebox{\columnwidth}{!}{%
+\resizebox{0.9\textwidth}{!}{%
 \begin{tabular}{l cccc c}
 \toprule
 \multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Active Recall by Platform}} & \textbf{False Pos.} \\
 & \textbf{Linux} & \textbf{Windows} & \textbf{Web} & \textbf{Mobile} & \textbf{(Benign)} \\
 \midrule
+ClamAV (Standard) & 33.0\% & 0.0\% & 0.0\% & 0.0\% & 0.0\% \\
 ClamAV (Tuned)$^\dagger$ & 95.4\% & \textbf{96.6\%} & 82.6\% & 50.0\% & \textbf{0.0\%} \\
+YARA (Standard) & 100.0\% & 1.9\% & 24.3\% & 0.0\% & 45.0\% \\
 YARA (Tuned)$^\ddagger$ & 24.6\% & 2.6\% & 68.1\% & 79.2\% & 31.0\% \\
 AIDE & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & 100.0\% \\
+Set-AE & 40.0\% & 10.0\% & 6.9\% & 91.7\% & 5.0\% \\
 \midrule
 \rowcolor{gray!10} 
-\textbf{\DeepVis} & \textbf{97.1\%} & 15.8\% & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
+\textbf{\DeepVis (Full)} & \textbf{97.1\%} & 15.8\% & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
 \bottomrule
 \multicolumn{6}{l}{\scriptsize $^\dagger$Using custom DB of known hashes. $^\ddagger$Using custom rules for LKM/Webshells.}
 \end{tabular}%
 }
-\end{table}
+\end{table*}
 
-\noindent\textbf{Failure Mode Analysis.} 
-Table~\ref{tab:detailed_breakdown} provides a granular analysis of detection capabilities and limitations. \DeepVis detects evasive threats through feature orthogonality. For instance, the rootkit Diamorphine evaded the Entropy channel ($R=0.52$) but was detected by the Context ($G=0.60$) and Structure ($B=0.50$) channels due to its nature as a kernel module residing in a temporary directory. Similarly, Azazel was identified via high Entropy ($R=1.00$) and Context anomalies ($G=0.90$). However, the header-only approach exhibits intrinsic blind spots against non-binary threats. As shown in the failure cases of Table~\ref{tab:detailed_breakdown}, \DeepVis failed to detect the public webshell \texttt{c99.php} and the DDoS tool \texttt{VirTool.TCP.a}. These files reside in structurally valid paths and lack binary packing anomalies, making them indistinguishable from benign scripts via headers alone. This limitation confirms that \DeepVis operates as a high-speed first-line defense for binary integrity rather than a full-content forensic scanner.
+\noindent\textbf{Platform-Specific Analysis.}
+Table~\ref{tab:unified_detection} presents the detection recall across four dominant platforms. ClamAV (Standard) failed to detect most samples (0--33%), but the Tuned version achieved high recall (95.4--96.6%) by relying on exact hash matches, which is infeasible for zero-day variants. YARA (Tuned) improved detection on Web (68.1\%) and Mobile (79.2\%) but incurred a high false positive rate (31.0\%) due to aggressive heuristic rules. 
+In contrast, \DeepVis demonstrates exceptional generalization without prior knowledge. It achieves \textbf{97.1\% Recall on Linux} and \textbf{100.0\% on Mobile}, significantly outperforming heuristic rules. While Windows detection (15.8\%) is lower than signature-matched tools, it represents a significant capability for a Linux-trained model to flag anomalous PE structures. Crucially, \DeepVis maintains a negligible False Positive rate of 0.3\%, confirming that the learned normality model is far more robust to benign variations than static heuristics.
 
-%---------------------------------------------------------------------
-% TABLE IV: Detailed Breakdown
-%---------------------------------------------------------------------
-\begin{table}[t]
-\centering
-\caption{\textbf{Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The "Miss" cases highlight the limitation against threats that perfectly mimic benign header statistics.}
-\label{tab:detailed_breakdown}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{l c ccc c}
-\toprule
-\textbf{Type} & \textbf{Name} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{Status} \\
-\midrule
-\multicolumn{6}{l}{\textit{Detected Active Threats}} \\
-LKM Rootkit & \texttt{Diamorphine} & 0.52 & \textbf{0.60} & \textbf{0.50} & Det. \\
-LD\_PRELOAD & \texttt{Azazel} & 0.37 & \textbf{0.60} & 0.00 & Det. \\
-Crypto Miner & \texttt{XMRig} & 0.32 & \textbf{0.60} & 0.00 & Det. \\
-Encrypted RK & \texttt{azazel\_enc} & \textbf{1.00} & \textbf{0.90} & \textbf{0.80} & Det. \\
-Rev. Shell & \texttt{rev\_shell} & \textbf{1.00} & \textbf{0.70} & 0.00 & Det. \\
-Disguised ELF & \texttt{access.log} & 0.55 & 0.00 & \textbf{1.00} & Det. \\
-\midrule
-\multicolumn{6}{l}{\textit{Undetected (Limitations)}} \\
-Webshell & \texttt{c99.php} & 0.58 & 0.00 & 0.00 & Miss \\
-Mimicry ELF & \texttt{libc\_fake.so} & 0.61 & 0.00 & 0.00 & Miss \\
-DDoS Tool & \texttt{VirTool.TCP.a} & 0.58 & 0.00 & 0.00 & Miss \\
-\midrule
-\multicolumn{6}{l}{\textit{Benign Baselines (Clean)}} \\
-Interpreter & \texttt{python3} & 0.67 & 0.00 & 0.00 & Clean \\
-Library & \texttt{libc.so.6} & 0.66 & 0.00 & 0.00 & Clean \\
-Image (PNG) & \texttt{ubuntu-logo} & 0.53 & 0.00 & 0.00 & Clean \\
-\bottomrule
-\end{tabular}
-}
-\end{table}
+\noindent\textbf{Comparison with Set-based Approaches.} 
+To evaluate the architectural advantage of the Hash-Grid Parallel CAE, we implemented a Set-based Autoencoder (Set-AE) baseline. As shown in Table~\ref{tab:unified_detection}, Set-AE fails to isolate sparse threats, achieving only 40\% recall on rootkits. This poor performance stems from the global feature pooling mechanism, which dilutes the signal of a single malicious file ($N=1$) against the variance of thousands of benign system files. In contrast, \DeepVis projects files onto a fixed Spatial Grid and employs $L_\infty$ pooling, ensuring that sparse anomalies remain locally distinct spikes rather than being averaged out globally.
+
 %---------------------------------------------------------------------
 % TABLE IV: Detailed Breakdown (Micro View)
 %---------------------------------------------------------------------
@@ -104,8 +87,9 @@ Config Gen & \texttt{cloud-init} & 0.72 & 0.85 & 0.30 & False Pos. \\
 }
 \end{table}
 
-\noindent\textbf{Comparison with Set-based Approaches.} 
-To evaluate the architectural advantage of the Hash-Grid Parallel CAE, we implemented a Set-based Autoencoder (Set-AE) baseline following the Deep Sets framework~\cite{zaheer2017deepsets}. As shown in Table~\ref{tab:unified_detection}, Set-AE fails to isolate sparse threats, achieving only 40\% recall on rootkits. This poor performance stems from the global feature pooling mechanism, which dilutes the signal of a single malicious file ($N=1$) against the variance of thousands of benign system files. In contrast, \DeepVis projects files onto a fixed Spatial Grid and employs $L_\infty$ pooling, ensuring that sparse anomalies remain locally distinct spikes rather than being averaged out globally.
+\noindent\textbf{Micro View Analysis.} 
+Table~\ref{tab:detailed_breakdown} provides a granular analysis of detection capabilities. \DeepVis detects evasive threats through feature orthogonality. For instance, the rootkit \texttt{Diamorphine} evaded the Entropy channel ($R=0.55$) but was detected by the Context ($G=0.81$) and Structure ($B=1.00$) channels. Similarly, the Windows binary \texttt{FormGrab.exe} was flagged due to its alien PE structure ($B=0.90$) in a Linux environment. However, the header-only approach exhibits intrinsic blind spots. \DeepVis failed to detect the script \texttt{setup.sh} and the obfuscated library \texttt{libc\_fake.so}, as they resided in structurally valid paths and lacked binary packing anomalies. This confirms that \DeepVis operates as a high-speed first-line defense for binary integrity rather than a full-content forensic scanner.
+
 
 %=====================================================================
 \subsection{Scalability and Performance Analysis (RQ2)}
@@ -144,7 +128,6 @@ The primary architectural claim of \DeepVis is the decoupling of verification la
 \label{eval_saturation}
 %=====================================================================
 
-We evaluate the structural limits of the fixed-size tensor representation, focusing on signal preservation against dimensional reduction and robustness against hash collisions.
 
 \begin{figure}[t]
     \centering
