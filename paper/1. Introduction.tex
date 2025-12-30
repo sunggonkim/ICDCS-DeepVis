@@ -7,9 +7,8 @@ However, traditional integrity verification faces a fundamental scalability chal
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.8\columnwidth]{Figures/fig_motivation_legend.pdf}
-\vspace{-1.0cm} % Pull graphs up to legend
-\\
+\includegraphics[width=0.9\columnwidth]{Figures/fig_motivation_legend.pdf}
+\vspace{-0.5cm} % Restore legend visibility
 \subfloat[Scalability]{
     \includegraphics[width=0.47\columnwidth]{Figures/fig_motivation_a.pdf}
 }
@@ -17,8 +16,7 @@ However, traditional integrity verification faces a fundamental scalability chal
 \subfloat[Alert Fatigue]{
     \includegraphics[width=0.47\columnwidth]{Figures/fig_motivation_b.pdf}
 }
-\vspace{2mm} % Ensure main caption is strictly below sub-labels
-\caption{DeepVis vs. AIDE: (a) scalability and (b) precision.}
+\caption{(a) DeepVis achieves high-throughput saturation via async I/O. (b) Legitimate updates generate false alerts in AIDE.}
 \label{fig:motivation}
 \end{figure}
 
