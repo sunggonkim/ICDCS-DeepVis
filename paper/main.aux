@@ -76,7 +76,7 @@
 \newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Comparison against tuned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats. False Positive Rate (FPR) is reported at the node/repository level (0.3\% per 10k files), ensuring manageable alert volumes for security operators.}}{7}{}\protected@file@percent }
 \newlabel{tab:unified_detection}{{III}{7}{}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=667) and Malware (N=68) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=47,270) and Malware (N=37,387) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}}{7}{}\protected@file@percent }
 \newlabel{tab:detailed_breakdown}{{IV}{7}{}{table.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Throughput and Interference (RQ2)}{7}{}\protected@file@percent }
 \newlabel{eval_scalability}{{\mbox  {IV-C}}{7}{}{subsection.4.3}{}}
@@ -106,18 +106,18 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{9}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{9}{}{figure.9}{}}
-\newlabel{fig:churn_hist}{{10a}{9}{}{subfigure.10.1}{}}
-\newlabel{sub@fig:churn_hist}{{(a)}{a}}
-\newlabel{fig:churn_alerts}{{10b}{9}{}{subfigure.10.2}{}}
-\newlabel{sub@fig:churn_alerts}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {Fleet-Scale Churn \& Alert Fatigue Analysis.} (a) Benign files form a bimodal distribution: \textbf  {Configs/Logs} (low entropy, $\approx 0.2$) and \textbf  {Binaries/DBs} (high entropy, $\approx 0.6$). The \textbf  {LKM Rootkit} attack ($\approx 1.0$) is a singular high-entropy anomaly. (b) While AIDE detects the attack, it generates 180 false alerts (Blue Bars) from benign upgrades. DeepVis achieves detection with zero false positives.}}{9}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Real Fleet Error Stability}}}{9}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Alert Fatigue \& Detection}}}{9}{}\protected@file@percent }
+\newlabel{fig:churn_alerts}{{10a}{9}{}{subfigure.10.1}{}}
+\newlabel{sub@fig:churn_alerts}{{(a)}{a}}
+\newlabel{fig:churn_hist}{{10b}{9}{}{subfigure.10.2}{}}
+\newlabel{sub@fig:churn_hist}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {Fleet-Scale Churn \& Alert Fatigue Analysis.} (a) Comparison of False Positive alerts and Detection Recall. AIDE generates 8,500 alerts during maintenance, whereas \texttt  {DeepVis}\xspace  maintains zero false positives. (b) Distribution of reconstruction errors ($\mathcal  {L}_\infty $). Benign churn stays strictly below the learned threshold $\tau \approx 0.4324$, while malicious rootkits manifest as high-confidence outliers.}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Alert Fatigue \& Detection}}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction Error Dist.}}}{9}{}\protected@file@percent }
 \newlabel{fig:churn_analysis}{{10}{9}{}{figure.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
-\newlabel{eval_sensitivity}{{\mbox  {IV-F}}{9}{}{subsection.4.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx $96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf  {4KB Page-Aligned Sampling} strategy.}}{9}{}\protected@file@percent }
 \newlabel{fig:header_sensitivity}{{11}{9}{}{figure.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
+\newlabel{eval_sensitivity}{{\mbox  {IV-F}}{9}{}{subsection.4.6}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{9}{}\protected@file@percent }
 \newlabel{tab:overhead_breakdown}{{VII}{9}{}{table.7}{}}
 \citation{tripwire,aide,samhain}
@@ -161,13 +161,13 @@
 \bibcite{tfjmp2024safebpf}{14}
 \bibcite{zohar2018integrity}{15}
 \bibcite{oprea2007integrity}{16}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
 \bibcite{luo2019container}{17}
 \bibcite{bohling2020subverting}{18}
 \bibcite{nataraj2011malware}{19}
 \bibcite{conti2008visual}{20}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
-\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
 \bibcite{aldini2024image}{21}
 \bibcite{lyda2007entropy}{22}
 \bibcite{ling2024wolf}{23}
