@@ -136,26 +136,28 @@ The primary architectural claim of \DeepVis is the decoupling of verification la
 \noindent\textbf{Set-based vs. Hash-Grid Architectures.}Figure~\ref{fig:signal_comparison} compares the internal representations under an active attack scenario. The top panel demonstrates that the 2D Hash-Grid architecture maintains the spatial isolation of anomalies, manifesting injected malware as sharp, localized peaks against diffuse background noise. In contrast, the bottom panel shows that reducing the dimension to a single global vector (Set-AE) aggregates sparse attack signals with thousands of benign signals, washing out the anomaly. Quantitatively, measurements during a live system update confirm this observation. The global pooling approach fails to distinguish the attack from update noise because the background noise floor rises ($\mu_{noise}=0.35$), masking the attack signal and resulting in a negligible Signal-to-Noise Ratio (SNR) of 1.09. Conversely, the spatial isolation of \DeepVis effectively filters out diffuse noise, preserving the sharp attack spike ($0.95$) against the background ($0.35$). This yields a superior SNR of 2.71, ensuring robust detection even during high churn.
 
 
-\noindent\textbf{Resilience to Hash Saturation. }To validate the stability of the hash mapping as the file count ($N$) exceeds the grid capacity ($W \times H$), we stress-tested the system by injecting up to 204,000 files into the $128 \times 128$ grid. Table~\ref{tab:hyperscale_saturation} shows that even at 99.99\% saturation (high collision state), the system maintains stability. Unlike traditional hash tables where collisions degrade performance to $O(N)$, our Max-Risk Pooling strategy ($\text{Grid}[h] = \max(\text{Grid}[h], s)$) ensures that tensor construction remains strictly $O(1)$. Crucially, even under extreme saturation (e.g., 100 files per pixel), a single high-risk anomaly dominates the pixel value due to the \texttt{max()} operation. This design makes \DeepVis inherently resistant to \textit{Decoy Attacks}—an attempt to flood the grid with benign files to mask a threat—as low-score benign files cannot suppress the signal of a malicious file. Any information loss during saturation applies exclusively to benign details, while the attack signal is preserved as the dominant feature. Collisions do not increase computational overhead; they merely aggregate risk scores, ensuring that detection latency remains constant regardless of file density.
+\noindent\textbf{Resilience to Hash Saturation. }To validate the stability of the hash mapping as the file count ($N$) exceeds the grid capacity ($W \times H$), we stress-tested the system by simulating up to 10 million files on a $128 \times 128$ grid. Table~\ref{tab:hyperscale_saturation} shows that even at 100\% saturation with over 600 collisions per pixel, the system maintains \textbf{100\% Recall} on injected malware. Unlike traditional hash tables where collisions degrade performance to $O(N)$, our Max-Risk Pooling strategy ($\text{Grid}[h] = \max(\text{Grid}[h], s)$) ensures that tensor construction remains strictly $O(1)$. Crucially, even under extreme saturation, a single high-risk anomaly dominates the pixel value due to the \texttt{max()} operation. This design makes \DeepVis inherently resistant to \textit{Decoy Attacks}---an attempt to flood the grid with benign files to mask a threat---as low-score benign files cannot suppress the signal of a malicious file. Any information loss during saturation applies exclusively to benign details, while the attack signal is preserved as the dominant feature.
 
 \begin{table}[t]
 \centering
-\caption{Hash Saturation Analysis. High collision rates do not impact processing overhead due to $O(1)$ Max-Risk Pooling.}
+\caption{Hash Saturation Analysis. Max-Risk Pooling preserves attack signals even with 600+ collisions/pixel. Recall is measured with 100 injected malware.}
 \label{tab:hyperscale_saturation}
-\resizebox{0.7\columnwidth}{!}{%
-\begin{tabular}{r c c}
+\resizebox{0.85\columnwidth}{!}{%
+\begin{tabular}{r c c c}
 \toprule
-Files ($N$) & Grid Saturation & Avg. Collisions \\
+Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 \midrule
-10,000 & 45.47\% & 0.61 \\
-50,000 & 95.21\% & 3.05 \\
-100,000 & 99.87\% & 6.10 \\
+100,000 & 99.74\% & 6.1 & 100\% \\
+500,000 & 100.00\% & 30.5 & 100\% \\
+1,000,000 & 100.00\% & 61.0 & 100\% \\
+5,000,000 & 100.00\% & 305.2 & 100\% \\
 \rowcolor{gray!10} 
-204,000 & 99.99\% & 12.45 \\
+10,000,000 & 100.00\% & 610.4 & 100\% \\
 \bottomrule
 \end{tabular}%
 }
 \end{table}
+
 
 \noindent\textbf{Component Overhead. }Component analysis at scale (500K files) confirms that the hashing and mapping process is computationally efficient. The \texttt{io\_uring} based file reading consumes 90.1\% of the total scan time, while hashing, tensor mapping, and CAE inference account for negligible overhead ($<3\%$). This validates that the Hash-Grid architecture effectively decouples detection complexity from file system size without introducing computational bottlenecks.
 
