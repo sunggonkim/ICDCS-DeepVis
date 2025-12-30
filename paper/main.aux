@@ -72,14 +72,14 @@
 \newlabel{sec:evaluation}{{IV}{7}{}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Evaluation Setup}{7}{}\protected@file@percent }
 \newlabel{eval_setup}{{\mbox  {IV-A}}{7}{}{subsection.4.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Comparison against tuned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats. Alert Rate is reported at the node/repository level (0.3\% per 10k files), ensuring manageable alert volumes for security operators.}}{7}{}\protected@file@percent }
+\newlabel{tab:unified_detection}{{III}{7}{}{table.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Fidelity and Orthogonality (RQ1)}{7}{}\protected@file@percent }
 \newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Unified Detection Performance.} Comparison against tuned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats. False Positive Rate (FPR) is reported at the node/repository level (0.3\% per 10k files), ensuring manageable alert volumes for security operators.}}{7}{}\protected@file@percent }
-\newlabel{tab:unified_detection}{{III}{7}{}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=47,270) and Malware (N=37,387) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}}{7}{}\protected@file@percent }
-\newlabel{tab:detailed_breakdown}{{IV}{7}{}{table.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Throughput and Interference (RQ2)}{7}{}\protected@file@percent }
 \newlabel{eval_scalability}{{\mbox  {IV-C}}{7}{}{subsection.4.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=47,270) and Malware (N=37,387) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}}{8}{}\protected@file@percent }
+\newlabel{tab:detailed_breakdown}{{IV}{8}{}{table.4}{}}
 \newlabel{fig:perf_throughput}{{7a}{8}{}{subfigure.7.1}{}}
 \newlabel{sub@fig:perf_throughput}{{(a)}{a}}
 \newlabel{fig:perf_latency}{{7b}{8}{}{subfigure.7.2}{}}
@@ -88,16 +88,16 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{8}{}\protected@file@percent }
 \newlabel{fig:perf_analysis}{{7}{8}{}{figure.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces \textbf  {Fair Baseline Comparison.} All tools read only the first 128 bytes (Header-Only). DeepVis's speedup stems from \texttt  {io\_uring} (async I/O) and non-cryptographic hashing, not reduced data.}}{8}{}\protected@file@percent }
-\newlabel{tab:fair_baseline}{{V}{8}{}{table.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Scalability and Saturation Analysis (RQ3, RQ6, RQ7)}{8}{}\protected@file@percent }
 \newlabel{eval_saturation}{{\mbox  {IV-D}}{8}{}{subsection.4.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces \textbf  {Fair Baseline Comparison.} All tools read only the first 128 bytes (Header-Only). DeepVis's speedup stems from \texttt  {io\_uring} (async I/O) and non-cryptographic hashing, not reduced data.}}{8}{}\protected@file@percent }
+\newlabel{tab:fair_baseline}{{V}{8}{}{table.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Visualizing Signal Preservation. (Top) \texttt  {DeepVis}\xspace  maintains spatial locality, isolating the malware as a distinct red peak ($L_\infty $ Spike). (Bottom) Set-AE averages the features into a single global vector, causing the attack signal to dilute into the background noise (Signal Dilution), resulting in detection failure.}}{8}{}\protected@file@percent }
 \newlabel{fig:signal_comparison}{{8}{8}{}{figure.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Hash Saturation Analysis. Max-Risk Pooling preserves attack signals even with 600+ collisions/pixel. Recall is measured with 100 injected malware.}}{8}{}\protected@file@percent }
-\newlabel{tab:hyperscale_saturation}{{VI}{8}{}{table.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Robustness to System Churn (RQ3)}{8}{}\protected@file@percent }
 \newlabel{eval_churn}{{\mbox  {IV-E}}{8}{}{subsection.4.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Hash Saturation Analysis. Max-Risk Pooling preserves attack signals even with 600+ collisions/pixel. Recall is measured with 100 injected malware.}}{9}{}\protected@file@percent }
+\newlabel{tab:hyperscale_saturation}{{VI}{9}{}{table.6}{}}
 \newlabel{fig:fleet_scale}{{9a}{9}{}{subfigure.9.1}{}}
 \newlabel{sub@fig:fleet_scale}{{(a)}{a}}
 \newlabel{fig:fleet_heatmap}{{9b}{9}{}{subfigure.9.2}{}}
@@ -118,8 +118,6 @@
 \newlabel{fig:header_sensitivity}{{11}{9}{}{figure.11}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
 \newlabel{eval_sensitivity}{{\mbox  {IV-F}}{9}{}{subsection.4.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{9}{}\protected@file@percent }
-\newlabel{tab:overhead_breakdown}{{VII}{9}{}{table.7}{}}
 \citation{tripwire,aide,samhain}
 \citation{unicorn,cheng2024kairos}
 \citation{ossec,falco}
@@ -137,12 +135,16 @@
 \citation{akcay2018ganomaly}
 \citation{zong2018deep}
 \citation{su2019robust,xu2018unsupervised}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{10}{}\protected@file@percent }
+\newlabel{tab:overhead_breakdown}{{VII}{10}{}{table.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Component-wise Ablation Study. Performance components (I/O, Sampling) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}}{10}{}\protected@file@percent }
 \newlabel{tab:ablation}{{VIII}{10}{}{table.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{10}{}\protected@file@percent }
 \newlabel{sec:related_work}{{V}{10}{}{section.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{10}{}\protected@file@percent }
-\newlabel{sec:discussion}{{VI}{10}{}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
+\newlabel{sec:discussion}{{VI}{11}{}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
@@ -161,9 +163,6 @@
 \bibcite{tfjmp2024safebpf}{14}
 \bibcite{zohar2018integrity}{15}
 \bibcite{oprea2007integrity}{16}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
-\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
 \bibcite{luo2019container}{17}
 \bibcite{bohling2020subverting}{18}
 \bibcite{nataraj2011malware}{19}
@@ -179,4 +178,5 @@
 \bibcite{zong2018deep}{29}
 \bibcite{su2019robust}{30}
 \bibcite{xu2018unsupervised}{31}
+\@writefile{toc}{\contentsline {section}{References}{12}{}\protected@file@percent }
 \gdef \@abspage@last{12}

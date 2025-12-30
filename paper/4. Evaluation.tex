@@ -20,25 +20,27 @@ We employ a \textbf{Benign Baseline} of 47,270 system binaries (Ubuntu 20.04) to
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Unified Detection Performance.} Comparison against tuned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats. False Positive Rate (FPR) is reported at the node/repository level (0.3\% per 10k files), ensuring manageable alert volumes for security operators.}
+\caption{\textbf{Unified Detection Performance.} Comparison against tuned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats. Alert Rate is reported at the node/repository level (0.3\% per 10k files), ensuring manageable alert volumes for security operators.}
 \label{tab:unified_detection}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{l cccc c}
 \toprule
-\multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Recall by Platform}} & \textbf{False Pos.} \\
-& \textbf{Linux} & \textbf{Win.} & \textbf{Web} & \textbf{Mob.} & \textbf{(Benign)} \\
+\multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Recall by Platform}} & \textbf{Alert} \\
+& \textbf{Linux} & \textbf{Win.} & \textbf{Web} & \textbf{Mob.} & \textbf{Rate$^\star$} \\
 \midrule
 ClamAV (Standard) & 33.0\% & 0.0\% & 0.0\% & 0.0\% & 0.0\% \\
 ClamAV (Tuned)$^\dagger$ & 95.4\% & \textbf{96.6\%} & 82.6\% & 50.0\% & \textbf{0.0\%} \\
 YARA (Standard) & 100.0\% & 1.9\% & 24.3\% & 0.0\% & 45.0\% \\
 YARA (Tuned)$^\ddagger$ & 24.6\% & 2.6\% & 68.1\% & 79.2\% & 31.0\% \\
-AIDE & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & 100.0\% \\
+AIDE & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & 100.0\%$^\diamond$ \\
 Set-AE & 40.0\% & 10.0\% & 6.9\% & 91.7\% & 5.0\% \\
 \midrule
 DeepVis (Entropy) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 \rowcolor{gray!10} 
 \textbf{DeepVis (Full)} & \textbf{97.1\%} & \textbf{16.9\%} & \textbf{89.6\%} & \textbf{100.0\%} & \textbf{0.3\%} \\
 \bottomrule
+\multicolumn{6}{l}{\scriptsize $^\star$Benign files flagged during maintenance. $^\diamond$AIDE's 100\% reflects operational}\\
+\multicolumn{6}{l}{\scriptsize alert fatigue, not functional error; it flags all changes by design.}\\
 \multicolumn{6}{l}{\scriptsize $^\dagger$Using custom DB of known hashes. $^\ddagger$Using custom rules for LKM/Webshells.}
 \end{tabular}%
 }
@@ -154,7 +156,7 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
 }
 \end{table}
 
-\noindent\textbf{Resilience to Saturation. }Recall remains at 100\% even as file count increases to 10 million (Table~\ref{tab:hyperscale_saturation}). Despite the grid saturation reaching 100\% with over 610 collisions per pixel, the Max-Risk Pooling strategy ensures the high-risk anomaly dominates the pixel value. This indicates that \DeepVis is inherently resistant to decoy attacks, as low-score benign files cannot suppress the signal of a malicious file.
+\noindent\textbf{Resilience to Saturation. }Recall remains at 100\% even as file count increases to 10 million (Table~\ref{tab:hyperscale_saturation}). Despite the grid saturation reaching 100\% with over 610 collisions per pixel, the Max-Risk Pooling strategy ensures the high-risk anomaly dominates the pixel value. This indicates that \DeepVis is inherently resistant to decoy attacks, as low-score benign files cannot suppress the signal of a malicious file. Grid size sensitivity analysis (128 vs. 256 vs. 512) confirmed that the default $128 \times 128$ configuration provides sufficient resolution for sparse attack detection while minimizing memory overhead.
 
 \begin{figure}[t]
   \centering
