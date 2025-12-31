@@ -33,7 +33,7 @@
 
 \begin{document}
 
-\title{DeepVis: Deep Learning-Based High-Throughput File System Integrity Audit for Cloud Infrastructure}
+\title{DeepVis: Scalable Deep Learning-Based File System–to–Image Integrity Audit for Distributed Systems}
 
 %% Anonymous author block for double-blind review
 \author{}
@@ -41,12 +41,8 @@
 \maketitle
 
 \begin{abstract}
-This paper presents \DeepVis, a high-throughput integrity verification system designed to act as a first-pass triage filter for extreme-scale storage environments such as cloud data centers.
-Our key idea is to leverage a spatial hash projection architecture, enabling highly parallelized metadata processing while maintaining detection accuracy via a stable tensor representation.
-Specifically, \DeepVis first introduces an asynchronous snapshot engine that leverages high-performance I/O interfaces to maximize ingestion rates, allowing the system to rapidly capture file system states.
-Second, \DeepVis devises a lock-free tensor mapping pipeline, where metadata processing is sharded across processor cores to eliminate contention and achieve linear scalability.
-Finally, \DeepVis adopts a spatial anomaly detection approach, enabling the identification of sparse attack signals even amidst significant background noise caused by legitimate system updates.
-We evaluate \DeepVis on production-grade cloud infrastructure. Our results show that \DeepVis acts as an effective \textit{snapshot-based audit system}, detecting 97.1\% of hidden kernel modules and packed binaries in Linux environments. By achieving a 10.9$\times$ speedup over traditional FIM, \DeepVis enables frequent, full-system verification intervals, eliminating the reliance on potentially unreliable incremental event streams (e.g., fanotify).
+This paper presents \DeepVis, a scalable file system integrity verification system for hyperscale storage environments such as cloud data centers. Designed as a rapid first-pass filter, our key idea is to transform the file system state into a fixed-size RGB image and map individual files to specific pixels to enable scalable inspection regardless of the file count. Specifically, \DeepVis introduces: (1) an asynchronous lightweight snapshot engine utilizing Rust and \texttt{io\_uring}; (2) a parallel mapping pipeline that converts file metadata into a fixed-size image representation ; and (3) a spatial anomaly detection mechanism for identifying anomalous patterns within the file system represented as a single image. We evaluate \DeepVis on production-grade cloud infrastructure. Our results show that \DeepVis acts as an effective snapshot-based audit system. It detects 97.1\% of hidden kernel modules and packed binaries in Linux environments. 
+In addition, \DeepVis achieves a 121.45$\times$ speedup over traditional hash-based full-scan integrity tools while incurring minimal overhead of less than 2 percent CPU usage.
 \end{abstract}
 
 \begin{IEEEkeywords}
