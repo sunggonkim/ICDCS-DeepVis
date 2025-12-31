@@ -18,19 +18,17 @@ Figure~\ref{fig:overall} shows the overall procedure of \DeepVis. \DeepVis provi
 \end{figure}
 
 \noindent
-\textbf{Snapshot Phase.} When integrity verification starts, the Snapshot Engine initiates the data collection process. Unlike traditional synchronous tools (e.g., \texttt{find} or \texttt{ls}) that block on every file access, \DeepVis utilizes a hybrid parallel architecture. First, the Parallel File Walker uses a thread pool to rapidly traverse the directory tree and collect file paths (\ding{182}). These paths are fed into a lock-free queue. Subsequently, the Asynchronous I/O Submitter batches these paths and submits read requests to the kernel using the \texttt{io\_uring} interface. This ensures that the I/O throughput saturates the storage bandwidth rather than being latency-bound (\ding{183}).
+\textbf{Snapshot Phase.} When integrity verification starts, the data collection process is initiated. Unlike existing synchronous tools (e.g., \texttt{find} or \texttt{ls}) that block on every file access, \DeepVis utilizes a hybrid parallel architecture. Multiple worker threads traverse the directory tree and collect file paths (\ding{182}), feeding them into a lock-free queue. These paths are batched and submitted to the kernel using the \texttt{io\_uring} interface, ensuring that I/O throughput saturates the storage bandwidth rather than being latency-bound (\ding{183}).
+
+After collecting raw metadata and file headers, secure spatial mapping is performed. A deterministic coordinate is calculated for each file using a Keyed-Hash Message Authentication Code (HMAC) (\ding{184}), and multi-modal features (entropy, permissions) are extracted (\ding{185}). These features are aggregated into a fixed-size 2D tensor ($128 \times 128 \times 3$), effectively transforming the file system state into an image-like representation (\ding{186}).
+
+\noindent\textbf{Verification Phase.} After the first phase is completed, \DeepVis enters the verification phase. The generated tensor is fed into a pre-trained 1$\times$1 Convolutional Autoencoder (CAE). While standard CNNs exploit spatial locality to find shapes, the hash-based mapping lacks semantic neighborhood relationships. Therefore, 1$\times$1 Convolutions are employed not to extract spatial features, but to learn complex cross-channel non-linear correlations (e.g., distinguishing a high-entropy zip file in a user directory from a high-entropy packed binary in a system path). This effectively acts as a learnable, non-linear per-pixel thresholding mechanism (\ding{187}).
+
+The pixel-wise difference between the input and reconstructed tensors is then computed. To resolve the statistical asymmetry between legitimate diffuse updates and sparse attacks, Local Max Detection ($L_\infty$) is utilized (\ding{188}). This mechanism isolates the single highest deviation in the grid. Finally, if the $L_\infty$ score exceeds a dynamically learned threshold, an alert is raised, identifying the presence of a stealthy anomaly such as a rootkit (\ding{189}).
 
 
-After collecting raw metadata and file headers, the \textit{Tensor Encoder} performs secure spatial mapping. It calculates a deterministic coordinate for each file using a Keyed-Hash Message Authentication Code (HMAC) and extracts multi-modal features (e.g., entropy, permissions). These features are aggregated into a fixed-size 2D tensor ($128 \times 128 \times 3$), effectively transforming the file system state into an image-like representation (\ding{184}).
 
-\noindent
-\textbf{Verification Phase.} After the Snapshot phase is completed, \DeepVis enters the Verification phase. The Inference Engine feeds the generated tensor into a pre-trained 1$\times$1 Convolutional Autoencoder (CAE). The detailed architecture of the \DeepVis CAE is summarized in Table~\ref{tab:cae_arch}. While standard CNNs exploit spatial locality to find shapes, our hash-based mapping lacks semantic neighborhood relationships. Therefore, we employ 1$\times$1 Convolutions not to extract spatial features, but to learn complex cross-channel non-linear correlations (e.g., distinguishing a high-entropy zip file in a user directory from a high-entropy packed binary in a system path). This effectively acts as a learnable, non-linear per-pixel thresholding mechanism (\ding{185}).
-
-\noindent\textbf{Training Details.} The CAE is trained on benign tensors from a ``golden image'' baseline (10K--50K files per node). We use MSE loss with Adam optimizer (lr=$10^{-3}$, batch=32, epochs=50). Training completes in $<$5 minutes on a single CPU. The 95th percentile reconstruction error on benign data determines the detection threshold ($\tau$). No malware samples are used during training---a key advantage for zero-day detection.
-
-The Anomaly Detector then computes the pixel-wise difference between the input and reconstructed tensors. To resolve the statistical asymmetry between legitimate diffuse updates and sparse attacks, it utilizes Local Max Detection ($L_\infty$). This mechanism isolates the single highest deviation in the grid (\ding{186}). Finally, if the $L_\infty$ score exceeds a dynamically learned threshold, an alert is raised, identifying the presence of a stealthy anomaly such as a rootkit (\ding{187}).
-
-\subsection{Hybrid Rayon and io\_uring Snapshot Pipeline}
+\subsection{Asynchronous File System Snapshot}
 \label{design_2}
 
 Before generating the tensor representation, \DeepVis must efficiently ingest metadata and file headers from the host file system. Existing approaches rely on synchronous system calls (e.g., \texttt{stat}, \texttt{open}, \texttt{read}), which incur significant context switching overhead and CPU blocking when processing millions of files. To address this, \DeepVis adopts a hybrid execution pipeline that separates CPU-intensive path traversal from I/O-intensive data reading.
@@ -101,7 +99,7 @@ Dec2 & Conv1$\times$1 & 16 $\to$ 3 & Sigmoid \\
 
 \DeepVis solves this by employing a deterministic Hash-Based Spatial Mapping. As illustrated in Figure~\ref{fig:hash}, let $K$ be a high-entropy secret key generated at startup. The coordinate $\Phi(p)$ for a file path $p$ is computed as:
 \begin{equation}
-    \Phi(p) = \left( \text{HMAC}(K, p)_{[0:32]} \bmod W, \ \text{HMAC}(K, p)_{[32:64]} \bmod H \right)
+\resizebox{0.9\columnwidth}{!}{$\Phi(p) = \left( \text{HMAC}(K, p)_{[0:32]} \bmod W, \ \text{HMAC}(K, p)_{[32:64]} \bmod H \right)$}
 \end{equation}
 By using HMAC, the mapping provides two benefits. First, it ensures \textit{Deterministic Bucket Mapping}: each file's coordinate depends solely on its path and the key, providing reproducible mappings across scans. Second, it prevents ``Bucket Targeting'' attacks where an adversary attempts to craft filenames that map to specific coordinates. Assuming $K$ is protected via ephemeral session keys or privileged memory restrictions, the adversary cannot predict target coordinates to overwrite or mask legitimate files.
 
