@@ -28,27 +28,24 @@ The pixel-wise difference between the input and reconstructed tensors is then co
 
 
 
-\subsection{Asynchronous File System Snapshot}
+\subsection{Asynchronous File System Traversal}
 \label{design_2}
 
-Before generating the tensor representation, \DeepVis must process metadata and file headers across thousands of cloud instances. Existing approaches rely on synchronous system calls (e.g., \texttt{stat}, \texttt{open}, \texttt{read}), which cause significant context switching overhead and CPU blocking when processing millions of files. Cloud systems with network-attached storage suffer even worse I/O overhead. To overcome this, \DeepVis uses a hybrid execution pipeline that separates CPU-intensive path traversal from I/O-intensive data reading.
-
+Before generating the tensor representation, \DeepVis processes metadata and file headers across thousands of cloud instances. Existing synchronous system calls (e.g., \texttt{stat}, \texttt{open}, \texttt{read}) cause context switching overhead and CPU blocking at scale. Network-attached storage in cloud environments exacerbates I/O latency. \DeepVis overcomes this with a hybrid pipeline separating CPU-bound path traversal from I/O-bound data reading.
 
 \begin{figure}[t]
     \centering
-    % [User Check] 파일명 유지함
     \includegraphics[width=8cm]{Figures/Design/io_Arch.pdf}
-    \caption{The hybrid snapshot pipeline of \DeepVis utilizing Rayon for parallel path collection and io\_uring for asynchronous I/O.}
+    \caption{Hybrid snapshot pipeline of \DeepVis using Rayon for parallel path collection and \texttt{io\_uring} for asynchronous I/O.}
     \label{fig:pipeline}
 \end{figure}
 
-\noindent\textbf{Parallel Path Collection.} First, \DeepVis performs path collection using a work-stealing parallelism model provided by the \texttt{rayon} library. As shown on the left of Figure~\ref{fig:pipeline}, the \textit{Path Collector Threadpool} spawns multiple worker threads. Each thread executes a synchronous \texttt{fs::read\_dir} operation to traverse directory structures recursively. This phase is CPU-bound as it involves parsing directory entries and managing path strings. By utilizing \texttt{rayon}, \DeepVis ensures that all CPU cores are utilized for traversal, populating the shared \textit{Pending Path Queue} at a rate that exceeds the I/O consumption speed.
+\noindent\textbf{Parallel Path Collection.} \DeepVis uses \texttt{rayon}'s work-stealing parallelism for path collection. As shown on the left of Figure~\ref{fig:pipeline}, the \textit{Path Collector Threadpool} spawns worker threads that execute synchronous \texttt{fs::read\_dir} operations recursively. This CPU-bound phase parses directory entries and builds path strings across all cores, filling the \textit{Pending Path Queue} faster than I/O consumption.
 
+\noindent\textbf{Asynchronous I/O Processing.} With paths enqueued, reading file headers becomes the bottleneck. \DeepVis employs Linux \texttt{io\_uring} to eliminate per-file system call overhead. As shown in Figure~\ref{fig:pipeline}, the \textit{io\_uring Submitter} batches paths into Submission Queue (SQ) read requests (\texttt{OP\_READ}). Unlike traditional async I/O, \texttt{io\_uring} uses shared ring buffers for kernel-user communication.
 
-\noindent\textbf{Asynchronous I/O Processing.} Once path collection starts and paths are enqueued, the bottleneck shifts to reading file headers for feature extraction. To address this, \DeepVis employs the Linux \texttt{io\_uring} interface to eliminate kernel entry overhead. Existing approaches using system calls suffer significant overhead from blocking and context switching.
+\textit{Data Processor} threads poll the Completion Queue (CQ) for finished reads. Completed events trigger data retrieval from pre-allocated \textit{Buffer Slab}s, followed by immediate hashing and entropy calculation. CPU threads never block on disk I/O; kernel handles data movement while user-space processes features. This achieves disk-bandwidth-competitive throughput.
 
-As shown in the center of Figure~\ref{fig:pipeline}, the \textit{io\_uring Submitter} retrieves paths from the queue and populates the Submission Queue (SQ) with batch read requests (\texttt{OP\_READ}). In contrast to standard asynchronous I/O, \texttt{io\_uring} allows the kernel to consume these requests from a shared ring buffer without system call overhead for every file.
-The \textit{Data Processor} threads then poll the Completion Queue (CQ) for finished events. When a file read completes, the kernel places a completion event in the CQ. The processor retrieves the data from the pre-allocated \textit{Buffer Slab} and immediately performs hashing and entropy calculation. This design ensures that the CPU never blocks waiting for disk I/O. The \texttt{io\_uring} subsystem handles data movement in kernel space, while user-space threads focus exclusively on feature extraction. This pipeline enables \DeepVis to achieve throughput competitive with raw disk bandwidth.
 
 
 \subsection{High-Throughput Header Sampling}
