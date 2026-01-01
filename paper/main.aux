@@ -60,10 +60,10 @@
 \newlabel{fig:hash}{{5}{4}{}{figure.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Hash-Based Spatial Mapping}{4}{}\protected@file@percent }
 \newlabel{design_3}{{\mbox  {III-D}}{4}{}{subsection.3.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces \textbf  {Set-AE vs.~Hash-Grid CAE.} Global pooling dilutes malicious signals (top); $1{\times }1$ CAE with $L_\infty $ captures isolated spikes (bottom).}}{5}{}\protected@file@percent }
-\newlabel{fig:comparison}{{6}{5}{}{figure.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Hash-Grid Parallel CAE}{5}{}\protected@file@percent }
 \newlabel{design_4}{{\mbox  {III-E}}{5}{}{subsection.3.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces \textbf  {Set-AE vs.~Hash-Grid CAE.} Global pooling dilutes malicious signals (top); $1{\times }1$ CAE with $L_\infty $ captures isolated spikes (bottom).}}{5}{}\protected@file@percent }
+\newlabel{fig:comparison}{{6}{5}{}{figure.6}{}}
 \citation{diamorphine}
 \citation{reptile}
 \citation{vxunderground,ramadhanmalware}
@@ -88,22 +88,20 @@
 \newlabel{fig:signal_comparison}{{7}{7}{}{figure.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The Miss cases highlight limitations against threats that mimic benign header statistics.}}{7}{}\protected@file@percent }
 \newlabel{tab:detailed_breakdown}{{III}{7}{}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Fair Baseline Comparison (Cold Cache).} Throughput measured on GCP \texttt  {deepvis-mid} instance targeting \texttt  {/usr/bin}. Categories distinguish between full-file scanning and header-only sampling.}}{7}{}\protected@file@percent }
-\newlabel{tab:fair_baseline}{{IV}{7}{}{table.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Throughput and Interference}{7}{}\protected@file@percent }
 \newlabel{eval_scalability}{{\mbox  {IV-C}}{7}{}{subsection.4.3}{}}
-\newlabel{fig:perf_throughput}{{8a}{8}{}{subfigure.8.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Fair Baseline Comparison (Cold Cache).} Throughput measured on GCP \texttt  {deepvis-mid} instance targeting \texttt  {/usr/bin}. Categories distinguish between full-file scanning and header-only sampling.}}{7}{}\protected@file@percent }
+\newlabel{tab:fair_baseline}{{IV}{7}{}{table.4}{}}
+\newlabel{fig:perf_throughput}{{8a}{7}{}{subfigure.8.1}{}}
 \newlabel{sub@fig:perf_throughput}{{(a)}{a}}
-\newlabel{fig:perf_latency}{{8b}{8}{}{subfigure.8.2}{}}
+\newlabel{fig:perf_latency}{{8b}{7}{}{subfigure.8.2}{}}
 \newlabel{sub@fig:perf_latency}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textbf  {Comprehensive Performance Analysis.} (a) \textbf  {Throughput}: DeepVis achieves hyperscale speeds ($\approx $16k files/s cold cache) via asynchronous I/O, outperforming synchronous baselines by over 10$\times $. (b) \textbf  {Interference}: Despite its speed, \texttt  {DeepVis}\xspace  maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%).}}{8}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{8}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{8}{}\protected@file@percent }
-\newlabel{fig:perf_analysis}{{8}{8}{}{figure.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textbf  {Comprehensive Performance Analysis.} (a) \textbf  {Throughput}: DeepVis achieves hyperscale speeds ($\approx $16k files/s cold cache) via asynchronous I/O, outperforming synchronous baselines by over 10$\times $. (b) \textbf  {Interference}: Despite its speed, \texttt  {DeepVis}\xspace  maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%).}}{7}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{7}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{7}{}\protected@file@percent }
+\newlabel{fig:perf_analysis}{{8}{7}{}{figure.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces \textbf  {Hardware Sensitivity Analysis (Cold Cache).} Impact of instance sizing on scan performance. High-tier utilized NVMe SSD.}}{8}{}\protected@file@percent }
 \newlabel{tab:hardware_sensitivity}{{V}{8}{}{table.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Scalability Analysis}{8}{}\protected@file@percent }
-\newlabel{eval_scalability_analysis}{{\mbox  {IV-D}}{8}{}{subsection.4.4}{}}
 \newlabel{fig:fleet_scale}{{9a}{8}{}{subfigure.9.1}{}}
 \newlabel{sub@fig:fleet_scale}{{(a)}{a}}
 \newlabel{fig:fleet_heatmap}{{9b}{8}{}{subfigure.9.2}{}}
@@ -112,6 +110,8 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{8}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{8}{}{figure.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Scalability Analysis}{8}{}\protected@file@percent }
+\newlabel{eval_scalability_analysis}{{\mbox  {IV-D}}{8}{}{subsection.4.4}{}}
 \newlabel{fig:churn_alerts}{{10a}{8}{}{subfigure.10.1}{}}
 \newlabel{sub@fig:churn_alerts}{{(a)}{a}}
 \newlabel{fig:churn_hist}{{10b}{8}{}{subfigure.10.2}{}}
@@ -127,12 +127,12 @@
 \newlabel{tab:platform_specificity}{{VI}{9}{}{table.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Verification of Platform Agnosticism}{9}{}\protected@file@percent }
 \newlabel{sec:windows_verification}{{\mbox  {IV-F}}{9}{}{subsection.4.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
+\newlabel{eval_sensitivity}{{\mbox  {IV-G}}{9}{}{subsection.4.7}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Scan Granularity Analysis.} Recall saturates at 96B; throughput stable up to 4KB due to page prefetching.}}{9}{}\protected@file@percent }
 \newlabel{fig:header_sensitivity}{{11}{9}{}{figure.11}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{9}{}\protected@file@percent }
 \newlabel{tab:overhead_breakdown}{{VII}{9}{}{table.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
-\newlabel{eval_sensitivity}{{\mbox  {IV-G}}{9}{}{subsection.4.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces \textbf  {Ablation Study.} Performance components determine throughput; Accuracy components determine detection capability.}}{9}{}\protected@file@percent }
 \newlabel{tab:ablation}{{VIII}{9}{}{table.8}{}}
 \citation{tripwire,aide}
@@ -155,6 +155,8 @@
 \newlabel{sec:related_work}{{V}{10}{}{section.5}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion}{10}{}\protected@file@percent }
 \newlabel{sec:discussion}{{VI}{10}{}{section.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces \textbf  {Detection Scope.} \texttt  {DeepVis}\xspace  targets binary structural anomalies; other attack vectors require complementary tools.}}{10}{}\protected@file@percent }
+\newlabel{tab:detection_scope}{{X}{10}{}{table.10}{}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
@@ -184,15 +186,13 @@
 \bibcite{bohling2020subverting}{25}
 \bibcite{nataraj2011malware}{26}
 \bibcite{aldini2024image}{27}
-\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces \textbf  {Detection Scope.} \texttt  {DeepVis}\xspace  targets binary structural anomalies; other attack vectors require complementary tools.}}{11}{}\protected@file@percent }
-\newlabel{tab:detection_scope}{{X}{11}{}{table.10}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
-\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
 \bibcite{lyda2007entropy}{28}
 \bibcite{ling2024wolf}{29}
 \bibcite{uetz2024escape}{30}
 \bibcite{du2017deeplog}{31}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
 \bibcite{mirsky2018kitsune}{32}
 \bibcite{ruff2018deep}{33}
 \bibcite{akcay2018ganomaly}{34}

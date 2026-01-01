@@ -26,7 +26,7 @@ For reproducibility, the context channel employs a deterministic weighting schem
 \centering
 \caption{\textbf{Unified Detection Performance.} Comparison against tuned baselines and modern DL models. DeepVis (Full) achieves superior recall on Linux/Mobile threats while ensuring zero operational FPs.}
 \label{tab:unified_detection}
-\resizebox{\columnwidth}{!}{%
+\scriptsize
 \begin{tabular}{l cccc c}
 \toprule
 \multirow{2}{*}{\textbf{System}} & \multicolumn{4}{c}{\textbf{Recall by Platform}} & \textbf{Alert} \\
@@ -51,7 +51,6 @@ DeepVis (Entropy) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 \multicolumn{6}{l}{\scriptsize operational alert fatigue, not functional error; it flags all changes by design.}\\
 \multicolumn{6}{l}{\scriptsize $^\dagger$Using custom DB of known hashes. $^\ddagger$Using custom rules for LKM/Webshells.}
 \end{tabular}%
-}
 \end{table}
 
 \noindent\textbf{Traditional Monitors.} Standard ClamAV is ineffective against custom rootkits (33.0\% recall) because it relies on static signatures that fail against polymorphic variants. While the tuned verification that learns the signature of the malware boosts recall to 95.4\%, it remains fundamentally reactive to unseen mutations. Conversely, AIDE achieves 100\% recall but fails in practice; by flagging every file modification as a violation, it generates a 100\% alert rate during routine updates, overwhelming operators with noise. \DeepVis resolves this trade-off by learning valid system states. It attains 97.1\% recall while suppressing alerts to 0.3\% overall (across the full wild corpus), and achieving 0.0\% false positives during controlled system maintenance (Section~\ref{eval_churn}).
@@ -74,7 +73,7 @@ Byte-plot CNN (29.2\%) fails because it treats binaries as simple 2D images, ign
 \centering
 \caption{\textbf{Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The Miss cases highlight limitations against threats that mimic benign header statistics.}
 \label{tab:detailed_breakdown}
-\resizebox{\columnwidth}{!}{%
+\scriptsize
 \begin{tabular}{l c ccc c}
 \toprule
 \textbf{Type} & \textbf{Name} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{Status} \\
@@ -98,7 +97,6 @@ Admin Tool & \texttt{snap} & \textbf{0.75} & \textbf{1.00} & 0.10 & False Pos. \
 Config Gen & \texttt{cloud-init} & 0.72 & 0.85 & 0.30 & False Pos. \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 
@@ -114,7 +112,7 @@ Config Gen & \texttt{cloud-init} & 0.72 & 0.85 & 0.30 & False Pos. \\
 \centering
 \caption{\textbf{Fair Baseline Comparison (Cold Cache).} Throughput measured on GCP \texttt{deepvis-mid} instance targeting \texttt{/usr/bin}. Categories distinguish between full-file scanning and header-only sampling.}
 \label{tab:fair_baseline}
-\resizebox{\columnwidth}{!}{%
+\scriptsize
 \begin{tabular}{l l r c}
 \toprule
 \textbf{Category} & \textbf{Tool \& Configuration} & \textbf{Throughput} & \textbf{Architecture} \\
@@ -138,7 +136,6 @@ Config Gen & \texttt{cloud-init} & 0.72 & 0.85 & 0.30 & False Pos. \\
 \textbf{DeepVis} & \textbf{DeepVis (io\_uring)} & \textbf{15,789/s} & \textbf{Async (\texttt{io\_uring})} \\
 \bottomrule
 \end{tabular}%
-}
 \end{table}
 
 \noindent\textbf{Scan Throughput.} To explicitly isolate the architectural benefits of \texttt{io\_uring} from I/O reduction, we constructed Optimized Synthetic Baselines (AIDE-Header, YARA-Header). These configurations represent a theoretical best-case scenario for legacy tools restricted to header scanning. Under cold cache conditions, DeepVis achieves 15,789~files/s, representing a 16.8$\times$ speedup over the synchronous AIDE-Header (938/s) and 13.7$\times$ faster than the optimized YARA-Header (1,146/s) (Table~\ref{tab:fair_baseline}). When compared to full-file integrity checks like AIDE-Full (130/s), the speedup reaches 121.4$\times$. This confirms that the combination of header-only sampling and the \texttt{io\_uring} kernel interface accounts for over two orders of magnitude improvement. This throughput enables hourly scanning cycles that were previously computationally infeasible with synchronous blocking I/O.

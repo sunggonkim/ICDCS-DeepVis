@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 21:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 21:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -859,12 +859,7 @@ File: Figures/Design/Overall_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Overall_Arch.pdf>
 Package pdftex.def Info: Figures/Design/Overall_Arch.pdf  used on input line 13
 .
-(pdftex.def)             Requested size: 256.0748pt x 209.93869pt.
-
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 13--14
- [][] 
- []
-
+(pdftex.def)             Requested size: 227.62204pt x 186.6131pt.
 
 
 
@@ -877,12 +872,7 @@ Figures/Design/Overall_Arch.pdf>]
 File: Figures/Design/io_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/io_Arch.pdf>
 Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 35.
-(pdftex.def)             Requested size: 256.0748pt x 186.22572pt.
-
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 35--36
- [][] 
- []
-
+(pdftex.def)             Requested size: 227.62204pt x 165.53491pt.
 
 Underfull \hbox (badness 3930) in paragraph at lines 40--41
 \OT1/ptm/m/n/10 lec-tion across all cores. Worker threads ex-e-cute syn-
@@ -894,12 +884,7 @@ Underfull \hbox (badness 3930) in paragraph at lines 40--41
 File: Figures/Design/Hash_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Hash_Arch.pdf>
 Package pdftex.def Info: Figures/Design/Hash_Arch.pdf  used on input line 65.
-(pdftex.def)             Requested size: 256.0748pt x 157.96646pt.
-
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 65--66
- [][] 
- []
-
+(pdftex.def)             Requested size: 227.62204pt x 140.4097pt.
 
 
 [4 <./Figures/Design/io_Arch.pdf> <./Figures/Design/Hash_Arch.pdf>]
@@ -907,12 +892,7 @@ Overfull \hbox (4.0748pt too wide) in paragraph at lines 65--66
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
 Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 106.
-(pdftex.def)             Requested size: 256.0748pt x 187.2463pt.
-
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 106--107
- [][] 
- []
-
+(pdftex.def)             Requested size: 227.62204pt x 166.43385pt.
 
 
 
@@ -921,12 +901,11 @@ Underfull \hbox (badness 5260) in paragraph at lines 121--122
 10 es-tab-lishes de-ci-sion
  []
 
-
-
-[5 <./Figures/Design/CNN_Arch.pdf>]
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 (Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 124.
 ) (./4. Evaluation.tex
+
+[5 <./Figures/Design/CNN_Arch.pdf>]
 Underfull \hbox (badness 10000) in paragraph at lines 13--15
 \OT1/ptm/b/n/10 Baselines.  \OT1/ptm/m/n/10 Tra-di-tional mon-i-tors in-clude A
 IDE [1],
@@ -942,68 +921,66 @@ Underfull \hbox (badness 2221) in paragraph at lines 13--15
 <Figures/comparison_dilution.pdf, id=461, 730.85376pt x 333.64601pt>
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
-Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 64
+Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 63
 .
 (pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
 
 
 [6]
-Underfull \vbox (badness 1810) has occurred while \output is active []
 
-
-
-<Figures/fig_final_throughput.pdf, id=469, 319.59099pt x 280.9374pt>
+<Figures/fig_final_throughput.pdf, id=468, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
 Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 1
-55.
+52.
 (pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
-<Figures/fig_final_latency.pdf, id=470, 319.2289pt x 280.9374pt>
+<Figures/fig_final_latency.pdf, id=469, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
-Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 159.
+Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 156.
 
 (pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
 
-[7 <./Figures/comparison_dilution.pdf>]
-<Figures/fig_fleet_scalability.pdf, id=525, 356.35321pt x 144.48041pt>
+[7 <./Figures/comparison_dilution.pdf> <./Figures/fig_final_throughput.pdf> <./
+Figures/fig_final_latency.pdf>]
+<Figures/fig_fleet_scalability.pdf, id=633, 356.35321pt x 144.48041pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-200.
+197.
 (pdftex.def)             Requested size: 239.39923pt x 97.0637pt.
-<Figures/fig_fleet_vis.pdf, id=526, 532.81021pt x 138.83495pt>
+<Figures/fig_fleet_vis.pdf, id=634, 532.81021pt x 138.83495pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 204.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 201.
 (pdftex.def)             Requested size: 239.39923pt x 62.3798pt.
-<Figures/fig_churn_alerts.pdf, id=527, 354.57765pt x 244.966pt>
+
+
+<Figures/fig_churn_alerts.pdf, id=635, 354.57765pt x 244.966pt>
 File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
 <use Figures/fig_churn_alerts.pdf>
-Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 222.
+Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 219.
 (pdftex.def)             Requested size: 113.39923pt x 78.34212pt.
-<Figures/fig_churn_hist.pdf, id=528, 354.18805pt x 244.97711pt>
+<Figures/fig_churn_hist.pdf, id=636, 354.18805pt x 244.97711pt>
 File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
 <use Figures/fig_churn_hist.pdf>
-Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 226.
+Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 223.
 (pdftex.def)             Requested size: 113.39923pt x 78.43164pt.
 
 
-
-
-[8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
-gures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figures/fig_c
-hurn_alerts.pdf> <./Figures/fig_churn_hist.pdf>]
-
-<Figures/fig_page_aligned_sensitivity.pdf, id=874, 496.69313pt x 207.01115pt>
+[8 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figur
+es/fig_churn_alerts.pdf> <./Figures/fig_churn_hist.pdf>]
+<Figures/fig_page_aligned_sensitivity.pdf, id=873, 496.69313pt x 207.01115pt>
 File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
 <use Figures/fig_page_aligned_sensitivity.pdf>
 Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
-t line 271.
+t line 268.
 (pdftex.def)             Requested size: 226.79846pt x 94.52504pt.
 
-Underfull \hbox (badness 3364) in paragraph at lines 333--334
+
+
+Underfull \hbox (badness 3364) in paragraph at lines 330--331
 \OT1/ptm/b/n/10 Performance Op-ti-miza-tion. \OT1/ptm/m/n/10 Through-put in-cre
 ases from
  []
@@ -1024,17 +1001,13 @@ Underfull \hbox (badness 1931) in paragraph at lines 11--13
 
 ) (./6. Discussion and Limitation.tex
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-
 [10]) (./7. Conclusion.tex) (./main.bbl
-
-
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
  []
+
+
 
 
 Underfull \hbox (badness 1895) in paragraph at lines 75--79
@@ -1099,46 +1072,41 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
  18155 strings out of 473190
  390986 string characters out of 5715800
- 800147 words of memory out of 5000000
+ 800132 words of memory out of 5000000
  41035 multiletter control sequences out of 15000+600000
  608500 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,13n,91p,1279b,374s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,11n,91p,1279b,374s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></
-usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
-r/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/
-local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/lo
-cal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loca
-l/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/t
-exlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texl
-ive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
-ve/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive
-/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2
-025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/202
-5/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2025/te
-xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/202
-5/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2025/texmf-
-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2025/texmf-dist/fon
-ts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
-1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/time
-s/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.
-pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr
-/local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1955401 bytes).
+usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></us
+r/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/
+local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
+cal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
+/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
+xlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
+live/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texli
+ve/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive
+/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2
+025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/202
+5/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2025/
+texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2
+025/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2025/texm
+f-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2025/texmf-dist/f
+onts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/ty
+pe1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/ti
+mes/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8
+a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></u
+sr/local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
+Output written on main.pdf (12 pages, 1946402 bytes).
 PDF statistics:
- 1038 PDF objects out of 1200 (max. 8388607)
- 347 compressed objects within 4 object streams
+ 1033 PDF objects out of 1200 (max. 8388607)
+ 344 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  114 words of extra memory for PDF output out of 10000 (max. 10000000)
 
