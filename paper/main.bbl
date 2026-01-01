@@ -107,7 +107,8 @@ X.~Chen, C.~Liu, B.~Li, K.~Lu, and D.~Song, ``Targeted backdoor attacks on deep
   arXiv:1712.05526}, 2017.
 
 \bibitem{dikedataset}
-D.~Dataset, ``{D}ike {D}ataset.''
+D.~Dataset, ``{D}ike {D}ataset,'' https://github.com/iosifache/DikeDataset,
+  2024, available at: https://github.com/iosifache/DikeDataset.
 
 \bibitem{cheng2024kairos}
 Z.~Cheng, Q.~Lv, J.~Liang, Y.~Wang, D.~Sun, T.~Pasquier, and X.~Han, ``Kairos:

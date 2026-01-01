@@ -1002,11 +1002,7 @@ ases from
 
 
 
-[10 <./Figures/fig_page_aligned_sensitivity.pdf>]
-
-LaTeX Warning: Citation `dikedataset' on page 11 undefined on input line 313.
-
-) (./5. Related Works.tex
+[10 <./Figures/fig_page_aligned_sensitivity.pdf>]) (./5. Related Works.tex
 
 
 
@@ -1043,27 +1039,27 @@ ithub . com /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 125--129
+Underfull \hbox (badness 10000) in paragraph at lines 129--133
 []\OT1/ptm/m/n/8 M. Zo-har, ``Linux In-tegrity Sub-sys-tem & Ecosys-tem:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 125--129
+Underfull \hbox (badness 10000) in paragraph at lines 129--133
 \OT1/ptm/m/n/8 IMA-Measurement, IMA-Appraisal, and EVM,'' Pre-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 125--129
+Underfull \hbox (badness 10000) in paragraph at lines 129--133
 \OT1/ptm/m/n/8 sen-ta-tion at Linux Se-cu-rity Sum-mit (LSS) EU 2018,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 125--129
+Underfull \hbox (badness 10000) in paragraph at lines 129--133
 \OT1/ptm/m/n/8 2018, avail-able at: https://events19.linuxfoundation.org/wp-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 125--129
+Underfull \hbox (badness 10000) in paragraph at lines 129--133
 \OT1/ptm/m/n/8 content/uploads/2017/12/LSS2018-EU-LinuxIntegrityOverview[]Mimi-
 
  []
@@ -1089,15 +1085,11 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
  17825 strings out of 473190
  385271 string characters out of 5715800
- 793328 words of memory out of 5000000
+ 793332 words of memory out of 5000000
  40708 multiletter control sequences out of 15000+600000
  610199 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1125,7 +1117,7 @@ ts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
 s/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.
 pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr
 /local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (13 pages, 1949237 bytes).
+Output written on main.pdf (13 pages, 1949084 bytes).
 PDF statistics:
  1009 PDF objects out of 1200 (max. 8388607)
  349 compressed objects within 4 object streams
