@@ -1,0 +1,31 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\noindent\textbf{Detection Scope.} Table~\ref{tab:detection_scope} clarifies the operational boundaries of \DeepVis. As a header-based structural analyzer, it excels at detecting binary anomalies but cannot address attacks outside its design scope.
+
+\begin{table}[h]
+\centering
+\caption{\textbf{Detection Scope.} \DeepVis targets binary structural anomalies; other attack vectors require complementary tools.}
+\label{tab:detection_scope}
+\scriptsize
+\begin{tabular}{l c l}
+\toprule
+\textbf{Attack Type} & \textbf{Detectable} & \textbf{Rationale} \\
+\midrule
+Packed ELF/PE binaries & \cmark & High entropy in header \\
+Hidden kernel modules (LKM) & \cmark & Structure channel violation \\
+Rootkits in volatile paths & \cmark & Context channel (high $G$) \\
+\midrule
+Cavity injection (payload $>$4KB) & \xmark & Beyond header scan range \\
+Script-based attacks (Python, Bash) & \xmark & No binary structure \\
+Fileless/memory-only attacks & \xmark & No filesystem trace \\
+Symbolic link manipulation & \xmark & Metadata-only, no content \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Container and Namespace Compatibility.} Modern container runtimes (Docker, Kubernetes) use OverlayFS with layered paths. \DeepVis Context weights remain valid because the scanner operates on the merged filesystem view where standard FHS paths (\texttt{/usr/bin}, \texttt{/tmp}) are preserved. Container-specific paths (e.g., \texttt{/var/lib/docker/overlay2}) receive default weights, preventing false positives from infrastructure directories.
+
+\noindent\textbf{Operational Deployment.} \DeepVis serves as a Filter-then-Verify system. Stage 1 identifies anomalous pixels in seconds, restricting the search space from millions of files to $\approx$600-file buckets per flagged pixel. Stage 2 applies expensive scanners (YARA, full-hash) only to flagged buckets, reducing investigation volume by 16,000$\times$ and eliminating alert fatigue inherent in traditional FIMs.
+
+\noindent\textbf{Adversarial Robustness.} An attacker with knowledge of the hash function could craft filenames to land malicious files on low-risk pixel coordinates, evading detection. \DeepVis mitigates this through HMAC-SHA256 with a 256-bit secret key $K$ stored in a Trusted Execution Environment (TEE) or Hardware Security Module (HSM). Without access to $K$, computing the coordinate mapping requires $2^{256}$ brute-force attempts. Key distribution follows standard privileged credential management (e.g., HashiCorp Vault), and periodic rotation (e.g., weekly) reshuffles the entire grid. Even if an attacker compromises $K$, the window of exploitation is bounded by rotation frequency. Empirical validation (Section~\ref{eval_sensitivity}) confirms that threshold $\tau$ remains stable across 50 rotations, ensuring operational continuity without model retraining.

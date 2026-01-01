@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 20:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 20:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -906,32 +906,32 @@ Overfull \hbox (4.0748pt too wide) in paragraph at lines 65--66
 
 [4 <./Figures/Design/io_Arch.pdf>]
 
+LaTeX Warning: Reference `eval_saturation' on page 5 undefined on input line 94
+.
+
+
+
 <Figures/Design/CNN_Arch.pdf, id=372, 737.58846pt x 539.33128pt>
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
-Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 105.
+Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 106.
 (pdftex.def)             Requested size: 256.0748pt x 187.2463pt.
 
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 105--106
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 106--107
  [][] 
  []
 
 
 
 [5 <./Figures/Design/Hash_Arch.pdf> <./Figures/Design/CNN_Arch.pdf>]
-Underfull \hbox (badness 5260) in paragraph at lines 120--121
+Underfull \hbox (badness 5260) in paragraph at lines 121--122
 \OT1/ptm/b/n/10 Threshold Cal-i-bra-tion. \OT1/pcr/m/n/10 DeepVis \OT1/ptm/m/n/
 10 es-tab-lishes de-ci-sion
  []
 
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 123.
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 124.
 ) (./4. Evaluation.tex
-
-LaTeX Warning: Reference `sec:discussion' on page 6 undefined on input line 11.
-
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 13--15
 \OT1/ptm/b/n/10 Baselines.  \OT1/ptm/m/n/10 Tra-di-tional mon-i-tors in-clude A
 IDE [1],
@@ -1016,21 +1016,20 @@ Underfull \hbox (badness 3364) in paragraph at lines 333--334
 ases from
  []
 
+
+
 ) (./5. Related Works.tex
 
 LaTeX Warning: Citation `lim2024safebpf' on page 10 undefined on input line 5.
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-
 LaTeX Warning: Citation `uetz2024escape' on page 10 undefined on input line 9.
 
-) (./7. Conclusion.tex)
 
-[10] (./main.bbl
+
+[10]) (./6. Discussion and Limitation.tex) (./7. Conclusion.tex
+
+) (./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1050,7 +1049,7 @@ ithub . com /
 
 
 
-
+[11]
 Underfull \hbox (badness 10000) in paragraph at lines 124--128
 []\OT1/ptm/m/n/8 M. Zo-har, ``Linux In-tegrity Sub-sys-tem & Ecosys-tem:
  []
@@ -1076,6 +1075,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 124--128
 
  []
 
+
+Underfull \vbox (badness 1077) has occurred while \output is active []
+
+
+
 )
 
 ** Conference Paper **
@@ -1090,7 +1094,7 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[11] (./main.aux)
+[12] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1099,12 +1103,15 @@ L3 programming layer <2025-01-18>
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 18150 strings out of 473190
- 390791 string characters out of 5715800
- 798071 words of memory out of 5000000
- 41033 multiletter control sequences out of 15000+600000
+ 18161 strings out of 473190
+ 391098 string characters out of 5715800
+ 798167 words of memory out of 5000000
+ 41041 multiletter control sequences out of 15000+600000
  608500 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,91p,1279b,374s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1131,10 +1138,10 @@ ts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
 s/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.
 pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr
 /local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (11 pages, 1933504 bytes).
+Output written on main.pdf (12 pages, 1938320 bytes).
 PDF statistics:
- 1004 PDF objects out of 1200 (max. 8388607)
- 345 compressed objects within 4 object streams
+ 1007 PDF objects out of 1200 (max. 8388607)
+ 347 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  114 words of extra memory for PDF output out of 10000 (max. 10000000)
 

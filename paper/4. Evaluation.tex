@@ -334,4 +334,23 @@ Throughput (files/s) & 15,789 & 15,789 & 15,789 & 15,789 \\
 
 \noindent\textbf{Detection Fidelity.} F1-Score increases from 0.25 (Entropy Only) to 0.96 (RGB Fusion). Single-channel configurations prove insufficient; the R-channel yields false positives from benign compressed data, while structural features alone fail to distinguish packed binaries. Only the full RGB fusion achieves definitive detection, demonstrating that the orthogonality of Entropy, Context, and Structure is essential for distinguishing malicious artifacts from legitimate system noise. Weight perturbation experiments ($\pm$20\% on domain-specific risk parameters for feature fusion) confirm that F1-Score remains stable at 0.96, validating the robustness of the configuration across deployments.
 
-%While linear classifiers (e.g., One-Class SVM) operating on the raw Hash-Grid were considered, they failed to model the non-linear manifold of valid system updates (churn), resulting in higher false positives during maintenance compared to the reconstruction-based CAE approach.
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Grid Size Trade-off.} Larger grids reduce collisions but increase memory; 128$\times$128 offers optimal balance.}
+\label{tab:grid_size}
+\scriptsize
+\begin{tabular}{r r r r r r}
+\toprule
+\textbf{Grid} & \textbf{Coll./Px} & \textbf{Recall} & \textbf{FP Rate} & \textbf{Mem.} & \textbf{Thru.} \\
+\midrule
+128$\times$128 & 1.24 & 98.4\% & 0.21\% & 0.19MB & 80k fps \\
+256$\times$256 & 0.31 & 98.9\% & 0.20\% & 0.75MB & 77k fps \\
+512$\times$512 & 0.08 & 99.0\% & 0.20\% & 3.00MB & 79k fps \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Grid Size Trade-off.} Table~\ref{tab:grid_size} evaluates the impact of grid resolution on detection performance. Increasing grid size from 128 to 512 reduces collisions per pixel from 1.24 to 0.08, yielding marginal recall improvement (+0.6\%). However, memory footprint increases 16$\times$ (0.19MB to 3.00MB) while throughput remains stable ($\approx$78--80k fps). The 128$\times$128 configuration provides optimal balance: sufficient collision resilience with minimal memory overhead, validating the design choice for resource-constrained edge deployments.
+
+\noindent\textbf{Key Rotation Stability.} Periodic HMAC key rotation prevents adversaries from reverse-engineering safe pixel coordinates. However, rotation changes all file-to-pixel mappings, raising the question of whether detection remains valid. Empirical evaluation across 50 rotations confirms that threshold $\tau$ remains constant at 0.4984 with zero variance and 100\% recall. Zero variance is expected because key rotation changes only pixel positions, not the RGB values themselves. Since entropy, context, and structure are computed from file content, they remain identical regardless of mapping. The CAE processes each pixel independently via $1 \times 1$ convolutions, so reconstruction error is position-invariant. Cross-scan comparison is unaffected since \DeepVis compares aggregate anomaly scores rather than individual pixel coordinates.
