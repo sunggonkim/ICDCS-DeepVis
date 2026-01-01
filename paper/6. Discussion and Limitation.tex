@@ -8,7 +8,7 @@
 \caption{\textbf{Detection Scope.} \DeepVis targets binary structural anomalies; other attack vectors require complementary tools.}
 \label{tab:detection_scope}
 \scriptsize
-\begin{tabular}{l c l}
+\begin{tabular*}{\columnwidth}{l @{\extracolsep{\fill}} c l}
 \toprule
 \textbf{Attack Type} & \textbf{Detectable} & \textbf{Rationale} \\
 \midrule
@@ -21,7 +21,7 @@ Script-based attacks (Python, Bash) & \xmark & No binary structure \\
 Fileless/memory-only attacks & \xmark & No filesystem trace \\
 Symbolic link manipulation & \xmark & Metadata-only, no content \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 
 \noindent\textbf{Container and Namespace Compatibility.} Modern container runtimes (Docker, Kubernetes) use OverlayFS with layered paths. \DeepVis Context weights remain valid because the scanner operates on the merged filesystem view where standard FHS paths (\texttt{/usr/bin}, \texttt{/tmp}) are preserved. Container-specific paths (e.g., \texttt{/var/lib/docker/overlay2}) receive default weights, preventing false positives from infrastructure directories.
