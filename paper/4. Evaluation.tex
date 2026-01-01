@@ -8,13 +8,17 @@ This section evaluates \DeepVis on Google Cloud Platform (GCP) using real rootki
 \label{eval_setup}
 %=====================================================================
 \noindent\textbf{Testbed Environment. }
-Experiments utilize three GCP configurations: \textit{Low} (e2-micro), \textit{Mid} (e2-standard-2), and \textit{High} (c2-standard-4, NVMe SSD). To simulate production environments, the file system is populated with up to 10~million files, including system binaries (e.g., \texttt{nginx}) and random artifacts.
+Experiments utilize three GCP configurations: Low (e2-micro), Mid (e2-standard-2), and High (c2-standard-4, NVMe SSD). To simulate production environments, the file system is populated with up to 10~million files, including system binaries (e.g., \texttt{nginx}) and random artifacts.
 
-The experimental setup employs a \textit{Benign Baseline} of 47,270 system binaries (Ubuntu 20.04) to measure false positives, and a \textit{Malware Corpus} of 37,387 files. The malware corpus includes 68 functional Linux kernel rootkit samples derived from five major families: Diamorphine~\cite{diamorphine}, Reptile~\cite{reptile}, and variants from public malware repositories~\cite{vxunderground, ramadhanmalware}, compiled against various kernel versions to create distinct binary signatures. This corpus is supplemented by 35k+ Windows/Web artifacts as cross-platform controls. To strictly validate the structural analysis engine, feature engineering targets the Linux ELF format. Windows PE artifacts serve as a control group to test cross-platform feature orthogonality, as discussed in Section~\ref{sec:discussion}.
+The experimental setup employs a Benign Baseline of 47,270 system binaries (Ubuntu 20.04) to measure false positives, and a Malware Corpus of 37,387 files. The malware corpus includes 68 functional Linux kernel rootkit samples derived from five major families: \texttt{Diamorphine}~\cite{diamorphine}, \texttt{Reptile}~\cite{reptile}, and variants from public malware repositories~\cite{vxunderground, ramadhanmalware}, compiled against various kernel versions to create distinct binary signatures. This corpus is supplemented by 35k+ Windows/Web artifacts as cross-platform controls. To strictly validate the structural analysis engine, feature engineering targets the Linux ELF format. Windows PE artifacts serve as a control group to test cross-platform feature orthogonality, as discussed in Section~\ref{sec:discussion}.
 
-\noindent\textbf{Context Hazard (G) Weights.} For reproducibility, the Context channel employs a weighted path taxonomy based on the Filesystem Hierarchy Standard (FHS). System binaries in standard paths (e.g., \texttt{/usr/bin}) receive $w=0.1$, user directories receive $w=0.3$, temporary paths (\texttt{/tmp}) receive $w=0.6$, and volatile memory locations (\texttt{/dev/shm}) receive $w=0.9$. Hidden files add $+0.2$ and deep nesting ($>$5 levels) adds $+0.1$ per level. All scores are normalized to $[0,1]$ before RGB fusion. These static weights ensure deterministic scoring across deployment environments.
+
 
 \noindent\textbf{Baselines.} Traditional monitors include AIDE~\cite{aide}, YARA~\cite{yara}, ClamAV~\cite{clamav}, and ssdeep~\cite{ssdeep}. For deep learning baselines, we evaluate MalConv~\cite{malconv}, a 1D-CNN operating on raw byte sequences (up to 2MB); Byte-plot CNN~\cite{byteplotcnn}, which visualizes binaries as grayscale images for 2D-CNN classification; and Pack-ALM~\cite{packalm}, a Transformer-based architecture for packed malware detection.
+
+
+\noindent\textbf{\DeepVis Configuration and Training.}
+For reproducibility, the context channel employs a deterministic weighting scheme based on the Filesystem Hierarchy Standard (FHS): standard binaries receive low risk ($w=0.1$ for \texttt{/usr/bin}), while user ($w=0.3$), temporary ($w=0.6$), and volatile memory paths ($w=0.9$) receive progressively higher weights. Additional penalties are applied for hidden files ($+0.2$) and deep nesting ($>5$ levels, $+0.1$/level), with all scores normalized to $[0,1]$. The CAE is trained for 100 epochs using the Adam optimizer (lr=$10^{-3}$) with an $L_\infty$-regularized MSE loss ($\lambda=0.5$). The anomaly threshold $\tau$ is calibrated to the 99th percentile of the benign reconstruction error distribution to ensure a $<$1\% false positive rate on clean systems.
 
 %=====================================================================
 \subsection{Detection Fidelity and Orthogonality (RQ1)}
@@ -53,7 +57,7 @@ DeepVis (Entropy) & 25.0\% & 14.2\% & 5.6\% & 91.7\% & 10.2\% \\
 }
 \end{table}
 
-\noindent\textbf{Traditional Monitors.} Standard ClamAV is ineffective against custom rootkits (33.0\% recall) because it relies on static signatures that fail against polymorphic variants. While the tuned verification that learns signture of the malware boosts recall to 95.4\%, it remains fundamentally reactive to unseen mutations. Conversely, AIDE achieves 100\% recall but fails in practice; by flagging every file modification as a violation, it generates a 100\% alert rate during routine updates, overwhelming operators with noise. \DeepVis resolves this trade-off by learning valid system states. It attains 97.1\% recall while suppressing alerts to 0.3\%, effectively distinguishing malicious changes from legitimate system updates.
+\noindent\textbf{Traditional Monitors.} Standard ClamAV is ineffective against custom rootkits (33.0\% recall) because it relies on static signatures that fail against polymorphic variants. While the tuned verification that learns the signature of the malware boosts recall to 95.4\%, it remains fundamentally reactive to unseen mutations. Conversely, AIDE achieves 100\% recall but fails in practice; by flagging every file modification as a violation, it generates a 100\% alert rate during routine updates, overwhelming operators with noise. \DeepVis resolves this trade-off by learning valid system states. It attains 97.1\% recall while suppressing alerts to 0.3\% overall (across the full wild corpus), and achieving 0.0\% false positives during controlled system maintenance (Section~\ref{eval_churn}).
 
 \noindent\textbf{Deep Learning Baselines.} Set-AE performs poorly (40.0\% recall) due to signal dilution where its global averaging architecture hides the anomaly of a single rootkit within the variance of thousands of benign files. 
 Byte-plot CNN (29.2\%) fails because it treats binaries as simple 2D images, ignoring critical ELF header structures and loader rules. Pack-ALM (49.8\%) similarly underperforms by analyzing linear byte streams without filesystem context. \DeepVis overcomes these limitations through spatial hash projection. By preserving locality and encoding file risks into distinct RGB channels, it isolates stealthy attacks that evade standard statistical or image-based models.
@@ -69,21 +73,21 @@ Byte-plot CNN (29.2\%) fails because it treats binaries as simple 2D images, ign
 \toprule
 \textbf{Type} & \textbf{Name} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{Status} \\
 \midrule
-\multicolumn{6}{l}{\textit{Detected Active Threats (Multi-Platform)}} \\
+\multicolumn{6}{l}{Detected Active Threats (Multi-Platform)} \\
 LKM Rootkit & \texttt{Diamorphine} & 0.55 & \textbf{0.81} & \textbf{1.00} & Det. \\
 Windows Spy & \texttt{FormGrab.exe} & 0.75 & 0.57 & \textbf{0.90} & Det. \\
 Android Mal & \texttt{DEX Dropper} & \textbf{1.00} & 0.57 & \textbf{1.00} & Det. \\
 Webshell & \texttt{TDshell.php} & 0.69 & 0.72 & \textbf{0.60} & Det. \\
 Encrypted RK & \texttt{azazel\_enc} & \textbf{1.00} & \textbf{0.90} & \textbf{0.80} & Det. \\
 \midrule
-\multicolumn{6}{l}{\textit{Undetected (Limitations)}} \\
+\multicolumn{6}{l}{Undetected (Limitations)} \\
 Obfuscated & \texttt{libc\_fake.so} & 0.61 & 0.00 & 0.00 & Miss \\
 Mimicry Script & \texttt{setup.sh} & 0.58 & 0.00 & 0.00 & Miss \\
 \midrule
-\multicolumn{6}{l}{\textit{Benign Baselines (Clean)}} \\
+\multicolumn{6}{l}{Benign Baselines (Clean)} \\
 Interpreter & \texttt{python3} & 0.78 & 0.96 & 0.10 & Clean \\
 Library & \texttt{libc.so.6} & 0.79 & 0.90 & 0.10 & Clean \\
-\multicolumn{6}{l}{\textit{False Positives (High Entropy)}} \\
+\multicolumn{6}{l}{False Positives (High Entropy)} \\
 Admin Tool & \texttt{snap} & \textbf{0.75} & \textbf{1.00} & 0.10 & False Pos. \\
 Config Gen & \texttt{cloud-init} & 0.72 & 0.85 & 0.30 & False Pos. \\
 \bottomrule
@@ -133,7 +137,7 @@ Config Gen & \texttt{cloud-init} & 0.72 & 0.85 & 0.30 & False Pos. \\
 
 \noindent\textbf{Scan Throughput.} To explicitly isolate the architectural benefits of \texttt{io\_uring} from I/O reduction, we constructed Optimized Synthetic Baselines (AIDE-Header, YARA-Header). These configurations represent a theoretical best-case scenario for legacy tools restricted to header scanning. Under cold cache conditions, DeepVis achieves 15,789~files/s, representing a 16.8$\times$ speedup over the synchronous AIDE-Header (938/s) and 13.7$\times$ faster than the optimized YARA-Header (1,146/s) (Table~\ref{tab:fair_baseline}). When compared to full-file integrity checks like AIDE-Full (130/s), the speedup reaches 121.4$\times$. This confirms that the combination of header-only sampling and the \texttt{io\_uring} kernel interface accounts for over two orders of magnitude improvement. This throughput enables hourly scanning cycles that were previously computationally infeasible with synchronous blocking I/O.
 
-Deep learning models exhibit even more severe bottlenecks. MalConv requires approximately 1 second per file for inference, while Transformer-based architectures like Pack-ALM exceed 2 seconds per file. Scanning a modern Linux distribution (500k files) with Pack-ALM would take approximately 11 days, whereas DeepVis completes the same task in under 32 seconds. This throughput difference (approximately 30,000$\times$) is not merely a matter of optimization but a fundamental architectural shift: by extracting highly representative structural features from the file header, DeepVis moves the complexity from $O(N)$ model execution to $O(1)$ metadata verification, making it the only viable candidate for continuous, high-fidelity system scanning.
+Deep learning models exhibit even more severe bottlenecks. MalConv requires approximately 1 second per file for inference, while Transformer-based architectures like Pack-ALM exceed 2 seconds per file. Scanning a modern Linux distribution (500k files) with Pack-ALM would take approximately 11 days, whereas DeepVis completes the same task in under 32 seconds. This throughput difference (approximately 30,000$\times$) is not merely a matter of optimization but a fundamental architectural shift: while end-to-end ingestion remains $O(N)$, DeepVis compresses file metadata into a fixed-size tensor, achieving $O(1)$ inference latency regardless of file count, making it the only viable candidate for continuous, high-fidelity system scanning.
 
 
 
@@ -166,29 +170,8 @@ Deep learning models exhibit even more severe bottlenecks. MalConv requires appr
     \label{fig:signal_comparison}
 \end{figure}
 
-\noindent\textbf{Signal Preservation.} The parallel architecture prevents the variance of benign files from impacting the reconstruction error of the malicious target. Figure~\ref{fig:signal_comparison} shows that Set-AE averages features globally, causing the attack signal to dilute into the background noise ($\mu_{noise}=0.35$). In contrast, \DeepVis maintains spatial locality, preserving the sharp attack spike ($0.95$). The Hash-Grid effectively filters out diffuse noise, ensuring robust detection even during high churn.
+\noindent\textbf{Signal Preservation.} The parallel architecture prevents the variance of benign files from impacting the reconstruction error of the malicious target. Figure~\ref{fig:signal_comparison} shows that Set-AE averages features globally, causing the attack signal to dilute into the background noise ($\mu_{noise}=0.35$). In contrast, \DeepVis maintains spatial locality, preserving the sharp attack spike ($0.95$). Unlike global anomaly detectors where reconstruction error often fails to localize small defects, the spatially-preserved Hash-Grid ensures that local structural violations (e.g., malicious headers) generate high-magnitude reconstruction spikes ($L_\infty$) that are not smoothed out by the model. The Hash-Grid effectively filters out diffuse noise, ensuring robust detection even during high churn.
 
-\begin{table}[t]
-\centering
-\caption{Hash Saturation Analysis. Max-Risk Pooling preserves attack signals even with 600+ collisions/pixel. Recall is measured with 100 injected malware.}
-\label{tab:hyperscale_saturation}
-\resizebox{0.85\columnwidth}{!}{%
-\begin{tabular}{r c c c}
-\toprule
-Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
-\midrule
-100,000 & 99.74\% & 6.1 & 100\% \\
-500,000 & 100.00\% & 30.5 & 100\% \\
-1,000,000 & 100.00\% & 61.0 & 100\% \\
-5,000,000 & 100.00\% & 305.2 & 100\% \\
-\rowcolor{gray!10} 
-10,000,000 & 100.00\% & 610.4 & 100\% \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
-\noindent\textbf{Resilience to Saturation.} Recall remains at 100\% even as file count increases to 10~million (Table~\ref{tab:hyperscale_saturation}). Despite the grid saturation reaching 100\% with over 610 collisions per pixel, the Max-Risk Pooling strategy ensures the high-risk anomaly dominates the pixel value. Since the pooling operation is non-linear (max), even an adversary flooding the bucket with thousands of benign decoys cannot mathematically lower the pixel value contributed by a single high-risk artifact. While Max-Risk Pooling is mathematically robust against stochastic collisions, targeted pre-image attacks represent a distinct threat model. Generating a targeted collision requires knowledge of the specific grid mapping function, which depends on a secret key $K$ that is randomized per deployment. Without leakage of the mapping seed, blind adversarial flooding is statistically ineffective against the sparse $L_\infty$ signal. Grid size sensitivity analysis (128 vs. 256 vs. 512) confirmed that the default $128 \times 128$ configuration provides sufficient resolution for sparse attack detection while minimizing memory overhead.
 
 \begin{figure}[t]
   \centering
@@ -200,11 +183,11 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
     \includegraphics[width=0.8\linewidth]{Figures/fig_fleet_vis.pdf}
     \label{fig:fleet_heatmap}
   }
-  \caption{\textbf{Fleet-Scale Performance.} (a) \textbf{Linear Scalability:} Throughput increases linearly with fleet size, reaching $\approx$206k files/s at 100 nodes. (b) \textbf{Geo-Stability:} The latency heatmap across 100 nodes shows consistent performance (avg 4.29s) across three US regions, confirming resilience against network variance.}
+  \caption{\textbf{Fleet-Scale Performance.} (a) \textbf{Linear Scalability:} Throughput increases linearly with fleet size, reaching $\approx$206k files/s at 100 nodes. Per-node throughput ($\approx$2k/s) is lower than single-node benchmarks (Table~\ref{tab:fair_baseline}) due to scanning a smaller directory with higher path-hashing overhead. (b) \textbf{Geo-Stability:} The latency heatmap across 100 nodes shows consistent performance (avg 4.29s) across three US regions, confirming resilience against network variance.}
   \label{fig:fleet_perf}
 \end{figure}
 
-\noindent\textbf{Fleet Scalability. }Throughput scales linearly with fleet size, increasing from $\approx$2k files/s (1 Node) to 206,611 files/s (100 Nodes) as shown in Figure~\ref{fig:fleet_scale}. This confirms that the stateless architecture effectively decouples processing load. Cross-region latency remains stable (avg 4.29s) across 100 nodes (Figure~\ref{fig:fleet_heatmap}), with a minimal aggregation overhead of 548ms. Network overhead is also drastically reduced; each node transmits only 49KB, representing a 100$\times$ reduction compared to provenance-based systems.
+\noindent\textbf{Fleet Scalability. }Throughput scales linearly with fleet size, increasing from $\approx$2k files/s (1 Node) to 206,611 files/s (100 Nodes) as shown in Figure~\ref{fig:fleet_scale}. This confirms that the stateless architecture effectively decouples processing load. Cross-region latency remains stable (avg 4.29s) across 100 nodes (Figure~\ref{fig:fleet_heatmap}), with a minimal aggregation overhead of 548ms. Network overhead is drastically reduced; each node transmits only 49KB (8-bit quantized), representing a 100$\times$ reduction compared to provenance-based systems.
 
 %=====================================================================
 \subsection{Robustness to System Churn (RQ3)}
@@ -225,9 +208,9 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
     \label{fig:churn_analysis}
 \end{figure}
 
-\noindent\textbf{Operational Efficiency and Alert Fatigue.} To evaluate stability during common maintenance windows (e.g., package upgrades, log rotation), a cloud-representative environment is reproduced by instantiating five Virtual Machines (VMs) from a unified Snapshot (T0). Subsequently, \textit{Real-World Churn (T1)} is generated using \texttt{Filebench}, \texttt{Nginx}, and \texttt{SQLite} to simulate the heavy I/O and metadata updates characteristic of system upgrades. Figure~\ref{fig:churn_alerts} quantifies the resulting scalability gap. \textit{Legacy Integrity Checking} (AIDE) incurs prohibitive overhead, triggering 8,500 false alerts per scan due to its reliance on brittle hash comparisons that flag any state change regardless of benign intent. In contrast, \DeepVis achieves zero false positives while maintaining 100\% detection recall (5/5), effectively filtering out recognizably normal churn. Unlike signature-based tools (ClamAV) which necessitate constant database updates, \DeepVis matches detection performance solely through baseline learning. These results demonstrate that the zero false alarm characteristic resolves the scalability bottleneck of traditional FIMs, as the elimination of 8,500 false positives reduces the operational burden on security analysts.
+\noindent\textbf{Operational Efficiency and Alert Fatigue.} To evaluate stability during common maintenance windows (e.g., package upgrades, log rotation), a cloud-representative environment is reproduced by instantiating five Virtual Machines (VMs) from a unified Snapshot (T0). Subsequently, Real-World Churn (T1) is generated using \texttt{Filebench}, \texttt{Nginx}, and \texttt{SQLite} to simulate the heavy I/O and metadata updates. Specifically, we executed standard \texttt{apt upgrade} cycles targeting core system utilities (e.g., \texttt{coreutils}, \texttt{libc-bin}) to validate robustness against legitimate binary replacements. Figure~\ref{fig:churn_alerts} quantifies the resulting scalability gap. Legacy Integrity Checking (AIDE) incurs prohibitive overhead, triggering 8,500 false alerts per scan due to its reliance on brittle hash comparisons that flag any state change regardless of benign intent. In contrast, \DeepVis achieves zero false positives while maintaining 100\% detection recall (5/5), effectively filtering out recognizably normal churn (Note: Isolated Snap/Flatpak updates were excluded from this specific benchmark to prioritize native ELF integrity). Unlike signature-based tools (ClamAV) which necessitate constant database updates, \DeepVis matches detection performance solely through baseline learning. These results demonstrate that the zero false alarm characteristic resolves the scalability bottleneck of traditional FIMs, as the elimination of 8,500 false positives reduces the operational burden on security analysts.
 
-\noindent\textbf{Fleet Error Stability vs. Forensic Signal.} As shown in Figure~\ref{fig:churn_hist}, the underlying mechanism for this efficiency is the robust stability of \DeepVis, where \textit{Benign Churn} forms a continuous distribution strictly below the learned threshold ($\tau \approx 0.4324$). This stability arises because the feature fusion model successfully generalizes the structural normality of authorized updates across the heterogeneous VM cluster, preventing score collisions. In contrast, \textit{Malicious Rootkits} manifest as high-confidence outliers ($Score \in [0.61, 0.90]$) due to unseen structural anomalies and hidden attributes. This distinct separation validates that the CAE retains forensic sensitivity even when scaled across dynamic fleet environments, ensuring that silence during maintenance does not compromise security visibility.
+\noindent\textbf{Fleet Error Stability vs. Forensic Signal.} As shown in Figure~\ref{fig:churn_hist}, the underlying mechanism for this efficiency is the robust stability of \DeepVis, where Benign Churn forms a continuous distribution strictly below the learned threshold ($\tau \approx 0.4324$). This stability arises because the feature fusion model successfully generalizes the structural normality of authorized updates across the heterogeneous VM cluster, preventing score collisions. In contrast, Malicious Rootkits manifest as high-confidence outliers ($Score \in [0.61, 0.90]$) due to unseen structural anomalies and hidden attributes. This distinct separation validates that the CAE retains forensic sensitivity even when scaled across dynamic fleet environments, ensuring that silence during maintenance does not compromise security visibility.
 
 
 %=====================================================================
@@ -243,7 +226,7 @@ Files ($N$) & Grid Saturation & Avg. Collisions & Recall \\
     \label{fig:header_sensitivity}
 \end{figure}
 
-\noindent\textbf{Impact of Scan Granularity.} Detection accuracy saturates rapidly, with Linux and Mobile platforms reaching peak Recall ($\approx$97--100\%) at a minimal 96~B scan size (Fig.~\ref{fig:header_sensitivity}). This indicates that minimal header data suffices for robust feature extraction. Throughput shows a general decline as scan size increases but remains stable up to 4~KB. This stability stems from OS-level page prefetching, where reading small chunks (e.g., 32~B) incurs similar I/O costs to reading a full 4~KB page. This empirical result validates the design choice of the \textit{4KB Page-Aligned Sampling} strategy, confirming that prefetching mechanisms negate the latency benefits of sub-page reads.
+\noindent\textbf{Impact of Scan Granularity.} Detection accuracy saturates rapidly, with Linux and Mobile platforms reaching peak Recall ($\approx$97--100\%) at a minimal 96~B scan size (Fig.~\ref{fig:header_sensitivity}). This indicates that minimal header data suffices for robust feature extraction. Throughput shows a general decline as scan size increases but remains stable up to 4~KB. This stability stems from OS-level page prefetching, where reading small chunks (e.g., 32~B) incurs similar I/O costs to reading a full 4~KB page. This empirical result validates the design choice of the 4KB Page-Aligned Sampling strategy. While this optimization maximizes throughput, it naturally introduces a trade-off where threats residing entirely in the deep payload (e.g., tail-appended data beyond 4KB) may evade detection. However, DeepVis is expressly designed not as a panacea, but as a high-speed pre-filter for structural anomalies (e.g., packing, header corruption), leaving deep content verification to Stage-2 scanners.
 
 \begin{table}[!ht]
 \centering
@@ -267,7 +250,7 @@ Throughput (files/s) & 15,789 & 15,789 & 15,789 & 15,789 \\
 }
 \end{table}
 
-\noindent\textbf{Runtime Bottleneck Analysis. }I/O latency dominates the runtime, increasing from 424ms (10K files) to 21.2s (500K files) and consistently accounting for $\approx$70\% of the total execution time (Table~\ref{tab:overhead_breakdown}). In contrast, \textit{Tensor Update} time remains negligible, taking only 909ms even for 500K files (3\%). This breakdown confirms that the computational overhead of \DeepVis is minimal compared to storage latency, identifying I/O throughput as the primary bottleneck for optimization.
+\noindent\textbf{Runtime Bottleneck Analysis. }I/O latency dominates the runtime, increasing from 424ms (10K files) to 21.2s (500K files) and consistently accounting for $\approx$70\% of the total execution time (Table~\ref{tab:overhead_breakdown}). In contrast, Tensor Update time remains negligible, taking only 909ms even for 500K files (3\%). This breakdown confirms that the computational overhead of \DeepVis is minimal compared to storage latency, identifying I/O throughput as the primary bottleneck for optimization.
 
 \begin{table}[!ht]
 \centering
@@ -299,4 +282,4 @@ Category & Configuration & Rate (files/s) & F1-Score \\
 
 \noindent\textbf{Performance Optimization.} Throughput increases from 950~files/s (single-thread sync) to 1,901~files/s with thread pooling (rayon), and then to 15,789~files/s with \texttt{io\_uring}, yielding an 8.3$\times$ speedup from asynchronous I/O alone (Table~\ref{tab:ablation}). This confirms that the kernel-bypass ring buffer eliminates blocking syscall overhead, making \texttt{io\_uring} the decisive factor for achieving hyperscale monitoring on cold storage.
 
-\noindent\textbf{Detection Fidelity.} F1-Score increases from 0.25 (Entropy Only) to 0.96 (RGB Fusion). Single-channel configurations prove insufficient; the R-channel yields false positives from benign compressed data, while structural features alone fail to distinguish packed binaries. Only the full RGB fusion achieves definitive detection, demonstrating that the orthogonality of Entropy, Context, and Structure is essential for distinguishing malicious artifacts from legitimate system noise. Weight perturbation experiments ($\pm$20\% on domain-specific risk parameters for feature fusion) confirm that F1-Score remains stable at 0.96, validating the robustness of the configuration across deployments.
+\noindent\textbf{Detection Fidelity.} F1-Score increases from 0.25 (Entropy Only) to 0.96 (RGB Fusion). Single-channel configurations prove insufficient; the R-channel yields false positives from benign compressed data, while structural features alone fail to distinguish packed binaries. Only the full RGB fusion achieves definitive detection, demonstrating that the orthogonality of Entropy, Context, and Structure is essential for distinguishing malicious artifacts from legitimate system noise. While linear classifiers (e.g., One-Class SVM) operating on the raw Hash-Grid were considered, they failed to model the non-linear manifold of valid system updates (churn), resulting in higher false positives during maintenance compared to the reconstruction-based CAE approach. Weight perturbation experiments ($\pm$20\% on domain-specific risk parameters for feature fusion) confirm that F1-Score remains stable at 0.96, validating the robustness of the configuration across deployments.

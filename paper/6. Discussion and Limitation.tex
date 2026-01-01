@@ -1,27 +1,27 @@
 \section{Security Analysis and Limitations}
 \label{sec:discussion}
 
-We analyze the security robustness of \DeepVis against adaptive evasion and discuss operational boundaries.
+We analyze the security robustness of \DeepVis against adaptive evasion, detail the operational triage workflow, and discuss system boundaries.
 
-\noindent\textbf{Robustness against Adaptive Evasion. }
-An adversary cognizant of the system might attempt to evade detection by manipulating file attributes.
-\begin{itemize}[leftmargin=*]
-    \item \textit{Low-Entropy Mimicry:} Padding a malicious binary with null bytes lowers entropy (Red channel evasion). However, this creates a \textit{Trilemma}: padding increases file size or alters structure, triggering Context (Green) or Structure (Blue) alarms. Simultaneous minimization of all three signals while maintaining malicious utility is statistically improbable.
-    \item \textit{Hash Collision Targeting:} An attacker might craft filenames to collide with high-churn benign files. \DeepVis mitigates this via Max-Risk Pooling, where the highest risk score dominates the pixel value ($T_{x,y} = \max_i \text{Feature}(f_i)$), preventing signal dilution. Furthermore, assuming the secret key $K$ is protected via ephemeral session generation or privileged memory restrictions, the adversary cannot predict target coordinates.
-    \item \textit{Contextual Masking:} Hiding a rootkit in a safe path lowers the Context score but exposes Structural anomalies (e.g., a kernel module in \texttt{/usr/bin}). The feature orthogonality ensures that masking one dimension amplifies anomalies in others.
+\noindent\textbf{Defense against Adaptive Adversaries (Feature Trilemma). }
+We simulated an advanced adaptive attacker attempting to evade detection by (1) moving the rootkit to a compliant path (e.g., \texttt{/usr/bin}) to minimize Context ($G$) and Structure ($B$) penalties, and (2) injecting zero-padding to reduce header entropy ($R$) to 6.0.
+Experimental results demonstrate that \DeepVis maintains robust detection (Recall 100\%) even under this combined evasion scenario ($L_\infty$ Score 0.40 $> \tau=0.31$). The investigation reveals a detection boundary at $H < 4.0$ bits, implying that an attacker must replace over 50\% of the ELF header with null bytes to evade detection, a constraint that structurally corrupts the binary format. 
+
+Regarding Targeted Hash Collisions, \DeepVis employs a high-entropy secret key $K$ (managed via TEE/HSM) to randomize spatial mapping. Evaluation across 50 random key rotations confirms threshold $\tau$ stability (KS-test $p \approx 1.0$). This stability holds because the CAE learns the global manifold of valid file features rather than overfitting to specific tensor coordinates; since a file's intrinsic features (e.g., entropy, header) remain invariant regardless of its mapped grid position, the overall reconstruction error distribution remains statistically identical, enabling seamless key rotation without retraining.
+
+\noindent\textbf{Operational Triage: The Filter-then-Verify Workflow. }
+A primary concern in fixed-size hashing is the cost of investigating alerts when multiple files collide. We propose a Two-Stage Filter-then-Verify model. Instead of relying on \DeepVis for absolute forensic attribution, it serves as a high-speed filter.
+\begin{enumerate}[]
+    \item \textbf{Stage 1 (DeepVis Filter):} The system identifies anomalous pixels within seconds. Empirically, even at maximum saturation ($\approx$610 collisions/pixel with 10M files and 128x128 resolution), our experiments confirm 100\% recall for injected rootkits (see Section~\ref{eval_saturation}), restricting the search space from $10^7$ files to a bounded bucket of $\approx 600$ files.
+    \item \textbf{Stage 2 (Targeted Verification):} Security operators trigger expensive scanners (e.g., YARA, full-hash) only on the flagged bucket.
+\end{enumerate}
+This reduces the investigation search space by approximately 16,000$\times$, making continuous integrity monitoring operationally viable without the alert fatigue of traditional FIMs.
+
+
+\noindent\textbf{Scope, Limitations, and Complementarity. }
+\DeepVis prioritizes hyperscale throughput via header-only sampling (first 4KB).
+\begin{itemize}[]
+    \item Blind Spots: It excels at detecting structural anomalies in binaries (ELF/LKM) but inherently misses deep-payload injections in script-based attacks (e.g., Python polyglots) or data-only corruption.
+    \item OS-Centricity: While achieving 97.1\% recall on Linux, effectiveness drops on Windows due to the higher variance of PE headers. Future work will incorporate OS-specific feature engineering.
+    \item Statelessness: Unlike event-based monitors (e.g., \texttt{auditd}) that require continuous operation, \DeepVis provides stateless, point-in-time verification. This makes it robust against agent-killing attacks, serving as a definitive ground-truth auditor to complement real-time event streams.
 \end{itemize}
-
-\noindent\textbf{Operational Limitations and Linux-Centric Design. }
-\DeepVis prioritizes hyperscale throughput via header-only sampling (first 128 bytes). While this covers 97.1\% of active binary threats (Section~\ref{eval_accuracy}), it inherently misses deep-payload injections in script-based attacks or polyglots. Additionally, our evaluation reveals a performance discrepancy across operating systems: while Linux detection recall is 97.1\%, Windows recall drops to 16.9\%. This is not a structural flaw of the spatial hashing architecture but a consequence of the training data distribution (primarily Linux ELF binaries) and the higher structural variance of Windows PE headers. Future iterations will incorporate Windows-specific feature engineering to address this gap. Currently, \DeepVis functions as a \textit{High-Frequency Triage Filter} for Linux-centric environments, reducing the search space from 100\% of files to 0.6\% of flagged artifacts for deeper forensic analysis.
-
-\noindent\textbf{Resistance to Hash Collisions and FP. }
-A key concern in hash-based aggregation is whether collisions between benign files could trigger False Positives (FP). We clarify that \DeepVis is robust against this scenario. Max-Risk Pooling ensures that combining multiple benign files only results in a pixel value representing the riskiest benign file, which by definition remains below the trained anomaly threshold ($\tau$). Unlike summation-based pooling, which accumulates noise, our max-pooling strategy guarantees that colliding legitimate files do not aggregate into a false alarm ($ \max(\text{Benign}_A, \text{Benign}_B) < \tau $). This preserves the low FP rate even under high saturation.
-
-\noindent\textbf{Why Deep Learning over Classical Methods?}
-While classical approaches such as One-Class SVMs or threshold-based heuristics offer computational simplicity, they fail to model the non-linear manifold of colliding multi-modal features. In preliminary experiments, SVMs exhibited a 14\% recall degradation under high saturation ($>$500 collisions/pixel) because linear decision boundaries cannot disentangle the max-pooled features of benign files from a malicious signal. The CAE architecture learns to suppress the background noise of benign feature collisions through non-linear channel interactions, representing a structural advantage over linear classifiers. Furthermore, while end-to-end I/O remains $O(N)$ due to physical constraints, our contribution isolates the \textit{verification latency} to $O(1)$ via spatial hashing. This ensures that the detection phase does not become a bottleneck as file counts scale to millions.
-
-\noindent\textbf{Key Rotation and Model Stability.}
-Our experiments across 50 independent key rotations show that the threshold $\tau$ remains stable. This stability arises because the CAE learns to reconstruct \textit{per-pixel feature distributions}, which are determined by the underlying file population---not spatial coordinates. Thus, key rotation does not require model retraining.
-
-\noindent\textbf{Deployment and Key Security. }
-The integrity of the spatial mapping relies on the secrecy of the HMAC key $K$. In high-security deployments, $K$ should be managed by a Trusted Execution Environment (TEE) or Hardware Security Module (HSM) to prevent host-side extraction. To minimize the Trusted Computing Base (TCB), \DeepVis supports an Agentless Architecture where target snapshots are mounted read-only on a trusted verifier instance.
