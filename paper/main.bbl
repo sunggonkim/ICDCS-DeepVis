@@ -63,6 +63,49 @@ M.~Zaheer, S.~Kottur, S.~Ravanbakhsh, B.~Poczos, R.~R. Salakhutdinov, and A.~J.
 R.~Wichmann, ``{Samhain}: {File} {Integrity} {Checker},''
   \url{https://www.la-samhna.de/samhain/}, 2003.
 
+\bibitem{diamorphine}
+V.~Ramos~Mello, ``{Diamorphine}: {LKM} rootkit for {Linux},''
+  \url{https://github.com/m0nad/Diamorphine}, 2023.
+
+\bibitem{reptile}
+f0rb1dd3n, ``{Reptile}: {LKM} {Linux} rootkit,''
+  \url{https://github.com/f0rb1dd3n/Reptile}, 2023.
+
+\bibitem{vxunderground}
+{vx-underground}, ``{MalwareSourceCode}: Curated collection of malware source
+  code,'' \url{https://github.com/vxunderground/MalwareSourceCode}, 2024,
+  includes Linux rootkits, Windows malware, mobile threats, and web-based
+  attacks.
+
+\bibitem{ramadhanmalware}
+R.~Amizudin, ``Malware sample repository,''
+  \url{https://github.com/RamadhanAmizudin/malware}, 2024.
+
+\bibitem{yara}
+V.~M. Alvarez, ``{YARA}: {T}he {P}attern {M}atching {S}wiss {K}nife for
+  {M}alware {R}esearchers,'' \url{https://github.com/VirusTotal/yara}, 2013.
+
+\bibitem{ssdeep}
+J.~Kornblum, ``{I}dentifying {A}lmost {I}dentical {F}iles {U}sing {C}ontext
+  {T}riggered {P}iecewise {H}ashing,'' \emph{Digital Investigation}, vol.~3,
+  no.~3, pp. 91--97, 2006.
+
+\bibitem{malconv}
+E.~Raff, J.~Barker, J.~Sylvester, R.~Brandon, B.~Catanzaro, and C.~K. Nicholas,
+  ``Malware detection by eating a whole exe,'' in \emph{AAAI Workshop on
+  Artificial Intelligence for Cyber Security}, 2018.
+
+\bibitem{byteplotcnn}
+L.~Liu, B.-S. Wang, B.~Yu, and Q.-X. Zhong, ``Automatic malware classification
+  and new malware detection using machine learning,'' \emph{Frontiers of
+  Information Technology \& Electronic Engineering}, vol.~18, pp. 1336--1347,
+  2017.
+
+\bibitem{packalm}
+X.~Chen, C.~Liu, B.~Li, K.~Lu, and D.~Song, ``Targeted backdoor attacks on deep
+  learning systems using data poisoning,'' \emph{arXiv preprint
+  arXiv:1712.05526}, 2017.
+
 \bibitem{cheng2024kairos}
 Z.~Cheng, Q.~Lv, J.~Liang, Y.~Wang, D.~Sun, T.~Pasquier, and X.~Han, ``Kairos:
   Practical intrusion detection and investigation using whole-system

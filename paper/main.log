@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  31 DEC 2025 20:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 11:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -891,101 +891,116 @@ Overfull \hbox (4.0748pt too wide) in paragraph at lines 70--71
 
 
 
+Overfull \hbox (17.55711pt too wide) detected at line 87
+[]\OML/cmm/m/it/10 G\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 ) = [] [
+]
+ []
+
+
 
 [5 <./Figures/Design/Hash_Arch.pdf>]
-<Figures/Design/CNN_Arch.pdf, id=395, 737.58846pt x 539.33128pt>
+<Figures/Design/CNN_Arch.pdf, id=396, 737.58846pt x 539.33128pt>
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
-Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 107.
+Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 105.
 (pdftex.def)             Requested size: 256.0748pt x 187.2463pt.
 
-Overfull \hbox (4.0748pt too wide) in paragraph at lines 107--108
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 105--106
  [][] 
  []
 
 
-Underfull \hbox (badness 2790) in paragraph at lines 114--115
-\OT1/ptm/b/n/10 Parallel Pixel-Wise Pro-cess-ing. \OT1/ptm/m/n/10 To achieve sc
-al-a-bil-ity,
- []
-
-
-
-LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 129.
-) (./4. Evaluation.tex
-Underfull \hbox (badness 1917) in paragraph at lines 131--1
-\OT1/pcr/m/n/10 scan()\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 scan_to_tensor()\OT1/pt
-m/m/n/10 , and \OT1/pcr/m/n/10 scan_to_csv()
- []
 
 
 
 [6 <./Figures/Design/CNN_Arch.pdf>]
-<Figures/fig_final_throughput.pdf, id=462, 319.59099pt x 280.9374pt>
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 119.
+
+Underfull \hbox (badness 2189) in paragraph at lines 121--122
+[]\OT1/pcr/m/n/10 DeepVis \OT1/ptm/m/n/10 em-ploys a hy-brid Rust-Python ar-chi
+-tec-ture
+ []
+
+) (./4. Evaluation.tex
+Underfull \hbox (badness 3250) in paragraph at lines 123--1
+\OT1/pcr/m/n/10 scan_to_tensor()\OT1/ptm/m/n/10 , fa-cil-i-tat-ing im-me-di-ate
+ in-te-gra-tion
+ []
+
+
+
+
+
+[7]
+<Figures/fig_final_throughput.pdf, id=467, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
-Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 9
-4.
+Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 1
+01.
 (pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
-<Figures/fig_final_latency.pdf, id=463, 319.2289pt x 280.9374pt>
+<Figures/fig_final_latency.pdf, id=468, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
-Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 98.
+Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 105.
+
 (pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
 
-<Figures/comparison_dilution.pdf, id=464, 730.85376pt x 333.64601pt>
+
+
+[8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf>]
+<Figures/comparison_dilution.pdf, id=584, 730.85376pt x 333.64601pt>
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
-Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 14
-0.
+Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 15
+4.
 (pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
 
 
-[7 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf>]
-<Figures/fig_fleet_scalability.pdf, id=580, 498.67555pt x 241.45416pt>
+<Figures/fig_fleet_scalability.pdf, id=585, 498.67555pt x 241.45416pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-174.
+188.
 (pdftex.def)             Requested size: 201.60077pt x 97.61154pt.
-<Figures/fig_fleet_vis.pdf, id=581, 476.12589pt x 355.65508pt>
+<Figures/fig_fleet_vis.pdf, id=586, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 178.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 192.
 (pdftex.def)             Requested size: 201.60077pt x 150.59515pt.
-<Figures/fig_churn_alerts.pdf, id=582, 354.57765pt x 244.966pt>
+<Figures/fig_churn_alerts.pdf, id=587, 354.57765pt x 244.966pt>
 File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
 <use Figures/fig_churn_alerts.pdf>
-Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 195.
+Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 209.
 (pdftex.def)             Requested size: 113.39923pt x 78.34212pt.
-<Figures/fig_churn_hist.pdf, id=583, 354.18805pt x 244.97711pt>
+<Figures/fig_churn_hist.pdf, id=588, 354.18805pt x 244.97711pt>
 File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
 <use Figures/fig_churn_hist.pdf>
-Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 199.
+Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 213.
 (pdftex.def)             Requested size: 113.39923pt x 78.43164pt.
 
 
-
-LaTeX Warning: Text page 8 contains only floats.
-
-
-
-[8 <./Figures/comparison_dilution.pdf> <./Figures/fig_fleet_scalability.pdf> <.
-/Figures/fig_fleet_vis.pdf> <./Figures/fig_churn_alerts.pdf> <./Figures/fig_chu
-rn_hist.pdf>]
-<Figures/fig_page_aligned_sensitivity.pdf, id=840, 496.69313pt x 207.01115pt>
+[9 <./Figures/comparison_dilution.pdf> <./Figures/fig_fleet_scalability.pdf> <.
+/Figures/fig_fleet_vis.pdf>]
+<Figures/fig_page_aligned_sensitivity.pdf, id=732, 496.69313pt x 207.01115pt>
 File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
 <use Figures/fig_page_aligned_sensitivity.pdf>
 Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
-t line 217.
+t line 231.
 (pdftex.def)             Requested size: 252.0pt x 105.02782pt.
 
 
+
+Underfull \hbox (badness 3364) in paragraph at lines 290--291
+\OT1/ptm/b/n/10 Performance Op-ti-miza-tion. \OT1/ptm/m/n/10 Through-put in-cre
+ases from
+ []
+
 ) (./5. Related Works.tex
 
-[9 <./Figures/fig_page_aligned_sensitivity.pdf>]
+[10 <./Figures/fig_churn_alerts.pdf> <./Figures/fig_churn_hist.pdf> <./Figures/
+fig_page_aligned_sensitivity.pdf>]
 
 ) (./6. Discussion and Limitation.tex
 Underfull \hbox (badness 1701) in paragraph at lines 10--11
@@ -994,49 +1009,66 @@ Underfull \hbox (badness 1701) in paragraph at lines 10--11
  []
 
 
+
+[11]
 Underfull \hbox (badness 5893) in paragraph at lines 14--16
 \OT1/ptm/b/n/10 Operational Lim-i-ta-tions and Linux-Centric De-sign.
  []
 
 
+Underfull \vbox (badness 1024) has occurred while \output is active []
 
-[10]) (./7. Conclusion.tex) (./main.bbl
 
 
+) (./7. Conclusion.tex) (./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 82--86
+Underfull \hbox (badness 1895) in paragraph at lines 75--79
+\OT1/ptm/m/n/8 source code,'' $https : / / github . com / vxunderground / Malwa
+reSourceCode$,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 81--83
+[]\OT1/ptm/m/n/8 R. Amizudin, ``Mal-ware sam-ple repos-i-tory,'' $https : / / g
+ithub . com /
+ []
+
+
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 125--129
 []\OT1/ptm/m/n/8 M. Zo-har, ``Linux In-tegrity Sub-sys-tem & Ecosys-tem:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 82--86
+Underfull \hbox (badness 10000) in paragraph at lines 125--129
 \OT1/ptm/m/n/8 IMA-Measurement, IMA-Appraisal, and EVM,'' Pre-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 82--86
+Underfull \hbox (badness 10000) in paragraph at lines 125--129
 \OT1/ptm/m/n/8 sen-ta-tion at Linux Se-cu-rity Sum-mit (LSS) EU 2018,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 82--86
+Underfull \hbox (badness 10000) in paragraph at lines 125--129
 \OT1/ptm/m/n/8 2018, avail-able at: https://events19.linuxfoundation.org/wp-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 82--86
+Underfull \hbox (badness 10000) in paragraph at lines 125--129
 \OT1/ptm/m/n/8 content/uploads/2017/12/LSS2018-EU-LinuxIntegrityOverview[]Mimi-
 
  []
 
 
 
-[11])
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1050,50 +1082,47 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-
-
-[12
-
-] (./main.aux)
+[13] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17808 strings out of 473190
- 385039 string characters out of 5715800
- 799252 words of memory out of 5000000
- 40694 multiletter control sequences out of 15000+600000
- 607470 words of font info for 136 fonts, out of 8000000 for 9000
+ 17818 strings out of 473190
+ 385144 string characters out of 5715800
+ 800296 words of memory out of 5000000
+ 40703 multiletter control sequences out of 15000+600000
+ 608548 words of font info for 137 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,91p,1594b,380s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
-></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><
-/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></u
-sr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr
-/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/l
-ocal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loc
-al/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/
-texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/tex
-live/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texl
-ive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texliv
-e/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/
-2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/20
-25/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2025/t
-exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/20
-25/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2025/texmf
--dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2025/texmf-dist/fo
-nts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/typ
-e1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/tim
-es/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a
-.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></us
-r/local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1936016 bytes).
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
+></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></
+usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
+r/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/
+local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/lo
+cal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loca
+l/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/t
+exlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texl
+ive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
+ve/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive
+/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2
+025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/202
+5/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2025/te
+xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/202
+5/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2025/texmf-
+dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2025/texmf-dist/fon
+ts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
+1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/time
+s/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.
+pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr
+/local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
+Output written on main.pdf (13 pages, 1951938 bytes).
 PDF statistics:
- 1000 PDF objects out of 1000 (max. 8388607)
- 343 compressed objects within 4 object streams
+ 1009 PDF objects out of 1200 (max. 8388607)
+ 349 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

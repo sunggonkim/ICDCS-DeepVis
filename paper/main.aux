@@ -64,61 +64,69 @@
 \newlabel{fig:comparison}{{6}{6}{}{figure.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Hash-Grid Parallel CAE}{6}{}\protected@file@percent }
 \newlabel{design_4}{{\mbox  {III-E}}{6}{}{subsection.3.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}\texttt  {DeepVis}\xspace  Implementation}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Evaluation}{6}{}\protected@file@percent }
-\newlabel{sec:evaluation}{{IV}{6}{}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Evaluation Setup}{6}{}\protected@file@percent }
-\newlabel{eval_setup}{{\mbox  {IV-A}}{6}{}{subsection.4.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces \textbf  {Unified Detection Performance.} Comparison against tuned baselines. DeepVis (Full) achieves superior recall on Linux/Mobile threats. Alert Rate is reported at the node/repository level (0.3\% per 10k files), ensuring manageable alert volumes for security operators.}}{7}{}\protected@file@percent }
-\newlabel{tab:unified_detection}{{II}{7}{}{table.2}{}}
+\citation{diamorphine}
+\citation{reptile}
+\citation{vxunderground,ramadhanmalware}
+\citation{aide}
+\citation{yara}
+\citation{clamav}
+\citation{ssdeep}
+\citation{malconv}
+\citation{byteplotcnn}
+\citation{packalm}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}\texttt  {DeepVis}\xspace  Implementation}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Evaluation}{7}{}\protected@file@percent }
+\newlabel{sec:evaluation}{{IV}{7}{}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Evaluation Setup}{7}{}\protected@file@percent }
+\newlabel{eval_setup}{{\mbox  {IV-A}}{7}{}{subsection.4.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Fidelity and Orthogonality (RQ1)}{7}{}\protected@file@percent }
 \newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Throughput and Interference (RQ2)}{7}{}\protected@file@percent }
-\newlabel{eval_scalability}{{\mbox  {IV-C}}{7}{}{subsection.4.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=47,270) and Malware (N=37,387) datasets. The "Miss" cases highlight limitations against threats that mimic benign header statistics.}}{7}{}\protected@file@percent }
-\newlabel{tab:detailed_breakdown}{{III}{7}{}{table.3}{}}
-\newlabel{fig:perf_throughput}{{7a}{7}{}{subfigure.7.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces \textbf  {Unified Detection Performance.} Comparison against tuned baselines and modern DL models. DeepVis (Full) achieves superior recall on Linux/Mobile threats while ensuring zero operational FPs. Alert Rate is reported at the node/repository level (0.3\% per 10k files).}}{8}{}\protected@file@percent }
+\newlabel{tab:unified_detection}{{II}{8}{}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Throughput and Interference (RQ2)}{8}{}\protected@file@percent }
+\newlabel{eval_scalability}{{\mbox  {IV-C}}{8}{}{subsection.4.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The table presents representative samples from our Benign (N=47,270) and Malware (N=37,387) datasets. The Miss cases highlight limitations against threats that mimic benign header statistics.}}{8}{}\protected@file@percent }
+\newlabel{tab:detailed_breakdown}{{III}{8}{}{table.3}{}}
+\newlabel{fig:perf_throughput}{{7a}{8}{}{subfigure.7.1}{}}
 \newlabel{sub@fig:perf_throughput}{{(a)}{a}}
-\newlabel{fig:perf_latency}{{7b}{7}{}{subfigure.7.2}{}}
+\newlabel{fig:perf_latency}{{7b}{8}{}{subfigure.7.2}{}}
 \newlabel{sub@fig:perf_latency}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {Comprehensive Performance Analysis.} (a) \textbf  {Throughput}: DeepVis achieves hyperscale speeds ($\approx $16k files/s cold cache) via asynchronous I/O, outperforming synchronous baselines by over 10$\times $. (b) \textbf  {Interference}: Despite its speed, \texttt  {DeepVis}\xspace  maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%).}}{7}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{7}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{7}{}\protected@file@percent }
-\newlabel{fig:perf_analysis}{{7}{7}{}{figure.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Scalability and Saturation Analysis (RQ3, RQ6, RQ7)}{7}{}\protected@file@percent }
-\newlabel{eval_saturation}{{\mbox  {IV-D}}{7}{}{subsection.4.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Fair Baseline Comparison (Cold Cache).} Throughput measured on GCP \texttt  {deepvis-mid} instance targeting \texttt  {/usr/bin}. Categories distinguish between full-file scanning and header-only sampling.}}{8}{}\protected@file@percent }
-\newlabel{tab:fair_baseline}{{IV}{8}{}{table.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Visualizing Signal Preservation. (Top) \texttt  {DeepVis}\xspace  maintains spatial locality, isolating the malware as a distinct red peak ($L_\infty $ Spike). (Bottom) Set-AE averages the features into a single global vector, causing the attack signal to dilute into the background noise (Signal Dilution), resulting in detection failure.}}{8}{}\protected@file@percent }
-\newlabel{fig:signal_comparison}{{8}{8}{}{figure.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Robustness to System Churn (RQ3)}{8}{}\protected@file@percent }
-\newlabel{eval_churn}{{\mbox  {IV-E}}{8}{}{subsection.4.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Hash Saturation Analysis. Max-Risk Pooling preserves attack signals even with 600+ collisions/pixel. Recall is measured with 100 injected malware.}}{8}{}\protected@file@percent }
-\newlabel{tab:hyperscale_saturation}{{V}{8}{}{table.5}{}}
-\newlabel{fig:fleet_scale}{{9a}{8}{}{subfigure.9.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {Comprehensive Performance Analysis.} (a) \textbf  {Throughput}: DeepVis achieves hyperscale speeds ($\approx $16k files/s cold cache) via asynchronous I/O, outperforming synchronous baselines by over 10$\times $. (b) \textbf  {Interference}: Despite its speed, \texttt  {DeepVis}\xspace  maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%).}}{8}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{8}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{8}{}\protected@file@percent }
+\newlabel{fig:perf_analysis}{{7}{8}{}{figure.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Fair Baseline Comparison (Cold Cache).} Throughput measured on GCP \texttt  {deepvis-mid} instance targeting \texttt  {/usr/bin}. Categories distinguish between full-file scanning and header-only sampling.}}{9}{}\protected@file@percent }
+\newlabel{tab:fair_baseline}{{IV}{9}{}{table.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textbf  {Visualizing Signal Preservation.} (Top) \texttt  {DeepVis}\xspace  maintains spatial locality, isolating the malware as a distinct red peak ($L_\infty $ Spike). (Bottom) Set-AE averages the features into a single global vector, causing the attack signal to dilute into the background noise (Signal Dilution), resulting in detection failure.}}{9}{}\protected@file@percent }
+\newlabel{fig:signal_comparison}{{8}{9}{}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Scalability and Saturation Analysis (RQ3, RQ6, RQ7)}{9}{}\protected@file@percent }
+\newlabel{eval_saturation}{{\mbox  {IV-D}}{9}{}{subsection.4.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Hash Saturation Analysis. Max-Risk Pooling preserves attack signals even with 600+ collisions/pixel. Recall is measured with 100 injected malware.}}{9}{}\protected@file@percent }
+\newlabel{tab:hyperscale_saturation}{{V}{9}{}{table.5}{}}
+\newlabel{fig:fleet_scale}{{9a}{9}{}{subfigure.9.1}{}}
 \newlabel{sub@fig:fleet_scale}{{(a)}{a}}
-\newlabel{fig:fleet_heatmap}{{9b}{8}{}{subfigure.9.2}{}}
+\newlabel{fig:fleet_heatmap}{{9b}{9}{}{subfigure.9.2}{}}
 \newlabel{sub@fig:fleet_heatmap}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \textbf  {Fleet-Scale Performance.} (a) \textbf  {Linear Scalability:} Throughput increases linearly with fleet size, reaching $\approx $206k files/s at 100 nodes. (b) \textbf  {Geo-Stability:} The latency heatmap across 100 nodes shows consistent performance (avg 4.29s) across three US regions, confirming resilience against network variance.}}{8}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{8}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{8}{}\protected@file@percent }
-\newlabel{fig:fleet_perf}{{9}{8}{}{figure.9}{}}
-\newlabel{fig:churn_alerts}{{10a}{8}{}{subfigure.10.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \textbf  {Fleet-Scale Performance.} (a) \textbf  {Linear Scalability:} Throughput increases linearly with fleet size, reaching $\approx $206k files/s at 100 nodes. (b) \textbf  {Geo-Stability:} The latency heatmap across 100 nodes shows consistent performance (avg 4.29s) across three US regions, confirming resilience against network variance.}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{9}{}\protected@file@percent }
+\newlabel{fig:fleet_perf}{{9}{9}{}{figure.9}{}}
+\newlabel{fig:churn_alerts}{{10a}{10}{}{subfigure.10.1}{}}
 \newlabel{sub@fig:churn_alerts}{{(a)}{a}}
-\newlabel{fig:churn_hist}{{10b}{8}{}{subfigure.10.2}{}}
+\newlabel{fig:churn_hist}{{10b}{10}{}{subfigure.10.2}{}}
 \newlabel{sub@fig:churn_hist}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {Fleet-Scale Churn \& Alert Fatigue Analysis.} (a) Comparison of False Positive alerts and Detection Recall. AIDE generates 8,500 alerts during maintenance, whereas \texttt  {DeepVis}\xspace  maintains zero false positives for these benign update scenarios. (b) Distribution of reconstruction errors ($\mathcal  {L}_\infty $). Benign churn stays strictly below the learned threshold $\tau \approx 0.4324$, while malicious rootkits manifest as high-confidence outliers.}}{8}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Alert Fatigue \& Detection}}}{8}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction Error Dist.}}}{8}{}\protected@file@percent }
-\newlabel{fig:churn_analysis}{{10}{8}{}{figure.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx $96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying our \textbf  {4KB Page-Aligned Sampling} strategy.}}{9}{}\protected@file@percent }
-\newlabel{fig:header_sensitivity}{{11}{9}{}{figure.11}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{9}{}\protected@file@percent }
-\newlabel{eval_sensitivity}{{\mbox  {IV-F}}{9}{}{subsection.4.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{9}{}\protected@file@percent }
-\newlabel{tab:overhead_breakdown}{{VI}{9}{}{table.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Component-wise Ablation Study (Cold Cache). Performance components (I/O) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}}{9}{}\protected@file@percent }
-\newlabel{tab:ablation}{{VII}{9}{}{table.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \textbf  {Fleet-Scale Churn \& Alert Fatigue Analysis.} (a) Comparison of False Positive alerts and Detection Recall. AIDE generates 8,500 alerts during maintenance, whereas \texttt  {DeepVis}\xspace  maintains zero false positives for these benign update scenarios. (b) Distribution of reconstruction errors ($\mathcal  {L}_\infty $). Benign churn stays strictly below the learned threshold $\tau \approx 0.4324$, while malicious rootkits manifest as high-confidence outliers.}}{10}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Alert Fatigue \& Detection}}}{10}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction Error Dist.}}}{10}{}\protected@file@percent }
+\newlabel{fig:churn_analysis}{{10}{10}{}{figure.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Robustness to System Churn (RQ3)}{10}{}\protected@file@percent }
+\newlabel{eval_churn}{{\mbox  {IV-E}}{10}{}{subsection.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{10}{}\protected@file@percent }
+\newlabel{eval_sensitivity}{{\mbox  {IV-F}}{10}{}{subsection.4.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx $96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying the 4KB page-aligned sampling strategy.}}{10}{}\protected@file@percent }
+\newlabel{fig:header_sensitivity}{{11}{10}{}{figure.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{10}{}\protected@file@percent }
+\newlabel{tab:overhead_breakdown}{{VI}{10}{}{table.6}{}}
 \citation{tripwire,aide,samhain}
 \citation{unicorn,cheng2024kairos}
 \citation{ossec,falco}
@@ -136,10 +144,12 @@
 \citation{akcay2018ganomaly}
 \citation{zong2018deep}
 \citation{su2019robust,xu2018unsupervised}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{10}{}\protected@file@percent }
-\newlabel{sec:related_work}{{V}{10}{}{section.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{10}{}\protected@file@percent }
-\newlabel{sec:discussion}{{VI}{10}{}{section.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Component-wise Ablation Study (Cold Cache). Performance components (I/O) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}}{11}{}\protected@file@percent }
+\newlabel{tab:ablation}{{VII}{11}{}{table.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{11}{}\protected@file@percent }
+\newlabel{sec:related_work}{{V}{11}{}{section.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{11}{}\protected@file@percent }
+\newlabel{sec:discussion}{{VI}{11}{}{section.6}{}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
@@ -151,27 +161,36 @@
 \bibcite{unicorn}{7}
 \bibcite{zaheer2017deepsets}{8}
 \bibcite{samhain}{9}
-\bibcite{cheng2024kairos}{10}
-\bibcite{he2023cross}{11}
-\bibcite{tfjmp2024safebpf}{12}
-\bibcite{zohar2018integrity}{13}
-\bibcite{oprea2007integrity}{14}
-\bibcite{luo2019container}{15}
-\bibcite{bohling2020subverting}{16}
-\bibcite{nataraj2011malware}{17}
-\bibcite{conti2008visual}{18}
-\bibcite{aldini2024image}{19}
-\bibcite{lyda2007entropy}{20}
-\bibcite{ling2024wolf}{21}
-\bibcite{uetz2024detecting}{22}
-\bibcite{du2017deeplog}{23}
-\bibcite{mirsky2018kitsune}{24}
-\bibcite{ruff2018deep}{25}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{11}{}{section.7}{}}
-\@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
-\bibcite{akcay2018ganomaly}{26}
-\bibcite{zong2018deep}{27}
-\bibcite{su2019robust}{28}
-\bibcite{xu2018unsupervised}{29}
-\gdef \@abspage@last{12}
+\bibcite{diamorphine}{10}
+\bibcite{reptile}{11}
+\bibcite{vxunderground}{12}
+\bibcite{ramadhanmalware}{13}
+\bibcite{yara}{14}
+\bibcite{ssdeep}{15}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{12}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{12}{}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{References}{12}{}\protected@file@percent }
+\bibcite{malconv}{16}
+\bibcite{byteplotcnn}{17}
+\bibcite{packalm}{18}
+\bibcite{cheng2024kairos}{19}
+\bibcite{he2023cross}{20}
+\bibcite{tfjmp2024safebpf}{21}
+\bibcite{zohar2018integrity}{22}
+\bibcite{oprea2007integrity}{23}
+\bibcite{luo2019container}{24}
+\bibcite{bohling2020subverting}{25}
+\bibcite{nataraj2011malware}{26}
+\bibcite{conti2008visual}{27}
+\bibcite{aldini2024image}{28}
+\bibcite{lyda2007entropy}{29}
+\bibcite{ling2024wolf}{30}
+\bibcite{uetz2024detecting}{31}
+\bibcite{du2017deeplog}{32}
+\bibcite{mirsky2018kitsune}{33}
+\bibcite{ruff2018deep}{34}
+\bibcite{akcay2018ganomaly}{35}
+\bibcite{zong2018deep}{36}
+\bibcite{su2019robust}{37}
+\bibcite{xu2018unsupervised}{38}
+\gdef \@abspage@last{13}
