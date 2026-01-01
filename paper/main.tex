@@ -53,8 +53,8 @@
 \maketitle
 
 \begin{abstract}
-This paper presents \DeepVis, a scalable file system integrity verification system for hyperscale storage environments such as cloud data centers. Designed as a rapid first-pass filter, our key idea is to transform the file system state into a fixed-size RGB image and map individual files to specific pixels to enable scalable inspection regardless of the file count. Specifically, \DeepVis introduces: (1) an asynchronous lightweight snapshot engine utilizing Rust and \texttt{io\_uring}; (2) a parallel mapping pipeline that converts file metadata into a fixed-size image representation ; and (3) a spatial anomaly detection mechanism for identifying anomalous patterns within the file system represented as a single image. We evaluate \DeepVis on production-grade cloud infrastructure. Our results show that \DeepVis acts as an effective snapshot-based audit system. It detects 97.1\% of hidden kernel modules and packed binaries in Linux environments. 
-In addition, \DeepVis achieves a 121.45$\times$ speedup over traditional hash-based full-scan integrity tools while incurring minimal overhead of less than 2 percent CPU usage.
+This paper presents \DeepVis, a scalable file system integrity verification system for hyperscale storage environments such as cloud data centers. Designed as a rapid first-pass filter, our key idea is to transform the file system state into a fixed-size RGB image and map individual files to specific pixels to enable scalable inspection regardless of the file count. Specifically, \DeepVis introduces: (1) an asynchronous lightweight snapshot engine utilizing Rust and \texttt{io\_uring}, (2) a parallel mapping pipeline that converts file metadata into a fixed-size image representation and (3) a spatial anomaly detection mechanism for identifying anomalous patterns within the file system represented as a single image. We evaluate \DeepVis on production-grade cloud infrastructure. Our results show that \DeepVis acts as an effective snapshot-based audit system. It detects 97.1\% of hidden kernel modules and packed binaries in Linux environments. 
+In addition, \DeepVis achieves a 121.4$\times$ speedup over traditional hash-based full-scan integrity tools while incurring minimal overhead of less than 2 percent CPU usage.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -66,7 +66,7 @@ Distributed Systems, File System Monitoring, Scalable Verification, Anomaly Dete
 \input{3. Design.tex}
 \input{4. Evaluation.tex}
 \input{5. Related Works.tex}
-\input{6. Discussion and Limitation.tex}
+%\input{6. Discussion and Limitation.tex}
 \input{7. Conclusion.tex}
 
 \bibliographystyle{IEEEtran}

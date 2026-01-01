@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 17:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 20:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -793,21 +793,18 @@ File: Figures/fig_motivation_legend.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_legend.pdf>
 Package pdftex.def Info: Figures/fig_motivation_legend.pdf  used on input line 
 13.
-(pdftex.def)             Requested size: 226.79846pt x 23.2095pt.
-<Figures/fig_motivation_a.pdf, id=5, 227.61652pt x 162.10782pt>
+(pdftex.def)             Requested size: 226.79846pt x 13.80077pt.
+<Figures/fig_motivation_a.pdf, id=6, 227.61652pt x 162.10782pt>
 File: Figures/fig_motivation_a.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_a.pdf>
-Package pdftex.def Info: Figures/fig_motivation_a.pdf  used on input line 17.
+Package pdftex.def Info: Figures/fig_motivation_a.pdf  used on input line 16.
 (pdftex.def)             Requested size: 118.4403pt x 84.35342pt.
-<Figures/fig_motivation_b.pdf, id=6, 227.37354pt x 161.85532pt>
+<Figures/fig_motivation_b.pdf, id=7, 227.37354pt x 161.85532pt>
 File: Figures/fig_motivation_b.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_b.pdf>
-Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 21.
+Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 20.
 (pdftex.def)             Requested size: 118.4403pt x 84.31342pt.
 
-
-
-Underfull \vbox (badness 2941) has occurred while \output is active []
 
 
 
@@ -815,50 +812,55 @@ Underfull \vbox (badness 2941) has occurred while \output is active []
 ocal/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
- <./Figures/fig_motivation_legend.pdf> <./Figures/fig_motivation_a.pdf> <./Figu
-res/fig_motivation_b.pdf>]) (./2. Background.tex
+ <./Figures/fig_motivation_a.pdf> <./Figures/fig_motivation_b.pdf> <./Figures/f
+ig_motivation_legend.pdf>]) (./2. Background.tex
 
-<Figures/Background_entrophy/entropy_combined_a.pdf, id=125, 247.80171pt x 385.
+<Figures/Background_entrophy/entropy_combined_a.pdf, id=127, 247.80171pt x 385.
 2851pt>
 File: Figures/Background_entrophy/entropy_combined_a.pdf Graphic file (type pdf
 )
 <use Figures/Background_entrophy/entropy_combined_a.pdf>
 Package pdftex.def Info: Figures/Background_entrophy/entropy_combined_a.pdf  us
-ed on input line 25.
+ed on input line 27.
 (pdftex.def)             Requested size: 113.39923pt x 176.31616pt.
-<Figures/Background_entrophy/Background_Normal_text.pdf, id=126, 284.94691pt x 
+<Figures/Background_entrophy/Background_Normal_text.pdf, id=128, 284.94691pt x 
 465.23059pt>
 File: Figures/Background_entrophy/Background_Normal_text.pdf Graphic file (type
  pdf)
 <use Figures/Background_entrophy/Background_Normal_text.pdf>
 Package pdftex.def Info: Figures/Background_entrophy/Background_Normal_text.pdf
-  used on input line 30.
+  used on input line 32.
 (pdftex.def)             Requested size: 113.39923pt x 185.14479pt.
-<Figures/Background_entrophy/Background_System_binaray.pdf, id=127, 289.55978pt
+<Figures/Background_entrophy/Background_System_binaray.pdf, id=129, 289.55978pt
  x 464.29753pt>
 File: Figures/Background_entrophy/Background_System_binaray.pdf Graphic file (t
 ype pdf)
 <use Figures/Background_entrophy/Background_System_binaray.pdf>
 Package pdftex.def Info: Figures/Background_entrophy/Background_System_binaray.
-pdf  used on input line 35.
+pdf  used on input line 37.
 (pdftex.def)             Requested size: 113.39923pt x 181.83336pt.
-<Figures/Background_entrophy/Background_Rootkit.pdf, id=128, 293.06308pt x 474.
+<Figures/Background_entrophy/Background_Rootkit.pdf, id=130, 293.06308pt x 474.
 31844pt>
 File: Figures/Background_entrophy/Background_Rootkit.pdf Graphic file (type pdf
 )
 <use Figures/Background_entrophy/Background_Rootkit.pdf>
 Package pdftex.def Info: Figures/Background_entrophy/Background_Rootkit.pdf  us
-ed on input line 40.
+ed on input line 42.
 (pdftex.def)             Requested size: 113.39923pt x 183.53593pt.
 
 
 [2]) (./3. Design.tex
-<Figures/Design/Overall_Arch.pdf, id=133, 671.43939pt x 550.47514pt>
+<Figures/Design/Overall_Arch.pdf, id=135, 671.43939pt x 550.47514pt>
 File: Figures/Design/Overall_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Overall_Arch.pdf>
 Package pdftex.def Info: Figures/Design/Overall_Arch.pdf  used on input line 13
 .
-(pdftex.def)             Requested size: 227.62204pt x 186.6131pt.
+(pdftex.def)             Requested size: 256.0748pt x 209.93869pt.
+
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 13--14
+ [][] 
+ []
+
 
 
 
@@ -870,178 +872,165 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 _entrophy/Background_Normal_text.pdf> <./Figures/Background_entrophy/Background
 _System_binaray.pdf> <./Figures/Background_entrophy/Background_Rootkit.pdf> <./
 Figures/Design/Overall_Arch.pdf>]
-<Figures/Design/io_Arch.pdf, id=326, 756.41832pt x 550.10004pt>
+<Figures/Design/io_Arch.pdf, id=328, 756.41832pt x 550.10004pt>
 File: Figures/Design/io_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/io_Arch.pdf>
 Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 35.
-(pdftex.def)             Requested size: 199.16928pt x 144.8441pt.
+(pdftex.def)             Requested size: 256.0748pt x 186.22572pt.
+
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 35--36
+ [][] 
+ []
+
 
 Underfull \hbox (badness 3930) in paragraph at lines 40--41
 \OT1/ptm/m/n/10 lec-tion across all cores. Worker threads ex-e-cute syn-
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-<Figures/Design/Hash_Arch.pdf, id=327, 672.63974pt x 414.93048pt>
+
+
+<Figures/Design/Hash_Arch.pdf, id=329, 672.63974pt x 414.93048pt>
 File: Figures/Design/Hash_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Hash_Arch.pdf>
 Package pdftex.def Info: Figures/Design/Hash_Arch.pdf  used on input line 65.
-(pdftex.def)             Requested size: 227.62204pt x 140.4097pt.
+(pdftex.def)             Requested size: 256.0748pt x 157.96646pt.
+
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 65--66
+ [][] 
+ []
 
 
-[4 <./Figures/Design/io_Arch.pdf> <./Figures/Design/Hash_Arch.pdf>]
 
-<Figures/Design/CNN_Arch.pdf, id=389, 737.58846pt x 539.33128pt>
+[4 <./Figures/Design/io_Arch.pdf>]
+
+<Figures/Design/CNN_Arch.pdf, id=372, 737.58846pt x 539.33128pt>
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
 Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 105.
-(pdftex.def)             Requested size: 227.62204pt x 166.43385pt.
+(pdftex.def)             Requested size: 256.0748pt x 187.2463pt.
 
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 105--106
+ [][] 
+ []
+
+
+
+[5 <./Figures/Design/Hash_Arch.pdf> <./Figures/Design/CNN_Arch.pdf>]
 Underfull \hbox (badness 5260) in paragraph at lines 120--121
 \OT1/ptm/b/n/10 Threshold Cal-i-bra-tion. \OT1/pcr/m/n/10 DeepVis \OT1/ptm/m/n/
 10 es-tab-lishes de-ci-sion
  []
 
-
-
-[5 <./Figures/Design/CNN_Arch.pdf>]
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 (Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 123.
 ) (./4. Evaluation.tex
 
+LaTeX Warning: Reference `sec:discussion' on page 6 undefined on input line 11.
+
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--15
+\OT1/ptm/b/n/10 Baselines.  \OT1/ptm/m/n/10 Tra-di-tional mon-i-tors in-clude A
+IDE [1],
+ []
+
+
+Underfull \hbox (badness 2221) in paragraph at lines 13--15
+\OT1/ptm/m/n/10 clas-si-fi-ca-tion; and Pack-ALM [18], a Transformer-based
+ []
+
+
+
 
 
 [6]
-<Figures/comparison_dilution.pdf, id=466, 730.85376pt x 333.64601pt>
+<Figures/comparison_dilution.pdf, id=468, 730.85376pt x 333.64601pt>
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
 Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 64
 .
-(pdftex.def)             Requested size: 214.20154pt x 97.78325pt.
+(pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
+
+
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-
-
 [7 <./Figures/comparison_dilution.pdf>]
-<Figures/fig_final_throughput.pdf, id=521, 319.59099pt x 280.9374pt>
+<Figures/fig_final_throughput.pdf, id=523, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
 Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 1
 55.
 (pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
-<Figures/fig_final_latency.pdf, id=522, 319.2289pt x 280.9374pt>
+<Figures/fig_final_latency.pdf, id=524, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
 Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 159.
 
 (pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
-Underfull \hbox (badness 1521) in paragraph at lines 193--194
-\OT1/ptm/b/n/10 Vertical Scal-a-bil-ity. \OT1/ptm/m/n/10 To eval-u-ate ver-ti-c
-al scal-a-bil-ity, we
- []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 193--194
-\OT1/ptm/m/n/10 ex-tended our eval-u-a-tion to two ad-di-tional hard-ware
- []
-
-
-Underfull \hbox (badness 4621) in paragraph at lines 193--194
-\OT1/ptm/m/n/10 tiers: a resource-constrained \OT1/ptm/b/n/10 Low \OT1/ptm/m/n/
-10 tier (\OT1/pcr/m/n/10 e2-micro\OT1/ptm/m/n/10 , 2
- []
-
-
-Underfull \hbox (badness 4328) in paragraph at lines 193--194
-\OT1/ptm/m/n/10 quan-ti-fies the sen-si-tiv-ity. The \OT1/pcr/m/n/10 deepvis-mi
-d \OT1/ptm/m/n/10 in-stance
- []
-
-
-Underfull \hbox (badness 4726) in paragraph at lines 193--194
-\OT1/ptm/m/n/10 (e2-standard-2) pro-vided ex-cel-lent base-line per-for-mance
- []
-
-
-
-<Figures/fig_fleet_scalability.pdf, id=523, 498.67555pt x 241.45416pt>
+<Figures/fig_fleet_scalability.pdf, id=525, 498.67555pt x 241.45416pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
 200.
-(pdftex.def)             Requested size: 176.39923pt x 85.40918pt.
-<Figures/fig_fleet_vis.pdf, id=524, 476.12589pt x 355.65508pt>
+(pdftex.def)             Requested size: 239.39923pt x 115.91508pt.
+<Figures/fig_fleet_vis.pdf, id=526, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
 Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 204.
-(pdftex.def)             Requested size: 176.39923pt x 131.7694pt.
-<Figures/fig_churn_alerts.pdf, id=525, 354.57765pt x 244.966pt>
+(pdftex.def)             Requested size: 239.39923pt x 178.83107pt.
+<Figures/fig_churn_alerts.pdf, id=527, 354.57765pt x 244.966pt>
 File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
 <use Figures/fig_churn_alerts.pdf>
 Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 222.
 (pdftex.def)             Requested size: 113.39923pt x 78.34212pt.
-<Figures/fig_churn_hist.pdf, id=526, 354.18805pt x 244.97711pt>
+<Figures/fig_churn_hist.pdf, id=528, 354.18805pt x 244.97711pt>
 File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
 <use Figures/fig_churn_hist.pdf>
 Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 226.
 (pdftex.def)             Requested size: 113.39923pt x 78.43164pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
-gures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figures/fig_c
-hurn_alerts.pdf> <./Figures/fig_churn_hist.pdf>]
+gures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf>]
 
-<Figures/fig_page_aligned_sensitivity.pdf, id=841, 496.69313pt x 207.01115pt>
+<Figures/fig_page_aligned_sensitivity.pdf, id=731, 496.69313pt x 207.01115pt>
 File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
 <use Figures/fig_page_aligned_sensitivity.pdf>
 Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
-t line 268.
+t line 271.
 (pdftex.def)             Requested size: 226.79846pt x 94.52504pt.
 
-Underfull \hbox (badness 3364) in paragraph at lines 330--331
+
+[9 <./Figures/fig_churn_alerts.pdf> <./Figures/fig_churn_hist.pdf> <./Figures/f
+ig_page_aligned_sensitivity.pdf>]
+Underfull \hbox (badness 3364) in paragraph at lines 333--334
 \OT1/ptm/b/n/10 Performance Op-ti-miza-tion. \OT1/ptm/m/n/10 Through-put in-cre
 ases from
  []
 
-
-
-[9 <./Figures/fig_page_aligned_sensitivity.pdf>]) (./5. Related Works.tex
+) (./5. Related Works.tex
 
 LaTeX Warning: Citation `lim2024safebpf' on page 10 undefined on input line 5.
 
 
-
-
-LaTeX Warning: Citation `uetz2024escape' on page 10 undefined on input line 11.
-
-
-) (./6. Discussion and Limitation.tex
-
-[10]
-
-LaTeX Warning: Reference `eval_saturation' on page 11 undefined on input line 1
-5.
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 26--27
-[]\OT1/ptm/m/n/10 Statelessness: Un-like event-based mon-i-tors (e.g.,
- []
+LaTeX Warning: Citation `uetz2024escape' on page 10 undefined on input line 9.
 
+) (./7. Conclusion.tex)
 
-Underfull \hbox (badness 1389) in paragraph at lines 26--27
-\OT1/ptm/m/n/10 it ro-bust against agent-killing at-tacks, serv-ing as a
- []
-
-) (./7. Conclusion.tex) (./main.bbl
+[10] (./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1061,7 +1050,7 @@ ithub . com /
 
 
 
-[11]
+
 Underfull \hbox (badness 10000) in paragraph at lines 124--128
 []\OT1/ptm/m/n/8 M. Zo-har, ``Linux In-tegrity Sub-sys-tem & Ecosys-tem:
  []
@@ -1087,11 +1076,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 124--128
 
  []
 
-
-Underfull \vbox (badness 1077) has occurred while \output is active []
-
-
-
 )
 
 ** Conference Paper **
@@ -1106,7 +1090,7 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[12] (./main.aux)
+[11] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1117,13 +1101,13 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 18161 strings out of 473190
- 391133 string characters out of 5715800
- 798097 words of memory out of 5000000
- 41041 multiletter control sequences out of 15000+600000
+ 18150 strings out of 473190
+ 390791 string characters out of 5715800
+ 798071 words of memory out of 5000000
+ 41033 multiletter control sequences out of 15000+600000
  608500 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,13n,91p,1630b,380s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,13n,91p,1279b,374s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></
@@ -1147,10 +1131,10 @@ ts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
 s/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.
 pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr
 /local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1938721 bytes).
+Output written on main.pdf (11 pages, 1933504 bytes).
 PDF statistics:
- 1005 PDF objects out of 1200 (max. 8388607)
- 346 compressed objects within 4 object streams
+ 1004 PDF objects out of 1200 (max. 8388607)
+ 345 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
- 108 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 114 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -61,7 +61,7 @@ Byte-plot CNN (29.2\%) fails because it treats binaries as simple 2D images, ign
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.85\linewidth]{Figures/comparison_dilution.pdf}
+    \includegraphics[width=0.95\linewidth]{Figures/comparison_dilution.pdf}
     \caption{\textbf{Signal Preservation.} \DeepVis (top) isolates malware as a distinct $L_\infty$ spike; Set-AE (bottom) dilutes the signal via global averaging.}
     \label{fig:signal_comparison}
 \end{figure}
@@ -195,11 +195,11 @@ High & c2-standard-4 (4 vCPU + NVMe) & \textbf{20,045/s} & 2,603/s & \textbf{7.7
 \begin{figure}[t]
   \centering
   \subfloat[Linear Scalability]{
-    \includegraphics[width=0.7\linewidth]{Figures/fig_fleet_scalability.pdf}
+    \includegraphics[width=0.95\linewidth]{Figures/fig_fleet_scalability.pdf}
     \label{fig:fleet_scale}
   } \\
   \subfloat[Geo-Stability]{
-    \includegraphics[width=0.7\linewidth]{Figures/fig_fleet_vis.pdf}
+    \includegraphics[width=0.95\linewidth]{Figures/fig_fleet_vis.pdf}
     \label{fig:fleet_heatmap}
   }
   \caption{\textbf{Fleet-Scale Performance.} (a) Linear throughput scaling to 206k files/s at 100 nodes. (b) Geo-stability: avg latency 4.29s across three US regions.}
@@ -278,7 +278,7 @@ Table~\ref{tab:platform_specificity} summarizes the cross-domain evaluation resu
 
 
 
-\begin{table}[!ht]
+\begin{table}[t]
 \centering
 \caption{\textbf{Component Time Breakdown (Cold Cache).} I/O dominates ($\approx$70--74\%), confirming that \DeepVis computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}
 \label{tab:overhead_breakdown}

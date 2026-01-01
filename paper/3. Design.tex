@@ -10,7 +10,7 @@
     \centering
     % [User Check] 파일명 유지함. 
     % 단, PDF 내용이 텍스트와 일치하는지(128x128 등) 확인 필요.
-    \includegraphics[width=8cm]{Figures/Design/Overall_Arch.pdf}
+    \includegraphics[width=9cm]{Figures/Design/Overall_Arch.pdf}
     \caption{\textbf{Overall \DeepVis Procedure.} File metadata is transformed into a $128{\times}128$ RGB tensor, processed by CAE, and anomalies detected via $L_\infty$.}
     \label{fig:overall}
 \end{figure}
@@ -32,7 +32,7 @@ Processing metadata and file headers across thousands of cloud instances present
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=7cm]{Figures/Design/io_Arch.pdf}
+    \includegraphics[width=9cm]{Figures/Design/io_Arch.pdf}
     \caption{\textbf{Hybrid Snapshot Pipeline.} Parallel path collection via Rayon feeds asynchronous I/O requests to \texttt{io\_uring}, maximizing storage bandwidth utilization.}
     \label{fig:pipeline}
 \end{figure}
@@ -62,7 +62,7 @@ This choice reflects practical filesystem constraints and malware behavior. Mode
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=8cm]{Figures/Design/Hash_Arch.pdf}
+    \includegraphics[width=9cm]{Figures/Design/Hash_Arch.pdf}
     \caption{\textbf{Shift Invariance.} Hash-based mapping preserves pixel stability across file insertions, unlike ordered approaches where new files shift all subsequent indices.}
     \label{fig:hash}
 \end{figure}
@@ -102,7 +102,7 @@ The three channels jointly create a $128 \times 128 \times 3$ tensor. Attackers 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=8cm]{Figures/Design/CNN_Arch.pdf}
+    \includegraphics[width=9cm]{Figures/Design/CNN_Arch.pdf}
     \caption{\textbf{Set-AE vs.~Hash-Grid CAE.} Global pooling dilutes malicious signals (top); $1{\times}1$ CAE with $L_\infty$ captures isolated spikes (bottom).}
     \label{fig:comparison}
 \end{figure}
