@@ -1,0 +1,17 @@
+[package]
+name = "deepvis_scanner"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "deepvis_scanner"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.21", features = ["extension-module"] }
+rayon = "1.8"
+sha2 = "0.10"
+serde = { version = "1.0", features = ["derive"] }
+io-uring = "0.6"
+libc = "0.2"
+walkdir = "2.4"

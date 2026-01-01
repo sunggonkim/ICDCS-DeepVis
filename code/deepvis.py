@@ -9,13 +9,14 @@ import sys
 
 # Try importing the rust module
 try:
-    import deepvis_scanner
+    import deepvis_rs
     RUST_AVAILABLE = True
 except ImportError:
     RUST_AVAILABLE = False
-    print("WARN: deepvis_scanner not found. Ensure 'maturin develop' was run.")
+    print("WARN: deepvis_rs not found. Ensure 'maturin develop' was run.")
 
 DATA_DIR = "data"
+# Ensure we are in the 'code' directory when running, or path is correct
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR, exist_ok=True)
 
@@ -32,51 +33,37 @@ def generate_dummy_files(n, root="/tmp/deepvis_test"):
 def run_scalability():
     print(">>> EXPERIMENT: Scalability")
     results = []
+    # Sizes: 1k, 10k, 50k
     sizes = [1000, 10000, 50000] 
     
-    # Init Scanner
-    scanner = None
-    if RUST_AVAILABLE:
-        try: 
-            scanner = deepvis_scanner.DeepVisScanner()
-        except Exception as e:
-            print(f"WARN: Failed to init io_uring scanner (Linux only?): {e}")
-
     for n in sizes:
         root = f"/tmp/deepvis_scale_{n}"
         generate_dummy_files(n, root)
         
-        dv_time = 0
-        if scanner:
-            # DeepVis (Rust + io_uring)
-            # Use scan_to_csv for performance check, or scan()
-            # scan() returns ScanResult with timing
-            try:
-                res = scanner.scan(root, None)
-                dv_time = res.scan_time_ms / 1000.0 # Rust returns ms
-            except Exception as e:
-                print(f"Scan failed: {e}")
-                start = time.time()
-                # Fallback implementation if needed, or 0
-                dv_time = time.time() - start
+        # Measure Tools
+        # 1. DeepVis (Rust)
+        start = time.time()
+        if RUST_AVAILABLE:
+            deepvis_rs.scan_filesystem(root, 128, 128, "secret_key")
+        dv_time = time.time() - start
         
-        # Baseline (os.walk pure python)
+        # 2. Baseline (os.walk pure python)
         start = time.time()
         count = 0
         for r, d, f in os.walk(root):
             for file in f:
-                try:
-                    with open(os.path.join(r, file), "rb") as fh:
-                        _ = fh.read(64) # Design says "Header"
-                except: pass
+                with open(os.path.join(r, file), "rb") as fh:
+                    _ = fh.read(512)
                 count += 1
         py_time = time.time() - start
         
         print(f"N={n} | DeepVis={dv_time:.4f}s | Python={py_time:.4f}s")
         results.append([n, dv_time, py_time])
         
+        # Cleanup
         shutil.rmtree(root)
         
+    # Save
     with open(f"{DATA_DIR}/scalability.csv", "w") as f:
         f.write("Files,DeepVis,Python\n")
         for r in results:

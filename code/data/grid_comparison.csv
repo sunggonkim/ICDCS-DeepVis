@@ -1,0 +1,4 @@
+grid_size,total_files,collisions_per_pixel,recall,fp_rate,memory_mb,throughput_fps,scan_time_ms
+128,20305,1.24,0.9838,0.0021,0.19,80411.27,252.51
+256,20305,0.31,0.9885,0.0020,0.75,76943.47,263.90
+512,20305,0.08,0.9896,0.0020,3.00,78919.93,257.29
