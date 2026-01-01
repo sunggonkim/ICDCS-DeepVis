@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 16:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 17:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -325,17 +325,26 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count301
 \@thisrulewidth=\dimen256
 )
+(/usr/local/texlive/2025/texmf-dist/tex/latex/enumitem/enumitem.sty
+Package: enumitem 2025/02/06 v3.11 Customized lists
+\labelindent=\skip64
+\enit@outerparindent=\dimen257
+\enit@toks=\toks27
+\enit@inbox=\box60
+\enit@count@id=\count302
+\enitdp@description=\count303
+)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
 x
-\pgfutil@everybye=\toks27
-\pgfutil@tempdima=\dimen257
-\pgfutil@tempdimb=\dimen258
+\pgfutil@everybye=\toks28
+\pgfutil@tempdima=\dimen258
+\pgfutil@tempdimb=\dimen259
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
-\pgfutil@abb=\box60
+\pgfutil@abb=\box61
 ) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/pgf.revision.tex)
 Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
@@ -347,33 +356,33 @@ Package: pgf 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks28
-\pgfkeys@temptoks=\toks29
+\pgfkeys@pathtoks=\toks29
+\pgfkeys@temptoks=\toks30
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfil
 tered.code.tex
-\pgfkeys@tmptoks=\toks30
+\pgfkeys@tmptoks=\toks31
 ))
-\pgf@x=\dimen259
-\pgf@y=\dimen260
-\pgf@xa=\dimen261
-\pgf@ya=\dimen262
-\pgf@xb=\dimen263
-\pgf@yb=\dimen264
-\pgf@xc=\dimen265
-\pgf@yc=\dimen266
-\pgf@xd=\dimen267
-\pgf@yd=\dimen268
+\pgf@x=\dimen260
+\pgf@y=\dimen261
+\pgf@xa=\dimen262
+\pgf@ya=\dimen263
+\pgf@xb=\dimen264
+\pgf@yb=\dimen265
+\pgf@xc=\dimen266
+\pgf@yc=\dimen267
+\pgf@xd=\dimen268
+\pgf@yd=\dimen269
 \w@pgf@writea=\write3
 \r@pgf@reada=\read2
-\c@pgf@counta=\count302
-\c@pgf@countb=\count303
-\c@pgf@countc=\count304
-\c@pgf@countd=\count305
-\t@pgf@toka=\toks31
-\t@pgf@tokb=\toks32
-\t@pgf@tokc=\toks33
-\pgf@sys@id@count=\count306
+\c@pgf@counta=\count304
+\c@pgf@countb=\count305
+\c@pgf@countc=\count306
+\c@pgf@countd=\count307
+\t@pgf@toka=\toks32
+\t@pgf@tokb=\toks33
+\t@pgf@tokc=\toks34
+\pgf@sys@id@count=\count308
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
@@ -391,8 +400,8 @@ File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
 code.tex
 File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfsyssoftpath@smallbuffer@items=\count307
-\pgfsyssoftpath@bigbuffer@items=\count308
+\pgfsyssoftpath@smallbuffer@items=\count309
+\pgfsyssoftpath@bigbuffer@items=\count310
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
 code.tex
@@ -421,12 +430,12 @@ Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
-\pgfmath@dimen=\dimen269
-\pgfmath@count=\count309
-\pgfmath@box=\box61
-\pgfmath@toks=\toks34
-\pgfmath@stack@operand=\toks35
-\pgfmath@stack@operation=\toks36
+\pgfmath@dimen=\dimen270
+\pgfmath@count=\count311
+\pgfmath@box=\box62
+\pgfmath@toks=\toks35
+\pgfmath@stack@operand=\toks36
+\pgfmath@stack@operation=\toks37
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
 tex)
@@ -448,57 +457,57 @@ code.tex)
 erarithmetics.code.tex)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count310
+\c@pgfmathroundto@lastzeros=\count312
 )) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
 de.tex
 File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@picminx=\dimen270
-\pgf@picmaxx=\dimen271
-\pgf@picminy=\dimen272
-\pgf@picmaxy=\dimen273
-\pgf@pathminx=\dimen274
-\pgf@pathmaxx=\dimen275
-\pgf@pathminy=\dimen276
-\pgf@pathmaxy=\dimen277
-\pgf@xx=\dimen278
-\pgf@xy=\dimen279
-\pgf@yx=\dimen280
-\pgf@yy=\dimen281
-\pgf@zx=\dimen282
-\pgf@zy=\dimen283
+\pgf@picminx=\dimen271
+\pgf@picmaxx=\dimen272
+\pgf@picminy=\dimen273
+\pgf@picmaxy=\dimen274
+\pgf@pathminx=\dimen275
+\pgf@pathmaxx=\dimen276
+\pgf@pathminy=\dimen277
+\pgf@pathmaxy=\dimen278
+\pgf@xx=\dimen279
+\pgf@xy=\dimen280
+\pgf@yx=\dimen281
+\pgf@yy=\dimen282
+\pgf@zx=\dimen283
+\pgf@zy=\dimen284
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
 ruct.code.tex
 File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@path@lastx=\dimen284
-\pgf@path@lasty=\dimen285
+\pgf@path@lastx=\dimen285
+\pgf@path@lasty=\dimen286
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
 .code.tex
 File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@shorten@end@additional=\dimen286
-\pgf@shorten@start@additional=\dimen287
+\pgf@shorten@end@additional=\dimen287
+\pgf@shorten@start@additional=\dimen288
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
 de.tex
 File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfpic=\box62
-\pgf@hbox=\box63
-\pgf@layerbox@main=\box64
-\pgf@picture@serial@count=\count311
+\pgfpic=\box63
+\pgf@hbox=\box64
+\pgf@layerbox@main=\box65
+\pgf@picture@serial@count=\count313
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
 ate.code.tex
 File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgflinewidth=\dimen288
+\pgflinewidth=\dimen289
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
 ations.code.tex
 File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@pt@x=\dimen289
-\pgf@pt@y=\dimen290
-\pgf@pt@temp=\dimen291
+\pgf@pt@x=\dimen290
+\pgf@pt@y=\dimen291
+\pgf@pt@temp=\dimen292
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
 e.tex
@@ -515,14 +524,14 @@ File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
 de.tex
 File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfarrowsep=\dimen292
+\pgfarrowsep=\dimen293
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
 e.tex
 File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@max=\dimen293
-\pgf@sys@shading@range@num=\count312
-\pgf@shadingcount=\count313
+\pgf@max=\dimen294
+\pgf@sys@shading@range@num=\count314
+\pgf@shadingcount=\count315
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
 e.tex
@@ -531,7 +540,7 @@ File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
 code.tex
 File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfexternal@startupbox=\box65
+\pgfexternal@startupbox=\box66
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
 de.tex
@@ -552,7 +561,7 @@ File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
 e.tex
 File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfnodeparttextbox=\box66
+\pgfnodeparttextbox=\box67
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
 tex
@@ -561,8 +570,8 @@ File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
 -0-65.sty
 Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
-\pgf@nodesepstart=\dimen294
-\pgf@nodesepend=\dimen295
+\pgf@nodesepstart=\dimen295
+\pgf@nodesepend=\dimen296
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
 -1-18.sty
@@ -575,10 +584,10 @@ Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
 Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
-\pgffor@iter=\dimen296
-\pgffor@skip=\dimen297
-\pgffor@stack=\toks37
-\pgffor@toks=\toks38
+\pgffor@iter=\dimen297
+\pgffor@skip=\dimen298
+\pgffor@stack=\toks38
+\pgffor@toks=\toks39
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
 e.tex
@@ -587,34 +596,34 @@ Package: tikz 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
 dlers.code.tex
 File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@plot@mark@count=\count314
-\pgfplotmarksize=\dimen298
+\pgf@plot@mark@count=\count316
+\pgfplotmarksize=\dimen299
 )
-\tikz@lastx=\dimen299
-\tikz@lasty=\dimen300
-\tikz@lastxsaved=\dimen301
-\tikz@lastysaved=\dimen302
-\tikz@lastmovetox=\dimen303
-\tikz@lastmovetoy=\dimen304
-\tikzleveldistance=\dimen305
-\tikzsiblingdistance=\dimen306
-\tikz@figbox=\box67
-\tikz@figbox@bg=\box68
-\tikz@tempbox=\box69
-\tikz@tempbox@bg=\box70
-\tikztreelevel=\count315
-\tikznumberofchildren=\count316
-\tikznumberofcurrentchild=\count317
-\tikz@fig@count=\count318
+\tikz@lastx=\dimen300
+\tikz@lasty=\dimen301
+\tikz@lastxsaved=\dimen302
+\tikz@lastysaved=\dimen303
+\tikz@lastmovetox=\dimen304
+\tikz@lastmovetoy=\dimen305
+\tikzleveldistance=\dimen306
+\tikzsiblingdistance=\dimen307
+\tikz@figbox=\box68
+\tikz@figbox@bg=\box69
+\tikz@tempbox=\box70
+\tikz@tempbox@bg=\box71
+\tikztreelevel=\count317
+\tikznumberofchildren=\count318
+\tikznumberofcurrentchild=\count319
+\tikz@fig@count=\count320
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
 e.tex
 File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfmatrixcurrentrow=\count319
-\pgfmatrixcurrentcolumn=\count320
-\pgf@matrix@numberofcolumns=\count321
+\pgfmatrixcurrentrow=\count321
+\pgfmatrixcurrentcolumn=\count322
+\pgf@matrix@numberofcolumns=\count323
 )
-\tikz@expandcount=\count322
+\tikz@expandcount=\count324
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarytopaths.code.tex
@@ -671,26 +680,26 @@ File: tikzlibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
 shapes.multipart.code.tex
 File: pgflibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfnodepartlowerbox=\box71
-\pgfnodeparttwobox=\box72
-\pgfnodepartthreebox=\box73
-\pgfnodepartfourbox=\box74
-\pgfnodeparttwentybox=\box75
-\pgfnodepartnineteenbox=\box76
-\pgfnodeparteighteenbox=\box77
-\pgfnodepartseventeenbox=\box78
-\pgfnodepartsixteenbox=\box79
-\pgfnodepartfifteenbox=\box80
-\pgfnodepartfourteenbox=\box81
-\pgfnodepartthirteenbox=\box82
-\pgfnodeparttwelvebox=\box83
-\pgfnodepartelevenbox=\box84
-\pgfnodeparttenbox=\box85
-\pgfnodepartninebox=\box86
-\pgfnodeparteightbox=\box87
-\pgfnodepartsevenbox=\box88
-\pgfnodepartsixbox=\box89
-\pgfnodepartfivebox=\box90
+\pgfnodepartlowerbox=\box72
+\pgfnodeparttwobox=\box73
+\pgfnodepartthreebox=\box74
+\pgfnodepartfourbox=\box75
+\pgfnodeparttwentybox=\box76
+\pgfnodepartnineteenbox=\box77
+\pgfnodeparteighteenbox=\box78
+\pgfnodepartseventeenbox=\box79
+\pgfnodepartsixteenbox=\box80
+\pgfnodepartfifteenbox=\box81
+\pgfnodepartfourteenbox=\box82
+\pgfnodepartthirteenbox=\box83
+\pgfnodeparttwelvebox=\box84
+\pgfnodepartelevenbox=\box85
+\pgfnodeparttenbox=\box86
+\pgfnodepartninebox=\box87
+\pgfnodeparteightbox=\box88
+\pgfnodepartsevenbox=\box89
+\pgfnodepartsixbox=\box90
+\pgfnodepartfivebox=\box91
 )))
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibraryarrows.code.tex
@@ -699,7 +708,7 @@ File: tikzlibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
 code.tex
 File: pgflibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\arrowsize=\dimen307
+\arrowsize=\dimen308
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarypositioning.code.tex
@@ -707,47 +716,47 @@ File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2024/07/06 v1.0i Color table columns (DPC)
-\everycr=\toks39
-\minrowclearance=\skip64
-\rownum=\count323
+\everycr=\toks40
+\minrowclearance=\skip65
+\rownum=\count325
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count324
-\l__pdf_internal_box=\box91
+\l__color_backend_stack_int=\count326
+\l__pdf_internal_box=\box92
 )
 (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
 
 -- Lines per column: 56 (exact).
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count325
-\scratchdimen=\dimen308
-\scratchbox=\box92
-\nofMPsegments=\count326
-\nofMParguments=\count327
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count328
-\MPscratchDim=\dimen309
-\MPnumerator=\count329
-\makeMPintoPDFobject=\count330
-\everyMPtoPDFconversion=\toks41
+\scratchcounter=\count327
+\scratchdimen=\dimen309
+\scratchbox=\box93
+\nofMPsegments=\count328
+\nofMParguments=\count329
+\everyMPshowfont=\toks41
+\MPscratchCnt=\count330
+\MPscratchDim=\dimen310
+\MPnumerator=\count331
+\makeMPintoPDFobject=\count332
+\everyMPtoPDFconversion=\toks42
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -761,43 +770,44 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 5
-5.
+6.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 56.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 57.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 56.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 57.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (./1. Introduction.tex
-
 <Figures/fig_motivation_legend.pdf, id=4, 342.9249pt x 35.09361pt>
 File: Figures/fig_motivation_legend.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_legend.pdf>
 Package pdftex.def Info: Figures/fig_motivation_legend.pdf  used on input line 
-12.
+13.
 (pdftex.def)             Requested size: 226.79846pt x 23.2095pt.
 <Figures/fig_motivation_a.pdf, id=5, 227.61652pt x 162.10782pt>
 File: Figures/fig_motivation_a.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_a.pdf>
-Package pdftex.def Info: Figures/fig_motivation_a.pdf  used on input line 16.
+Package pdftex.def Info: Figures/fig_motivation_a.pdf  used on input line 17.
 (pdftex.def)             Requested size: 118.4403pt x 84.35342pt.
 <Figures/fig_motivation_b.pdf, id=6, 227.37354pt x 161.85532pt>
 File: Figures/fig_motivation_b.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_b.pdf>
-Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 20.
+Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 21.
 (pdftex.def)             Requested size: 118.4403pt x 84.31342pt.
 
-Underfull \vbox (badness 3088) has occurred while \output is active []
+
+
+Underfull \vbox (badness 2941) has occurred while \output is active []
 
 
 
@@ -808,7 +818,7 @@ ocal/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}
  <./Figures/fig_motivation_legend.pdf> <./Figures/fig_motivation_a.pdf> <./Figu
 res/fig_motivation_b.pdf>]) (./2. Background.tex
 
-<Figures/Background_entrophy/entropy_combined_a.pdf, id=124, 247.80171pt x 385.
+<Figures/Background_entrophy/entropy_combined_a.pdf, id=125, 247.80171pt x 385.
 2851pt>
 File: Figures/Background_entrophy/entropy_combined_a.pdf Graphic file (type pdf
 )
@@ -816,7 +826,7 @@ File: Figures/Background_entrophy/entropy_combined_a.pdf Graphic file (type pdf
 Package pdftex.def Info: Figures/Background_entrophy/entropy_combined_a.pdf  us
 ed on input line 25.
 (pdftex.def)             Requested size: 113.39923pt x 176.31616pt.
-<Figures/Background_entrophy/Background_Normal_text.pdf, id=125, 284.94691pt x 
+<Figures/Background_entrophy/Background_Normal_text.pdf, id=126, 284.94691pt x 
 465.23059pt>
 File: Figures/Background_entrophy/Background_Normal_text.pdf Graphic file (type
  pdf)
@@ -824,7 +834,7 @@ File: Figures/Background_entrophy/Background_Normal_text.pdf Graphic file (type
 Package pdftex.def Info: Figures/Background_entrophy/Background_Normal_text.pdf
   used on input line 30.
 (pdftex.def)             Requested size: 113.39923pt x 185.14479pt.
-<Figures/Background_entrophy/Background_System_binaray.pdf, id=126, 289.55978pt
+<Figures/Background_entrophy/Background_System_binaray.pdf, id=127, 289.55978pt
  x 464.29753pt>
 File: Figures/Background_entrophy/Background_System_binaray.pdf Graphic file (t
 ype pdf)
@@ -832,7 +842,7 @@ ype pdf)
 Package pdftex.def Info: Figures/Background_entrophy/Background_System_binaray.
 pdf  used on input line 35.
 (pdftex.def)             Requested size: 113.39923pt x 181.83336pt.
-<Figures/Background_entrophy/Background_Rootkit.pdf, id=127, 293.06308pt x 474.
+<Figures/Background_entrophy/Background_Rootkit.pdf, id=128, 293.06308pt x 474.
 31844pt>
 File: Figures/Background_entrophy/Background_Rootkit.pdf Graphic file (type pdf
 )
@@ -843,110 +853,92 @@ ed on input line 40.
 
 
 [2]) (./3. Design.tex
-Underfull \vbox (badness 1527) has occurred while \output is active []
-
-
-
-
-Underfull \hbox (badness 2134) in paragraph at lines 9--10
-[]\OT1/ptm/m/n/10 Figure 3[] shows the over-all pro-ce-dure of \OT1/pcr/m/n/10 
-DeepVis\OT1/ptm/m/n/10 .
- []
-
 <Figures/Design/Overall_Arch.pdf, id=133, 671.43939pt x 550.47514pt>
 File: Figures/Design/Overall_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Overall_Arch.pdf>
-Package pdftex.def Info: Figures/Design/Overall_Arch.pdf  used on input line 15
+Package pdftex.def Info: Figures/Design/Overall_Arch.pdf  used on input line 13
 .
 (pdftex.def)             Requested size: 227.62204pt x 186.6131pt.
 
 
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
 [3 <./Figures/Background_entrophy/entropy_combined_a.pdf> <./Figures/Background
 _entrophy/Background_Normal_text.pdf> <./Figures/Background_entrophy/Background
-_System_binaray.pdf> <./Figures/Background_entrophy/Background_Rootkit.pdf>]
-Underfull \hbox (badness 1708) in paragraph at lines 25--26
-\OT1/ptm/b/n/10 Verification Phase. \OT1/ptm/m/n/10 Af-ter the first phase is c
-om-pleted,
- []
-
-<Figures/Design/io_Arch.pdf, id=282, 756.41832pt x 550.10004pt>
+_System_binaray.pdf> <./Figures/Background_entrophy/Background_Rootkit.pdf> <./
+Figures/Design/Overall_Arch.pdf>]
+<Figures/Design/io_Arch.pdf, id=326, 756.41832pt x 550.10004pt>
 File: Figures/Design/io_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/io_Arch.pdf>
-Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 38.
+Package pdftex.def Info: Figures/Design/io_Arch.pdf  used on input line 35.
 (pdftex.def)             Requested size: 199.16928pt x 144.8441pt.
 
+Underfull \hbox (badness 3930) in paragraph at lines 40--41
+\OT1/ptm/m/n/10 lec-tion across all cores. Worker threads ex-e-cute syn-
+ []
 
 
 
-[4 <./Figures/Design/Overall_Arch.pdf> <./Figures/Design/io_Arch.pdf>]
-<Figures/Design/Hash_Arch.pdf, id=369, 672.63974pt x 414.93048pt>
+<Figures/Design/Hash_Arch.pdf, id=327, 672.63974pt x 414.93048pt>
 File: Figures/Design/Hash_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/Hash_Arch.pdf>
-Package pdftex.def Info: Figures/Design/Hash_Arch.pdf  used on input line 70.
+Package pdftex.def Info: Figures/Design/Hash_Arch.pdf  used on input line 65.
 (pdftex.def)             Requested size: 227.62204pt x 140.4097pt.
 
 
+[4 <./Figures/Design/io_Arch.pdf> <./Figures/Design/Hash_Arch.pdf>]
 
-Overfull \hbox (17.55711pt too wide) detected at line 87
-[]\OML/cmm/m/it/10 G\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 ) = [] [
-]
- []
-
-
-
-[5 <./Figures/Design/Hash_Arch.pdf>]
-<Figures/Design/CNN_Arch.pdf, id=396, 737.58846pt x 539.33128pt>
+<Figures/Design/CNN_Arch.pdf, id=389, 737.58846pt x 539.33128pt>
 File: Figures/Design/CNN_Arch.pdf Graphic file (type pdf)
 <use Figures/Design/CNN_Arch.pdf>
 Package pdftex.def Info: Figures/Design/CNN_Arch.pdf  used on input line 105.
 (pdftex.def)             Requested size: 227.62204pt x 166.43385pt.
 
+Underfull \hbox (badness 5260) in paragraph at lines 120--121
+\OT1/ptm/b/n/10 Threshold Cal-i-bra-tion. \OT1/pcr/m/n/10 DeepVis \OT1/ptm/m/n/
+10 es-tab-lishes de-ci-sion
+ []
 
+
+
+[5 <./Figures/Design/CNN_Arch.pdf>]
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 119.
-
-Underfull \hbox (badness 2189) in paragraph at lines 121--122
-[]\OT1/pcr/m/n/10 DeepVis \OT1/ptm/m/n/10 em-ploys a hy-brid Rust-Python ar-chi
--tec-ture
- []
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 123.
+) (./4. Evaluation.tex
 
 
 
-[6 <./Figures/Design/CNN_Arch.pdf>]) (./4. Evaluation.tex
-Underfull \hbox (badness 3281) in paragraph at lines 123--1
-\OT1/ptm/m/n/10 trans-fer of the con-structed ten-sors via meth-ods suchs
- []
-
-
-
-<Figures/comparison_dilution.pdf, id=463, 730.85376pt x 333.64601pt>
+[6]
+<Figures/comparison_dilution.pdf, id=466, 730.85376pt x 333.64601pt>
 File: Figures/comparison_dilution.pdf Graphic file (type pdf)
 <use Figures/comparison_dilution.pdf>
 Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 64
 .
 (pdftex.def)             Requested size: 214.20154pt x 97.78325pt.
 
-
-[7]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-<Figures/fig_final_throughput.pdf, id=471, 319.59099pt x 280.9374pt>
+
+
+[7 <./Figures/comparison_dilution.pdf>]
+<Figures/fig_final_throughput.pdf, id=521, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
 Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 1
 55.
 (pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
-<Figures/fig_final_latency.pdf, id=472, 319.2289pt x 280.9374pt>
+<Figures/fig_final_latency.pdf, id=522, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
 Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 159.
 
 (pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
-
-[8 <./Figures/comparison_dilution.pdf>]
 Underfull \hbox (badness 1521) in paragraph at lines 193--194
 \OT1/ptm/b/n/10 Vertical Scal-a-bil-ity. \OT1/ptm/m/n/10 To eval-u-ate ver-ti-c
 al scal-a-bil-ity, we
@@ -974,68 +966,70 @@ Underfull \hbox (badness 4726) in paragraph at lines 193--194
 \OT1/ptm/m/n/10 (e2-standard-2) pro-vided ex-cel-lent base-line per-for-mance
  []
 
-<Figures/fig_fleet_scalability.pdf, id=526, 498.67555pt x 241.45416pt>
+
+
+<Figures/fig_fleet_scalability.pdf, id=523, 498.67555pt x 241.45416pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
 200.
 (pdftex.def)             Requested size: 176.39923pt x 85.40918pt.
-<Figures/fig_fleet_vis.pdf, id=527, 476.12589pt x 355.65508pt>
+<Figures/fig_fleet_vis.pdf, id=524, 476.12589pt x 355.65508pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
 Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 204.
 (pdftex.def)             Requested size: 176.39923pt x 131.7694pt.
-
-
-<Figures/fig_churn_alerts.pdf, id=528, 354.57765pt x 244.966pt>
+<Figures/fig_churn_alerts.pdf, id=525, 354.57765pt x 244.966pt>
 File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
 <use Figures/fig_churn_alerts.pdf>
 Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 222.
 (pdftex.def)             Requested size: 113.39923pt x 78.34212pt.
-<Figures/fig_churn_hist.pdf, id=529, 354.18805pt x 244.97711pt>
+<Figures/fig_churn_hist.pdf, id=526, 354.18805pt x 244.97711pt>
 File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
 <use Figures/fig_churn_hist.pdf>
 Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 226.
 (pdftex.def)             Requested size: 113.39923pt x 78.43164pt.
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[9 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
+
+
+[8 <./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf> <./Fi
 gures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figures/fig_c
 hurn_alerts.pdf> <./Figures/fig_churn_hist.pdf>]
 
-<Figures/fig_page_aligned_sensitivity.pdf, id=844, 496.69313pt x 207.01115pt>
+<Figures/fig_page_aligned_sensitivity.pdf, id=841, 496.69313pt x 207.01115pt>
 File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
 <use Figures/fig_page_aligned_sensitivity.pdf>
 Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
 t line 268.
 (pdftex.def)             Requested size: 226.79846pt x 94.52504pt.
 
-
-[10 <./Figures/fig_page_aligned_sensitivity.pdf>]
 Underfull \hbox (badness 3364) in paragraph at lines 330--331
 \OT1/ptm/b/n/10 Performance Op-ti-miza-tion. \OT1/ptm/m/n/10 Through-put in-cre
 ases from
  []
 
-) (./5. Related Works.tex
-
-LaTeX Warning: Citation `lim2024safebpf' on page 11 undefined on input line 5.
 
 
+[9 <./Figures/fig_page_aligned_sensitivity.pdf>]) (./5. Related Works.tex
+
+LaTeX Warning: Citation `lim2024safebpf' on page 10 undefined on input line 5.
 
 
-LaTeX Warning: Citation `uetz2024escape' on page 11 undefined on input line 11.
+
+
+LaTeX Warning: Citation `uetz2024escape' on page 10 undefined on input line 11.
 
 
 ) (./6. Discussion and Limitation.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
+[10]
 
-
-[11]
-
-LaTeX Warning: Reference `eval_saturation' on page 12 undefined on input line 1
+LaTeX Warning: Reference `eval_saturation' on page 11 undefined on input line 1
 5.
+
+
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 26--27
@@ -1043,11 +1037,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 26--27
  []
 
 
-Underfull \hbox (badness 1377) in paragraph at lines 26--27
+Underfull \hbox (badness 1389) in paragraph at lines 26--27
 \OT1/ptm/m/n/10 it ro-bust against agent-killing at-tacks, serv-ing as a
  []
-
-
 
 ) (./7. Conclusion.tex) (./main.bbl
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
@@ -1069,7 +1061,7 @@ ithub . com /
 
 
 
-[12]
+[11]
 Underfull \hbox (badness 10000) in paragraph at lines 124--128
 []\OT1/ptm/m/n/8 M. Zo-har, ``Linux In-tegrity Sub-sys-tem & Ecosys-tem:
  []
@@ -1114,7 +1106,7 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[13] (./main.aux)
+[12] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1125,11 +1117,11 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 17828 strings out of 473190
- 385331 string characters out of 5715800
- 792348 words of memory out of 5000000
- 40711 multiletter control sequences out of 15000+600000
- 609578 words of font info for 141 fonts, out of 8000000 for 9000
+ 18161 strings out of 473190
+ 391133 string characters out of 5715800
+ 798097 words of memory out of 5000000
+ 41041 multiletter control sequences out of 15000+600000
+ 608500 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,91p,1630b,380s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
@@ -1155,10 +1147,10 @@ ts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
 s/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.
 pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr
 /local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (13 pages, 1947197 bytes).
+Output written on main.pdf (12 pages, 1938721 bytes).
 PDF statistics:
- 1009 PDF objects out of 1200 (max. 8388607)
- 349 compressed objects within 4 object streams
+ 1005 PDF objects out of 1200 (max. 8388607)
+ 346 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 
