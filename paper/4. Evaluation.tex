@@ -60,8 +60,16 @@ Byte-plot CNN (29.2\%) fails because it treats binaries as simple 2D images, ign
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.95\linewidth]{Figures/comparison_dilution.pdf}
-    \caption{\textbf{Signal Preservation.} \DeepVis (top) isolates malware as a distinct $L_\infty$ spike; Set-AE (bottom) dilutes the signal via global averaging.}
+    \subfloat[\textbf{DeepVis (Ours).} Spatially preserved malware (5.72) as a spike.]{
+        \includegraphics[width=0.95\linewidth]{Figures/comparison_dilution_a.pdf}
+        \label{fig:signal_a}
+    }
+    \\
+    \subfloat[\textbf{Set-AE (Baseline).} Global pooling dilutes anomaly (Avg 3.89).]{
+        \includegraphics[width=0.95\linewidth]{Figures/comparison_dilution_b.pdf}
+        \label{fig:signal_b}
+    }
+    \caption{\textbf{Signal Preservation Analysis.} Comparison of anomaly signal strength. Feature-preserving pooling ensures threats remain visible against system noise.}
     \label{fig:signal_comparison}
 \end{figure}
 

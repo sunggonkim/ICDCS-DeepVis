@@ -31,7 +31,8 @@ Figure~\ref{fig:motivation} contrasts AIDE and \DeepVis performance on a real cl
 \caption{Comparison with prior work across four key capabilities: Asynchronous I/O (Async), Obfuscation Resilience (Obfusc.), Zero-Day Detection (0-Day), and Low Overhead (Low Ovhd.).}
 \centering
 \scriptsize
-\begin{tabular}{p{1.3cm}|>{\raggedright\arraybackslash}p{1.5cm}|c|c|c|c}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular*}{\columnwidth}{l @{\extracolsep{\fill}} m{2.5cm} c c c c}
 \toprule
 \textbf{Study} & \textbf{Approach} & \textbf{Async} & \textbf{Obfusc.} & \textbf{0-Day} & \textbf{Low Ovhd.} \\
 \midrule
@@ -42,10 +43,10 @@ Falco~\cite{falco} & Runtime/eBPF & \cmark &  & \cmark &  \\
 Unicorn~\cite{unicorn} & Provenance Graph &  & \cmark & \cmark &  \\
 OSSEC~\cite{ossec} & Log Analysis &  &  &  & \cmark \\
 Set-AE~\cite{zaheer2017deepsets} & Deep Sets Learning & \cmark & \cmark & \cmark & \cmark \\
-\hline
+\midrule
 \textbf{\DeepVis} & \textbf{Hash-Grid Tensor} & \cmark & \cmark & \cmark & \cmark \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \label{tab:intro_comparison}
 \end{table}
 

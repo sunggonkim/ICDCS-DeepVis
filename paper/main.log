@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 22:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 23:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -799,15 +799,15 @@ File: Figures/fig_motivation_a.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_a.pdf>
 Package pdftex.def Info: Figures/fig_motivation_a.pdf  used on input line 16.
 (pdftex.def)             Requested size: 118.4403pt x 84.35342pt.
-<Figures/fig_motivation_b.pdf, id=7, 227.37354pt x 161.85532pt>
+<Figures/fig_motivation_b.pdf, id=7, 227.37354pt x 162.3562pt>
 File: Figures/fig_motivation_b.pdf Graphic file (type pdf)
 <use Figures/fig_motivation_b.pdf>
 Package pdftex.def Info: Figures/fig_motivation_b.pdf  used on input line 20.
-(pdftex.def)             Requested size: 118.4403pt x 84.31342pt.
+(pdftex.def)             Requested size: 118.4403pt x 84.57434pt.
 
 
 
-Underfull \vbox (badness 1655) has occurred while \output is active []
+Underfull \vbox (badness 5077) has occurred while \output is active []
 
 
 
@@ -918,71 +918,77 @@ Underfull \hbox (badness 2221) in paragraph at lines 13--15
 
 
 
-<Figures/comparison_dilution.pdf, id=461, 730.85376pt x 333.64601pt>
-File: Figures/comparison_dilution.pdf Graphic file (type pdf)
-<use Figures/comparison_dilution.pdf>
-Package pdftex.def Info: Figures/comparison_dilution.pdf  used on input line 63
-.
-(pdftex.def)             Requested size: 239.39923pt x 109.28896pt.
+<Figures/comparison_dilution_a.pdf, id=461, 578.16pt x 130.086pt>
+File: Figures/comparison_dilution_a.pdf Graphic file (type pdf)
+<use Figures/comparison_dilution_a.pdf>
+Package pdftex.def Info: Figures/comparison_dilution_a.pdf  used on input line 
+66.
+(pdftex.def)             Requested size: 239.39923pt x 53.86359pt.
+<Figures/comparison_dilution_b.pdf, id=462, 578.16pt x 130.086pt>
+File: Figures/comparison_dilution_b.pdf Graphic file (type pdf)
+<use Figures/comparison_dilution_b.pdf>
+Package pdftex.def Info: Figures/comparison_dilution_b.pdf  used on input line 
+71.
+(pdftex.def)             Requested size: 239.39923pt x 53.86359pt.
 
 
 [6]
 
-<Figures/fig_final_throughput.pdf, id=468, 319.59099pt x 280.9374pt>
+<Figures/fig_final_throughput.pdf, id=469, 319.59099pt x 280.9374pt>
 File: Figures/fig_final_throughput.pdf Graphic file (type pdf)
 <use Figures/fig_final_throughput.pdf>
 Package pdftex.def Info: Figures/fig_final_throughput.pdf  used on input line 1
-52.
+60.
 (pdftex.def)             Requested size: 113.39923pt x 99.68417pt.
-<Figures/fig_final_latency.pdf, id=469, 319.2289pt x 280.9374pt>
+<Figures/fig_final_latency.pdf, id=470, 319.2289pt x 280.9374pt>
 File: Figures/fig_final_latency.pdf Graphic file (type pdf)
 <use Figures/fig_final_latency.pdf>
-Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 156.
+Package pdftex.def Info: Figures/fig_final_latency.pdf  used on input line 164.
 
 (pdftex.def)             Requested size: 113.39923pt x 99.79562pt.
 
 
-[7 <./Figures/comparison_dilution.pdf> <./Figures/fig_final_throughput.pdf> <./
-Figures/fig_final_latency.pdf>]
-<Figures/fig_fleet_scalability.pdf, id=633, 356.35321pt x 144.48041pt>
+[7 <./Figures/comparison_dilution_a.pdf> <./Figures/comparison_dilution_b.pdf> 
+<./Figures/fig_final_throughput.pdf> <./Figures/fig_final_latency.pdf>]
+<Figures/fig_fleet_scalability.pdf, id=660, 427.09186pt x 140.12073pt>
 File: Figures/fig_fleet_scalability.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_scalability.pdf>
 Package pdftex.def Info: Figures/fig_fleet_scalability.pdf  used on input line 
-197.
-(pdftex.def)             Requested size: 239.39923pt x 97.0637pt.
-<Figures/fig_fleet_vis.pdf, id=634, 532.81021pt x 138.83495pt>
+205.
+(pdftex.def)             Requested size: 239.39923pt x 78.54404pt.
+<Figures/fig_fleet_vis.pdf, id=661, 524.49074pt x 128.67323pt>
 File: Figures/fig_fleet_vis.pdf Graphic file (type pdf)
 <use Figures/fig_fleet_vis.pdf>
-Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 201.
-(pdftex.def)             Requested size: 239.39923pt x 62.3798pt.
+Package pdftex.def Info: Figures/fig_fleet_vis.pdf  used on input line 209.
+(pdftex.def)             Requested size: 239.39923pt x 58.73096pt.
 
 
-<Figures/fig_churn_alerts.pdf, id=635, 354.57765pt x 244.966pt>
+<Figures/fig_churn_alerts.pdf, id=662, 433.62pt x 289.08pt>
 File: Figures/fig_churn_alerts.pdf Graphic file (type pdf)
 <use Figures/fig_churn_alerts.pdf>
-Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 219.
-(pdftex.def)             Requested size: 113.39923pt x 78.34212pt.
-<Figures/fig_churn_hist.pdf, id=636, 354.18805pt x 244.97711pt>
+Package pdftex.def Info: Figures/fig_churn_alerts.pdf  used on input line 227.
+(pdftex.def)             Requested size: 113.39923pt x 75.5957pt.
+<Figures/fig_churn_hist.pdf, id=663, 433.62pt x 289.08pt>
 File: Figures/fig_churn_hist.pdf Graphic file (type pdf)
 <use Figures/fig_churn_hist.pdf>
-Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 223.
-(pdftex.def)             Requested size: 113.39923pt x 78.43164pt.
+Package pdftex.def Info: Figures/fig_churn_hist.pdf  used on input line 231.
+(pdftex.def)             Requested size: 113.39923pt x 75.5957pt.
 
 
 [8 <./Figures/fig_fleet_scalability.pdf> <./Figures/fig_fleet_vis.pdf> <./Figur
 es/fig_churn_alerts.pdf> <./Figures/fig_churn_hist.pdf>]
-<Figures/fig_page_aligned_sensitivity.pdf, id=873, 496.69313pt x 207.01115pt>
+<Figures/fig_page_aligned_sensitivity.pdf, id=870, 496.69313pt x 207.01115pt>
 File: Figures/fig_page_aligned_sensitivity.pdf Graphic file (type pdf)
 <use Figures/fig_page_aligned_sensitivity.pdf>
 Package pdftex.def Info: Figures/fig_page_aligned_sensitivity.pdf  used on inpu
-t line 268.
+t line 276.
 (pdftex.def)             Requested size: 226.79846pt x 94.52504pt.
 
 
 
-Underfull \hbox (badness 3364) in paragraph at lines 330--331
-\OT1/ptm/b/n/10 Performance Op-ti-miza-tion. \OT1/ptm/m/n/10 Through-put in-cre
-ases from
+Underfull \hbox (badness 1983) in paragraph at lines 338--339
+\OT1/ptm/b/n/10 Ablation Study. \OT1/ptm/m/n/10 Through-put in-creases from 950
+ files/s
  []
 
 
@@ -1074,13 +1080,13 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 18157 strings out of 473190
- 391046 string characters out of 5715800
- 799132 words of memory out of 5000000
- 41037 multiletter control sequences out of 15000+600000
+ 18168 strings out of 473190
+ 391427 string characters out of 5715800
+ 800208 words of memory out of 5000000
+ 41048 multiletter control sequences out of 15000+600000
  608500 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,11n,91p,1279b,374s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,11n,91p,1279b,403s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></
@@ -1103,10 +1109,10 @@ pe1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/ti
 mes/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8
 a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></u
 sr/local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (12 pages, 1946365 bytes).
+Output written on main.pdf (12 pages, 1538040 bytes).
 PDF statistics:
- 1033 PDF objects out of 1200 (max. 8388607)
- 344 compressed objects within 4 object streams
+ 1030 PDF objects out of 1200 (max. 8388607)
+ 348 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
- 114 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 119 words of extra memory for PDF output out of 10000 (max. 10000000)
 
