@@ -120,11 +120,6 @@ Y.~He \emph{et~al.}, ``{C}ross {C}ontainer {A}ttacks: {T}he {B}ewildered {eBPF}
   on {C}louds,'' in \emph{Proceedings of the 32nd USENIX Security Symposium},
   2023.
 
-\bibitem{tfjmp2024safebpf}
-{TFJMP Contributors}, ``{H}ardware-assisted {D}efense-in-depth for {eBPF}
-  {K}ernel {E}xtensions,'' in \emph{Proceedings of the 2024 CCS Cloud Computing
-  Security Workshop (CCSW)}, 2024.
-
 \bibitem{zohar2018integrity}
 M.~Zohar, ``{L}inux {I}ntegrity {S}ubsystem \& {E}cosystem:
   {I}{M}{A}-{M}easurement, {I}{M}{A}-{A}ppraisal, and {E}{V}{M},'' Presentation
@@ -177,11 +172,6 @@ X.~Ling \emph{et~al.}, ``{A} {W}olf in {S}heep's {C}lothing: {P}ractical
   {B}lack-box {A}dversarial {A}ttacks for {E}vading {L}earning-based {W}indows
   {M}alware {D}etection,'' in \emph{Proceedings of the 33rd USENIX Security
   Symposium}, 2024.
-
-\bibitem{uetz2024detecting}
-R.~Uetz \emph{et~al.}, ``{D}etecting {E}vasions of {SIEM} {R}ules in
-  {E}nterprise {N}etworks,'' in \emph{Proceedings of the 33rd USENIX Security
-  Symposium}, 2024, pp. 1--18.
 
 \bibitem{du2017deeplog}
 M.~Du, F.~Li, G.~Zheng, and V.~Srikumar, ``{DeepLog}: {A}nomaly {D}etection and

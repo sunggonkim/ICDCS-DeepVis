@@ -12,8 +12,8 @@ Figure~\ref{fig:overall} shows the overall procedure of \DeepVis. \DeepVis provi
     \centering
     % [User Check] 파일명 유지함. 
     % 단, PDF 내용이 텍스트와 일치하는지(128x128 등) 확인 필요.
-    \includegraphics[width=9cm]{Figures/Design/Overall_Arch.pdf}
-    \caption{Overall procedure of \DeepVis. It illustrates the transformation of raw file system metadata into spatially mapped tensors, followed by reconstruction via an autoencoder and anomaly detection using Local Max ($L_\infty$) logic.}
+    \includegraphics[width=8cm]{Figures/Design/Overall_Arch.pdf}
+    \caption{\textbf{Overall \DeepVis Procedure.} File metadata is transformed into a $128{\times}128$ RGB tensor, processed by CAE, and anomalies detected via $L_\infty$.}
     \label{fig:overall}
 \end{figure}
 
@@ -35,8 +35,8 @@ Before generating the tensor representation, \DeepVis processes metadata and fil
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=8cm]{Figures/Design/io_Arch.pdf}
-    \caption{Hybrid snapshot pipeline of \DeepVis using Rayon for parallel path collection and \texttt{io\_uring} for asynchronous I/O.}
+    \includegraphics[width=7cm]{Figures/Design/io_Arch.pdf}
+    \caption{\textbf{Hybrid Snapshot Pipeline.} Rayon parallel path collection feeds \texttt{io\_uring} async I/O.}
     \label{fig:pipeline}
 \end{figure}
 
@@ -67,8 +67,8 @@ Reading the first 4KB enables header sampling to excel against executable malwar
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=9cm]{Figures/Design/Hash_Arch.pdf}
-    \caption{Shift invariance comparison. Top: Traditional ordered approach creates catastrophic global index shifts when File D inserts between B and C. Bottom: Hash-based mapping ensures local stability—only affected pixels change positions independently.}
+    \includegraphics[width=8cm]{Figures/Design/Hash_Arch.pdf}
+    \caption{\textbf{Shift Invariance.} Hash-based mapping preserves pixel stability on file insertion, unlike ordered approaches.}
     \label{fig:hash}
 \end{figure}
 
@@ -102,8 +102,8 @@ This RGB encoding transforms the abstract file system state into a dense numeric
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=9cm]{Figures/Design/CNN_Arch.pdf}
-    \caption{Set-AE vs. Hash-Grid CAE. Top: Set-AE global pooling dilutes single malicious signal among benign files (Spike Lost). Bottom: Hash-Grid CAE processes 16K pixels independently; $L_\infty$ pooling captures isolated spikes.}
+    \includegraphics[width=8cm]{Figures/Design/CNN_Arch.pdf}
+    \caption{\textbf{Set-AE vs.~Hash-Grid CAE.} Global pooling dilutes malicious signal (top); $1{\times}1$ CAE with $L_\infty$ captures isolated spikes (bottom).}
     \label{fig:comparison}
 \end{figure}
 

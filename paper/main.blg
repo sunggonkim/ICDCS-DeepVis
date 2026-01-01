@@ -8,49 +8,52 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
+Warning--I didn't find a database entry for "lim2024safebpf"
+Warning--I didn't find a database entry for "uetz2024escape"
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-You've used 39 entries,
+You've used 37 entries,
             4087 wiz_defined-function locations,
-            1016 strings with 14847 characters,
-and the built_in function-call counts, 23907 in all, are:
-= -- 1810
-> -- 544
-< -- 128
-+ -- 287
-- -- 105
-* -- 1041
-:= -- 3622
-add.period$ -- 81
-call.type$ -- 39
-change.case$ -- 42
-chr.to.int$ -- 321
-cite$ -- 39
-duplicate$ -- 1824
-empty$ -- 2286
-format.name$ -- 131
-if$ -- 5611
+            1010 strings with 14592 characters,
+and the built_in function-call counts, 22762 in all, are:
+= -- 1724
+> -- 527
+< -- 122
++ -- 278
+- -- 102
+* -- 993
+:= -- 3444
+add.period$ -- 77
+call.type$ -- 37
+change.case$ -- 40
+chr.to.int$ -- 306
+cite$ -- 37
+duplicate$ -- 1733
+empty$ -- 2161
+format.name$ -- 127
+if$ -- 5338
 int.to.chr$ -- 0
-int.to.str$ -- 39
-missing$ -- 355
-newline$ -- 140
-num.names$ -- 39
-pop$ -- 929
+int.to.str$ -- 37
+missing$ -- 339
+newline$ -- 134
+num.names$ -- 37
+pop$ -- 888
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1884
+skip$ -- 1791
 stack$ -- 0
-substring$ -- 791
-swap$ -- 1253
-text.length$ -- 21
+substring$ -- 755
+swap$ -- 1197
+text.length$ -- 20
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 39
+type$ -- 37
 warning$ -- 0
-while$ -- 99
-width$ -- 41
-write$ -- 358
+while$ -- 93
+width$ -- 39
+write$ -- 341
+(There were 2 warnings)

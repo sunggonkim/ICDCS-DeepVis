@@ -48,22 +48,23 @@
 \newlabel{sec:design}{{III}{3}{}{section.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Overall Procedure}{3}{}\protected@file@percent }
 \newlabel{design_1}{{\mbox  {III-A}}{3}{}{subsection.3.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Overall procedure of \texttt  {DeepVis}\xspace  . It illustrates the transformation of raw file system metadata into spatially mapped tensors, followed by reconstruction via an autoencoder and anomaly detection using Local Max ($L_\infty $) logic.}}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Overall \texttt  {DeepVis}\xspace  Procedure.} File metadata is transformed into a $128{\times }128$ RGB tensor, processed by CAE, and anomalies detected via $L_\infty $.}}{4}{}\protected@file@percent }
 \newlabel{fig:overall}{{3}{4}{}{figure.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Asynchronous File System Traversal}{4}{}\protected@file@percent }
 \newlabel{design_2}{{\mbox  {III-B}}{4}{}{subsection.3.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Hybrid snapshot pipeline of \texttt  {DeepVis}\xspace  using Rayon for parallel path collection and \texttt  {io\_uring} for asynchronous I/O.}}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \textbf  {Hybrid Snapshot Pipeline.} Rayon parallel path collection feeds \texttt  {io\_uring} async I/O.}}{4}{}\protected@file@percent }
 \newlabel{fig:pipeline}{{4}{4}{}{figure.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Header Sampling}{4}{}\protected@file@percent }
 \newlabel{design_sampling}{{\mbox  {III-C}}{4}{}{subsection.3.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Shift invariance comparison. Top: Traditional ordered approach creates catastrophic global index shifts when File D inserts between B and C. Bottom: Hash-based mapping ensures local stability—only affected pixels change positions independently.}}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces \textbf  {Shift Invariance.} Hash-based mapping preserves pixel stability on file insertion, unlike ordered approaches.}}{5}{}\protected@file@percent }
 \newlabel{fig:hash}{{5}{5}{}{figure.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Hash-Based Spatial Mapping}{5}{}\protected@file@percent }
 \newlabel{design_3}{{\mbox  {III-D}}{5}{}{subsection.3.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Set-AE vs. Hash-Grid CAE. Top: Set-AE global pooling dilutes single malicious signal among benign files (Spike Lost). Bottom: Hash-Grid CAE processes 16K pixels independently; $L_\infty $ pooling captures isolated spikes.}}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces \textbf  {Set-AE vs.~Hash-Grid CAE.} Global pooling dilutes malicious signal (top); $1{\times }1$ CAE with $L_\infty $ captures isolated spikes (bottom).}}{6}{}\protected@file@percent }
 \newlabel{fig:comparison}{{6}{6}{}{figure.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Hash-Grid Parallel CAE}{6}{}\protected@file@percent }
 \newlabel{design_4}{{\mbox  {III-E}}{6}{}{subsection.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}\texttt  {DeepVis}\xspace  Implementation}{6}{}\protected@file@percent }
 \citation{diamorphine}
 \citation{reptile}
 \citation{vxunderground,ramadhanmalware}
@@ -74,39 +75,40 @@
 \citation{malconv}
 \citation{byteplotcnn}
 \citation{packalm}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}\texttt  {DeepVis}\xspace  Implementation}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Evaluation}{7}{}\protected@file@percent }
 \newlabel{sec:evaluation}{{IV}{7}{}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Evaluation Setup}{7}{}\protected@file@percent }
 \newlabel{eval_setup}{{\mbox  {IV-A}}{7}{}{subsection.4.1}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces \textbf  {Unified Detection Performance.} Comparison against tuned baselines and modern DL models. DeepVis (Full) achieves superior recall on Linux/Mobile threats while ensuring zero operational FPs.}}{7}{}\protected@file@percent }
 \newlabel{tab:unified_detection}{{II}{7}{}{table.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Fidelity and Orthogonality (RQ1)}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Detection Fidelity and Orthogonality}{7}{}\protected@file@percent }
 \newlabel{eval_accuracy}{{\mbox  {IV-B}}{7}{}{subsection.4.2}{}}
 \citation{falco}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {Signal Preservation.} \texttt  {DeepVis}\xspace  (top) isolates malware as a distinct $L_\infty $ spike; Set-AE (bottom) dilutes the signal via global averaging.}}{8}{}\protected@file@percent }
+\newlabel{fig:signal_comparison}{{7}{8}{}{figure.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces \textbf  {Detailed Detection Analysis.} Multi-modal RGB features catch threats that single metrics miss. The Miss cases highlight limitations against threats that mimic benign header statistics.}}{8}{}\protected@file@percent }
 \newlabel{tab:detailed_breakdown}{{III}{8}{}{table.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textbf  {Fair Baseline Comparison (Cold Cache).} Throughput measured on GCP \texttt  {deepvis-mid} instance targeting \texttt  {/usr/bin}. Categories distinguish between full-file scanning and header-only sampling.}}{8}{}\protected@file@percent }
 \newlabel{tab:fair_baseline}{{IV}{8}{}{table.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Throughput and Interference (RQ2)}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Throughput and Interference}{8}{}\protected@file@percent }
 \newlabel{eval_scalability}{{\mbox  {IV-C}}{8}{}{subsection.4.3}{}}
-\newlabel{fig:perf_throughput}{{7a}{9}{}{subfigure.7.1}{}}
+\newlabel{fig:perf_throughput}{{8a}{9}{}{subfigure.8.1}{}}
 \newlabel{sub@fig:perf_throughput}{{(a)}{a}}
-\newlabel{fig:perf_latency}{{7b}{9}{}{subfigure.7.2}{}}
+\newlabel{fig:perf_latency}{{8b}{9}{}{subfigure.8.2}{}}
 \newlabel{sub@fig:perf_latency}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {Comprehensive Performance Analysis.} (a) \textbf  {Throughput}: DeepVis achieves hyperscale speeds ($\approx $16k files/s cold cache) via asynchronous I/O, outperforming synchronous baselines by over 10$\times $. (b) \textbf  {Interference}: Despite its speed, \texttt  {DeepVis}\xspace  maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%).}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textbf  {Comprehensive Performance Analysis.} (a) \textbf  {Throughput}: DeepVis achieves hyperscale speeds ($\approx $16k files/s cold cache) via asynchronous I/O, outperforming synchronous baselines by over 10$\times $. (b) \textbf  {Interference}: Despite its speed, \texttt  {DeepVis}\xspace  maintains negligible latency overhead (+2\%) compared to massive spikes caused by AIDE (+291\%) and YARA (+547\%).}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Throughput}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Interference}}}{9}{}\protected@file@percent }
-\newlabel{fig:perf_analysis}{{7}{9}{}{figure.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textbf  {Visualizing Signal Preservation.} (Top) \texttt  {DeepVis}\xspace  maintains spatial locality, isolating the malware as a distinct red peak ($L_\infty $ Spike). (Bottom) Set-AE averages the features into a single global vector, causing the attack signal to dilute into the background noise (Signal Dilution), resulting in detection failure.}}{9}{}\protected@file@percent }
-\newlabel{fig:signal_comparison}{{8}{9}{}{figure.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Scalability and Saturation Analysis (RQ3, RQ6, RQ7)}{9}{}\protected@file@percent }
-\newlabel{eval_saturation}{{\mbox  {IV-D}}{9}{}{subsection.4.4}{}}
+\newlabel{fig:perf_analysis}{{8}{9}{}{figure.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces \textbf  {Hardware Sensitivity Analysis (Cold Cache).} Impact of instance sizing on scan performance. High-tier utilized NVMe SSD.}}{9}{}\protected@file@percent }
+\newlabel{tab:hardware_sensitivity}{{V}{9}{}{table.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Scalability Analysis}{9}{}\protected@file@percent }
+\newlabel{eval_scalability_analysis}{{\mbox  {IV-D}}{9}{}{subsection.4.4}{}}
 \newlabel{fig:fleet_scale}{{9a}{9}{}{subfigure.9.1}{}}
 \newlabel{sub@fig:fleet_scale}{{(a)}{a}}
 \newlabel{fig:fleet_heatmap}{{9b}{9}{}{subfigure.9.2}{}}
 \newlabel{sub@fig:fleet_heatmap}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \textbf  {Fleet-Scale Performance.} (a) \textbf  {Linear Scalability:} Throughput increases linearly with fleet size, reaching $\approx $206k files/s at 100 nodes. Per-node throughput ($\approx $2k/s) is lower than single-node benchmarks (Table~\ref {tab:fair_baseline}) due to scanning a smaller directory with higher path-hashing overhead. (b) \textbf  {Geo-Stability:} The latency heatmap across 100 nodes shows consistent performance (avg 4.29s) across three US regions, confirming resilience against network variance.}}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \textbf  {Fleet-Scale Performance.} (a) Linear throughput scaling to 206k files/s at 100 nodes. (b) Geo-stability: avg latency 4.29s across three US regions.}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Linear Scalability}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Geo-Stability}}}{9}{}\protected@file@percent }
 \newlabel{fig:fleet_perf}{{9}{9}{}{figure.9}{}}
@@ -118,40 +120,40 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Alert Fatigue \& Detection}}}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction Error Dist.}}}{9}{}\protected@file@percent }
 \newlabel{fig:churn_analysis}{{10}{9}{}{figure.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Robustness to System Churn (RQ3)}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Robustness to System Churn}{9}{}\protected@file@percent }
 \newlabel{eval_churn}{{\mbox  {IV-E}}{9}{}{subsection.4.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Effect of Scan Granularity (Page-Aligned Sampling).} Comparison of Recall across platforms vs. Throughput. Detection accuracy for Linux ($Recall \approx 97\%$) and Mobile ($100\%$) saturates at $\approx $96B. Windows recall remains capped ($15\%$) due to feature orthogonality. Throughput remains stable up to 4KB due to page prefetching, justifying the 4KB page-aligned sampling strategy.}}{10}{}\protected@file@percent }
-\newlabel{fig:header_sensitivity}{{11}{10}{}{figure.11}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Sensitivity and Ablation Analysis}{10}{}\protected@file@percent }
-\newlabel{eval_sensitivity}{{\mbox  {IV-F}}{10}{}{subsection.4.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{10}{}\protected@file@percent }
-\newlabel{tab:overhead_breakdown}{{V}{10}{}{table.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Component-wise Ablation Study (Cold Cache). Performance components (I/O) determine throughput; Accuracy components (Hash-Grid, RGB) determine detection capability.}}{10}{}\protected@file@percent }
-\newlabel{tab:ablation}{{VI}{10}{}{table.6}{}}
 \citation{dikedataset}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces \textbf  {Platform Specificity Verification.} The CAE learns domain-specific normality; cross-domain evaluation confirms platform-agnostic design.}}{10}{}\protected@file@percent }
+\newlabel{tab:platform_specificity}{{VI}{10}{}{table.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Verification of Platform Agnosticism}{10}{}\protected@file@percent }
+\newlabel{sec:windows_verification}{{\mbox  {IV-F}}{10}{}{subsection.4.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \textbf  {Scan Granularity Analysis.} Recall saturates at 96B; throughput stable up to 4KB due to page prefetching.}}{10}{}\protected@file@percent }
+\newlabel{fig:header_sensitivity}{{11}{10}{}{figure.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Sensitivity and Ablation Analysis}{10}{}\protected@file@percent }
+\newlabel{eval_sensitivity}{{\mbox  {IV-G}}{10}{}{subsection.4.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces \textbf  {Component Time Breakdown (Cold Cache).} I/O dominates ($\approx $70--74\%), confirming that \texttt  {DeepVis}\xspace  computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}}{10}{}\protected@file@percent }
+\newlabel{tab:overhead_breakdown}{{VII}{10}{}{table.7}{}}
 \citation{tripwire,aide,samhain}
 \citation{unicorn,cheng2024kairos}
 \citation{ossec,falco}
-\citation{he2023cross,tfjmp2024safebpf}
+\citation{he2023cross,lim2024safebpf}
 \citation{zohar2018integrity}
 \citation{oprea2007integrity}
 \citation{luo2019container}
 \citation{bohling2020subverting}
 \citation{nataraj2011malware,conti2008visual,aldini2024image}
 \citation{lyda2007entropy}
-\citation{ling2024wolf,uetz2024detecting}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Platform Specificity Verification. Performance metrics of DeepVis models trained on different OS manifolds evaluated across diverse platforms. The results confirm that the architecture learns domain-specific normality.}}{11}{}\protected@file@percent }
-\newlabel{tab:platform_specificity}{{VII}{11}{}{table.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Verification of Platform Agnosticism}{11}{}\protected@file@percent }
-\newlabel{sec:windows_verification}{{\mbox  {IV-G}}{11}{}{subsection.4.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{11}{}\protected@file@percent }
-\newlabel{sec:related_work}{{V}{11}{}{section.5}{}}
+\citation{ling2024wolf,uetz2024escape}
 \citation{du2017deeplog}
 \citation{mirsky2018kitsune}
 \citation{ruff2018deep}
 \citation{akcay2018ganomaly}
 \citation{zong2018deep}
 \citation{su2019robust,xu2018unsupervised}
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces \textbf  {Ablation Study.} Performance components determine throughput; Accuracy components determine detection capability.}}{11}{}\protected@file@percent }
+\newlabel{tab:ablation}{{VIII}{11}{}{table.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{11}{}\protected@file@percent }
+\newlabel{sec:related_work}{{V}{11}{}{section.5}{}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{aide}{1}
@@ -159,11 +161,6 @@
 \bibcite{falco}{3}
 \bibcite{ossec}{4}
 \bibcite{arp2022dos}{5}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{12}{}\protected@file@percent }
-\newlabel{sec:discussion}{{VI}{12}{}{section.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{12}{}\protected@file@percent }
-\newlabel{Conclusion}{{VII}{12}{}{section.7}{}}
-\@writefile{toc}{\contentsline {section}{References}{12}{}\protected@file@percent }
 \bibcite{clamav}{6}
 \bibcite{unicorn}{7}
 \bibcite{zaheer2017deepsets}{8}
@@ -176,26 +173,29 @@
 \bibcite{ssdeep}{15}
 \bibcite{malconv}{16}
 \bibcite{byteplotcnn}{17}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Security Analysis and Limitations}{12}{}\protected@file@percent }
+\newlabel{sec:discussion}{{VI}{12}{}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{12}{}\protected@file@percent }
+\newlabel{Conclusion}{{VII}{12}{}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{References}{12}{}\protected@file@percent }
 \bibcite{packalm}{18}
 \bibcite{dikedataset}{19}
 \bibcite{cheng2024kairos}{20}
 \bibcite{he2023cross}{21}
-\bibcite{tfjmp2024safebpf}{22}
-\bibcite{zohar2018integrity}{23}
-\bibcite{oprea2007integrity}{24}
-\bibcite{luo2019container}{25}
-\bibcite{bohling2020subverting}{26}
-\bibcite{nataraj2011malware}{27}
-\bibcite{conti2008visual}{28}
-\bibcite{aldini2024image}{29}
-\bibcite{lyda2007entropy}{30}
-\bibcite{ling2024wolf}{31}
-\bibcite{uetz2024detecting}{32}
-\bibcite{du2017deeplog}{33}
-\bibcite{mirsky2018kitsune}{34}
-\bibcite{ruff2018deep}{35}
-\bibcite{akcay2018ganomaly}{36}
-\bibcite{zong2018deep}{37}
-\bibcite{su2019robust}{38}
-\bibcite{xu2018unsupervised}{39}
+\bibcite{zohar2018integrity}{22}
+\bibcite{oprea2007integrity}{23}
+\bibcite{luo2019container}{24}
+\bibcite{bohling2020subverting}{25}
+\bibcite{nataraj2011malware}{26}
+\bibcite{conti2008visual}{27}
+\bibcite{aldini2024image}{28}
+\bibcite{lyda2007entropy}{29}
+\bibcite{ling2024wolf}{30}
+\bibcite{du2017deeplog}{31}
+\bibcite{mirsky2018kitsune}{32}
+\bibcite{ruff2018deep}{33}
+\bibcite{akcay2018ganomaly}{34}
+\bibcite{zong2018deep}{35}
+\bibcite{su2019robust}{36}
+\bibcite{xu2018unsupervised}{37}
 \gdef \@abspage@last{13}
