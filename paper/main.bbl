@@ -120,17 +120,16 @@ Y.~He \emph{et~al.}, ``{C}ross {C}ontainer {A}ttacks: {T}he {B}ewildered {eBPF}
   on {C}louds,'' in \emph{Proceedings of the 32nd USENIX Security Symposium},
   2023.
 
+\bibitem{lim2024safebpf}
+S.~Y. Lim, T.~Prasad, X.~Han, and T.~Pasquier, ``{SafeBPF}: {H}ardware-assisted
+  {D}efense-in-depth for {eBPF} {K}ernel {E}xtensions,'' in \emph{Proceedings
+  of the 2024 ACM Cloud Computing Security Workshop (CCSW)}, 2024.
+
 \bibitem{zohar2018integrity}
 M.~Zohar, ``{L}inux {I}ntegrity {S}ubsystem \& {E}cosystem:
   {I}{M}{A}-{M}easurement, {I}{M}{A}-{A}ppraisal, and {E}{V}{M},'' Presentation
   at Linux Security Summit (LSS) EU 2018, 2018, available at:
   https://events19.linuxfoundation.org/wp-content/uploads/2017/12/LSS2018-EU-LinuxIntegrityOverview\_Mimi-Zohar.pdf.
-
-\bibitem{oprea2007integrity}
-A.~Oprea \emph{et~al.}, ``{I}ntegrity {C}hecking in {C}ryptographic {F}ile
-  {S}ystems with {M}erkle {T}rees,'' in \emph{Proceedings of the 14th USENIX
-  Security Symposium}.\hskip 1em plus 0.5em minus 0.4em\relax USENIX, 2007, pp.
-  1--16.
 
 \bibitem{luo2019container}
 W.~Luo, Q.~Shen, Y.~Xia, and Z.~Wu, ``{C}ontainer-{I}{M}{A}: {A}
@@ -151,11 +150,6 @@ L.~Nataraj, S.~Karthikeyan, G.~Jacob, and B.~S. Manjunath, ``{M}alware
   \emph{Proceedings of the 4th Workshop on Visualization for Cyber Security
   (VizSec)}, 2011, pp. 1--7.
 
-\bibitem{conti2008visual}
-G.~Conti, E.~Dean, M.~Sinda, and B.~Sangster, ``{V}isual {R}everse
-  {E}ngineering of {B}inary and {D}ata {F}iles,'' in \emph{Proceedings of the
-  5th Workshop on Visualization for Cyber Security (VizSec)}, 2008, pp. 1--7.
-
 \bibitem{aldini2024image}
 A.~Aldini \emph{et~al.}, ``{I}mage-based {D}etection and {C}lassification of
   {A}ndroid {M}alware using {CNN}-{LSTM} {H}ybrid {M}odels,'' in
@@ -172,6 +166,12 @@ X.~Ling \emph{et~al.}, ``{A} {W}olf in {S}heep's {C}lothing: {P}ractical
   {B}lack-box {A}dversarial {A}ttacks for {E}vading {L}earning-based {W}indows
   {M}alware {D}etection,'' in \emph{Proceedings of the 33rd USENIX Security
   Symposium}, 2024.
+
+\bibitem{uetz2024escape}
+R.~Uetz, M.~Herzog, L.~Hackl\"{a}nder, S.~Schwarz, and M.~Henze, ``{Y}ou
+  {C}annot {E}scape {M}e: {D}etecting {E}vasions of {SIEM} {R}ules in
+  {E}nterprise {N}etworks,'' in \emph{Proceedings of the 33rd USENIX Security
+  Symposium}, 2024, pp. 5179--5196.
 
 \bibitem{du2017deeplog}
 M.~Du, F.~Li, G.~Zheng, and V.~Srikumar, ``{DeepLog}: {A}nomaly {D}etection and
@@ -195,21 +195,5 @@ S.~Akcay, A.~Atapour-Abarghouei, and T.~P. Breckon, ``{GANomaly}:
   {S}emi-{S}upervised {A}nomaly {D}etection via {A}dversarial {T}raining,'' in
   \emph{Proceedings of the 14th Asian Conference on Computer Vision (ACCV)},
   2018.
-
-\bibitem{zong2018deep}
-B.~Zong \emph{et~al.}, ``{D}eep {A}utoencoding {G}aussian {M}ixture {M}odel for
-  {U}nsupervised {A}nomaly {D}etection,'' in \emph{Proceedings of the 6th
-  International Conference on Learning Representations (ICLR)}, 2018.
-
-\bibitem{su2019robust}
-Y.~Su \emph{et~al.}, ``{R}obust {A}nomaly {D}etection for {M}ultivariate {T}ime
-  {S}eries,'' in \emph{Proceedings of the 25th ACM SIGKDD Conference on
-  Knowledge Discovery and Data Mining (KDD)}, 2019, pp. 1417--1426.
-
-\bibitem{xu2018unsupervised}
-H.~Xu \emph{et~al.}, ``{U}nsupervised {A}nomaly {D}etection via {V}ariational
-  {A}uto-{E}ncoder for {S}easonal {KPI}s in {W}eb {A}pplications,'' in
-  \emph{Proceedings of the 27th World Wide Web Conference (WWW)}, 2018, pp.
-  187--196.
 
 \end{thebibliography}
