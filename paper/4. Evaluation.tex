@@ -228,6 +228,9 @@ Deep learning models exhibit even more severe bottlenecks. MalConv requires appr
 
 \noindent\textbf{Impact of Scan Granularity.} Detection accuracy saturates rapidly, with Linux and Mobile platforms reaching peak Recall ($\approx$97--100\%) at a minimal 96~B scan size (Fig.~\ref{fig:header_sensitivity}). This indicates that minimal header data suffices for robust feature extraction. Throughput shows a general decline as scan size increases but remains stable up to 4~KB. This stability stems from OS-level page prefetching, where reading small chunks (e.g., 32~B) incurs similar I/O costs to reading a full 4~KB page. This empirical result validates the design choice of the 4KB Page-Aligned Sampling strategy. While this optimization maximizes throughput, it naturally introduces a trade-off where threats residing entirely in the deep payload (e.g., tail-appended data beyond 4KB) may evade detection. However, DeepVis is expressly designed not as a panacea, but as a high-speed pre-filter for structural anomalies (e.g., packing, header corruption), leaving deep content verification to Stage-2 scanners.
 
+
+
+
 \begin{table}[!ht]
 \centering
 \caption{\textbf{Component Time Breakdown (Cold Cache).} I/O dominates ($\approx$70--74\%), confirming that \DeepVis computational overhead (Hashing, Entropy, Tensor Update) remains negligible ($<$10\%) even during storage bottlenecks.}
@@ -283,3 +286,30 @@ Category & Configuration & Rate (files/s) & F1-Score \\
 \noindent\textbf{Performance Optimization.} Throughput increases from 950~files/s (single-thread sync) to 1,901~files/s with thread pooling (rayon), and then to 15,789~files/s with \texttt{io\_uring}, yielding an 8.3$\times$ speedup from asynchronous I/O alone (Table~\ref{tab:ablation}). This confirms that the kernel-bypass ring buffer eliminates blocking syscall overhead, making \texttt{io\_uring} the decisive factor for achieving hyperscale monitoring on cold storage.
 
 \noindent\textbf{Detection Fidelity.} F1-Score increases from 0.25 (Entropy Only) to 0.96 (RGB Fusion). Single-channel configurations prove insufficient; the R-channel yields false positives from benign compressed data, while structural features alone fail to distinguish packed binaries. Only the full RGB fusion achieves definitive detection, demonstrating that the orthogonality of Entropy, Context, and Structure is essential for distinguishing malicious artifacts from legitimate system noise. While linear classifiers (e.g., One-Class SVM) operating on the raw Hash-Grid were considered, they failed to model the non-linear manifold of valid system updates (churn), resulting in higher false positives during maintenance compared to the reconstruction-based CAE approach. Weight perturbation experiments ($\pm$20\% on domain-specific risk parameters for feature fusion) confirm that F1-Score remains stable at 0.96, validating the robustness of the configuration across deployments.
+
+
+\subsection{Verification of Platform Agnosticism}
+\label{sec:windows_verification}
+
+\begin{table}[t]
+\centering
+\caption{Platform Specificity Verification. Performance metrics of DeepVis models trained on different OS manifolds evaluated across diverse platforms. The results confirm that the architecture learns domain-specific normality.}
+\label{tab:platform_specificity}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l cccc c}
+\toprule
+\multirow{2}{*}{System (Training Data)} & \multicolumn{4}{c}{Recall by Target Platform} & Alert \\
+& Linux & Windows & Web & Mobile & Rate$^\star$ \\
+\midrule
+DeepVis (Linux ELF) & 97.1\% & 16.9\% & 89.6\% & 100.0\% & 0.3\% \\
+DeepVis (Windows PE) & 0.0\% & 100.0\% & 0.0\% & 0.0\% & 15.0\% \\
+\bottomrule
+\multicolumn{6}{l}{\scriptsize $^\star$Measured on benign Linux binaries. High alert rate (15\%) in Windows model}\\
+\multicolumn{6}{l}{\scriptsize indicates \textit{Cross-Domain False Positives} due to structural mismatch.}\\
+\end{tabular}%
+}
+\end{table}
+
+To investigate the performance disparity observed in the Windows environment (Recall 16.9\% in Table~\ref{tab:unified_detection}), we hypothesized that the degradation was attributable to Domain Shift rather than architectural limitations. We curated a dedicated Windows training corpus consisting of 1,082 benign PE binaries sourced from the DikeDataset~\cite{dikedataset}, simulating a standard \texttt{System32} environment. The evaluation was performed on a large-scale test set of 34,798 real-world Windows malware samples. We retrained the DeepVis CAE for 30 epochs using the same hyperparameters ($1 \times 1$ Convolution, Latent Dim 16) used in the Linux experiments, and compared both models across four target platforms: Linux, Windows, Web, and Mobile.
+
+Table~\ref{tab:platform_specificity} summarizes the cross-domain evaluation results. The Linux-trained model achieves strong performance on its native domain (97.1\% Recall) and related formats (Mobile 100\%, Web 89.6\%), but degrades significantly on structurally distinct Windows PE binaries (16.9\%). Conversely, the Windows-trained model achieves perfect detection on Windows malware (100\% Recall) but completely fails on other platforms (0\% Recall), demonstrating that the CAE learns a domain-specific normality manifold. Critically, the Windows model exhibits a 15\% alert rate on benign Linux binaries, indicating Cross-Domain False Positives due to structural mismatch. These results confirm that the \DeepVis architecture is platform-agnostic: the $1 \times 1$ CAE successfully learns structural normality for any file format (ELF, PE, or DEX) when provided with a representative benign training set. The initial low recall was strictly a consequence of distributional misalignment between training and testing domains, not an architectural limitation.
