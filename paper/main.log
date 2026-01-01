@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 13:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.12.2)  1 JAN 2026 15:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -995,18 +995,24 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-Underfull \hbox (badness 3364) in paragraph at lines 283--284
+Underfull \hbox (badness 3364) in paragraph at lines 286--287
 \OT1/ptm/b/n/10 Performance Op-ti-miza-tion. \OT1/ptm/m/n/10 Through-put in-cre
 ases from
  []
 
 
 
-[10 <./Figures/fig_page_aligned_sensitivity.pdf>]) (./5. Related Works.tex
+[10 <./Figures/fig_page_aligned_sensitivity.pdf>]
 
-) (./6. Discussion and Limitation.tex
+LaTeX Warning: Citation `dikedataset' on page 11 undefined on input line 313.
 
-[11]
+) (./5. Related Works.tex
+
+
+
+[11]) (./6. Discussion and Limitation.tex
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 26--27
 []\OT1/ptm/m/n/10 Statelessness: Un-like event-based mon-i-tors (e.g.,
  []
@@ -1018,7 +1024,7 @@ Underfull \hbox (badness 1377) in paragraph at lines 26--27
 
 ) (./7. Conclusion.tex) (./main.bbl
 
-
+[12]
 Underfull \hbox (badness 4967) in paragraph at lines 63--65
 []\OT1/ptm/m/n/8 R. Wich-mann, ``Samhain: File In-tegrity Checker,'' $https : /
  / www .
@@ -1064,7 +1070,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 125--129
 
 
 
-[12])
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1078,22 +1084,22 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-
-
-[13
-
-] (./main.aux)
+[13] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
  ) 
 Here is how much of TeX's memory you used:
- 17821 strings out of 473190
- 385199 string characters out of 5715800
- 793269 words of memory out of 5000000
- 40705 multiletter control sequences out of 15000+600000
- 609063 words of font info for 139 fonts, out of 8000000 for 9000
+ 17825 strings out of 473190
+ 385271 string characters out of 5715800
+ 793328 words of memory out of 5000000
+ 40708 multiletter control sequences out of 15000+600000
+ 610199 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,91p,1630b,380s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
@@ -1119,7 +1125,7 @@ ts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
 s/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.
 pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr
 /local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (13 pages, 1946644 bytes).
+Output written on main.pdf (13 pages, 1949237 bytes).
 PDF statistics:
  1009 PDF objects out of 1200 (max. 8388607)
  349 compressed objects within 4 object streams

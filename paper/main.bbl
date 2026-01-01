@@ -106,6 +106,9 @@ X.~Chen, C.~Liu, B.~Li, K.~Lu, and D.~Song, ``Targeted backdoor attacks on deep
   learning systems using data poisoning,'' \emph{arXiv preprint
   arXiv:1712.05526}, 2017.
 
+\bibitem{dikedataset}
+D.~Dataset, ``{D}ike {D}ataset.''
+
 \bibitem{cheng2024kairos}
 Z.~Cheng, Q.~Lv, J.~Liang, Y.~Wang, D.~Sun, T.~Pasquier, and X.~Han, ``Kairos:
   Practical intrusion detection and investigation using whole-system
