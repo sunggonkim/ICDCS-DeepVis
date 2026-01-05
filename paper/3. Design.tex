@@ -123,7 +123,7 @@ Figure~\ref{fig:comparison} shows that traditional set-based methods (i.e., Set-
 
 
 \noindent\textbf{Reconstruction and Error Mapping.}
-The $1 \times 1$ Convolutional Autoencoder functions as an array of shared MLPs operating simultaneously. The encoder compresses RGB channels ($3 \rightarrow 16 \rightarrow 8$) into a latent representation of benign file characteristics. Since the kernel size is $1 \times 1$, each pixel’s reconstruction depends only on its own RGB features (Entropy, Context, Structure) without spatial mixing from neighbors. Thus, the system computes the element-wise difference to generate a pixel-wise $L_2$ error map, isolating files that violate learned norms.
+The $1 \times 1$ Convolutional Autoencoder functions as an array of shared MLPs operating simultaneously. The encoder compresses RGB channels ($3 \rightarrow 16 \rightarrow 8$) into a latent representation of valid file characteristics. Since the kernel size is $1 \times 1$, each pixel’s reconstruction depends only on its own RGB features (Entropy, Context, Structure) without spatial mixing from neighbors. Thus, the system computes the element-wise difference to generate a pixel-wise $L_2$ error map, isolating files that violate learned norms.
 
 
 \noindent\textbf{Maximum Deviation Scoring ($L_\infty$).}
