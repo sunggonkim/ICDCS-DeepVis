@@ -11,16 +11,23 @@
     % [User Check] 파일명 유지함. 
     % 단, PDF 내용이 텍스트와 일치하는지(128x128 등) 확인 필요.
     \includegraphics[width=8cm]{Figures/Design/Overall_Arch.pdf}
-    \caption{\textbf{Overall \DeepVis Procedure.}}
+    \caption{\textbf{Architecture and Procedure of \DeepVis.}}
     \label{fig:overall}
 \end{figure}
 
-
 Figure~\ref{fig:overall} shows \DeepVis overall architecture. Two phases support distributed integrity verification: Snapshot and Verification.
 
-\noindent\textbf{Snapshot Phase.} Data collection begins with parallel worker threads traversing the directory tree and collecting file paths (\ding{182}). Paths are batched and submitted via \texttt{io\_uring} interface to saturate storage bandwidth rather than block on latency (\ding{183}). After collecting metadata and headers, deterministic coordinates are calculated for each file using hash-based message authentication code (HMAC) (\ding{184}), and multi-modal features (entropy, permissions) are extracted and calculated (\ding{185}). Features are aggregated into a fixed-size $128 \times 128 \times 3$ tensor, transforming filesystem state into image-like representation (\ding{186}).
+\noindent\textbf{Snapshot Phase.} Data collection begins with parallel worker threads traversing the directory tree and collecting file paths (\ding{182}). 
+To resolve synchronous I/O bottlenecks, paths are batched and submitted via \texttt{io\_uring} interface, fully saturating storage bandwidth (\ding{183}). 
+Instead of sorting, deterministic coordinates are calculated using hash-based spatial mapping to achieve $O(1)$ placement (\ding{184}). 
+Multi-modal features are encoded into RGB channels (Entropy$\rightarrow$Red, Context$\rightarrow$Green, Structure$\rightarrow$Blue). These features are aggregated into a fixed-size $128 \times 128 \times 3$ tensor, transforming filesystem state into an image-like representation (\ding{185}).
 
-\noindent\textbf{Verification Phase.} The tensor feeds into a pre-trained 1$\times$1 Convolutional Autoencoder (CAE). Hash-based mapping lacks semantic neighborhoods, so 1$\times$1 convolutions learn cross-channel correlations rather than spatial features (e.g., distinguishing high-entropy zips in user directories from packed binaries in system paths) (\ding{187}). Pixel-wise reconstruction error is computed. Local Max Detection ($L_\infty$) isolates the highest deviation (\ding{188}). If $L_\infty$ exceeds learned threshold, an alert flags a stealthy anomaly (\ding{189}).
+
+\noindent\textbf{Verification Phase.} The tensor feeds into a pre-trained 1$\times$1 Convolutional Autoencoder (CAE) (\ding{186}). 
+Since hash-based mapping lacks spatial locality, 1$\times$1 convolutions are employed to learn cross-channel correlations (e.g., distinguishing high-entropy zips from packed binaries). 
+Pixel-wise reconstruction error is computed. 
+To prevent benign noise from drowning out attack signals (signal dilution), Local Max Detection ($L_\infty$) isolates the highest deviation (\ding{187}). 
+If $L_\infty$ exceeds the learned threshold, an alert flags a stealthy anomaly (\ding{188}).
 
 
 
@@ -28,7 +35,9 @@ Figure~\ref{fig:overall} shows \DeepVis overall architecture. Two phases support
 \subsection{Asynchronous File System Traversal}
 \label{design_2}
 
-Processing metadata and file headers across thousands of cloud instances presents a fundamental I/O bottleneck. Synchronous system calls used by traditional tools (e.g., AIDE, YARA)such as \texttt{stat}, \texttt{open}, and \texttt{read} force context switching and CPU blocking, compounding in network-attached storage environments where I/O latency dominates. Traditional sequential approaches become excessively slow. \DeepVis resolves this through a hybrid pipeline that decouples CPU-bound path traversal from I/O-bound header reading, allowing parallelization of both phases.
+%Processing metadata and file headers across thousands of cloud instances presents a fundamental I/O bottleneck. Synchronous system calls used by traditional tools (e.g., AIDE, YARA)such as \texttt{stat}, \texttt{open}, and \texttt{read} force context switching and CPU blocking, compounding in network-attached storage environments where I/O latency dominates. Traditional sequential approaches become excessively slow. \DeepVis resolves this through a hybrid pipeline that decouples CPU-bound path traversal from I/O-bound header reading, allowing parallelization of both phases.
+
+Figure~\ref{fig:pipeline} shows the overall procedure of \textit{Hybrid Snapshot Pipeline}. Processing metadata and file headers across thousands of cloud instances presents an I/O bottleneck. Traditional tools (e.g., AIDE, YARA) rely on synchronous system calls (e.g., \texttt{stat}, \texttt{open}, and \texttt{read}), which cause context switching and CPU blocking. These overheads increase in network-attached storage systems where I/O latency dominates, making sequential approaches slow. To address this, \DeepVis decouples the workflow into CPU-bound path traversal and I/O-bound header reading, enabling two parallel phases: \textit{Parallel Path Collection} and \textit{Asynchronous I/O Processing}.
 
 \begin{figure}[t]
     \centering
@@ -37,28 +46,27 @@ Processing metadata and file headers across thousands of cloud instances present
     \label{fig:pipeline}
 \end{figure}
 
-\noindent\textbf{Parallel Path Collection.} Directory traversal is CPU-bound but often underutilized in synchronous systems. \DeepVis employs the Rust \texttt{rayon} library to parallelize path collection across all cores. Worker threads execute synchronous \texttt{fs::read\_dir} operations recursively on independent branches of the directory tree. This phase rapidly fills a lock-free queue with file paths, ensuring the I/O phase never starves for work. Parallelization of path collection amortizes the overhead of directory traversal.
+\noindent\textbf{Parallel Path Collection.} When the snapshot phase starts, \textit{Path Collector} initiates directory tree traversal to utilize CPU resources for metadata discovery. Since directory traversal is CPU-bound and underutilized in single-threaded approaches, it employs the Rust \texttt{rayon} library to parallelize path collection across available cores. Worker threads execute synchronous \texttt{fs::read\_dir} operations recursively on independent directory branches, enabling concurrent processing without lock contention. This phase populates a lock-free \texttt{Pending Path Queue} with file paths. By acting as a producer, this parallelization guarantees a continuous stream of tasks for the subsequent I/O phase, amortizing traversal overhead against I/O latency.
 
-\noindent\textbf{Asynchronous I/O Processing.} Once paths are enqueued, reading file headers becomes the true bottleneck. Linux \texttt{io\_uring} eliminates the per-file system call overhead that plagues traditional \texttt{read} operations. The pipeline submits batches of paths as \texttt{OP\_READ} requests to the kernel's Submission Queue. Unlike traditional async I/O with callback overhead, \texttt{io\_uring} uses shared ring buffers, allowing user-space threads to poll the Completion Queue without blocking. When reads complete, data is immediately retrieved from pre-allocated buffers and processed for hashing and entropy calculation. CPU threads never stall on disk I/O while the kernel manages data movement in parallel. This architecture saturates storage bandwidth and achieves throughput competitive with raw disk capabilities.
-
-
+\noindent\textbf{Asynchronous I/O Processing.} Once file paths are enqueued, \textit{io\_uring Submitter \& Poller} retrieves them to address the bottleneck of reading file headers. Since traditional \texttt{read} operations incur per-file system call overhead, it uses the Linux \texttt{io\_uring} interface to submit batches of paths as \texttt{OP\_READ} requests to the kernel \texttt{Submission Queue}. Unlike traditional asynchronous I/O that relies on callbacks, this mechanism uses shared ring buffers, allowing the main thread to poll the \texttt{Completion Queue} without blocking. When reads complete, data is retrieved from \texttt{Pre-Alloc Buffers} and passed to the \textit{Data Processor} for hashing and entropy calculation. By acting as a consumer, this architecture ensures that \texttt{io\_uring} subsystem coordinates with \texttt{VFS} and \texttt{Page Cache} layers to manage data movement in parallel, saturating storage bandwidth.
 
 
-\subsection{Header Sampling}
-\label{design_sampling}
 
-Traditional FIM tools hash entire files, incurring massive I/O overhead scaling as $O(N \times \text{Size})$. Conversely, metadata-only scanning (file size, name) produces high false negatives against padded malware. \DeepVis balances these extremes through header-based entropy sampling.
 
-Packed malware and ransomware must modify file headers to accommodate unpacker stubs or encrypted payloads, significantly increasing entropy in initial blocks. Detecting this requires reading actual file content rather than metadata alone. However, scanning entire files at cloud scale remains prohibitively expensive. \DeepVis addresses this through a principled design decision: reading only the first 4KB of each file asynchronously.
+\subsection{Header Sampling}\label{design_sampling}
 
-This choice reflects practical filesystem constraints and malware behavior. Modern filesystems use 4KB block alignment, so requests smaller than 4KB still incur full 4KB I/O padded with zeros. Requests larger than 4KB require multiple I/O operations per file. Since ELF and PE headers reside within the first 128 bytes and evaluation shows 4KB suffices to detect most malicious modifications, this sampling point provides optimal I/O efficiency. Executable malware requiring OS loader compatibility (ELF/PE format) must alter headers for unpacker stubs or encrypted payloads, unlike benign data files that hide payloads at arbitrary offsets. Thus, 4KB page-aligned sampling detects binary format anomalies while eliminating per-file I/O overhead independent of total file size, providing a high-frequency first-line defense against common threat vectors.
+Packed malware and ransomware must modify file headers to accommodate unpacker stubs or encrypted payloads, increasing entropy in initial blocks. Detecting this requires analyzing file content, yet scanning entire files incurs I/O overhead scaling as $O(N \times \text{Size})$. Conversely, metadata-only scanning (e.g., file size, timestamps) produces false negatives against padded malware. To balance these extremes, \DeepVis adopts header-based entropy sampling.
+
+\noindent\textbf{Optimal I/O Granularity.} \DeepVis reads only the first 4KB of each file asynchronously. This choice follows filesystem architecture. Since modern filesystems use 4KB block alignment, requests smaller than 4KB still incur a full page I/O operation, while requests larger than 4KB require multiple block fetches. Thus, 4KB sampling is the atomic unit of I/O, maximizing throughput without additional bandwidth cost.
+
+\noindent\textbf{Targeted Threat Detection.}
+This sampling strategy leverages the structural constraints of executable malware. Unlike generic data files, where payloads can reside at arbitrary offsets, executable malware (ELF/PE) is constrained by OS loader requirements. Attackers must modify the file header, typically within the first 128 bytes, to insert unpacker stubs or encrypted payloads. Our evaluation in Section~\ref{eval_sensitivity} demonstrates that detection recall saturates at just 96 bytes, confirming that a 4KB sample is sufficient to capture these structural anomalies. This page-aligned sampling allows \DeepVis to detect binary format violations while eliminating per-file I/O overhead independent of total file size, serving as a scalable screening mechanism.
 
 
 
 \subsection{Hash-Based Spatial Mapping}
 \label{design_3}
 
-\noindent\textbf{Spatial Invariance.} After asynchronously reading metadata and 4KB headers, \DeepVis must transform unordered files into a fixed-size tensor for neural processing. Traditional ordering-based approaches such as alphabetical path sorting suffer from the Ordering Problem: inserting a single file shifts indices of all subsequent entries, destroying spatial locality across scans and invalidating trained models. \DeepVis overcomes this through deterministic hash-based spatial mapping that projects each file onto stable coordinates in a fixed-size grid.
 
 \begin{figure}[t]
     \centering
@@ -67,32 +75,34 @@ This choice reflects practical filesystem constraints and malware behavior. Mode
     \label{fig:hash}
 \end{figure}
 
-Figure~\ref{fig:hash} contrasts traditional ordered approaches with \DeepVis hash-based mapping. The upper panel shows how inserting File B shifts indices of Files C and D, cascading updates prohibitively expensive in systems with millions of files. The lower panel demonstrates how \DeepVis calculates stable coordinates $\Phi(p)$ for each file path $p$ using a high-entropy secret key $K$. This approach maps files to fixed positions in a $128 \times 128$ tensor regardless of insertion order.
 
-To create the coordinates, \DeepVis uses the first 32 bits of the HMAC output modulo 128 for the x-coordinate and bits 32 to 64 modulo 128 for the y-coordinate. HMAC-based mapping provides two critical benefits. First, deterministic mapping ensures coordinates depend only on file path and key $K$, producing reproducible grids across successive scans. Second, the cryptographic key defeats targeted attacks where adversaries craft filenames to reach specific low-risk coordinates. Ephemeral keys and privileged memory protection restrict $K$ extraction, preventing adversaries from predicting safe landing zones.
+\noindent\textbf{Spatial Invariance.}
+After asynchronously reading metadata and 4KB headers, \DeepVis transforms unordered files into a fixed-size tensor for neural processing. Traditional ordering-based approaches such as alphabetical path sorting suffer from the ordering problem: inserting a single file shifts indices of subsequent entries, destroying spatial locality across scans and invalidating trained models. \DeepVis addresses this through deterministic hash-based spatial mapping that maps each file onto stable coordinates in a fixed-size grid. Figure~\ref{fig:hash} contrasts ordered approaches with \DeepVis hash-based mapping. The upper panel shows how inserting File B shifts indices of Files C and D, rendering cascading updates expensive in systems with millions of files. The lower panel demonstrates how \DeepVis calculates stable coordinates $\Phi(p)$ for each file path $p$ using a high-entropy secret key $K$. This approach maps files onto fixed positions in a $128 \times 128$ tensor regardless of insertion order.
+
+To generate these coordinates, \DeepVis uses the first 32 bits of the HMAC output modulo 128 for the x-coordinate and bits 32--64 modulo 128 for the y-coordinate. This HMAC-based mapping provides two benefits. First, deterministic mapping ensures coordinates depend only on the file path and key $K$, producing reproducible grids across scans. Second, the cryptographic key prevents targeted attacks where adversaries craft filenames to reach specific coordinates. By protecting ephemeral keys in privileged memory, \DeepVis prevents adversaries from inferring the resulting spatial mapping.
 
 
 
 
-\noindent\textbf{Multi-Modal RGB Encoding.} \DeepVis encodes each pixel through three orthogonal risk channels that attackers cannot simultaneously optimize. Evasion of one channel increases risk in others.
+\noindent\textbf{Multi-Modal RGB Encoding.} \DeepVis encodes each pixel through three orthogonal risk channels. This design enforces mutual exclusivity, ensuring that evading one channel inevitably increases the detection risk in others.
 
 \begin{itemize}[leftmargin=1em, itemsep=2pt, topsep=2pt]
-    \item \textbf{R (Entropy).} Shannon entropy of the 4KB header exploits the malware trade-off: legitimate ELF binaries use low-entropy zero-padding for alignment, while packed malware maximizes entropy to hide signatures. This channel distinguishes packed threats from standard executables.
-
-    \item \textbf{G (Context Hazard).} High entropy alone cannot distinguish benign archives from malware. This channel applies Filesystem Hierarchy Standard (FHS) risk weights:
+    \item \textbf{R (Entropy).} This channel measures the Shannon entropy of the 4KB header. It differentiates file types by information density: standard ELF binaries use zero-padding for alignment (low entropy), while packed malware maximizes density to conceal signatures (high entropy). This channel distinguishes packed threats from standard executables.
+    
+    \item \textbf{G (Context Hazard).} This channel quantifies location-sensitive risk based on the Filesystem Hierarchy Standard (FHS). Since high entropy is acceptable in benign data files but suspicious in system paths, \DeepVis computes risk weights:
 \begin{equation}
-    G(p) = \min\left(1.0, \sum_{k} w_k \cdot \mathbb{I}(p \in \text{Zone}_k)\right)
+G(p) = \min\left(1.0, \sum_{k} w_k \cdot \mathbb{I}(p \in \text{Zone}_k)\right)
 \end{equation}
-Volatile paths receive high weight: \texttt{/tmp} [$w=0.9$], \texttt{/dev/shm} [$w=0.8$]. Protected paths receive low weight: \texttt{/usr/bin} [$w=0.1$]. High entropy in \texttt{/tmp} signals threat; the same entropy in \texttt{/usr/share} appears benign.
+Volatile paths (e.g., \texttt{/tmp}) receive high weights ($w=0.9$), while protected paths (e.g., \texttt{/usr/bin}) receive low weights ($w=0.1$). This context filters false positives from benign high-entropy files.
 
-    \item \textbf{B (Structure).} This channel enforces OS loader policies. Kernel modules (\texttt{.ko}) and shared objects (\texttt{.so}) outside \texttt{/lib/modules} receive $B=1.0$. Relocatable code in user-writable paths violates loader assumptions.
+    \item \textbf{B (Structure).} This channel validates compliance with OS loader policies. It flags executable objects (e.g., \texttt{.ko}, \texttt{.so}) located outside authorized directories (e.g., \texttt{/lib/modules}) by assigning a maximum risk value ($B=1.0$). This detects relocatable code in user-writable paths that violate loader assumptions.
 \end{itemize}
 
-The three channels jointly create a $128 \times 128 \times 3$ tensor. Attackers cannot simultaneously satisfy all constraints: evasion entropy conflicts with legitimate files, suspicious paths trigger context risk, and structural violations trigger the structure channel. The CAE learns non-linear correlations between channels, capturing dependencies that simple thresholds miss (e.g., high entropy permissible in static binaries but anomalous in \texttt{/tmp}). An inverted index maps pixel coordinates to file paths for attribution.
+The three channels together form a $128 \times 128 \times 3$ tensor. Attackers cannot satisfy all constraints: reducing entropy exposes signatures, relocating files increases context risk, and altering locations triggers structure violations. The CAE learns non-linear correlations between channels, capturing dependencies that threshold-based rules miss (e.g., high entropy is anomalous in \texttt{/tmp} but benign in \texttt{/usr/share}). Finally, an inverted index maps pixel coordinates back to file paths for attribution.
 
 
-\noindent\textbf{Handling Hash Collisions.} Fixed grid size ($128 \times 128 = 16,384$ pixels) faces inevitable hash collisions as filesystem scale grows. The expected collision behavior follows the classical Balls-into-Bins model. With $N$ files mapped to $K$ bins via uniform hashing, the expected number of collisions per bin is $N/K$. For 10 million files on a $128 \times 128$ grid, this yields $\approx$610 files per pixel on average. \DeepVis applies max-risk pooling, where each pixel retains the maximum risk value across all colliding files per RGB channel. This ensures that a single malicious file dominates the pixel value despite benign collisions, preserving detection signal. Empirical evaluation (Section~\ref{eval_sensitivity}) confirms stable recall across saturation levels.
-
+\noindent\textbf{Handling Hash Collisions.}
+Mapping a cloud-scale filesystem onto a fixed $128 \times 128$ grid ($16{,}384$ pixels) introduces hash collisions. Under the Balls-into-Bins model, mapping $N$ files to $K$ bins yields an expected load of $N/K$. For 10 million files, this results in about 610 files per pixel. \DeepVis mitigates this density through max-risk pooling, where each pixel retains the maximum risk value across colliding files per channel. This strategy ensures that a malicious signal is not diluted by benign noise: a single high-risk file determines the pixel value regardless of benign collisions. Empirical evaluation (Section~\ref{eval_sensitivity}) confirms stable recall under saturation.
 
 
 
@@ -108,17 +118,22 @@ The three channels jointly create a $128 \times 128 \times 3$ tensor. Attackers 
     \label{fig:comparison}
 \end{figure}
 
-\noindent\textbf{Pixel-Wise Anomaly Detection.} Traditional set-based methods like Set-AE aggregate features into global vectors, causing signal dilution where attack signals drown in benign noise. \DeepVis employs the Hash-Grid Parallel CAE, which processes the $128 \times 128$ grid as independent channels. $1 \times 1$ convolutions execute 16,384 identical MLPs in parallel on GPU, ensuring strict pixel isolation. This design prevents error propagation across regions and guarantees malicious signals remain mathematically distinct regardless of system scale.
+\noindent\textbf{Pixel-Wise Anomaly Detection.}
+Figure~\ref{fig:comparison} shows that traditional set-based methods (i.e., Set-AE) aggregate features into global vectors, causing signal dilution where attack signals drown in benign noise. In contrast, \DeepVis employs the Hash-Grid Parallel CAE, which processes the $128 \times 128$ grid as independent channels. $1 \times 1$ convolutions execute 16,384 identical MLPs in parallel on the GPU, ensuring strict pixel isolation. This design prevents benign features from averaging out anomalies, guaranteeing that malicious signals remain mathematically distinct regardless of system scale.
 
-\noindent\textbf{Reconstruction and Error Mapping.} The $1 \times 1$ Convolutional Autoencoder functions as an array of shared MLPs operating simultaneously. The encoder compresses RGB channels ($3 \rightarrow 16 \rightarrow 8$) into a latent representation of valid files. Since the kernel size is $1 \times 1$, each pixel's reconstruction depends solely on its own RGB features (Entropy, Context, Structure) without influence from neighbors. The system computes element-wise difference to generate a Pixel-wise $L_2$ Error Map, isolating files violating learned norms.
 
-\noindent\textbf{Maximum Deviation Scoring ($L_\infty$).} Detection addresses the MSE Paradox where legitimate updates generate high global error while stealthy attacks generate low global error. Frequent updates like package upgrades introduce diffuse noise across the grid. Using global MSE misclassifies benign churn as anomalous because thousands of legitimate changes exceed the error of a single rootkit. \DeepVis solves this by applying maximum deviation pooling:
+\noindent\textbf{Reconstruction and Error Mapping.}
+The $1 \times 1$ Convolutional Autoencoder functions as an array of shared MLPs operating simultaneously. The encoder compresses RGB channels ($3 \rightarrow 16 \rightarrow 8$) into a latent representation of benign file characteristics. Since the kernel size is $1 \times 1$, each pixel’s reconstruction depends only on its own RGB features (Entropy, Context, Structure) without spatial mixing from neighbors. Thus, the system computes the element-wise difference to generate a pixel-wise $L_2$ error map, isolating files that violate learned norms.
+
+
+\noindent\textbf{Maximum Deviation Scoring ($L_\infty$).}
+Detection addresses the MSE Paradox, where valid updates generate high global error while stealthy attacks generate low global error. Frequent updates like package upgrades introduce diffuse noise across the grid. Using global MSE misclassifies benign churn as anomalous because the cumulative error of thousands of authorized changes exceeds the error of a single rootkit. \DeepVis solves this by applying maximum deviation pooling:
 \begin{equation}
-    \text{Score} = \max_{i,j} |T_{i,j} - T'_{i,j}|
+    \text{Score} = \max_{i,j} |T_{i,j} - T'_{i,j}|
 \end{equation}
-This ignores cumulative low-magnitude noise and focuses exclusively on the single highest anomaly peak, decoupling detection sensitivity from benign churn volume.
+This ignores cumulative low-magnitude noise and focuses exclusively on the single highest anomaly peak (i.e., the ``Spike'' in Figure~\ref{fig:comparison}), decoupling detection sensitivity from benign churn volume.
 
-\noindent\textbf{Threshold Calibration.} \DeepVis establishes decision boundary $\text{Score} > \tau$ where $\tau$ is the maximum reconstruction error from a clean environment. Offline calibration uses benign Linux ELF binaries to derive $\tau$ as the highest $L_\infty$ score observed across the validation corpus. This threshold represents worst-case legitimate variance. Online monitoring flags any input exceeding this calibrated maximum as a structural anomaly, triggering alerts. Note: evaluation focuses on Linux ELF binaries; extending to Windows PE or Android DEX would require format-specific training.
+\noindent\textbf{Decision Boundary Determination.} \DeepVis establishes the decision boundary $\text{Score} > \tau$, where $\tau$ is the maximum reconstruction error from a clean environment. Offline calibration uses benign Linux ELF binaries to derive $\tau$ as the highest $L_\infty$ score observed in the validation corpus. This threshold represents the worst-case variance. Online monitoring flags any input exceeding this calibrated maximum as a structural anomaly, triggering alerts. Note that evaluation focuses on Linux ELF binaries; extending to Windows PE or Android DEX requires format-specific training.
 
 
 \subsection{\DeepVis Implementation}
