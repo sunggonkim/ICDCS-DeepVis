@@ -1,9 +1,9 @@
-\section{\DeepVis System Design}
+\section{Design of \DeepVis}
 \label{sec:design}
 
 
 
-\subsection{Overall Procedure}
+\subsection{Overall Architecture and Procedure}
 \label{design_1}
 
 
@@ -16,7 +16,7 @@
     \label{fig:overall}
 \end{figure}
 
-Figure~\ref{fig:overall} shows \DeepVis overall architecture and procedure. Two phases support distributed integrity verification: Snapshot and Verification.
+Figure~\ref{fig:overall} shows the overall architecture and procedure of \DeepVis. Two phases support distributed integrity verification: Snapshot and Verification.
 
 \noindent\textbf{Snapshot Phase.} Data collection begins with parallel worker threads traversing the directory tree and collecting file paths (\ding{182}). 
 To resolve synchronous I/O bottlenecks, paths are batched and submitted via \texttt{io\_uring} interface, fully saturating storage bandwidth (\ding{183}). 
