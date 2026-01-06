@@ -2,6 +2,7 @@
 \label{sec:design}
 
 
+
 \subsection{Overall Procedure}
 \label{design_1}
 
@@ -26,7 +27,7 @@ Multi-modal features are encoded into RGB channels (Entropy$\rightarrow$Red, Con
 \noindent\textbf{Verification Phase.} The tensor feeds into a pre-trained 1$\times$1 Convolutional Autoencoder (CAE) (\ding{186}). 
 Since hash-based mapping lacks spatial locality, 1$\times$1 convolutions are employed to learn cross-channel correlations (e.g., distinguishing high-entropy zips from packed binaries). 
 Pixel-wise reconstruction error is computed. 
-To prevent benign noise from drowning out attack signals (signal dilution), Local Max Detection ($L_\infty$) isolates the highest deviation (\ding{187}). 
+To prevent benign noise from drowning out attack signals (signal dilution), \textit{Local Max Detection} ($L_\infty$) isolates the highest deviation (\ding{187}). 
 If $L_\infty$ exceeds the learned threshold, an alert flags a stealthy anomaly (\ding{188}).
 
 
